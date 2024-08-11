@@ -1,0 +1,70 @@
+﻿<Window x:Class="CYR.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:CYR"
+        xmlns:vm="clr-namespace:CYR.ViewModel"
+        mc:Ignorable="d"
+
+        Title="MainWindow" Height="550" Width="1000"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=False}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ContentPresenter Grid.Column="1" Content="{Binding Navigation.CurrentView}" />
+        <StackPanel Background="#B8D8D8" Grid.Column="0" Orientation="Vertical">
+            <Button Grid.Row="0" Style="{StaticResource MaterialDesignFlatButton}"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Height="100"
+                    VerticalContentAlignment="Center"
+                    Background="#7A9E9F"
+                    Command="{Binding NavigateToClientViewCommand}">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Person" VerticalAlignment="Center" Margin="5 0 5 0" Width="30" Height="30"/>
+                                <TextBlock Text="Kunden" VerticalAlignment="Center" FontSize="19"/>
+                                <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="{TemplateBinding Padding}" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#4f6467" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Grid.Row="0" Style="{StaticResource MaterialDesignFlatButton}"
+                    Foreground="Black"
+                    HorizontalContentAlignment="Left"
+                    Height="100"
+                    VerticalContentAlignment="Center"
+                    Background="#7A9E9F"
+                    Command="{Binding NavigateToInvoiceViewCommand}">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Invoice" VerticalAlignment="Center" Margin="5 0 5 0" Width="30" Height="30"/>
+                                <TextBlock Text="Rechnungen" VerticalAlignment="Center" FontSize="19"/>
+                                <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="{TemplateBinding Padding}" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#4f6467" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
