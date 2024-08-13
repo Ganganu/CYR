@@ -8,6 +8,10 @@ namespace CYR.Clients
 {
     public class ClientRepository : IClientRepository
     {
+        public ClientRepository() 
+        {
+
+        }
         public Task DeleteAsync(Client client)
         {
             throw new NotImplementedException();

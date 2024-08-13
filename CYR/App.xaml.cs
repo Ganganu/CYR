@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CYR.Clients;
 using CYR.Core;
 using CYR.Services;
 using CYR.View;
@@ -19,13 +20,16 @@ namespace CYR
         public App() 
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddSingleton<MainWindow>(provider => new CYR.MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
+            services.AddSingleton<MainWindow>(provider => new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
             services.AddSingleton<ClientView>();
             services.AddSingleton<InvoiceView>();
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<ClientViewModel>();
             services.AddSingleton<InvoiceViewModel>();
             services.AddSingleton<INavigationService,NavigationService>();
+            services.AddSingleton<IClientRepository, ClientRepository>();
+            services.AddSingleton<Client>();
+            services.AddSingleton<IRetrieveClients,RetrieveClients>();
             services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
         }
