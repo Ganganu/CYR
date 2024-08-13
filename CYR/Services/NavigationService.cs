@@ -1,4 +1,5 @@
-﻿using CYR.Core;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CYR.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,34 +10,24 @@ namespace CYR.Services
 {
     public interface INavigationService
     {
-        public ViewModelBase CurrentView { get;  set; }
-        void NavigateTo<T>() where T : ViewModelBase;
+        public ObservableObject CurrentView { get;  set; }
+        void NavigateTo<T>() where T : ObservableObject;
     }
 
-    public class NavigationService : ObservableObject, INavigationService
+    public partial class NavigationService : ObservableObject, INavigationService
     {
-        private ViewModelBase _currentView;
-        private readonly Func<Type, ViewModelBase> _viewModelFactory;
+        [ObservableProperty]
+        private ObservableObject _currentView;
+        private readonly Func<Type, ObservableObject> _viewModelFactory;
 
-        public NavigationService(Func<Type, ViewModelBase> viewModelFactory)
+        public NavigationService(Func<Type, ObservableObject> viewModelFactory)
         {
             _viewModelFactory = viewModelFactory;
         }
 
-
-        public ViewModelBase CurrentView 
-        { 
-            get => _currentView;
-            set 
-            {
-                _currentView = value;
-                OnPropertyChanged(nameof(CurrentView));
-            }
-        }
-
-        public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
+        public void NavigateTo<TViewModel>() where TViewModel : ObservableObject
         {
-            ViewModelBase viewModel = _viewModelFactory.Invoke(typeof(TViewModel));
+            ObservableObject viewModel = _viewModelFactory.Invoke(typeof(TViewModel));
             CurrentView = viewModel;
         }
     }

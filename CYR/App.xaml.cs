@@ -1,4 +1,5 @@
-﻿using CYR.Core;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CYR.Core;
 using CYR.Services;
 using CYR.View;
 using CYR.ViewModel;
@@ -25,7 +26,7 @@ namespace CYR
             services.AddSingleton<ClientViewModel>();
             services.AddSingleton<InvoiceViewModel>();
             services.AddSingleton<INavigationService,NavigationService>();
-            services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+            services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
         }
         protected override void OnStartup(StartupEventArgs e)

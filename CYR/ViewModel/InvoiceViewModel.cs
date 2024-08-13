@@ -1,4 +1,5 @@
-﻿using CYR.Core;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CYR.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CYR.ViewModel
 {
-    public partial class InvoiceViewModel : ViewModelBase
+    public partial class InvoiceViewModel : ObservableObject
     {
     }
 }

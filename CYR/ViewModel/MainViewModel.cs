@@ -1,27 +1,20 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CYR.Core;
 using CYR.Services;
 
 namespace CYR.ViewModel
 {
-    public partial class MainViewModel : ViewModelBase
+    public partial class MainViewModel : ObservableObject
     {
         public MainViewModel(INavigationService navigationService) 
         {
             Navigation = navigationService;
         }
 
+        [ObservableProperty]
         private INavigationService _navigation;
-
-        public INavigationService Navigation
-        {
-            get { return _navigation; }
-            set 
-            { 
-                _navigation = value; 
-                OnPropertyChanged(nameof(Navigation));
-            }
-        }
+                
         [RelayCommand]
         private void NavigateToClientView()
         {
