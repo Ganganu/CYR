@@ -8,10 +8,10 @@
         {
             this._clientRepository = clientRepository;
         }
-        public async Task<Client> Handle()
+        public async Task<IEnumerable<Client>> Handle()
         {
             IEnumerable<Client> clients = await _clientRepository.GetAllAsync();
-            return (Client)clients;
+            return clients;
         }
     }
 }

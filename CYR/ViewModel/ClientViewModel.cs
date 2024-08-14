@@ -16,8 +16,8 @@ namespace CYR.ViewModel
 
         private async void Initialize()
         {
-            IEnumerable<Client> cl = (IEnumerable<Client>)await _retrieveClients.Handle();
-            _clients = new ObservableCollection<Client>(cl);
+            IEnumerable<Client> cl = await _retrieveClients.Handle();
+            Clients = new ObservableCollection<Client>(cl);
         }
         [ObservableProperty]
         private ObservableCollection<Client>? _clients;

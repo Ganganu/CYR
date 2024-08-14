@@ -3,6 +3,6 @@ namespace CYR.Clients
 {
     public interface IRetrieveClients
     {
-        Task<Client> Handle();
+        Task<IEnumerable<Client>> Handle();
     }
 }

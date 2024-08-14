@@ -17,6 +17,7 @@ namespace CYR
     public partial class App : Application
     {
         private readonly ServiceProvider _serviceProvider;
+        private string connectionString = "Data Source=.\\cyr.db;Version=3;foreign_keys=on";
         public App() 
         {
             IServiceCollection services = new ServiceCollection();
@@ -30,6 +31,7 @@ namespace CYR
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<Client>();
             services.AddSingleton<IRetrieveClients,RetrieveClients>();
+            services.AddSingleton<IDatabaseConnection, SQLLiteConnection>((provider) => new SQLLiteConnection(connectionString));
             services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
         }
