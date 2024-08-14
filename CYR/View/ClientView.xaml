@@ -10,19 +10,25 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:ClientViewModel, IsDesignTimeCreatable=False}">
     <Grid Background="White">
-        <ListView ItemsSource="{Binding Clients}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Client Number" DisplayMemberBinding="{Binding ClientNumber}"/>
-                    <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding ClientName}"/>
-                    <GridViewColumn Header="Address 1" DisplayMemberBinding="{Binding Address1}" />
-                    <GridViewColumn Header="Address 2" DisplayMemberBinding="{Binding Address2}" />
-                    <GridViewColumn Header="Address 3" DisplayMemberBinding="{Binding Address3}" />
-                    <GridViewColumn Header="Telephone Number" DisplayMemberBinding="{Binding Telefonnumber}" />
-                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" />
-                    <GridViewColumn Header="Creation Date" DisplayMemberBinding="{Binding CreationDate, StringFormat=d}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid CanUserAddRows="False"
+                  CanUserReorderColumns="False"
+                  ItemsSource="{Binding Clients}"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Actions">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <materialDesign:PopupBox>
+                                <StackPanel>
+                                    <Button Content="Löschen"/>
+                                    <Button Content="Aktualisieren"/>
+                                    <Button Content="Neue Rechnung"/>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

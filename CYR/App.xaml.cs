@@ -27,6 +27,8 @@ namespace CYR
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<ClientViewModel>();
             services.AddSingleton<InvoiceViewModel>();
+            services.AddSingleton<ArticleView>();
+            services.AddSingleton<ArticleViewModel>();
             services.AddSingleton<INavigationService,NavigationService>();
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<Client>();
