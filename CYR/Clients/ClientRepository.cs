@@ -26,22 +26,18 @@ namespace CYR.Clients
         {
             List<Client> clientList = new List<Client>();
             Client client;
-            string query = "SELECT * FROM Kunden";
+            string query = "select Kunden.Kundennummer, Kunden.Name, Adresse.Strasse, Kunden.Telefonnummer, Kunden.Email, Kunden.Erstellungsdatum\r\nfrom Kunden inner join Adresse on Kunden.Kundennummer = Adresse.Kundennummer";
             using (DbDataReader reader = (DbDataReader)await _connection.ExecuteSelectQueryAsync(query))
             {
                 while (await reader.ReadAsync())
                 {
-                    client = new Client
-                    {
-                        ClientNumber = reader["Kundennummer"].ToString(),
-                        ClientName = reader["Name"].ToString(),
-                        Address1 = reader["Adresse1"].ToString(),
-                        Address2 = reader["Adresse2"].ToString(),
-                        Address3 = reader["Adresse3"].ToString(),
-                        Telefonnumber = reader["Telefonnummer"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        CreationDate = Convert.ToDateTime(reader["Erstellungsdatum"])
-                    };
+                    client = new Client();
+                    client.ClientNumber = reader["Kundennummer"].ToString();
+                    client.ClientName = reader["Name"].ToString();
+                    client.Address = reader["Strasse"].ToString();
+                    client.Telefonnumber = reader["Telefonnummer"].ToString();
+                    client.Email = reader["Email"].ToString();
+                    client.CreationDate = reader["Erstellungsdatum"].ToString();
                     clientList.Add(client);
                 }
             }
