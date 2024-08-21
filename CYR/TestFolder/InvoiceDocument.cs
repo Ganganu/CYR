@@ -31,12 +31,7 @@ namespace CYR.TestFolder
                     page.Content().Element(ComposeContent);
 
 
-                    page.Footer().AlignCenter().Text(x =>
-                    {
-                        x.CurrentPageNumber();
-                        x.Span(" / ");
-                        x.TotalPages();
-                    });
+                    page.Footer().Element(ComposeFooter);
                 });
         }
 
@@ -80,6 +75,41 @@ namespace CYR.TestFolder
                 });
             });
         }
+        void ComposeFooter(IContainer container)
+        {
+            container.Row(row =>
+            {
+                row.RelativeItem().Column(column =>
+                {
+                    column.Item().Text($"{Model.SellerAddress.Name}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.Street} {Model.SellerAddress.HouseNumber}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.PLZ} {Model.SellerAddress.City}")
+                        .FontSize(10);
 
+                });
+                row.RelativeItem().Column(column =>
+                {
+                    column.Item().Text($"{Model.SellerAddress.Telefonnumber}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.EmailAddress}")
+                        .FontSize(10);
+                });
+                row.RelativeItem().Column(column =>
+                {
+                    column.Item().Text($"{Model.SellerAddress.BankName}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.IBAN}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.BIC}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.USTIDNr}")
+                        .FontSize(10);
+                    column.Item().Text($"{Model.SellerAddress.STNR}")
+                        .FontSize(10);
+                });
+            });
+        }
     }
 }
