@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
-using CYR.Core;
+using CYR.TestFolder;
+using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel
@@ -21,5 +23,13 @@ namespace CYR.ViewModel
         }
         [ObservableProperty]
         private ObservableCollection<Client>? _clients;
+
+        [RelayCommand]
+        public void CreateInvoice()
+        {
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails();
+            var document = new InvoiceDocument(model, Clients[0]);
+            document.GeneratePdfAndShow();
+        }
     }
 }
