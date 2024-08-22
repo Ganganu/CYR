@@ -25,10 +25,11 @@ namespace CYR.ViewModel
         private ObservableCollection<Client>? _clients;
 
         [RelayCommand]
-        public void CreateInvoice()
+        public void CreateInvoice(object parameter)
         {
-            var model = InvoiceDocumentDataSource.GetInvoiceDetails();
-            var document = new InvoiceDocument(model, Clients[0]);
+            Client client = (Client)parameter;
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(client);
+            var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }
     }

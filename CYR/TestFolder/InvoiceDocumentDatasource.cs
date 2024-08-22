@@ -1,13 +1,14 @@
-﻿namespace CYR.TestFolder
-{
-    using CYR.Model;
-    using CYR.User;
-    using QuestPDF.Helpers;
+﻿using CYR.Clients;
+using CYR.Model;
+using CYR.User;
+using QuestPDF.Helpers;
 
+namespace CYR.TestFolder
+{
     public static class InvoiceDocumentDataSource
     {
         private static Random Random = new Random();
-        public static InvoiceModel GetInvoiceDetails()
+        public static InvoiceModel GetInvoiceDetails(Client client)
         {
             var items = Enumerable
                 .Range(1, 8)
@@ -21,8 +22,8 @@
                 IssueDate = DateTime.Now.ToString(),
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
-                SellerAddress = new User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street},
-                //CustomerAddress = GenerateRandomAddress(),
+                SellerAddress = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street},
+                CustomerAddress = GetCustomerAddress(client),
 
                 Items = items,
                 Comments = Placeholders.Paragraph()
@@ -39,16 +40,15 @@
             };
         }
 
-        private static Address GenerateRandomAddress()
+        private static Client GetCustomerAddress(Client client)
         {
-            return new Address
+            return new Client
             {
-                CompanyName = Placeholders.Name(),
-                Street = Placeholders.Label(),
-                City = Placeholders.Label(),
-                State = Placeholders.Label(),
-                Email = Placeholders.Email(),
-                Phone = Placeholders.PhoneNumber()
+                Name = client.Name,
+                Street = client.Street,
+                City = client.City,
+                PLZ = client.PLZ,
+                ClientNumber = client.ClientNumber
             };
         }
     }

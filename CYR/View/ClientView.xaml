@@ -22,7 +22,9 @@
                                 <StackPanel>
                                     <Button Content="Löschen"/>
                                     <Button Content="Aktualisieren"/>
-                                    <Button Content="Neue Rechnung" Command="{Binding DataContext.CreateInvoiceCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                    <Button Content="Neue Rechnung"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.CreateInvoiceCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </DataTemplate>

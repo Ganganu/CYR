@@ -10,8 +10,7 @@ namespace CYR.Model
         public string DueDate { get; set; }
 
         public User.User SellerAddress { get; set; }
-        public Address CustomerAddress { get; set; }
-        public Client Client { get; set; }
+        public Client CustomerAddress { get; set; }
 
         public List<OrderItem> Items { get; set; }
         public string Comments { get; set; }
