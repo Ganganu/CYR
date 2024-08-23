@@ -56,7 +56,6 @@ namespace CYR.TestFolder
             
 
         }
-
         void ComposeContent(IContainer container)
         {
             container.AlignTop().PaddingVertical(10).Row(row =>
@@ -64,9 +63,27 @@ namespace CYR.TestFolder
                 row.RelativeItem().AlignBottom().Column(column =>
                 {
                     column.Item().Element(ComposeClientInformations);
+
+                    column.Item().Element(ComposeCommentsTop);
+
                     column.Item().Element(ComposeTable);
+                    var totalPrice = Model.Items.Sum(x => x.Price * x.Quantity);
+                    column.Item().AlignRight().Text($"Grand total: {totalPrice}$").FontSize(14);
+
                     column.Item().Element(ComposeComments);
                 });
+            });
+        }
+        void ComposeCommentsTop(IContainer container)
+        {
+            container.Background(Colors.Grey.Lighten3).PaddingTop(10).Column(column =>
+            {
+                column.Spacing(5);
+                column.Item().Text($"Rechnung {DateTime.Parse(DateTime.Now.ToString()).Year}-1").FontSize(12).Bold();
+                column.Item().Text(@"(bitte bei Bezahlung abgeben)").FontSize(8);
+                column.Item().Text("Betreff: ").FontSize(12).Bold();
+                column.Item().Text("Sehr geehrter Damen und Herren,").FontSize(9);
+                column.Item().Text("wir danken Ihnen für den Auftrag und erlauben uns Ihnen folgende Leistungen in Rechnung zu stellen.").FontSize(9);
             });
         }
         void ComposeClientInformations(IContainer container)
@@ -138,11 +155,14 @@ namespace CYR.TestFolder
         }
         void ComposeComments(IContainer container)
         {
-            container.Background(Colors.Grey.Lighten3).Padding(10).Column(column =>
+            container.Background(Colors.Grey.Lighten3).PaddingTop(20).Column(column =>
             {
                 column.Spacing(5);
-                column.Item().Text("Comments").FontSize(14);
-                column.Item().Text(Model.Comments);
+                column.Item().Text("Bauleistung im Sinne von §13b Abs. 5 UStG").FontSize(11);
+                column.Item().Text("Wir bitten um Überweisung des Rechnungsbetrages sofort ohne Abzug.").FontSize(11);
+                column.Item().Text("");
+                column.Item().Text("Mit freundlichen Grüßen").FontSize(11);
+                column.Item().Text(Model.SellerAddress.Name).FontSize(11);
             });
         }
         void ComposeFooter(IContainer container)
