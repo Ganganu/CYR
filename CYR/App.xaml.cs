@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CYR.Address;
 using CYR.Clients;
 using CYR.Core;
 using CYR.Services;
@@ -30,8 +31,11 @@ namespace CYR
             services.AddSingleton<InvoiceViewModel>();
             services.AddSingleton<ArticleView>();
             services.AddSingleton<ArticleViewModel>();
+            services.AddSingleton<CreateClientView>();
+            services.AddSingleton<CreateClientViewModel>();
             services.AddSingleton<INavigationService,NavigationService>();
             services.AddSingleton<IClientRepository, ClientRepository>();
+            services.AddSingleton<IAddressRepository, AddressRepository>();
             services.AddSingleton<Client>();
             services.AddSingleton<InvoiceDocument>();
             services.AddSingleton<IRetrieveClients,RetrieveClients>();

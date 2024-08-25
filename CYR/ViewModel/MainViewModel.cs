@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CYR.Core;
 using CYR.Services;
 
 namespace CYR.ViewModel

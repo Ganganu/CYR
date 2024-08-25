@@ -1,4 +1,4 @@
-﻿namespace CYR.Model
+﻿namespace CYR.Address
 {
     public class Address
     {
@@ -8,5 +8,6 @@
         public string State { get; set; }
         public object Email { get; set; }
         public string Phone { get; set; }
+        public string PLZ { get; set; }
     }
 }

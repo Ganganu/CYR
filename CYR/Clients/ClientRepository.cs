@@ -51,9 +51,18 @@ namespace CYR.Clients
             throw new NotImplementedException();
         }
 
-        public Task InsertAsync(Client client)
+        public async Task InsertAsync(Client client)
         {
-            throw new NotImplementedException();
+            string query = "INSERT INTO Kunden (Kundennummer,Name,Telefonnummer,Email,Erstellungsdatum) VALUES (@Kundennummer,@Name,@Telefonnummer,@Email,@Erstellungsdatum)";
+            Dictionary<string,object> queryParameters = new Dictionary<string, object>
+            {
+                { "Kundennummer", client.ClientNumber },
+                { "Name", client.Name },
+                { "Telefonnummer", client.Telefonnumber },
+                { "Email", client.EmailAddress },
+                { "Erstellungsdatum", client.CreationDate }
+            };
+            await _connection.ExecuteSelectQueryAsync(query, queryParameters);
         }
 
         public Task UpdateAsync(Client client)

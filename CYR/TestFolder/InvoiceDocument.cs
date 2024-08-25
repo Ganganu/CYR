@@ -1,5 +1,4 @@
-﻿using CYR.Clients;
-using CYR.Model;
+﻿using CYR.Model;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;

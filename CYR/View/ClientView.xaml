@@ -10,10 +10,14 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:ClientViewModel, IsDesignTimeCreatable=False}">
     <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <DataGrid CanUserAddRows="False"
                   CanUserReorderColumns="False"
                   ItemsSource="{Binding Clients}"
-                  IsReadOnly="True">
+                  IsReadOnly="True"
+                  Grid.Row="0">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Actions">
                     <DataGridTemplateColumn.CellTemplate>
@@ -32,5 +36,11 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Style="{StaticResource MaterialDesignFloatingActionButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                Margin="0 0 20 30" Command="{Binding CreateNewClientCommand}">
+            <Button.Content>
+                <materialDesign:PackIcon Kind="Add"  Width="30" Height="30"/>
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>
