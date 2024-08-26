@@ -1,10 +1,7 @@
-﻿using CYR.Core;
-using System;
-using System.Collections.Generic;
+﻿using CYR.Clients;
+using CYR.Core;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace CYR.Address
 {
@@ -33,14 +30,24 @@ namespace CYR.Address
 
         public async Task InsertAsync(Address address)
         {
-            string query = "INSERT INTO Adresse (Kundennummer,Strasse,PLZ,Ort) VALUES (@Kundennummer,@Strasse,@PLZ,@Ort)";
+            string query = @"
+                            IF NOT EXISTS (
+                                SELECT 1 FROM Adresse 
+                                WHERE Kundennummer = @Kundennummer 
+                                AND Strasse = @Strasse 
+                                AND PLZ = @PLZ 
+                                AND Ort = @Ort
+                            )
+                            BEGIN
+                                INSERT INTO Adresse (Kundennummer, Strasse, PLZ, Ort) 
+                                VALUES (@Kundennummer, @Strasse, @PLZ, @Ort)
+                            END";
             Dictionary<string, object> queryParameters = new Dictionary<string, object>();
             queryParameters["Kundennummer"] = address.CompanyName;
             queryParameters["Strasse"] = address.Street;
             queryParameters["PLZ"] = address.PLZ;
             queryParameters["Ort"] = address.City;
-
-            await _databaseConnection.ExecuteSelectQueryAsync(query, queryParameters);
+            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
         public Task UpdateAsync(Address address)

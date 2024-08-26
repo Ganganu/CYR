@@ -62,7 +62,7 @@ namespace CYR.Clients
                 { "Email", client.EmailAddress },
                 { "Erstellungsdatum", client.CreationDate }
             };
-            await _connection.ExecuteSelectQueryAsync(query, queryParameters);
+            int affectedRows = await _connection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
         public Task UpdateAsync(Client client)

@@ -5,6 +5,7 @@ namespace CYR.Core
     public interface IDatabaseConnection
     {
         Task<IDataReader> ExecuteSelectQueryAsync(string query);
-        Task ExecuteSelectQueryAsync(string query,Dictionary<string, object> parameters);
+        Task<IDataReader> ExecuteSelectQueryAsync(string query,Dictionary<string, object> parameters);
+        Task<int> ExecuteNonQueryAsync(string query, Dictionary<string, object> parameters);
     }
 }
