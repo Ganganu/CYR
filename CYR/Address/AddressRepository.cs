@@ -1,5 +1,6 @@
 ﻿using CYR.Clients;
 using CYR.Core;
+using System.Data;
 using System.Data.Common;
 using System.Net;
 
@@ -30,18 +31,10 @@ namespace CYR.Address
 
         public async Task InsertAsync(Address address)
         {
-            string query = @"
-                            IF NOT EXISTS (
-                                SELECT 1 FROM Adresse 
-                                WHERE Kundennummer = @Kundennummer 
-                                AND Strasse = @Strasse 
-                                AND PLZ = @PLZ 
-                                AND Ort = @Ort
-                            )
-                            BEGIN
-                                INSERT INTO Adresse (Kundennummer, Strasse, PLZ, Ort) 
-                                VALUES (@Kundennummer, @Strasse, @PLZ, @Ort)
-                            END";
+            if (await CheckAddressExists(address)) return;
+            string query = @"INSERT INTO Adresse (Kundennummer, Strasse, PLZ, Ort) 
+                                VALUES (@Kundennummer, @Strasse, @PLZ, @Ort)";
+
             Dictionary<string, object> queryParameters = new Dictionary<string, object>();
             queryParameters["Kundennummer"] = address.CompanyName;
             queryParameters["Strasse"] = address.Street;
@@ -53,6 +46,17 @@ namespace CYR.Address
         public Task UpdateAsync(Address address)
         {
             throw new NotImplementedException();
+        }
+        private async Task<bool> CheckAddressExists(Address address)
+        {
+            string query = @"SELECT 1 FROM Adresse WHERE Kundennummer = @Kundennummer AND
+                            Strasse = @Strasse AND PLZ = @PLZ AND Ort = @Ort";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>();
+            queryParameters["Kundennummer"] = address.CompanyName;
+            queryParameters["Strasse"] = address.Street;
+            queryParameters["PLZ"] = address.PLZ;
+            queryParameters["Ort"] = address.City;
+            return await _databaseConnection.ExecuteSelectQueryAsyncCheck(query, queryParameters);
         }
     }
 }
