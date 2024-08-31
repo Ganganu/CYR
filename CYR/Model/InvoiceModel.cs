@@ -1,5 +1,4 @@
 ﻿using CYR.Clients;
-using CYR.User;
 
 namespace CYR.Model
 {
@@ -12,7 +11,7 @@ namespace CYR.Model
         public User.User SellerAddress { get; set; }
         public Client CustomerAddress { get; set; }
 
-        public List<OrderItem> Items { get; set; }
+        public List<OrderItem.OrderItem> Items { get; set; }
         public string Comments { get; set; }
     }
 }

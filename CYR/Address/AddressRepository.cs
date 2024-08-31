@@ -1,8 +1,4 @@
-﻿using CYR.Clients;
-using CYR.Core;
-using System.Data;
-using System.Data.Common;
-using System.Net;
+﻿using CYR.Core;
 
 namespace CYR.Address
 {

@@ -2,6 +2,7 @@
 using CYR.Address;
 using CYR.Clients;
 using CYR.Core;
+using CYR.OrderItems;
 using CYR.Services;
 using CYR.TestFolder;
 using CYR.View;
@@ -33,6 +34,7 @@ namespace CYR
             services.AddSingleton<ArticleViewModel>();
             services.AddSingleton<CreateClientView>();
             services.AddSingleton<CreateClientViewModel>();
+            services.AddSingleton<IOrderItemRepository,OrderItemRepository>();
             services.AddSingleton<INavigationService,NavigationService>();
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();

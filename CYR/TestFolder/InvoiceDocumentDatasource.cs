@@ -30,9 +30,9 @@ namespace CYR.TestFolder
             };
         }
 
-        private static OrderItem GenerateRandomOrderItem()
+        private static OrderItem.OrderItem GenerateRandomOrderItem()
         {
-            return new OrderItem
+            return new OrderItem.OrderItem
             {
                 Name = Placeholders.Label(),
                 Price = (decimal)Math.Round(Random.NextDouble() * 100, 2),
