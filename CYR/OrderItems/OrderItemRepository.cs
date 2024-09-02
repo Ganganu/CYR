@@ -29,7 +29,7 @@ namespace CYR.OrderItems
                     orderItem.Id = Convert.ToInt32(reader["Produktnummer"]);
                     orderItem.Description = reader["Beschreibung"].ToString();
                     orderItem.Name = reader["Name"].ToString();
-                    orderItem.Price = Convert.ToDecimal(reader["Produktnummer"]);
+                    orderItem.Price = Convert.ToDecimal(reader["Preis"]);
                     orderItems.Add(orderItem);
                 }
                 return orderItems;

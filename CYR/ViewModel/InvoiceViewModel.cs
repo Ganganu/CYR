@@ -10,13 +10,12 @@ namespace CYR.ViewModel
         private readonly IOrderItemRepository _orderItemRepository;
         public InvoiceViewModel(IOrderItemRepository orderItemRepository) 
         {
-            this._orderItemRepository = orderItemRepository;
+            _orderItemRepository = orderItemRepository;
             Initialize();
         }
-        private async void Initialize()
+        private void Initialize()
         {
-            Items = new List<OrderItem.OrderItem>(await GetAllItems());
-            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition() };
+            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository) };
         }
         [ObservableProperty]
         private string? _id;
@@ -32,12 +31,5 @@ namespace CYR.ViewModel
         private double _totalPrice;
         [ObservableProperty]
         private ObservableCollection<InvoicePosition> _positions;
-        [ObservableProperty]
-        private List<OrderItem.OrderItem> _items;
-
-        private async Task<IEnumerable<OrderItem.OrderItem>> GetAllItems()
-        {
-            return await _orderItemRepository.GetAllAsync();
-        }
     }
 }
