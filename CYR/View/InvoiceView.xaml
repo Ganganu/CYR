@@ -16,7 +16,19 @@
         </Grid.RowDefinitions>
         <TextBlock Text="Kundendaten" Grid.Row="0" HorizontalAlignment="Center"/>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Items}">
+        <DataGrid Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Positions}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="#" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
+                <DataGridTextColumn Header="UnitOfMeasure" Binding="{Binding UnitOfMeasure}"/>
+                <DataGridComboBoxColumn Header="Description"
+                                        ItemsSource="{Binding DataContext.Items,
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                <DataGridTextColumn Header="E-Preis" Binding="{Binding OrderItem.Price}"/>
+                <DataGridTextColumn Header="G-Preis" Binding="{Binding TotalPrice}"/>
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>

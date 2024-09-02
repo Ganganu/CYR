@@ -1,12 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CYR.Core;
+using CYR.Model;
 using CYR.OrderItems;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CYR.ViewModel
 {
@@ -20,7 +15,8 @@ namespace CYR.ViewModel
         }
         private async void Initialize()
         {
-            Items = new ObservableCollection<OrderItem.OrderItem>(await GetAllItems());
+            Items = new List<OrderItem.OrderItem>(await GetAllItems());
+            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition() };
         }
         [ObservableProperty]
         private string? _id;
@@ -35,7 +31,9 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private double _totalPrice;
         [ObservableProperty]
-        private ObservableCollection<OrderItem.OrderItem> _items;
+        private ObservableCollection<InvoicePosition> _positions;
+        [ObservableProperty]
+        private List<OrderItem.OrderItem> _items;
 
         private async Task<IEnumerable<OrderItem.OrderItem>> GetAllItems()
         {

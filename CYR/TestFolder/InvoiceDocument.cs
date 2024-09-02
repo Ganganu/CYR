@@ -66,7 +66,7 @@ namespace CYR.TestFolder
                     column.Item().Element(ComposeCommentsTop);
 
                     column.Item().Element(ComposeTable);
-                    var totalPrice = Model.Items.Sum(x => x.Price * x.Quantity);
+                    var totalPrice = Model.Items.Sum(x => x.OrderItem.Price * x.Quantity);
                     column.Item().AlignRight().Text($"Grand total: {totalPrice}$").FontSize(14);
 
                     column.Item().Element(ComposeComments);
@@ -140,10 +140,10 @@ namespace CYR.TestFolder
                 foreach (var item in Model.Items)
                 {
                     table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
-                    table.Cell().Element(CellStyle).Text(item.Name);
-                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price}$");
+                    table.Cell().Element(CellStyle).Text(item.OrderItem.Name);
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price}$");
                     table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
-                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price * item.Quantity}$");
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price * item.Quantity}$");
 
                     static IContainer CellStyle(IContainer container)
                     {

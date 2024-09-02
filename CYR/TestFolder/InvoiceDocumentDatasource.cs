@@ -11,8 +11,7 @@ namespace CYR.TestFolder
         public static InvoiceModel GetInvoiceDetails(Client client)
         {
             var items = Enumerable
-                .Range(1, 8)
-                .Select(i => GenerateRandomOrderItem())
+                .Range(1, 25)
                 .ToList();
 
             ConfigReader configReader = new ConfigReader();
@@ -25,18 +24,8 @@ namespace CYR.TestFolder
                 SellerAddress = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street},
                 CustomerAddress = GetCustomerAddress(client),
 
-                Items = items,
+                //Items = items,
                 Comments = Placeholders.Paragraph()
-            };
-        }
-
-        private static OrderItem.OrderItem GenerateRandomOrderItem()
-        {
-            return new OrderItem.OrderItem
-            {
-                Name = Placeholders.Label(),
-                Price = (decimal)Math.Round(Random.NextDouble() * 100, 2),
-                Quantity = Random.Next(1, 10)
             };
         }
 
