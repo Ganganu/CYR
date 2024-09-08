@@ -32,10 +32,11 @@ namespace CYR.ViewModel
         [RelayCommand]
         public void CreateInvoice(object parameter)
         {
-            Client client = (Client)parameter;
-            var model = InvoiceDocumentDataSource.GetInvoiceDetails(client);
-            var document = new InvoiceDocument(model);
-            document.GeneratePdfAndShow();
+            Navigation.NavigateTo<InvoiceViewModel>();
+            //Client client = (Client)parameter;
+            //var model = InvoiceDocumentDataSource.GetInvoiceDetails(client);
+            //var document = new InvoiceDocument(model);
+            //document.GeneratePdfAndShow();
         }
         [RelayCommand]
         private void CreateNewClient()

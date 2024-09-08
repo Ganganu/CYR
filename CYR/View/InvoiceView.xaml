@@ -12,12 +12,45 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Kundendaten" Grid.Row="0" HorizontalAlignment="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Kunde (Name)"/>
+                <TextBox Grid.Row="1" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Straße (Beispielstraße 21a)"/>
+                <TextBox Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="0" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Auftragnehmer"/>
+                <TextBox Grid.Row="1" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Straße (Beispielstraße 21a)"/>
+                <TextBox Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
+            </Grid>
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Button Content="Create" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+            </StackPanel>
+        </Grid>
         <DataGrid Grid.Row="1"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding Positions, UpdateSourceTrigger=PropertyChanged}">
+                  ItemsSource="{Binding Positions, UpdateSourceTrigger=PropertyChanged}"
+                  CanUserAddRows="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="#" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTemplateColumn Header="Order Item">
