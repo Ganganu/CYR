@@ -30,6 +30,6 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private double _totalPrice;
         [ObservableProperty]
-        private ObservableCollection<InvoicePosition> _positions;
+        private ObservableCollection<InvoicePosition>? _positions;
     }
 }

@@ -11,8 +11,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -47,26 +49,61 @@
                 <Button Content="Create" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
             </StackPanel>
         </Grid>
-        <DataGrid Grid.Row="1"
-                  AutoGenerateColumns="False"
-                  ItemsSource="{Binding Positions, UpdateSourceTrigger=PropertyChanged}"
-                  CanUserAddRows="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="#" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTemplateColumn Header="Order Item">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      DisplayMemberPath="Name"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="UnitOfMeasure" Binding="{Binding UnitOfMeasure, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="E-Preis" Binding="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}"/>
-                <DataGridTextColumn Header="G-Preis" Binding="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!--<DataGrid Grid.Row="1"
+        AutoGenerateColumns="False"
+        ItemsSource="{Binding Positions, UpdateSourceTrigger=PropertyChanged}"
+        CanUserAddRows="True">
+        <DataGrid.Columns>
+        <DataGridTextColumn Header="#" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+        <DataGridTemplateColumn Header="Order Item">
+        <DataGridTemplateColumn.CellTemplate>
+        <DataTemplate>
+        <ComboBox ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
+        SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        DisplayMemberPath="Name"/>
+        </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+        <DataGridTextColumn Header="UnitOfMeasure" Binding="{Binding UnitOfMeasure, UpdateSourceTrigger=PropertyChanged}"/>
+        <DataGridTextColumn Header="E-Preis" Binding="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}"/>
+        <DataGridTextColumn Header="G-Preis" Binding="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+        </DataGrid.Columns>
+        </DataGrid>-->
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding Positions, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Order Item">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          DisplayMemberPath="Name"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Quantity">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="UnitOfMeasure" DisplayMemberBinding="{Binding UnitOfMeasure, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="E-Preis" DisplayMemberBinding="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}"/>
+                    <GridViewColumn Header="G-Preis" DisplayMemberBinding="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Grid.Row="3"
+                Width="50" Height="30"
+                Margin="0 5 0 0"
+                Command="{Binding AddNewRowCommand}">
+            <Button.Content>
+                <materialDesign:PackIcon Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>
