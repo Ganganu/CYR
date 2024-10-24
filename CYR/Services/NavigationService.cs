@@ -1,17 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CYR.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CYR.ViewModel;
 
 namespace CYR.Services
 {
+    public interface IParameterReceiver
+    {
+        void ReceiveParameter(object parameter);
+    }
+
     public interface INavigationService
     {
         public ObservableObject CurrentView { get;  set; }
-        void NavigateTo<T>() where T : ObservableObject;
+        //void NavigateTo<T>() where T : ObservableObject;
+        void NavigateTo<T>(object parameter = null) where T : ObservableObject;
     }
 
     public partial class NavigationService : ObservableObject, INavigationService
@@ -25,9 +26,13 @@ namespace CYR.Services
             _viewModelFactory = viewModelFactory;
         }
 
-        public void NavigateTo<TViewModel>() where TViewModel : ObservableObject
+        public void NavigateTo<TViewModel>(object parameter = null) where TViewModel : ObservableObject
         {
             ObservableObject viewModel = _viewModelFactory.Invoke(typeof(TViewModel));
+            if (viewModel is IParameterReceiver parameterReceiver)
+            {
+                parameterReceiver.ReceiveParameter(parameter);
+            }
             CurrentView = viewModel;
         }
     }

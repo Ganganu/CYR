@@ -18,8 +18,10 @@ namespace CYR.Model
             Items = new ObservableCollection<OrderItem.OrderItem>(await GetAllItems());
         }
 
-        public string? Id { get; set; }
-        public string? InvoiceNumber { get; set; }
+        [ObservableProperty]
+        private string? _id;
+        [ObservableProperty]
+        private string? _invoiceNumber;
         [ObservableProperty]
         public OrderItem.OrderItem? _orderItem;
         partial void OnOrderItemChanged(OrderItem.OrderItem? oldValue, OrderItem.OrderItem? newValue)

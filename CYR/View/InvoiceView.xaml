@@ -31,9 +31,9 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Kunde (Name)"/>
-                <TextBox Grid.Row="1" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Straße (Beispielstraße 21a)"/>
-                <TextBox Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
+                <TextBox Text="{Binding ClientName}" Grid.Row="0" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Kunde (Name)"/>
+                <TextBox Text="{Binding ClientStreet}" Grid.Row="1" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Straße (Beispielstraße 21a)"/>
+                <TextBox Text="{Binding ClientCityPlz}" Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
             </Grid>
             <Grid Grid.Column="1" Grid.Row="0" Margin="10">
                 <Grid.RowDefinitions>
@@ -41,9 +41,9 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBox Grid.Row="0" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Auftragnehmer"/>
-                <TextBox Grid.Row="1" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Straße (Beispielstraße 21a)"/>
-                <TextBox Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
+                <TextBox Text="{Binding User}" Grid.Row="0" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Auftragnehmer"/>
+                <TextBox Text="{Binding UserStreet}" Grid.Row="1" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Straße (Beispielstraße 21a)"/>
+                <TextBox Text="{Binding UserCityPlz}" Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
             </Grid>
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                 <Button Content="Create" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>

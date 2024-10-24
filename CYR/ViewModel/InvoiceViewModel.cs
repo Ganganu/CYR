@@ -1,13 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CYR.Clients;
 using CYR.Model;
 using CYR.OrderItems;
+using CYR.Services;
 using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel
 {
-    public partial class InvoiceViewModel : ObservableObject
+    public partial class InvoiceViewModel : ObservableObject, IParameterReceiver
     {
         private readonly IOrderItemRepository _orderItemRepository;
+        private int _positionCounter = 1;
         public InvoiceViewModel(IOrderItemRepository orderItemRepository) 
         {
             _orderItemRepository = orderItemRepository;
@@ -15,21 +19,39 @@ namespace CYR.ViewModel
         }
         private void Initialize()
         {
-            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository) };
+            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository) {Id = _positionCounter.ToString() } };
         }
         [ObservableProperty]
-        private string? _id;
+        private string _clientName;
         [ObservableProperty]
-        private int _amount;
+        private string _clientStreet;
         [ObservableProperty]
-        private string? _unitOfMeasure;
+        private string _clientCityPlz;
         [ObservableProperty]
-        private string? _description;
+        private string _user;
         [ObservableProperty]
-        private double _unitPrice;
+        private string _userStreet;
         [ObservableProperty]
-        private double _totalPrice;
+        private string _userCityPlz;
         [ObservableProperty]
         private ObservableCollection<InvoicePosition>? _positions;
+
+        [RelayCommand]
+        private void AddNewRow()
+        {
+            _positionCounter++;
+            Positions?.Add(new InvoicePosition(_orderItemRepository) { Id = _positionCounter.ToString()});            
+        }
+
+        public void ReceiveParameter(object parameter)
+        {
+            Client clientParameter = parameter as Client;
+            if (clientParameter != null)
+            {
+                ClientName = clientParameter.Name;
+                ClientStreet = clientParameter.Street;
+                ClientCityPlz = $"{clientParameter.City} {clientParameter.PLZ}";
+            }
+        }
     }
 }
