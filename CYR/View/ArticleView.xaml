@@ -9,7 +9,18 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:ArticleViewModel, IsDesignTimeCreatable=False}">
-    <Grid Background="Black">
+    <Grid Background="Green">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="1" BorderThickness="2" BorderBrush="White" Background="White" CornerRadius="5" Margin="0 20 0 20">
+            <Grid>
+                <DataGrid ItemsSource="{Binding OrderItems}" >
 
+                </DataGrid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

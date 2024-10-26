@@ -10,6 +10,7 @@ namespace CYR.ViewModel
     {
         private readonly IClientRepository _clientRepository;
         private readonly IAddressRepository _addressRepository;
+        private IEnumerable<Client> _clients;
         public CreateClientViewModel(INavigationService navigationService, IClientRepository clientRepository,IAddressRepository addressRepository)
         {
             Navigation = navigationService;
@@ -39,10 +40,13 @@ namespace CYR.ViewModel
         [RelayCommand]
         private void NavigateBack()
         {
-            Navigation.NavigateTo<ClientViewModel>();
+            if (_clients != null)
+            {
+                Navigation.NavigateTo<ClientViewModel>(_clients);                
+            }
         }
         [RelayCommand]
-        private void SaveClient()
+        private async void SaveClient()
         {
             Client client = new Client();
             Address.Address address = new Address.Address();
@@ -56,9 +60,9 @@ namespace CYR.ViewModel
             address.City = ClientCity;
             address.PLZ = ClientPLZ;
             
-            _clientRepository.InsertAsync(client);
-            _addressRepository.InsertAsync(address);
-            _clientRepository.GetAllAsync();
+            await _clientRepository.InsertAsync(client);
+            await _addressRepository.InsertAsync(address);
+            _clients = await _clientRepository.GetAllAsync();
         }
     }
 }

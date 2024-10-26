@@ -9,12 +9,12 @@ using System.Windows.Navigation;
 
 namespace CYR.ViewModel
 {
-    public partial class ClientViewModel : ObservableObject
+    public partial class ClientViewModel : ObservableObject, IParameterReceiver
     {
         private readonly IRetrieveClients _retrieveClients;
         public ClientViewModel(IRetrieveClients retrieveClients,INavigationService navigationService) 
         {
-            this._retrieveClients = retrieveClients;   
+            _retrieveClients = retrieveClients;   
             Navigation = navigationService;
             Initialize();
         }
@@ -38,6 +38,18 @@ namespace CYR.ViewModel
         private void CreateNewClient()
         {
             Navigation.NavigateTo<CreateClientViewModel>();
+        }
+
+        public void ReceiveParameter(object parameter)
+        {            
+            if (parameter != null) 
+            {
+                ObservableCollection<Client> cl = new ObservableCollection<Client>((List<Client>)parameter);
+                if (cl != null)
+                {
+                    Clients = cl;                                    
+                }
+            }
         }
     }
 }
