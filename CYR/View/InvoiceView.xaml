@@ -46,7 +46,8 @@
                 <TextBox Text="{Binding UserCityPlz}" Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
             </Grid>
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <Button Content="Create" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+                <Button Content="Create" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"
+                        Command="{Binding CreateInvoiceCommand}" Cursor="Hand"/>
             </StackPanel>
         </Grid>
         <!--<DataGrid Grid.Row="1"

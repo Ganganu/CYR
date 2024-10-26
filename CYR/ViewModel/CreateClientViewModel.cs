@@ -8,6 +8,8 @@ namespace CYR.ViewModel
 {
     public partial class CreateClientViewModel : ObservableObject
     {
+        private readonly IClientRepository _clientRepository;
+        private readonly IAddressRepository _addressRepository;
         public CreateClientViewModel(INavigationService navigationService, IClientRepository clientRepository,IAddressRepository addressRepository)
         {
             Navigation = navigationService;
@@ -33,8 +35,6 @@ namespace CYR.ViewModel
         private string _clientPLZ;
         [ObservableProperty]
         private string _clientCity;
-        private readonly IClientRepository _clientRepository;
-        private readonly IAddressRepository _addressRepository;
 
         [RelayCommand]
         private void NavigateBack()

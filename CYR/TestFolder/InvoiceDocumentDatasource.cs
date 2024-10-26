@@ -7,24 +7,19 @@ namespace CYR.TestFolder
 {
     public static class InvoiceDocumentDataSource
     {
-        private static Random Random = new Random();
-        public static InvoiceModel GetInvoiceDetails(Client client)
+        public static InvoiceModel GetInvoiceDetails(Client client, IEnumerable<InvoicePosition> positions)
         {
-            var items = Enumerable
-                .Range(1, 25)
-                .ToList();
-
             ConfigReader configReader = new ConfigReader();
             return new InvoiceModel
             {
-                InvoiceNumber = Random.Next(1_000, 10_000),
+                InvoiceNumber = 1,
                 IssueDate = DateTime.Now.ToString(),
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
                 SellerAddress = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street},
                 CustomerAddress = GetCustomerAddress(client),
 
-                //Items = items,
+                Items = positions.ToList(),
                 Comments = Placeholders.Paragraph()
             };
         }

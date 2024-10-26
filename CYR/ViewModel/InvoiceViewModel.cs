@@ -4,6 +4,8 @@ using CYR.Clients;
 using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;
+using CYR.TestFolder;
+using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel
@@ -12,6 +14,7 @@ namespace CYR.ViewModel
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private int _positionCounter = 1;
+        private Client _client;
         public InvoiceViewModel(IOrderItemRepository orderItemRepository) 
         {
             _orderItemRepository = orderItemRepository;
@@ -46,12 +49,21 @@ namespace CYR.ViewModel
         public void ReceiveParameter(object parameter)
         {
             Client clientParameter = parameter as Client;
+            _client = clientParameter;
             if (clientParameter != null)
             {
                 ClientName = clientParameter.Name;
                 ClientStreet = clientParameter.Street;
                 ClientCityPlz = $"{clientParameter.City} {clientParameter.PLZ}";
             }
+        }
+        [RelayCommand]
+        public void CreateInvoice()
+        {
+            IEnumerable<InvoicePosition> positions = Positions;
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions);
+            var document = new InvoiceDocument(model);
+            document.GeneratePdfAndShow();
         }
     }
 }

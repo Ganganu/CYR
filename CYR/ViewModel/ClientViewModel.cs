@@ -33,10 +33,6 @@ namespace CYR.ViewModel
         public void CreateInvoice(Client client)
         {
             Navigation.NavigateTo<InvoiceViewModel>(client);
-            //Client client = (Client)parameter;
-            //var model = InvoiceDocumentDataSource.GetInvoiceDetails(client);
-            //var document = new InvoiceDocument(model);
-            //document.GeneratePdfAndShow();
         }
         [RelayCommand]
         private void CreateNewClient()
