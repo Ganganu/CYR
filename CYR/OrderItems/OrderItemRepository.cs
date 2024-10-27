@@ -1,4 +1,5 @@
-﻿using CYR.Core;
+﻿using CYR.Clients;
+using CYR.Core;
 using System.Data.Common;
 
 namespace CYR.OrderItems
@@ -43,7 +44,14 @@ namespace CYR.OrderItems
 
         public async Task InsertAsync(OrderItem.OrderItem orderItem)
         {
-
+            string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis) VALUES (@Name,@Beschreibung,@Preis)";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                { "Name", orderItem.Name },
+                { "Beschreibung", orderItem.Description },
+                { "Preis", orderItem.Price }
+            };
+            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
         public Task UpdateAsync(OrderItem.OrderItem orderItem)

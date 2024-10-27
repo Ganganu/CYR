@@ -14,7 +14,7 @@ namespace CYR.Clients
 
         public ClientRepository(IDatabaseConnection connection)
         {
-            this._connection = connection;
+            _connection = connection;
         }
 
         public Task DeleteAsync(Client client)

@@ -1,10 +1,16 @@
-﻿namespace CYR.OrderItem
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace CYR.OrderItem
 {
-    public class OrderItem
+    public partial class OrderItem :ObservableObject
     {
-        public int Id { get; set; }
-        public string? Description { get; set; }
-        public string? Name { get; set; }
-        public decimal Price { get; set; }
+        [ObservableProperty]
+        private int _id;
+        [ObservableProperty]
+        private string? _description;
+        [ObservableProperty]
+        private string? _name;
+        [ObservableProperty]
+        private decimal _price;
     }
 }

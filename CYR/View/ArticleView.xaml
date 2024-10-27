@@ -16,10 +16,54 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="1" BorderThickness="2" BorderBrush="White" Background="White" CornerRadius="5" Margin="0 20 0 20">
-            <Grid>
-                <DataGrid ItemsSource="{Binding OrderItems}" >
-
-                </DataGrid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ListView
+                    ItemsSource="{Binding OrderItems, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Header="Name">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Beschreibung">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Description}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Preis">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Price}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button VerticalAlignment="Center"
+                        Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        Margin="0 0 10 0"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        Command="{Binding AddNewRowCommand}"
+                        >
+                    <Button.Content>
+                        <materialDesign:PackIcon Kind="Add" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
+                    </Button.Content>
+                </Button>
             </Grid>
         </Border>
     </Grid>

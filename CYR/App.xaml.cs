@@ -27,9 +27,11 @@ namespace CYR
             services.AddSingleton<MainWindow>(provider => new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
             services.AddSingleton<ClientView>();
             services.AddSingleton<InvoiceView>();
+            services.AddSingleton<CreateNewArticleView>();
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<ClientViewModel>();
             services.AddSingleton<InvoiceViewModel>();
+            services.AddSingleton<CreateNewArticleViewModel>();
             services.AddSingleton<ArticleView>();
             services.AddSingleton<ArticleViewModel>();
             services.AddSingleton<CreateClientView>();

@@ -26,6 +26,9 @@
             <DataTemplate DataType="{x:Type vm:CreateClientViewModel}">
                 <v:CreateClientView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CreateNewArticleViewModel}">
+                <v:CreateNewArticleView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
