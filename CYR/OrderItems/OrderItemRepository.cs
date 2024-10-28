@@ -11,9 +11,14 @@ namespace CYR.OrderItems
         {
             _databaseConnection = databaseConnection;
         }
-        public Task DeleteAsync(OrderItem.OrderItem orderItem)
+        public async Task DeleteAsync(OrderItem.OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                { "Produktnummer", orderItem.Id}
+            };
+            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
         public async Task<IEnumerable<OrderItem.OrderItem>> GetAllAsync()

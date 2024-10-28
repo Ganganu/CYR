@@ -13,7 +13,7 @@ namespace CYR.ViewModel
 {
     public partial class CreateNewArticleViewModel : ObservableObject
     {
-        private IEnumerable<Client> _articles;
+        private IEnumerable<OrderItem.OrderItem> _articles;
         private readonly IOrderItemRepository _orderItemRepository;
         public CreateNewArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository) 
         {
@@ -35,18 +35,19 @@ namespace CYR.ViewModel
         {
             if (_articles != null)
             {
-                Navigation.NavigateTo<ClientViewModel>(_articles);
+                Navigation.NavigateTo<ArticleViewModel>(_articles);
             }
         }
 
         [RelayCommand]
-        private void SaveArticle()
+        private async void SaveArticle()
         {
             OrderItem.OrderItem orderItem = new OrderItem.OrderItem();
             orderItem.Name = Name;
             orderItem.Description = Description;
             orderItem.Price = Price;
-            _orderItemRepository.InsertAsync(orderItem);
+            await _orderItemRepository.InsertAsync(orderItem);
+            _articles = await _orderItemRepository.GetAllAsync();
         }
     }
 }

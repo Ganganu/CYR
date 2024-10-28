@@ -18,10 +18,6 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Button Grid.Row="0" Command="{Binding NavigateBackCommand}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" Margin="0 10 0 10">
                 <Button.Content>
@@ -45,8 +41,8 @@
                 materialDesign:HintAssist.Foreground="Black"
                 materialDesign:HintAssist.Hint="Preis"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Command="{Binding SaveArticleCommand}" Grid.Row="9" Content="Save" Margin="30 50 30 50"/>
+                Text="{Binding Price, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
+            <Button Command="{Binding SaveArticleCommand}" Grid.Row="4" Content="Save" Margin="30 50 30 50"/>
         </Grid>
     </Grid>
 </UserControl>
