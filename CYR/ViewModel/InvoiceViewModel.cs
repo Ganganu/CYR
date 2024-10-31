@@ -54,7 +54,12 @@ namespace CYR.ViewModel
             _positionCounter++;
             Positions?.Add(new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString()});            
         }
-
+        [RelayCommand]
+        private void DeleteRow(object parameter)
+        {
+            InvoicePosition invoicePosition = (InvoicePosition)parameter;
+            Positions?.Remove(invoicePosition);
+        }
         public void ReceiveParameter(object parameter)
         {
             Client clientParameter = parameter as Client;

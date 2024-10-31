@@ -1,6 +1,7 @@
 ﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Globalization;
 
 namespace CYR.Invoice
 {
@@ -65,8 +66,10 @@ namespace CYR.Invoice
                     column.Item().Element(ComposeCommentsTop);
 
                     column.Item().Element(ComposeTable);
-                    var totalPrice = Model.Items.Sum(x => x.OrderItem.Price * x.Quantity);
-                    column.Item().AlignRight().Text($"Netto-Summe: {totalPrice}$").FontSize(14);
+                    var totalPrice = Model.Items.Sum(x => x.OrderItem?.Price * x.Quantity);
+                    string formattedTotalPrice = string.Format(CultureInfo.CreateSpecificCulture("de-DE"), "{0:N2}", totalPrice);
+                    column.Item().AlignRight().Text($"Netto-Summe: {formattedTotalPrice}€").FontSize(14);
+
 
                     column.Item().Element(ComposeComments);
                 });
@@ -136,16 +139,21 @@ namespace CYR.Invoice
                         return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
                     }
                 });
-
+                int positionCoutner = 0;
                 // step 3
                 foreach (var item in Model.Items)
                 {
-                    table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
+                    if (item.OrderItem == null)
+                    {
+                        continue;
+                    }
+                    positionCoutner++;
+                    table.Cell().Element(CellStyle).Text(positionCoutner);
                     table.Cell().Element(CellStyle).Text(item.Quantity);
                     table.Cell().Element(CellStyle).Text(item.UnitOfMeasure?.Name);
                     table.Cell().Element(CellStyle).Text(item.OrderItem.Name);
-                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price}$");
-                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price * item.Quantity}$");
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price.ToString("N2", new CultureInfo("de-DE"))}€");
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{(item.OrderItem.Price * item.Quantity).ToString("N2", new CultureInfo("de-DE"))}€");
 
                     static IContainer CellStyle(IContainer container)
                     {

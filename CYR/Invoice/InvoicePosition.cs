@@ -44,8 +44,11 @@ namespace CYR.Model
         {
             if (oldValue != newValue)
             {
-                Price = OrderItem.Price;
-                TotalPrice = Quantity * Price;
+                if (OrderItem != null)
+                {
+                    Price = OrderItem.Price;
+                    TotalPrice = Quantity * Price;
+                }
             }
         }
         
