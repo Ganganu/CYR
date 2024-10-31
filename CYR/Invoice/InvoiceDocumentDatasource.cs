@@ -7,12 +7,17 @@ namespace CYR.Invoice
 {
     public static class InvoiceDocumentDataSource
     {
+        private static int _invoiceNumber;
+        public static void SetInvoiceNumber(int invoiceNumber)
+        {
+            _invoiceNumber = invoiceNumber;
+        }
         public static InvoiceModel GetInvoiceDetails(Client client, IEnumerable<InvoicePosition> positions)
         {
             ConfigReader configReader = new ConfigReader();
             return new InvoiceModel
             {
-                InvoiceNumber = 1,
+                InvoiceNumber = _invoiceNumber,
                 IssueDate = DateTime.Now.ToString(),
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 

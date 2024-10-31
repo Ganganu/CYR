@@ -66,7 +66,7 @@ namespace CYR.Invoice
 
                     column.Item().Element(ComposeTable);
                     var totalPrice = Model.Items.Sum(x => x.OrderItem.Price * x.Quantity);
-                    column.Item().AlignRight().Text($"Grand total: {totalPrice}$").FontSize(14);
+                    column.Item().AlignRight().Text($"Netto-Summe: {totalPrice}$").FontSize(14);
 
                     column.Item().Element(ComposeComments);
                 });
@@ -77,7 +77,7 @@ namespace CYR.Invoice
             container.Background(Colors.Grey.Lighten3).PaddingTop(10).Column(column =>
             {
                 column.Spacing(5);
-                column.Item().Text($"Rechnung {DateTime.Parse(DateTime.Now.ToString()).Year}-1").FontSize(12).Bold();
+                column.Item().Text($"Rechnung {DateTime.Parse(DateTime.Now.ToString()).Year} - {Model.InvoiceNumber}").FontSize(12).Bold();
                 column.Item().Text(@"(bitte bei Bezahlung abgeben)").FontSize(8);
                 column.Item().Text("Betreff: ").FontSize(12).Bold();
                 column.Item().Text("Sehr geehrter Damen und Herren,").FontSize(9);
@@ -142,7 +142,7 @@ namespace CYR.Invoice
                 {
                     table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
                     table.Cell().Element(CellStyle).Text(item.Quantity);
-                    table.Cell().Element(CellStyle).Text(item.UnitOfMeasure.Name);
+                    table.Cell().Element(CellStyle).Text(item.UnitOfMeasure?.Name);
                     table.Cell().Element(CellStyle).Text(item.OrderItem.Name);
                     table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price}$");
                     table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price * item.Quantity}$");

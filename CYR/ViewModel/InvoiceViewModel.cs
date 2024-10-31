@@ -40,6 +40,12 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private string _userCityPlz;
         [ObservableProperty]
+        private int _invoiceNumber;
+        partial void OnInvoiceNumberChanged(int value)
+        {
+               InvoiceDocumentDataSource.SetInvoiceNumber(value);
+        }
+        [ObservableProperty]
         private ObservableCollection<InvoicePosition>? _positions;
 
         [RelayCommand]
