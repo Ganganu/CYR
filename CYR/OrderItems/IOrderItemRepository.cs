@@ -1,10 +1,4 @@
-﻿
-
-
-
-
-
-namespace CYR.OrderItems
+﻿namespace CYR.OrderItems
 {
     public interface IOrderItemRepository
     {

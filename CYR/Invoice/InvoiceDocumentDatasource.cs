@@ -3,7 +3,7 @@ using CYR.Model;
 using CYR.User;
 using QuestPDF.Helpers;
 
-namespace CYR.TestFolder
+namespace CYR.Invoice
 {
     public static class InvoiceDocumentDataSource
     {
@@ -16,7 +16,7 @@ namespace CYR.TestFolder
                 IssueDate = DateTime.Now.ToString(),
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
-                SellerAddress = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street},
+                SellerAddress = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
                 CustomerAddress = GetCustomerAddress(client),
 
                 Items = positions.ToList(),

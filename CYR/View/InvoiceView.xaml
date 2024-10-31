@@ -11,8 +11,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid>
@@ -79,7 +79,15 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="UnitOfMeasure" DisplayMemberBinding="{Binding UnitOfMeasure, UpdateSourceTrigger=PropertyChanged}"/>
+                        <GridViewColumn Header="UnitOfMeasure">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding UnitsOfMeasure, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding UnitOfMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              DisplayMemberPath="Name"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="E-Preis" DisplayMemberBinding="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}"/>
                         <GridViewColumn Header="G-Preis" DisplayMemberBinding="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}"/>
                     </GridView>

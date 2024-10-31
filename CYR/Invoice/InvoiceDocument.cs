@@ -1,9 +1,8 @@
-﻿using CYR.Model;
-using QuestPDF.Fluent;
+﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
-namespace CYR.TestFolder
+namespace CYR.Invoice
 {
     public class InvoiceDocument : IDocument
     {
@@ -26,7 +25,7 @@ namespace CYR.TestFolder
 
                     page.Header().Element(ComposeHeader);
                     page.Content().Element(ComposeContent);
-                    
+
 
                     page.Footer().Element(ComposeFooter);
                 });
@@ -52,7 +51,7 @@ namespace CYR.TestFolder
 
                 row.ConstantItem(200).Image("Ressources/IGF.png");
             });
-            
+
 
         }
         void ComposeContent(IContainer container)
@@ -115,8 +114,9 @@ namespace CYR.TestFolder
                 table.ColumnsDefinition(columns =>
                 {
                     columns.ConstantColumn(25);
-                    columns.RelativeColumn(3);
                     columns.RelativeColumn();
+                    columns.RelativeColumn();
+                    columns.ConstantColumn(150);
                     columns.RelativeColumn();
                     columns.RelativeColumn();
                 });
@@ -125,10 +125,11 @@ namespace CYR.TestFolder
                 table.Header(header =>
                 {
                     header.Cell().Element(CellStyle).Text("#");
-                    header.Cell().Element(CellStyle).Text("Product");
-                    header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
-                    header.Cell().Element(CellStyle).AlignRight().Text("Quantity");
-                    header.Cell().Element(CellStyle).AlignRight().Text("Total");
+                    header.Cell().Element(CellStyle).Text("Menge");
+                    header.Cell().Element(CellStyle).Text("Einheit");
+                    header.Cell().Element(CellStyle).Text("Produkt");
+                    header.Cell().Element(CellStyle).AlignRight().Text("Einzelpreis");
+                    header.Cell().Element(CellStyle).AlignRight().Text("Gesamtpreis");
 
                     static IContainer CellStyle(IContainer container)
                     {
@@ -140,9 +141,10 @@ namespace CYR.TestFolder
                 foreach (var item in Model.Items)
                 {
                     table.Cell().Element(CellStyle).Text(Model.Items.IndexOf(item) + 1);
+                    table.Cell().Element(CellStyle).Text(item.Quantity);
+                    table.Cell().Element(CellStyle).Text(item.UnitOfMeasure.Name);
                     table.Cell().Element(CellStyle).Text(item.OrderItem.Name);
                     table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price}$");
-                    table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
                     table.Cell().Element(CellStyle).AlignRight().Text($"{item.OrderItem.Price * item.Quantity}$");
 
                     static IContainer CellStyle(IContainer container)

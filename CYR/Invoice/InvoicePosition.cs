@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CYR.OrderItems;
+using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 
 namespace CYR.Model
@@ -7,15 +8,19 @@ namespace CYR.Model
     public partial class InvoicePosition : ObservableObject
     {
         private readonly IOrderItemRepository _orderItemRepository;
-        public InvoicePosition(IOrderItemRepository orderItemRepository) 
+        private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
+
+        public InvoicePosition(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository) 
         {
             _orderItemRepository = orderItemRepository;
+            _unitOfMeasureRepository = unitOfMeasureRepository;
             Initialize();
         }
 
         private async void Initialize()
         {
             Items = new ObservableCollection<OrderItem.OrderItem>(await GetAllItems());
+            UnitsOfMeasure = new ObservableCollection<UnitOfMeasureModel>(await GetAllUnitOfMeasures());
         }
 
         [ObservableProperty]
@@ -43,9 +48,9 @@ namespace CYR.Model
                 TotalPrice = Quantity * Price;
             }
         }
-
+        
         [ObservableProperty]
-        public string? _unitOfMeasure;
+        public UnitOfMeasureModel? _unitOfMeasure;
 
         [ObservableProperty]
         private decimal _price;
@@ -65,6 +70,12 @@ namespace CYR.Model
         private async Task<IEnumerable<OrderItem.OrderItem>> GetAllItems()
         {
             return await _orderItemRepository.GetAllAsync();
+        }
+        [ObservableProperty]
+        private ObservableCollection<UnitOfMeasureModel> _unitsOfMeasure;
+        private async Task<IEnumerable<UnitOfMeasureModel>> GetAllUnitOfMeasures()
+        {
+            return await _unitOfMeasureRepository.GetAllAsync();
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
+using CYR.Invoice;
 using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;
-using CYR.TestFolder;
+using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 
@@ -13,16 +14,18 @@ namespace CYR.ViewModel
     public partial class InvoiceViewModel : ObservableObject, IParameterReceiver
     {
         private readonly IOrderItemRepository _orderItemRepository;
+        private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private int _positionCounter = 1;
         private Client _client;
-        public InvoiceViewModel(IOrderItemRepository orderItemRepository) 
+        public InvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository) 
         {
             _orderItemRepository = orderItemRepository;
+            _unitOfMeasureRepository = unitOfMeasureRepository;
             Initialize();
         }
         private void Initialize()
         {
-            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository) {Id = _positionCounter.ToString() } };
+            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository,_unitOfMeasureRepository) {Id = _positionCounter.ToString() } };
         }
         [ObservableProperty]
         private string _clientName;
@@ -43,7 +46,7 @@ namespace CYR.ViewModel
         private void AddNewRow()
         {
             _positionCounter++;
-            Positions?.Add(new InvoicePosition(_orderItemRepository) { Id = _positionCounter.ToString()});            
+            Positions?.Add(new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString()});            
         }
 
         public void ReceiveParameter(object parameter)

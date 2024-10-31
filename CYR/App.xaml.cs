@@ -2,9 +2,10 @@
 using CYR.Address;
 using CYR.Clients;
 using CYR.Core;
+using CYR.Invoice;
 using CYR.OrderItems;
 using CYR.Services;
-using CYR.TestFolder;
+using CYR.UnitOfMeasure;
 using CYR.View;
 using CYR.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,7 @@ namespace CYR
             services.AddSingleton<INavigationService,NavigationService>();
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();
+            services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
             services.AddSingleton<Client>();
             services.AddSingleton<InvoiceDocument>();
             services.AddSingleton<IRetrieveClients,RetrieveClients>();

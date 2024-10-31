@@ -37,6 +37,10 @@ namespace CYR.ViewModel
             {
                 Navigation.NavigateTo<ArticleViewModel>(_articles);
             }
+            else
+            {
+                Navigation.NavigateTo<ArticleViewModel>();
+            }
         }
 
         [RelayCommand]

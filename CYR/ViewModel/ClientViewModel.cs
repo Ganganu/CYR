@@ -2,10 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
 using CYR.Services;
-using CYR.TestFolder;
-using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
-using System.Windows.Navigation;
 
 namespace CYR.ViewModel
 {
