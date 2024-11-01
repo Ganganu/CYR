@@ -72,7 +72,8 @@
                             </GridViewColumn.HeaderContainerStyle>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" FontSize="15"/>
+                                    <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged,
+                                             StringFormat={}{##.##}}" FontSize="15" Width="70"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -86,7 +87,7 @@
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding UnitsOfMeasure, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedItem="{Binding UnitOfMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              DisplayMemberPath="Name" FontSize="15"/>
+                                              DisplayMemberPath="Name" FontSize="15" Width="70"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -112,7 +113,7 @@
                             </GridViewColumn.HeaderContainerStyle>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}" FontSize="15"/>
+                                    <TextBlock Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}" FontSize="15" Width="70"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

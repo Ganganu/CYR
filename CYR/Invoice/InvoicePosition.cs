@@ -33,14 +33,17 @@ namespace CYR.Model
         {
             if (oldValue != newValue)
             {
-                Price = OrderItem.Price;
-                TotalPrice = Quantity * Price;
+                if (OrderItem != null)
+                {
+                    Price = OrderItem.Price;
+                    TotalPrice = Quantity * Price;
+                }
             }
         }
 
         [ObservableProperty]
-        public int _quantity;
-        partial void OnQuantityChanged(int oldValue, int newValue)
+        public decimal _quantity;
+        partial void OnQuantityChanged(decimal oldValue, decimal newValue)
         {
             if (oldValue != newValue)
             {
@@ -75,7 +78,7 @@ namespace CYR.Model
             return await _orderItemRepository.GetAllAsync();
         }
         [ObservableProperty]
-        private ObservableCollection<UnitOfMeasureModel> _unitsOfMeasure;
+        private ObservableCollection<UnitOfMeasureModel>? _unitsOfMeasure;
         private async Task<IEnumerable<UnitOfMeasureModel>> GetAllUnitOfMeasures()
         {
             return await _unitOfMeasureRepository.GetAllAsync();
