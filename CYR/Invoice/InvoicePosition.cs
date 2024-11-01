@@ -42,7 +42,7 @@ namespace CYR.Model
         }
 
         [ObservableProperty]
-        public decimal _quantity;
+        private decimal _quantity;
         partial void OnQuantityChanged(decimal oldValue, decimal newValue)
         {
             if (oldValue != newValue)
@@ -56,7 +56,7 @@ namespace CYR.Model
         }
         
         [ObservableProperty]
-        public UnitOfMeasureModel? _unitOfMeasure;
+        private UnitOfMeasureModel? _unitOfMeasure;
 
         [ObservableProperty]
         private decimal _price;

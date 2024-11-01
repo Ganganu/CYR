@@ -62,6 +62,10 @@ namespace CYR.ViewModel
         }
         public void ReceiveParameter(object parameter)
         {
+            if (parameter == null)
+            {
+                return;
+            }
             Client clientParameter = parameter as Client;
             _client = clientParameter;
             if (clientParameter != null)
