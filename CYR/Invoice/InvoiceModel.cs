@@ -10,8 +10,14 @@ namespace CYR.Invoice
         public string DueDate { get; set; }
 
 
-        public User.User SellerAddress { get; set; }
-        public Client CustomerAddress { get; set; }
+        public User.User Seller { get; set; }
+        public Client Customer { get; set; }
+        public decimal NetAmount { get; set; }
+        public decimal GrossAmount { get; set; }
+        public string? Paragraph { get; set; }
+        public InvoiceState State { get; set; }
+        public string? ObjectNumber { get; set; }
+        public string? Subject { get; set; }
 
         public List<InvoicePosition> Items { get; set; }
         public string Comments { get; set; }

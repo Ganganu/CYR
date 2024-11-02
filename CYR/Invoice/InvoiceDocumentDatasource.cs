@@ -21,8 +21,8 @@ namespace CYR.Invoice
                 IssueDate = DateTime.Now.ToString(),
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
-                SellerAddress = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
-                CustomerAddress = GetCustomerAddress(client),
+                Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
+                Customer = GetCustomerAddress(client),
 
                 Items = positions.ToList(),
                 Comments = Placeholders.Paragraph()

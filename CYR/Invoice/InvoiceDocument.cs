@@ -40,11 +40,11 @@ namespace CYR.Invoice
             {
                 row.RelativeItem().AlignBottom().Column(column =>
                 {
-                    column.Item().Text($"{Model.SellerAddress.Name}, " +
-                        $"{Model.SellerAddress.Street} " +
-                        $"{Model.SellerAddress.HouseNumber}," +
-                        $"{Model.SellerAddress.PLZ} " +
-                        $"{Model.SellerAddress.City}")
+                    column.Item().Text($"{Model.Seller.Name}, " +
+                        $"{Model.Seller.Street} " +
+                        $"{Model.Seller.HouseNumber}," +
+                        $"{Model.Seller.PLZ} " +
+                        $"{Model.Seller.City}")
                         .FontSize(9)
                         .FontColor(Colors.Blue.Medium)
                         .Underline(true);
@@ -93,16 +93,16 @@ namespace CYR.Invoice
             {
                 row.RelativeItem().AlignBottom().Column(column =>
                 {
-                    column.Item().Text($"{Model.CustomerAddress.Name}")
+                    column.Item().Text($"{Model.Customer.Name}")
                         .FontSize(11);
-                    column.Item().Text($"{Model.CustomerAddress.Street}")
+                    column.Item().Text($"{Model.Customer.Street}")
                         .FontSize(11);
-                    column.Item().Text($"{Model.CustomerAddress.PLZ} {Model.CustomerAddress.City}")
+                    column.Item().Text($"{Model.Customer.PLZ} {Model.Customer.City}")
                         .FontSize(11);
                 });
                 row.RelativeItem().Column(column =>
                 {
-                    column.Item().Text($"Kundennummer: {Model.CustomerAddress.ClientNumber}")
+                    column.Item().Text($"Kundennummer: {Model.Customer.ClientNumber}")
                         .FontSize(11);
                     column.Item().Text($"Datum: {DateTime.Now.ToString()}")
                         .FontSize(11);
@@ -171,7 +171,7 @@ namespace CYR.Invoice
                 column.Item().Text("Wir bitten um Überweisung des Rechnungsbetrages sofort ohne Abzug.").FontSize(11);
                 column.Item().Text("");
                 column.Item().Text("Mit freundlichen Grüßen").FontSize(11);
-                column.Item().Text(Model.SellerAddress.Name).FontSize(11);
+                column.Item().Text(Model.Seller.Name).FontSize(11);
             });
         }
         void ComposeFooter(IContainer container)
@@ -180,32 +180,32 @@ namespace CYR.Invoice
             {
                 row.RelativeItem().Column(column =>
                 {
-                    column.Item().Text($"{Model.SellerAddress.Name}")
+                    column.Item().Text($"{Model.Seller.Name}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.Street} {Model.SellerAddress.HouseNumber}")
+                    column.Item().Text($"{Model.Seller.Street} {Model.Seller.HouseNumber}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.PLZ} {Model.SellerAddress.City}")
+                    column.Item().Text($"{Model.Seller.PLZ} {Model.Seller.City}")
                         .FontSize(10);
 
                 });
                 row.RelativeItem().Column(column =>
                 {
-                    column.Item().Text($"{Model.SellerAddress.Telefonnumber}")
+                    column.Item().Text($"{Model.Seller.Telefonnumber}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.EmailAddress}")
+                    column.Item().Text($"{Model.Seller.EmailAddress}")
                         .FontSize(10);
                 });
                 row.RelativeItem().Column(column =>
                 {
-                    column.Item().Text($"{Model.SellerAddress.BankName}")
+                    column.Item().Text($"{Model.Seller.BankName}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.IBAN}")
+                    column.Item().Text($"{Model.Seller.IBAN}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.BIC}")
+                    column.Item().Text($"{Model.Seller.BIC}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.USTIDNr}")
+                    column.Item().Text($"{Model.Seller.USTIDNr}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.SellerAddress.STNR}")
+                    column.Item().Text($"{Model.Seller.STNR}")
                         .FontSize(10);
                 });
             });
