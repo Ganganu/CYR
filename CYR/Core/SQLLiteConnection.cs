@@ -64,6 +64,7 @@ namespace CYR.Core
                     }
                     affectedRows = await sqlCommand.ExecuteNonQueryAsync();
                 }
+                sqlConnection.Close();
             }
             return affectedRows;
         }

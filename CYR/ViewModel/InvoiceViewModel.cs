@@ -8,6 +8,7 @@ using CYR.Services;
 using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
+using System.Transactions;
 
 namespace CYR.ViewModel
 {
@@ -15,18 +16,25 @@ namespace CYR.ViewModel
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IInvoicePositionRepository _invoicePositionRepository;
         private int _positionCounter = 1;
         private Client _client;
-        public InvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository) 
+        public InvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
+            IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository) 
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
+            _invoiceRepository = invoiceRepository;
+            _invoicePositionRepository = invoicePositionRepository;
             Initialize();
         }
         private void Initialize()
         {
             Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository,_unitOfMeasureRepository) {Id = _positionCounter.ToString() } };
         }
+        [ObservableProperty]
+        private string _clientId;
         [ObservableProperty]
         private string _clientName;
         [ObservableProperty]
@@ -41,6 +49,14 @@ namespace CYR.ViewModel
         private string _userCityPlz;
         [ObservableProperty]
         private int _invoiceNumber;
+        [ObservableProperty]
+        private string _issueDate;
+        [ObservableProperty]
+        private string _dueDate;
+        [ObservableProperty]
+        private decimal? _netAmount;
+        [ObservableProperty]
+        private decimal? _grossAmount;
         partial void OnInvoiceNumberChanged(int value)
         {
                InvoiceDocumentDataSource.SetInvoiceNumber(value);
@@ -82,6 +98,50 @@ namespace CYR.ViewModel
             var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions);
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
+        }
+        [RelayCommand]
+        public void SaveInvoice()
+        {
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                try
+                {
+                    Client client = new Client();
+                    client.ClientNumber = _client.ClientNumber;
+                    InvoiceModel invoiceModel = new InvoiceModel();
+                    invoiceModel.InvoiceNumber = InvoiceNumber;
+                    invoiceModel.Customer = client;
+
+                    invoiceModel.Customer.ClientNumber = _client.ClientNumber;
+                    invoiceModel.IssueDate = DateTime.Now.ToShortDateString();
+                    invoiceModel.DueDate = DateTime.Now.ToShortDateString();
+                    invoiceModel.NetAmount = Positions.Sum(x => x.Price);
+                    invoiceModel.GrossAmount = invoiceModel.NetAmount;
+                    invoiceModel.Paragraph = "test";
+                    invoiceModel.State = InvoiceState.Open;
+                    invoiceModel.Subject = "testSubject";
+                    invoiceModel.ObjectNumber = "testObject";
+
+                    _invoiceRepository.InsertAsync(invoiceModel);
+
+                    InvoicePositionModel invoicePositionModel = new InvoicePositionModel();
+                    invoicePositionModel.InvoiceNumber = invoiceModel.InvoiceNumber.ToString();
+                    foreach (var position in Positions)
+                    {
+                        invoicePositionModel.Description = position.OrderItem.Description;
+                        invoicePositionModel.Quantity = position.Quantity;
+                        invoicePositionModel.UnitOfMeasure = position.UnitOfMeasure.Name;
+                        invoicePositionModel.UnitPrice = position.Price;
+                        invoicePositionModel.TotalPrice = position.TotalPrice;
+                        _invoicePositionRepository.InsertAsync(invoicePositionModel);
+                    }
+                    transaction.Complete();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }            
         }
     }
 }

@@ -48,8 +48,10 @@
                 <TextBox Text="{Binding UserCityPlz}" Grid.Row="2" Margin="0 0 0 4" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Ort (30151 Hannover)"/>
             </Grid>
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Create" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"
+                <Button Content="Preview" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"
                         Command="{Binding CreateInvoiceCommand}" Cursor="Hand"/>
+                <Button Content="Save" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"
+                        Command="{Binding SaveInvoiceCommand}" CommandParameter="{Binding}" Cursor="Hand"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2">
@@ -126,7 +128,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, Delay=500,
-                                        StringFormat=N2}" FontSize="15"/>
+                                               StringFormat=N2}" FontSize="15"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

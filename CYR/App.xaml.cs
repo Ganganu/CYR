@@ -21,7 +21,7 @@ namespace CYR
     {
         private readonly ServiceProvider _serviceProvider;
         private string connectionString = "Data Source=.\\cyr.db;Version=3;foreign_keys=on";
-        public App() 
+        public App()
         {
             QuestPDF.Settings.License = LicenseType.Community;
             IServiceCollection services = new ServiceCollection();
@@ -37,14 +37,16 @@ namespace CYR
             services.AddSingleton<ArticleViewModel>();
             services.AddSingleton<CreateClientView>();
             services.AddSingleton<CreateClientViewModel>();
-            services.AddSingleton<IOrderItemRepository,OrderItemRepository>();
-            services.AddSingleton<INavigationService,NavigationService>();
+            services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
+            services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();
             services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
+            services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
+            services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
             services.AddSingleton<Client>();
             services.AddSingleton<InvoiceDocument>();
-            services.AddSingleton<IRetrieveClients,RetrieveClients>();
+            services.AddSingleton<IRetrieveClients, RetrieveClients>();
             services.AddSingleton<IDatabaseConnection, SQLLiteConnection>((provider) => new SQLLiteConnection(connectionString));
             services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
