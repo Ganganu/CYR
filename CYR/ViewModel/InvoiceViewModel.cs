@@ -100,48 +100,59 @@ namespace CYR.ViewModel
             document.GeneratePdfAndShow();
         }
         [RelayCommand]
-        public void SaveInvoice()
+        public async Task SaveInvoice()
         {
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
                 {
-                    Client client = new Client();
-                    client.ClientNumber = _client.ClientNumber;
-                    InvoiceModel invoiceModel = new InvoiceModel();
-                    invoiceModel.InvoiceNumber = InvoiceNumber;
-                    invoiceModel.Customer = client;
+                    // Create and populate invoice
+                    Client client = new Client
+                    {
+                        ClientNumber = _client.ClientNumber
+                    };
 
-                    invoiceModel.Customer.ClientNumber = _client.ClientNumber;
-                    invoiceModel.IssueDate = DateTime.Now.ToShortDateString();
-                    invoiceModel.DueDate = DateTime.Now.ToShortDateString();
-                    invoiceModel.NetAmount = Positions.Sum(x => x.Price);
+                    InvoiceModel invoiceModel = new InvoiceModel
+                    {
+                        InvoiceNumber = InvoiceNumber,
+                        Customer = client,
+                        IssueDate = DateTime.Now.ToShortDateString(),
+                        DueDate = DateTime.Now.ToShortDateString(),
+                        NetAmount = Positions.Sum(x => x.Price),
+                        Paragraph = "test",
+                        State = InvoiceState.Open,
+                        Subject = "testSubject",
+                        ObjectNumber = "testObject"
+                    };
                     invoiceModel.GrossAmount = invoiceModel.NetAmount;
-                    invoiceModel.Paragraph = "test";
-                    invoiceModel.State = InvoiceState.Open;
-                    invoiceModel.Subject = "testSubject";
-                    invoiceModel.ObjectNumber = "testObject";
 
-                    _invoiceRepository.InsertAsync(invoiceModel);
+                    // Save invoice
+                    await _invoiceRepository.InsertAsync(invoiceModel);
 
-                    InvoicePositionModel invoicePositionModel = new InvoicePositionModel();
-                    invoicePositionModel.InvoiceNumber = invoiceModel.InvoiceNumber.ToString();
+                    // Save each position
                     foreach (var position in Positions)
                     {
-                        invoicePositionModel.Description = position.OrderItem.Description;
-                        invoicePositionModel.Quantity = position.Quantity;
-                        invoicePositionModel.UnitOfMeasure = position.UnitOfMeasure.Name;
-                        invoicePositionModel.UnitPrice = position.Price;
-                        invoicePositionModel.TotalPrice = position.TotalPrice;
-                        _invoicePositionRepository.InsertAsync(invoicePositionModel);
+                        var invoicePositionModel = new InvoicePositionModel
+                        {
+                            InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
+                            Description = position.OrderItem.Description,
+                            Quantity = position.Quantity,
+                            UnitOfMeasure = position.UnitOfMeasure.Name,
+                            UnitPrice = position.Price,
+                            TotalPrice = position.TotalPrice
+                        };
+
+                        await _invoicePositionRepository.InsertAsync(invoicePositionModel);
                     }
+
                     transaction.Complete();
                 }
                 catch (Exception)
                 {
+                    // Consider logging the exception here
                     throw;
                 }
-            }            
+            }
         }
     }
 }
