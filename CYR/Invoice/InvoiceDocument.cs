@@ -66,9 +66,11 @@ namespace CYR.Invoice
                     column.Item().Element(ComposeCommentsTop);
 
                     column.Item().Element(ComposeTable);
-                    var totalPrice = Model.Items.Sum(x => x.OrderItem?.Price * x.Quantity);
+                    decimal totalPrice = Model.Items.Sum(x => (x.OrderItem?.Price ?? 0) * x.Quantity);
                     string formattedTotalPrice = string.Format(CultureInfo.CreateSpecificCulture("de-DE"), "{0:N2}", totalPrice);
                     column.Item().AlignRight().Text($"Netto-Summe: {formattedTotalPrice}€").FontSize(14);
+                    column.Item().AlignRight().Text($"MwSt.         19%").FontSize(14);
+                    column.Item().AlignRight().Text($"Brutto-Summe: {totalPrice * 1.19m}€").FontSize(14);
 
 
                     column.Item().Element(ComposeComments);
@@ -82,7 +84,8 @@ namespace CYR.Invoice
                 column.Spacing(5);
                 column.Item().Text($"Rechnung {DateTime.Parse(DateTime.Now.ToString()).Year} - {Model.InvoiceNumber}").FontSize(12).Bold();
                 column.Item().Text(@"(bitte bei Bezahlung abgeben)").FontSize(8);
-                column.Item().Text("Betreff: ").FontSize(12).Bold();
+                column.Item().Text($"Betreff: {Model.Subject}").FontSize(12).Bold();
+                column.Item().Text($"Objektnummer: {Model.ObjectNumber}").FontSize(12);
                 column.Item().Text("Sehr geehrter Damen und Herren,").FontSize(9);
                 column.Item().Text("wir danken Ihnen für den Auftrag und erlauben uns Ihnen folgende Leistungen in Rechnung zu stellen.").FontSize(9);
             });
@@ -104,7 +107,7 @@ namespace CYR.Invoice
                 {
                     column.Item().Text($"Kundennummer: {Model.Customer.ClientNumber}")
                         .FontSize(11);
-                    column.Item().Text($"Datum: {DateTime.Now.ToString()}")
+                    column.Item().Text($"Datum: {DateTime.Now.ToShortDateString()}")
                         .FontSize(11);
                 });
             });

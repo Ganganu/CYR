@@ -18,17 +18,17 @@ namespace CYR.Invoice
             return new InvoiceModel
             {
                 InvoiceNumber = _invoiceNumber,
-                IssueDate = DateTime.Now.ToString(),
+                IssueDate = DateTime.Now.ToShortDateString(),
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
                 Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
                 Customer = GetCustomerAddress(client),
 
+                
                 Items = positions.ToList(),
                 Comments = Placeholders.Paragraph()
             };
         }
-
         private static Client GetCustomerAddress(Client client)
         {
             return new Client

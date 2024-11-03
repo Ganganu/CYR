@@ -10,7 +10,6 @@ using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
-using System.Transactions;
 
 namespace CYR.ViewModel
 {
@@ -47,12 +46,6 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private string _clientCityPlz;
         [ObservableProperty]
-        private string _user;
-        [ObservableProperty]
-        private string _userStreet;
-        [ObservableProperty]
-        private string _userCityPlz;
-        [ObservableProperty]
         private int _invoiceNumber;
         [ObservableProperty]
         private string _issueDate;
@@ -62,6 +55,10 @@ namespace CYR.ViewModel
         private decimal? _netAmount;
         [ObservableProperty]
         private decimal? _grossAmount;
+        [ObservableProperty]
+        private string? _subject;
+        [ObservableProperty]
+        private string? _objectNumber;
         partial void OnInvoiceNumberChanged(int value)
         {
                InvoiceDocumentDataSource.SetInvoiceNumber(value);
@@ -127,10 +124,10 @@ namespace CYR.ViewModel
                             IssueDate = DateTime.Now.ToShortDateString(),
                             DueDate = DateTime.Now.ToShortDateString(),
                             NetAmount = Positions.Sum(x => x.Price),
-                            Paragraph = "test",
+                            Paragraph = "13b",
                             State = InvoiceState.Open,
-                            Subject = "testSubject",
-                            ObjectNumber = "testObject"
+                            Subject = Subject,
+                            ObjectNumber = ObjectNumber
                         };
                         invoiceModel.GrossAmount = invoiceModel.NetAmount;
 
@@ -161,6 +158,12 @@ namespace CYR.ViewModel
                     }
                 }
             }
+            IEnumerable<InvoicePosition> positions = Positions;
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions);
+            model.Subject = Subject;
+            model.ObjectNumber = ObjectNumber;
+            var document = new InvoiceDocument(model);
+            document.GeneratePdfAndShow();
         }
     }
 }
