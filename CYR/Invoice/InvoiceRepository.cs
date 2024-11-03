@@ -1,5 +1,7 @@
 ﻿
 using CYR.Core;
+using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace CYR.Invoice
 {
@@ -27,7 +29,7 @@ namespace CYR.Invoice
             throw new NotImplementedException();
         }
 
-        public async Task InsertAsync(InvoiceModel invoice)
+        public async Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null)
         {
             string query = "INSERT INTO Rechnungen (Rechnungsnummer,Kundennummer,Rechnungsdatum,Fälligkeitsdatum," +
                 "Nettobetrag, Bruttobetrag,Paragraf,Status,Betreff,Objektnummer) VALUES (@Rechnungsnummer,@Kundennummer,@Rechnungsdatum,@Fälligkeitsdatum," +
@@ -45,7 +47,14 @@ namespace CYR.Invoice
                 {"Betreff",invoice.Subject},
                 {"Objektnummer",invoice.ObjectNumber}
             };
-            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            if (transaction != null)
+            {
+                await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, query, queryParameters);
+            }
+            else
+            {
+                await _databaseConnection.ExecuteNonQueryAsync(query,queryParameters);
+            }
         }
 
         public Task UpdateAsync(InvoiceModel invoice)

@@ -1,5 +1,6 @@
 ﻿
 using CYR.Core;
+using System.Data.SQLite;
 
 namespace CYR.Invoice
 {
@@ -27,11 +28,11 @@ namespace CYR.Invoice
             throw new NotImplementedException();
         }
 
-        public async Task InsertAsync(InvoicePositionModel invoicePosition)
+        public async Task InsertAsync(InvoicePositionModel invoicePosition, SQLiteTransaction? transaction = null)
         {
-            string query = "INSERT INTO Rechnungen (Rechnungsnummer,Beschreibung,Menge," +
-                "Einheit, Einheitspreis,Gesamtpreis) VALUES (@Rechnungsnummer,@Beschreibung,@Menge," +
-                "@Einheit, @Einheitspreis,@Gesamtpreis)";
+            string query = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge," +
+                "Einheit, Einheitspreis) VALUES (@Rechnungsnummer,@Beschreibung,@Menge," +
+                "@Einheit, @Einheitspreis)";
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
             {
                 {"Position_ID",invoicePosition.InvoiceNumber},
@@ -39,10 +40,16 @@ namespace CYR.Invoice
                 {"Beschreibung",invoicePosition.Description},
                 {"Menge",invoicePosition.Quantity},
                 {"Einheit",invoicePosition.UnitOfMeasure},
-                {"Einheitspreis",invoicePosition.UnitPrice},
-                {"Gesamtpreis",invoicePosition.TotalPrice}
+                {"Einheitspreis",invoicePosition.UnitPrice}
             };
-            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            if (transaction != null)
+            {
+                await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, query, queryParameters);
+            }
+            else
+            {
+                await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            }
         }
 
         public Task UpdateAsync(InvoicePositionModel invoicePosition)

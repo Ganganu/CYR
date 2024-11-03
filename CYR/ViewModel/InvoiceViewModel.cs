@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
+using CYR.Core;
 using CYR.Invoice;
 using CYR.Model;
 using CYR.OrderItems;
@@ -8,6 +9,7 @@ using CYR.Services;
 using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
+using System.Data.SQLite;
 using System.Transactions;
 
 namespace CYR.ViewModel
@@ -18,15 +20,18 @@ namespace CYR.ViewModel
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IInvoicePositionRepository _invoicePositionRepository;
+        private readonly IDatabaseConnection _databaseConnection;
         private int _positionCounter = 1;
         private Client _client;
         public InvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
-            IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository) 
+            IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository,
+            IDatabaseConnection databaseConnection) 
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
             _invoiceRepository = invoiceRepository;
             _invoicePositionRepository = invoicePositionRepository;
+            _databaseConnection = databaseConnection;
             Initialize();
         }
         private void Initialize()
@@ -102,55 +107,58 @@ namespace CYR.ViewModel
         [RelayCommand]
         public async Task SaveInvoice()
         {
-            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (var connection = new SQLiteConnection(_databaseConnection.ConnectionString))
             {
-                try
+                await connection.OpenAsync();
+                using (var transaction = connection.BeginTransaction())
                 {
-                    // Create and populate invoice
-                    Client client = new Client
+                    try
                     {
-                        ClientNumber = _client.ClientNumber
-                    };
-
-                    InvoiceModel invoiceModel = new InvoiceModel
-                    {
-                        InvoiceNumber = InvoiceNumber,
-                        Customer = client,
-                        IssueDate = DateTime.Now.ToShortDateString(),
-                        DueDate = DateTime.Now.ToShortDateString(),
-                        NetAmount = Positions.Sum(x => x.Price),
-                        Paragraph = "test",
-                        State = InvoiceState.Open,
-                        Subject = "testSubject",
-                        ObjectNumber = "testObject"
-                    };
-                    invoiceModel.GrossAmount = invoiceModel.NetAmount;
-
-                    // Save invoice
-                    await _invoiceRepository.InsertAsync(invoiceModel);
-
-                    // Save each position
-                    foreach (var position in Positions)
-                    {
-                        var invoicePositionModel = new InvoicePositionModel
+                        // Create and populate invoice
+                        Client client = new Client
                         {
-                            InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
-                            Description = position.OrderItem.Description,
-                            Quantity = position.Quantity,
-                            UnitOfMeasure = position.UnitOfMeasure.Name,
-                            UnitPrice = position.Price,
-                            TotalPrice = position.TotalPrice
+                            ClientNumber = _client.ClientNumber
                         };
 
-                        await _invoicePositionRepository.InsertAsync(invoicePositionModel);
-                    }
+                        InvoiceModel invoiceModel = new InvoiceModel
+                        {
+                            InvoiceNumber = InvoiceNumber,
+                            Customer = client,
+                            IssueDate = DateTime.Now.ToShortDateString(),
+                            DueDate = DateTime.Now.ToShortDateString(),
+                            NetAmount = Positions.Sum(x => x.Price),
+                            Paragraph = "test",
+                            State = InvoiceState.Open,
+                            Subject = "testSubject",
+                            ObjectNumber = "testObject"
+                        };
+                        invoiceModel.GrossAmount = invoiceModel.NetAmount;
 
-                    transaction.Complete();
-                }
-                catch (Exception)
-                {
-                    // Consider logging the exception here
-                    throw;
+                        // Save invoice
+                        await _invoiceRepository.InsertAsync(invoiceModel, transaction);
+
+                        // Save each position
+                        foreach (var position in Positions)
+                        {
+                            var invoicePositionModel = new InvoicePositionModel
+                            {
+                                InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
+                                Description = position.OrderItem.Description,
+                                Quantity = position.Quantity,
+                                UnitOfMeasure = position.UnitOfMeasure.Name,
+                                UnitPrice = position.Price,
+                                TotalPrice = position.TotalPrice
+                            };
+                            await _invoicePositionRepository.InsertAsync(invoicePositionModel, transaction);
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

@@ -11,6 +11,8 @@ namespace CYR.Core
         {
             _connectionString = connectionString;
         }
+        public string ConnectionString => _connectionString;
+
         public async Task<IDataReader> ExecuteSelectQueryAsync(string query)
         {
             IDataReader? reader = null;
@@ -86,6 +88,19 @@ namespace CYR.Core
                         return await reader.ReadAsync();
                     }
                 }
+            }
+        }
+
+        public async Task<int> ExecuteNonQueryInTransactionAsync(SQLiteTransaction transaction, string query, Dictionary<string, object> parameters)
+        {
+            var connection = transaction.Connection;
+            using (var command = new SQLiteCommand(query, connection, transaction))
+            {
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                }
+                return await command.ExecuteNonQueryAsync();
             }
         }
     }
