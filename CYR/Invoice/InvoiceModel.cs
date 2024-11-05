@@ -18,6 +18,7 @@ namespace CYR.Invoice
         public InvoiceState State { get; set; }
         public string? ObjectNumber { get; set; }
         public string? Subject { get; set; }
+        public bool Mwst { get; set; }
 
         public List<InvoicePosition> Items { get; set; }
         public string Comments { get; set; }

@@ -59,6 +59,8 @@ namespace CYR.ViewModel
         private string? _subject;
         [ObservableProperty]
         private string? _objectNumber;
+        [ObservableProperty]
+        private bool _isMwstApplicable;
         partial void OnInvoiceNumberChanged(int value)
         {
                InvoiceDocumentDataSource.SetInvoiceNumber(value);
@@ -127,7 +129,8 @@ namespace CYR.ViewModel
                             Paragraph = "13b",
                             State = InvoiceState.Open,
                             Subject = Subject,
-                            ObjectNumber = ObjectNumber
+                            ObjectNumber = ObjectNumber,
+                            Mwst = IsMwstApplicable
                         };
                         invoiceModel.GrossAmount = invoiceModel.NetAmount;
 
@@ -162,6 +165,7 @@ namespace CYR.ViewModel
             var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions);
             model.Subject = Subject;
             model.ObjectNumber = ObjectNumber;
+            model.Mwst = IsMwstApplicable;
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }

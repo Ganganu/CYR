@@ -40,10 +40,18 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+
                 <TextBox Text="{Binding Subject}" Grid.Row="0" Margin="0 0 0 4" FontSize="18" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Betreff"/>
                 <TextBox Text="{Binding ObjectNumber}" Grid.Row="1" Margin="0 0 0 4" FontSize="18" Style="{StaticResource MaterialDesignOutlinedTextBox}" materialDesign:HintAssist.Hint="Objektnummer"/>
-                <TextBox Text="{Binding InvoiceNumber}" Grid.Row="2" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Rechnungsnummer"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding InvoiceNumber}" Grid.Column="0" FontSize="18" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Rechnungsnummer"/>
+                    <CheckBox IsChecked="{Binding IsMwstApplicable}" Content="MwSt." Grid.Column="1" FontSize="18" Margin="10 0 0 0"/>
+                </Grid>
 
             </Grid>
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">

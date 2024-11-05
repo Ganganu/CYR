@@ -7,6 +7,7 @@ namespace CYR.Invoice
 {
     public class InvoiceDocument : IDocument
     {
+        private const decimal MWST = 1.19m;
         public InvoiceModel Model { get; }
 
         public InvoiceDocument(InvoiceModel model)
@@ -69,10 +70,11 @@ namespace CYR.Invoice
                     decimal totalPrice = Model.Items.Sum(x => (x.OrderItem?.Price ?? 0) * x.Quantity);
                     string formattedTotalPrice = string.Format(CultureInfo.CreateSpecificCulture("de-DE"), "{0:N2}", totalPrice);
                     column.Item().AlignRight().Text($"Netto-Summe: {formattedTotalPrice}€").FontSize(14);
-                    column.Item().AlignRight().Text($"MwSt.         19%").FontSize(14);
-                    column.Item().AlignRight().Text($"Brutto-Summe: {totalPrice * 1.19m}€").FontSize(14);
-
-
+                    if (Model.Mwst)
+                    {
+                        column.Item().AlignRight().Text($"MwSt.         19%").FontSize(14);
+                        column.Item().AlignRight().Text($"Brutto-Summe: {totalPrice * MWST}€").FontSize(14);
+                    }
                     column.Item().Element(ComposeComments);
                 });
             });
