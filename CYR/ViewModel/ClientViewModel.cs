@@ -29,7 +29,7 @@ namespace CYR.ViewModel
         [RelayCommand]
         public void CreateInvoice(Client client)
         {
-            Navigation.NavigateTo<InvoiceViewModel>(client);
+            Navigation.NavigateTo<CreateInvoiceViewModel>(client);
         }
         [RelayCommand]
         private void CreateNewClient()

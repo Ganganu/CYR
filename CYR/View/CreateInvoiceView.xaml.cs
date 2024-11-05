@@ -1,12 +1,13 @@
 ﻿using System.Windows.Controls;
+
 namespace CYR.View
 {
     /// <summary>
     /// Interaktionslogik für InvoiceView.xaml
     /// </summary>
-    public partial class InvoiceView : UserControl
+    public partial class CreateInvoiceView : UserControl
     {
-        public InvoiceView()
+        public CreateInvoiceView()
         {
             InitializeComponent();
         }

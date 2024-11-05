@@ -31,9 +31,14 @@ namespace CYR
             services.AddSingleton<CreateNewArticleView>();
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<ClientViewModel>();
+            services.AddSingleton<CreateInvoiceViewModel>();
             services.AddSingleton<InvoiceViewModel>();
+            services.AddSingleton<GetInvoiceViewModel>();
             services.AddSingleton<CreateNewArticleViewModel>();
             services.AddSingleton<ArticleView>();
+            services.AddSingleton<InvoiceView>();
+            services.AddSingleton<CreateInvoiceView>();
+            services.AddSingleton<GetInvoiceView>();
             services.AddSingleton<ArticleViewModel>();
             services.AddSingleton<CreateClientView>();
             services.AddSingleton<CreateClientViewModel>();
