@@ -1,6 +1,6 @@
-﻿
+﻿using CYR.Clients;
 using CYR.Core;
-using System.Data.SqlClient;
+using System.Data.Common;
 using System.Data.SQLite;
 
 namespace CYR.Invoice
@@ -19,9 +19,31 @@ namespace CYR.Invoice
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<InvoiceModel>> GetAllAsync()
+        public async Task<IEnumerable<InvoiceModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            List<InvoiceModel> invoiceList = new List<InvoiceModel>();
+            InvoiceModel invoice;
+            string query = "SELECT * FROM Rechnungen INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer";
+            using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
+            {
+                while (await reader.ReadAsync())
+                {
+                    invoice = new InvoiceModel();
+                    invoice.InvoiceNumber = Convert.ToInt32(reader["Rechnungsnummer"]);
+                    invoice.Customer = new Client();                    
+                    invoice.Customer.ClientNumber = reader["Kundennummer"].ToString();
+                    invoice.Customer.Name = reader["Name"].ToString();
+                    invoice.IssueDate = reader["Rechnungsdatum"].ToString();
+                    invoice.DueDate = reader["Fälligkeitsdatum"].ToString();
+                    invoice.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
+                    invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
+                    invoice.Subject = reader["Betreff"].ToString();
+                    invoice.ObjectNumber = reader["Objektnummer"].ToString();
+                    //invoice.State = (InvoiceState)reader["Status"];
+                    invoiceList.Add(invoice);
+                }
+                return invoiceList;
+            }
         }
 
         public Task<IEnumerable<InvoiceModel>> GetByIdAsync(int id)

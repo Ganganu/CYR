@@ -13,7 +13,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Margin="10" Height="70" Content="Neue Rechnung schreiben" Command="{Binding NavigateToCreateNewInvoiceCommand}"/>
-        <Button Grid.Column="1" Margin="10" Height="70" Content="Rechnungen ansehen" Command="{Binding NavigateToGetInvoicesCommand}"/>
+        <Button Grid.Column="0" FontSize="15" Margin="10" Height="70" Content="Neue Rechnung schreiben" Command="{Binding NavigateToCreateNewInvoiceCommand}"/>
+        <Button Grid.Column="1" FontSize="15" Margin="10" Height="70" Content="Rechnungen durchsuchen" Command="{Binding NavigateToGetInvoicesCommand}"/>
     </Grid>
 </UserControl>
