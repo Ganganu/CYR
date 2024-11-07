@@ -35,14 +35,22 @@
             </Button>
             <TextBlock Grid.Row="1" Text="{Binding ClientName}"/>
             <TextBlock Grid.Row="2" Text="{Binding ClientStreet}"/>
-            <TextBlock Grid.Row="3" Text="{Binding ClientZip}"/>
-            <TextBlock Grid.Row="4" Text="{Binding ClientCity}"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="3">
+                <TextBlock Text="{Binding ClientZip}"/>
+                <TextBlock Text=" "/>
+                <TextBlock Text="{Binding ClientCity}"/>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Subject}" Grid.Row="0"/>
+            <TextBlock Text="{Binding ObjectNumber}" Grid.Row="1"/>
         </Grid>
         <Grid Grid.Row="2">
-            <ListView>
+            <ListView ItemsSource="{Binding Items}">
 
             </ListView>
         </Grid>

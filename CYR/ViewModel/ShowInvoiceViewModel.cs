@@ -2,14 +2,17 @@
 using CommunityToolkit.Mvvm.Input;
 using CYR.Invoice;
 using CYR.Services;
+using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel
 {
     public partial class ShowInvoiceViewModel : ObservableObject, IParameterReceiver
     {
-        public ShowInvoiceViewModel(INavigationService navigationService)
+        private readonly IInvoiceRepository _invoiceRepository;
+        public ShowInvoiceViewModel(INavigationService navigationService, IInvoiceRepository invoiceRepository)
         {
             NavigationService = navigationService;
+            _invoiceRepository = invoiceRepository;
         }
         public INavigationService NavigationService { get; }
 
@@ -21,7 +24,12 @@ namespace CYR.ViewModel
         private string? _clientCity;
         [ObservableProperty]
         private string? _clientStreet;
-
+        [ObservableProperty]
+        private string? _subject;
+        [ObservableProperty]
+        private string? _objectNumber;
+        [ObservableProperty]
+        private ObservableCollection<InvoicePositionModel> _items;
 
         [RelayCommand]
         private void NavigateBack()
@@ -29,7 +37,7 @@ namespace CYR.ViewModel
             NavigationService.NavigateTo<GetInvoiceViewModel>();
         }
 
-        public void ReceiveParameter(object parameter)
+        public async void ReceiveParameter(object parameter)
         {
             if (parameter == null)
             {
@@ -40,6 +48,10 @@ namespace CYR.ViewModel
             ClientCity = model.Customer.City;
             ClientStreet = model.Customer.Street;
             ClientZip = model.Customer.PLZ;
+            Subject = model.Subject;
+            ObjectNumber = model.ObjectNumber;
+            IEnumerable<InvoicePositionModel> items = (IEnumerable<InvoicePositionModel>)await _invoiceRepository.GetAllPositionsByInvoiceIdAsync(model.InvoiceNumber);
+            Items = new ObservableCollection<InvoicePositionModel>(items);
         }
     }
 }

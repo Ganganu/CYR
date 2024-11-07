@@ -23,14 +23,19 @@ namespace CYR.Invoice
         {
             List<InvoiceModel> invoiceList = new List<InvoiceModel>();
             InvoiceModel invoice;
-            string query = "SELECT * FROM Rechnungen INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer";
+            string query = "SELECT * FROM Rechnungen " +
+                "INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer " +
+                "INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer";
             using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
             {
                 while (await reader.ReadAsync())
                 {
                     invoice = new InvoiceModel();
                     invoice.InvoiceNumber = Convert.ToInt32(reader["Rechnungsnummer"]);
-                    invoice.Customer = new Client();                    
+                    invoice.Customer = new Client();
+                    invoice.Customer.Street = reader["Strasse"].ToString();
+                    invoice.Customer.PLZ = reader["PLZ"].ToString();
+                    invoice.Customer.City = reader["Ort"].ToString();
                     invoice.Customer.ClientNumber = reader["Kundennummer"].ToString();
                     invoice.Customer.Name = reader["Name"].ToString();
                     invoice.IssueDate = reader["Rechnungsdatum"].ToString();
@@ -44,6 +49,33 @@ namespace CYR.Invoice
                 }
                 return invoiceList;
             }
+        }
+
+        public async Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int invoiceId)
+        {
+            List<InvoicePositionModel> invoicePositions = new List<InvoicePositionModel>();
+            InvoicePositionModel invoicePosition;
+            string query = $"SELECT * FROM Rechnungspositionen INNER JOIN Rechnungen " +
+                "ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE @invoiceID";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                {"@invoiceID",invoiceId },
+            };
+
+            using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query, queryParameters))
+            {
+                while (await reader.ReadAsync())
+                {
+                    invoicePosition = new InvoicePositionModel();
+                    invoicePosition.Quantity = Convert.ToDecimal(reader["Menge"]);
+                    invoicePosition.UnitOfMeasure = reader["Einheit"].ToString();
+                    invoicePosition.Description = reader["Beschreibung"].ToString();
+                    invoicePosition.UnitPrice = Convert.ToDecimal(reader["Einheitspreis"]);
+                    invoicePosition.TotalPrice = Convert.ToDecimal(reader["Gesamtpreis"]);
+                    invoicePositions.Add(invoicePosition);
+                }
+            }
+            return invoicePositions;
         }
 
         public Task<IEnumerable<InvoiceModel>> GetByIdAsync(int id)
@@ -75,13 +107,13 @@ namespace CYR.Invoice
             }
             else
             {
-                await _databaseConnection.ExecuteNonQueryAsync(query,queryParameters);
+                await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
             }
         }
 
         public Task UpdateAsync(InvoiceModel invoice)
         {
             throw new NotImplementedException();
-        }
+        }        
     }
 }
