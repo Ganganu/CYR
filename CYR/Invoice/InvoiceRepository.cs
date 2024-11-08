@@ -50,34 +50,6 @@ namespace CYR.Invoice
                 return invoiceList;
             }
         }
-
-        public async Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int invoiceId)
-        {
-            List<InvoicePositionModel> invoicePositions = new List<InvoicePositionModel>();
-            InvoicePositionModel invoicePosition;
-            string query = $"SELECT * FROM Rechnungspositionen INNER JOIN Rechnungen " +
-                "ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE @invoiceID";
-            Dictionary<string, object> queryParameters = new Dictionary<string, object>
-            {
-                {"@invoiceID",invoiceId },
-            };
-
-            using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query, queryParameters))
-            {
-                while (await reader.ReadAsync())
-                {
-                    invoicePosition = new InvoicePositionModel();
-                    invoicePosition.Quantity = Convert.ToDecimal(reader["Menge"]);
-                    invoicePosition.UnitOfMeasure = reader["Einheit"].ToString();
-                    invoicePosition.Description = reader["Beschreibung"].ToString();
-                    invoicePosition.UnitPrice = Convert.ToDecimal(reader["Einheitspreis"]);
-                    invoicePosition.TotalPrice = Convert.ToDecimal(reader["Gesamtpreis"]);
-                    invoicePositions.Add(invoicePosition);
-                }
-            }
-            return invoicePositions;
-        }
-
         public Task<IEnumerable<InvoiceModel>> GetByIdAsync(int id)
         {
             throw new NotImplementedException();

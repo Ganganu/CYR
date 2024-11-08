@@ -9,6 +9,5 @@ namespace CYR.Invoice
         Task<IEnumerable<InvoiceModel>> GetByIdAsync(int id);
         Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null);
         Task UpdateAsync(InvoiceModel invoice);
-        Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int invoiceId);
     }
 }

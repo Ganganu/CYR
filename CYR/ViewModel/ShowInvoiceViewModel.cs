@@ -7,12 +7,13 @@ using System.Collections.ObjectModel;
 namespace CYR.ViewModel
 {
     public partial class ShowInvoiceViewModel : ObservableObject, IParameterReceiver
-    {
-        private readonly IInvoiceRepository _invoiceRepository;
-        public ShowInvoiceViewModel(INavigationService navigationService, IInvoiceRepository invoiceRepository)
+    {        
+        private readonly IInvoicePositionRepository _invoicePositionRepository;
+
+        public ShowInvoiceViewModel(INavigationService navigationService, IInvoicePositionRepository invoicePositionRepository)
         {
             NavigationService = navigationService;
-            _invoiceRepository = invoiceRepository;
+            _invoicePositionRepository = invoicePositionRepository;            
         }
         public INavigationService NavigationService { get; }
 
@@ -50,7 +51,7 @@ namespace CYR.ViewModel
             ClientZip = model.Customer.PLZ;
             Subject = model.Subject;
             ObjectNumber = model.ObjectNumber;
-            IEnumerable<InvoicePositionModel> items = (IEnumerable<InvoicePositionModel>)await _invoiceRepository.GetAllPositionsByInvoiceIdAsync(model.InvoiceNumber);
+            IEnumerable<InvoicePositionModel> items = await _invoicePositionRepository.GetAllPositionsByInvoiceIdAsync(model.InvoiceNumber);
             Items = new ObservableCollection<InvoicePositionModel>(items);
         }
     }

@@ -12,8 +12,8 @@
              d:Background="White" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -50,9 +50,15 @@
             <TextBlock Text="{Binding ObjectNumber}" Grid.Row="1"/>
         </Grid>
         <Grid Grid.Row="2">
-            <ListView ItemsSource="{Binding Items}">
-
-            </ListView>
+            <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" CanUserAddRows="False" Background="White">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Menge" Binding="{Binding Quantity}"/>
+                    <DataGridTextColumn Header="Einheit" Binding="{Binding UnitOfMeasure}"/>
+                    <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Nettopreis" Binding="{Binding UnitPrice}"/>
+                    <DataGridTextColumn Header="Gesamtpreis" Binding="{Binding TotalPrice}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </Grid>
 </UserControl>

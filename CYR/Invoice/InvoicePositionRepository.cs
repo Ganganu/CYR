@@ -1,5 +1,6 @@
 ﻿
 using CYR.Core;
+using System.Data.Common;
 using System.Data.SQLite;
 
 namespace CYR.Invoice
@@ -21,6 +22,30 @@ namespace CYR.Invoice
         public Task<IEnumerable<InvoicePositionModel>> GetAllAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int invoiceId)
+        {
+            List<InvoicePositionModel> invoicePositions = new List<InvoicePositionModel>();
+            InvoicePositionModel invoicePosition;
+            string query = "SELECT * FROM Rechnungspositionen INNER JOIN Rechnungen " +
+                $"ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE {invoiceId}";
+
+
+            using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
+            {
+                while (await reader.ReadAsync())
+                {
+                    invoicePosition = new InvoicePositionModel();
+                    invoicePosition.Quantity = Convert.ToDecimal(reader["Menge"]);
+                    invoicePosition.UnitOfMeasure = reader["Einheit"].ToString();
+                    invoicePosition.Description = reader["Beschreibung"].ToString();
+                    invoicePosition.UnitPrice = Convert.ToDecimal(reader["Einheitspreis"]);
+                    invoicePosition.TotalPrice = Convert.ToDecimal(reader["Gesamtpreis"]);
+                    invoicePositions.Add(invoicePosition);
+                }
+            }
+            return invoicePositions;
         }
 
         public Task<IEnumerable<InvoicePositionModel>> GetByIdAsync(int id)
