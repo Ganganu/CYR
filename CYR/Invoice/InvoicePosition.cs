@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using CYR.OrderItems;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;

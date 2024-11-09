@@ -12,13 +12,13 @@ namespace CYR.Invoice
         {
             _invoiceNumber = invoiceNumber;
         }
-        public static InvoiceModel GetInvoiceDetails(Client client, IEnumerable<InvoicePosition> positions)
+        public static InvoiceModel GetInvoiceDetails(Client client, IEnumerable<InvoicePosition> positions,InvoiceModel invoiceModel)
         {
             ConfigReader configReader = new ConfigReader();
             return new InvoiceModel
             {
                 InvoiceNumber = _invoiceNumber,
-                IssueDate = DateTime.Now.ToShortDateString(),
+                IssueDate = invoiceModel.IssueDate,
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
                 Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },

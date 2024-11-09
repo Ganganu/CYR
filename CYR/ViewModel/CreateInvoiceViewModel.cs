@@ -22,6 +22,7 @@ namespace CYR.ViewModel
         private readonly IDatabaseConnection _databaseConnection;
         private int _positionCounter = 1;
         private Client _client;
+        private InvoiceModel _invoiceModel;
         public CreateInvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
             IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository,
             IDatabaseConnection databaseConnection) 
@@ -31,6 +32,7 @@ namespace CYR.ViewModel
             _invoiceRepository = invoiceRepository;
             _invoicePositionRepository = invoicePositionRepository;
             _databaseConnection = databaseConnection;
+            InvoiceDate = DateTime.Now;
             Initialize();
         }
         private void Initialize()
@@ -61,6 +63,8 @@ namespace CYR.ViewModel
         private string? _objectNumber;
         [ObservableProperty]
         private bool _isMwstApplicable;
+        [ObservableProperty]
+        private DateTime _invoiceDate;
         partial void OnInvoiceNumberChanged(int value)
         {
                InvoiceDocumentDataSource.SetInvoiceNumber(value);
@@ -99,7 +103,7 @@ namespace CYR.ViewModel
         public void CreateInvoice()
         {
             IEnumerable<InvoicePosition> positions = Positions;
-            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions);
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel);
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }
@@ -119,11 +123,11 @@ namespace CYR.ViewModel
                             ClientNumber = _client.ClientNumber
                         };
 
-                        InvoiceModel invoiceModel = new InvoiceModel
+                         InvoiceModel invoiceModel = new InvoiceModel
                         {
                             InvoiceNumber = InvoiceNumber,
                             Customer = client,
-                            IssueDate = DateTime.Now.ToShortDateString(),
+                            IssueDate = InvoiceDate.ToShortDateString(),
                             DueDate = DateTime.Now.ToShortDateString(),
                             NetAmount = Positions.Sum(x => x.Price),
                             Paragraph = "13b",
@@ -133,6 +137,7 @@ namespace CYR.ViewModel
                             Mwst = IsMwstApplicable
                         };
                         invoiceModel.GrossAmount = invoiceModel.NetAmount;
+                        _invoiceModel = invoiceModel;
 
                         // Save invoice
                         await _invoiceRepository.InsertAsync(invoiceModel, transaction);
@@ -162,7 +167,7 @@ namespace CYR.ViewModel
                 }
             }
             IEnumerable<InvoicePosition> positions = Positions;
-            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions);
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel);
             model.Subject = Subject;
             model.ObjectNumber = ObjectNumber;
             model.Mwst = IsMwstApplicable;

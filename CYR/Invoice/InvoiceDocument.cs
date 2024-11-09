@@ -109,7 +109,7 @@ namespace CYR.Invoice
                 {
                     column.Item().Text($"Kundennummer: {Model.Customer.ClientNumber}")
                         .FontSize(11);
-                    column.Item().Text($"Datum: {DateTime.Now.ToShortDateString()}")
+                    column.Item().Text($"Datum: {Model.IssueDate}")
                         .FontSize(11);
                 });
             });
