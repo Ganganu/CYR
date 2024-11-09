@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using CYR.OrderItems;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
@@ -14,6 +16,10 @@ namespace CYR.Model
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
+            WeakReferenceMessenger.Default.Register<OrderItemMessageCollectionChanged>(this, (r,m) =>
+            {
+                ItemColectionChanged(m);
+            });
             Initialize();
         }
 
@@ -82,6 +88,14 @@ namespace CYR.Model
         private async Task<IEnumerable<UnitOfMeasureModel>> GetAllUnitOfMeasures()
         {
             return await _unitOfMeasureRepository.GetAllAsync();
+        }        
+        private async void ItemColectionChanged(OrderItemMessageCollectionChanged orderItemMessageCollectionChanged)
+        {
+            if (orderItemMessageCollectionChanged.Value)
+            {
+                var latestItems = await GetAllItems();
+                Items = new ObservableCollection<OrderItem.OrderItem>(latestItems);
+            }
         }
     }
 }

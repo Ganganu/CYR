@@ -3,6 +3,7 @@ using CYR.Address;
 using CYR.Clients;
 using CYR.Core;
 using CYR.Invoice;
+using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.UnitOfMeasure;

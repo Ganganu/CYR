@@ -1,13 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CYR.Clients;
 using CYR.OrderItems;
 using CYR.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace CYR.ViewModel
 {
@@ -44,7 +40,7 @@ namespace CYR.ViewModel
         }
 
         [RelayCommand]
-        private async void SaveArticle()
+        private async Task SaveArticle()
         {
             OrderItem.OrderItem orderItem = new OrderItem.OrderItem();
             orderItem.Name = Name;
@@ -52,6 +48,10 @@ namespace CYR.ViewModel
             orderItem.Price = Price;
             await _orderItemRepository.InsertAsync(orderItem);
             _articles = await _orderItemRepository.GetAllAsync();
+            if (_articles !=null)
+            {
+                WeakReferenceMessenger.Default.Send(new OrderItemMessageCollectionChanged(true));                
+            }
         }
     }
 }
