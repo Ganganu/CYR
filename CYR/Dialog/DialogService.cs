@@ -1,11 +1,11 @@
-﻿using System.Windows;
+﻿using System.Linq.Expressions;
+using System.Windows;
 
 namespace CYR.Dialog
 {
     public interface IDialogService
     {
-        void ShowDialog(string message, Action<string> callback);
-        void ShowDialog<TViewModel>(Action<string> callback, Dictionary<string, object>? viewModelParameters = null);
+        public void ShowDialog<TViewModel>(Action<string> callback, Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters = null);
     }
     public class DialogService : IDialogService
     {
@@ -15,20 +15,13 @@ namespace CYR.Dialog
             _mappings.Add(typeof(TViewModel), typeof(TView));
         }
 
-        public void ShowDialog<TViewModel>(Action<string> callback, Dictionary<string, object>? viewModelParameters = null)
+        public void ShowDialog<TViewModel>(Action<string> callback, Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters = null)
         {
             var type = _mappings[typeof(TViewModel)];
             ShowDialogInternal(type, callback, typeof(TViewModel), viewModelParameters);
         }
 
-        public void ShowDialog(string message, Action<string> callback)
-        {
-            var type = Type.GetType($"CYR.Dialog.{message}");
-            ShowDialogInternal(type, callback, null);
-        }
-
-        private static void ShowDialogInternal(Type type, Action<string> callback, Type vmType, 
-            Dictionary<string, object>? viewModelParameters = null)
+        private static void ShowDialogInternal<TViewModel>(Type type, Action<string> callback, Type? vmType, Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters)
         {
             var dialog = new DialogWindow();
             EventHandler closeEventHandler = null;
@@ -40,7 +33,7 @@ namespace CYR.Dialog
             dialog.Closed += closeEventHandler;
 
             var content = Activator.CreateInstance(type);
-            if(vmType != null)
+            if (vmType != null)
             {
                 var vm = Activator.CreateInstance(vmType);
 
@@ -48,10 +41,23 @@ namespace CYR.Dialog
                 {
                     foreach (var param in viewModelParameters)
                     {
-                        var property = vmType.GetProperty(param.Key);
-                        if (property != null && property.CanWrite)
+                        if (param.Key.Body is MemberExpression memberExpression)
                         {
-                            property.SetValue(vm, param.Value);
+                            var propertyName = memberExpression.Member.Name;
+                            var property = vmType.GetProperty(propertyName);
+                            if (property != null && property.CanWrite)
+                            {
+                                property.SetValue(vm, param.Value);
+                            }
+                        }
+                        else if (param.Key.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression)
+                        {
+                            var propertyName = unaryMemberExpression.Member.Name;
+                            var property = vmType.GetProperty(propertyName);
+                            if (property != null && property.CanWrite)
+                            {
+                                property.SetValue(vm, param.Value);
+                            }
                         }
                     }
                 }
@@ -62,5 +68,6 @@ namespace CYR.Dialog
             dialog.Content = content;
             dialog.ShowDialog();
         }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 
 namespace CYR.Dialog
 {
@@ -17,10 +18,10 @@ namespace CYR.Dialog
         [ObservableProperty]
         private string? _icon;
         [ObservableProperty]
-        private string? _iconUrl;
-        [ObservableProperty]
         private string? _okButtonText;
         [ObservableProperty]
         private string? _cancelButtonText;
+        [ObservableProperty]
+        private Visibility? _isOkVisible;
     }
 }

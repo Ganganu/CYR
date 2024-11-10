@@ -11,6 +11,8 @@ using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
+using System.Linq.Expressions;
+using System.Windows;
 
 namespace CYR.ViewModel
 {
@@ -169,12 +171,14 @@ namespace CYR.ViewModel
                         {
                             var response = result;
                         },
-                        new Dictionary<string, object>
+                        new Dictionary<Expression<Func<ErrorDialogViewModel, object>>, object>
                         {
-                            { "Title", "Error" },
-                            { "Message", "An error occurred while creating the invoice." },
-                            { "OkButtonText", "Retry" },
-                            { "CancelButtonText", "Cancel" }
+                            { vm => vm.Title, "Error" },
+                            { vm => vm.Message, $"Die Rechnung mit der Rechnungsnummer {InvoiceNumber} existiert bereits!" +
+                            $"Ändern Sie die Rechnungsnummer und versuchen es erneut." },
+                            { vm => vm.CancelButtonText, "Abbrechen" },
+                            { vm => vm.Icon,"Error" },
+                            { vm => vm.IsOkVisible, Visibility.Collapsed}
                         });
                         return;
                     }
