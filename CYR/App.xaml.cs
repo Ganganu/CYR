@@ -2,6 +2,7 @@
 using CYR.Address;
 using CYR.Clients;
 using CYR.Core;
+using CYR.Dialog;
 using CYR.Invoice;
 using CYR.Model;
 using CYR.OrderItems;
@@ -46,6 +47,7 @@ namespace CYR
             services.AddSingleton<CreateClientViewModel>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<IClientRepository, ClientRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();
             services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
@@ -57,6 +59,10 @@ namespace CYR
             services.AddSingleton<IDatabaseConnection, SQLLiteConnection>((provider) => new SQLLiteConnection(connectionString));
             services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
+
+            //Dialog Registrations
+            DialogService.RegisterDialog<Notification,NotificationViewModel>();
+            DialogService.RegisterDialog<ErrorDialogView, ErrorDialogViewModel>();
         }
         protected override void OnStartup(StartupEventArgs e)
         {

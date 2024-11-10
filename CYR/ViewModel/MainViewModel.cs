@@ -1,14 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CYR.Dialog;
 using CYR.Services;
 
 namespace CYR.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-        public MainViewModel(INavigationService navigationService) 
+        private readonly IDialogService _dialogService;
+        public MainViewModel(INavigationService navigationService,IDialogService dialogService) 
         {
             Navigation = navigationService;
+            _dialogService = dialogService;
         }
 
         [ObservableProperty]

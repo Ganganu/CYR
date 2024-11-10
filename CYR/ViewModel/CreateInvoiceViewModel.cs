@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
 using CYR.Core;
+using CYR.Dialog;
 using CYR.Invoice;
 using CYR.Model;
 using CYR.OrderItems;
@@ -20,18 +21,20 @@ namespace CYR.ViewModel
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IInvoicePositionRepository _invoicePositionRepository;
         private readonly IDatabaseConnection _databaseConnection;
+        private readonly IDialogService _dialogService;
         private int _positionCounter = 1;
         private Client _client;
         private InvoiceModel _invoiceModel;
         public CreateInvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
             IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository,
-            IDatabaseConnection databaseConnection) 
+            IDatabaseConnection databaseConnection, IDialogService dialogService) 
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
             _invoiceRepository = invoiceRepository;
             _invoicePositionRepository = invoicePositionRepository;
             _databaseConnection = databaseConnection;
+            _dialogService = dialogService;
             InvoiceDate = DateTime.Now;
             Initialize();
         }
@@ -162,7 +165,18 @@ namespace CYR.ViewModel
                     catch (Exception)
                     {
                         transaction.Rollback();
-                        throw;
+                        _dialogService.ShowDialog<ErrorDialogViewModel>(result =>
+                        {
+                            var response = result;
+                        },
+                        new Dictionary<string, object>
+                        {
+                            { "Title", "Error" },
+                            { "Message", "An error occurred while creating the invoice." },
+                            { "OkButtonText", "Retry" },
+                            { "CancelButtonText", "Cancel" }
+                        });
+                        return;
                     }
                 }
             }
