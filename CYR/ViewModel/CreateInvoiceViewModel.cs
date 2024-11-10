@@ -27,9 +27,10 @@ namespace CYR.ViewModel
         private int _positionCounter = 1;
         private Client _client;
         private InvoiceModel _invoiceModel;
+        private string? _dialogResponse;
         public CreateInvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
             IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository,
-            IDatabaseConnection databaseConnection, IDialogService dialogService) 
+            IDatabaseConnection databaseConnection, IDialogService dialogService,INavigationService navigationService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -37,12 +38,13 @@ namespace CYR.ViewModel
             _invoicePositionRepository = invoicePositionRepository;
             _databaseConnection = databaseConnection;
             _dialogService = dialogService;
+            NavigationService = navigationService;
             InvoiceDate = DateTime.Now;
             Initialize();
         }
         private void Initialize()
         {
-            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository,_unitOfMeasureRepository) {Id = _positionCounter.ToString() } };
+            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
         }
         [ObservableProperty]
         private string _clientId;
@@ -70,18 +72,20 @@ namespace CYR.ViewModel
         private bool _isMwstApplicable;
         [ObservableProperty]
         private DateTime _invoiceDate;
+        public INavigationService NavigationService { get; }
         partial void OnInvoiceNumberChanged(int value)
         {
-               InvoiceDocumentDataSource.SetInvoiceNumber(value);
+            InvoiceDocumentDataSource.SetInvoiceNumber(value);
         }
         [ObservableProperty]
         private ObservableCollection<InvoicePosition>? _positions;
+
 
         [RelayCommand]
         private void AddNewRow()
         {
             _positionCounter++;
-            Positions?.Add(new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString()});            
+            Positions?.Add(new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() });
         }
         [RelayCommand]
         private void DeleteRow(object parameter)
@@ -105,7 +109,7 @@ namespace CYR.ViewModel
             }
         }
         [RelayCommand]
-        public void CreateInvoice()
+        private void CreateInvoice()
         {
             IEnumerable<InvoicePosition> positions = Positions;
             var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel);
@@ -113,7 +117,7 @@ namespace CYR.ViewModel
             document.GeneratePdfAndShow();
         }
         [RelayCommand]
-        public async Task SaveInvoice()
+        private async Task SaveInvoice()
         {
             using (var connection = new SQLiteConnection(_databaseConnection.ConnectionString))
             {
@@ -122,13 +126,25 @@ namespace CYR.ViewModel
                 {
                     try
                     {
+                        if (_client == null)
+                        {
+                            ShowErrorDialog("Warnung", "Wählen Sie einen Kunden bevor Sie eine Rechnung schreiben. Möchten Sie zum Kundentab navigieren", 
+                                "Nein", 
+                                "Warning", 
+                                Visibility.Visible, "Ja");
+                            if (_dialogResponse == "True")
+                            {
+                                NavigationService.NavigateTo<ClientViewModel>();                                
+                            }
+                            return;
+                        }
                         // Create and populate invoice
                         Client client = new Client
                         {
                             ClientNumber = _client.ClientNumber
                         };
 
-                         InvoiceModel invoiceModel = new InvoiceModel
+                        InvoiceModel invoiceModel = new InvoiceModel
                         {
                             InvoiceNumber = InvoiceNumber,
                             Customer = client,
@@ -164,23 +180,17 @@ namespace CYR.ViewModel
 
                         transaction.Commit();
                     }
-                    catch (Exception)
+                    catch (SQLiteException ex)
                     {
                         transaction.Rollback();
-                        _dialogService.ShowDialog<ErrorDialogViewModel>(result =>
-                        {
-                            var response = result;
-                        },
-                        new Dictionary<Expression<Func<ErrorDialogViewModel, object>>, object>
-                        {
-                            { vm => vm.Title, "Error" },
-                            { vm => vm.Message, $"Die Rechnung mit der Rechnungsnummer {InvoiceNumber} existiert bereits!" +
-                            $"Ändern Sie die Rechnungsnummer und versuchen es erneut." },
-                            { vm => vm.CancelButtonText, "Abbrechen" },
-                            { vm => vm.Icon,"Error" },
-                            { vm => vm.IsOkVisible, Visibility.Collapsed}
-                        });
+                        ShowErrorDialog("Fehler", $"Die Rechnung mit der Rechnungsnummer {InvoiceNumber} existiert bereits!" +
+                        $"Ändern Sie die Rechnungsnummer und versuchen Sie es erneut.", "Abbrechen", "Error", Visibility.Collapsed,
+                        "");
                         return;
+                    }
+                    catch(Exception ex)
+                    {
+                        throw;
                     }
                 }
             }
@@ -191,6 +201,27 @@ namespace CYR.ViewModel
             model.Mwst = IsMwstApplicable;
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
+        }
+
+        private void ShowErrorDialog(string title,
+            string message,
+            string cancelButtonText,
+            string icon, 
+            Visibility okButtonVisibility, string okButtonText)
+        {
+            _dialogService.ShowDialog<ErrorDialogViewModel>(result =>
+            {
+                _dialogResponse = result;
+            },
+            new Dictionary<Expression<Func<ErrorDialogViewModel, object>>, object>
+            {
+                { vm => vm.Title, title },
+                { vm => vm.Message,  message},
+                { vm => vm.CancelButtonText, cancelButtonText },
+                { vm => vm.Icon,icon },
+                { vm => vm.OkButtonText, okButtonText },
+                { vm => vm.IsOkVisible, okButtonVisibility}
+            });
         }
     }
 }

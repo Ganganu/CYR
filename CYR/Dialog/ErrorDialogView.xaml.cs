@@ -16,7 +16,7 @@ namespace CYR.Dialog
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var window = this.Parent as Window;
-            window.DialogResult = false;
+            window.DialogResult = true;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
