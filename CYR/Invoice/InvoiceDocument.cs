@@ -87,7 +87,10 @@ namespace CYR.Invoice
                 column.Item().Text($"Rechnung {DateTime.Parse(DateTime.Now.ToString()).Year} - {Model.InvoiceNumber}").FontSize(12).Bold();
                 column.Item().Text(@"(bitte bei Bezahlung abgeben)").FontSize(8);
                 column.Item().Text($"Betreff: {Model.Subject}").FontSize(12).Bold();
-                column.Item().Text($"Objektnummer: {Model.ObjectNumber}").FontSize(12);
+                if (!string.IsNullOrEmpty(Model.ObjectNumber))
+                {
+                    column.Item().Text($"Objektnummer: {Model.ObjectNumber}").FontSize(12);                    
+                }
                 column.Item().Text("Sehr geehrter Damen und Herren,").FontSize(9);
                 column.Item().Text("wir danken Ihnen für den Auftrag und erlauben uns Ihnen folgende Leistungen in Rechnung zu stellen.").FontSize(9);
             });
@@ -110,6 +113,8 @@ namespace CYR.Invoice
                     column.Item().Text($"Kundennummer: {Model.Customer.ClientNumber}")
                         .FontSize(11);
                     column.Item().Text($"Datum: {Model.IssueDate}")
+                        .FontSize(11);
+                    column.Item().Text($"Zeitraum: {Model.StartDate} - {Model.EndDate}")
                         .FontSize(11);
                 });
             });

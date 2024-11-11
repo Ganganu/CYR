@@ -45,6 +45,8 @@ namespace CYR.ViewModel
         private void Initialize()
         {
             Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
         }
         [ObservableProperty]
         private string _clientId;
@@ -72,6 +74,10 @@ namespace CYR.ViewModel
         private bool _isMwstApplicable;
         [ObservableProperty]
         private DateTime _invoiceDate;
+        [ObservableProperty]
+        private DateTime _startDate;
+        [ObservableProperty]
+        private DateTime _endDate;
         public INavigationService NavigationService { get; }
         partial void OnInvoiceNumberChanged(int value)
         {
@@ -155,9 +161,18 @@ namespace CYR.ViewModel
                             State = InvoiceState.Open,
                             Subject = Subject,
                             ObjectNumber = ObjectNumber,
-                            Mwst = IsMwstApplicable
+                            Mwst = IsMwstApplicable,
+                            StartDate = StartDate.ToShortDateString(),
+                            EndDate = EndDate.ToShortDateString()
                         };
-                        invoiceModel.GrossAmount = invoiceModel.NetAmount;
+                        if (IsMwstApplicable)
+                        {
+                            invoiceModel.GrossAmount = invoiceModel.NetAmount * 1.19m;
+                        }
+                        else
+                        {
+                            invoiceModel.GrossAmount = invoiceModel.NetAmount;                                                        
+                        }
                         _invoiceModel = invoiceModel;
 
                         // Save invoice
@@ -199,6 +214,8 @@ namespace CYR.ViewModel
             model.Subject = Subject;
             model.ObjectNumber = ObjectNumber;
             model.Mwst = IsMwstApplicable;
+            model.StartDate = StartDate.ToShortDateString();
+            model.EndDate = EndDate.ToShortDateString();
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }

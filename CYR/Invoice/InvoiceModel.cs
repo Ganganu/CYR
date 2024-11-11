@@ -8,6 +8,8 @@ namespace CYR.Invoice
         public int InvoiceNumber { get; set; }
         public string IssueDate { get; set; }
         public string DueDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
 
 
         public User.User Seller { get; set; }
