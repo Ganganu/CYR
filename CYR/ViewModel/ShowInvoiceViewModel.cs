@@ -30,6 +30,10 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private string? _objectNumber;
         [ObservableProperty]
+        private string? _startDate;
+        [ObservableProperty]
+        private string? _endDate;
+        [ObservableProperty]
         private ObservableCollection<InvoicePositionModel> _items;
 
         [RelayCommand]
@@ -51,6 +55,8 @@ namespace CYR.ViewModel
             ClientZip = model.Customer.PLZ;
             Subject = model.Subject;
             ObjectNumber = model.ObjectNumber;
+            StartDate = model.StartDate;
+            EndDate = model.EndDate;
             IEnumerable<InvoicePositionModel> items = await _invoicePositionRepository.GetAllPositionsByInvoiceIdAsync(model.InvoiceNumber);
             Items = new ObservableCollection<InvoicePositionModel>(items);
         }

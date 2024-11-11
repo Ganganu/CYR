@@ -9,7 +9,8 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DataContext="{d:DesignInstance Type=vm:ShowInvoiceViewModel, IsDesignTimeCreatable=False}"
-             d:Background="White" d:DesignWidth="800">
+             d:Background="White" d:DesignWidth="800"
+             FontSize="18">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -45,9 +46,16 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding Subject}" Grid.Row="0"/>
             <TextBlock Text="{Binding ObjectNumber}" Grid.Row="1"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Zeitraum: "/>
+                <TextBlock Text="{Binding StartDate}"/>
+                <TextBlock Text="-"/>
+                <TextBlock Text="{Binding EndDate}"/>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="2">
             <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" CanUserAddRows="False" Background="White">
