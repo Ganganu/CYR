@@ -156,7 +156,7 @@ namespace CYR.ViewModel
                             Customer = client,
                             IssueDate = InvoiceDate.ToShortDateString(),
                             DueDate = DateTime.Now.ToShortDateString(),
-                            NetAmount = Positions.Sum(x => x.Price),
+                            NetAmount = Positions.Sum(x => x.Price * x.Quantity),
                             Paragraph = "13b",
                             State = InvoiceState.Open,
                             Subject = Subject,
@@ -167,7 +167,7 @@ namespace CYR.ViewModel
                         };
                         if (IsMwstApplicable)
                         {
-                            invoiceModel.GrossAmount = invoiceModel.NetAmount * 1.19m;
+                            invoiceModel.GrossAmount = Math.Round(invoiceModel.NetAmount * 1.19m,2);
                         }
                         else
                         {

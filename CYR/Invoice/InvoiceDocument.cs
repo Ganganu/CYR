@@ -73,7 +73,12 @@ namespace CYR.Invoice
                     if (Model.Mwst)
                     {
                         column.Item().AlignRight().Text($"MwSt.         19%").FontSize(14);
-                        column.Item().AlignRight().Text($"Brutto-Summe: {totalPrice * MWST}€").FontSize(14);
+                        column.Item().AlignRight().Text($"Brutto-Summe: {(totalPrice * MWST):0.00}€").FontSize(14);
+                    }
+                    else
+                    {
+                        column.Item().AlignRight().Text("").FontSize(14);
+                        column.Item().AlignRight().Text($"Brutto-Summe: {(totalPrice):0.00}€").FontSize(14);
                     }
                     column.Item().Element(ComposeComments);
                 });
@@ -177,7 +182,10 @@ namespace CYR.Invoice
             container.Background(Colors.Grey.Lighten3).PaddingTop(20).Column(column =>
             {
                 column.Spacing(5);
-                column.Item().Text("Bauleistung im Sinne von §13b Abs. 5 UStG").FontSize(11);
+                if (!Model.Mwst)
+                {
+                    column.Item().Text("Bauleistung im Sinne von §13b Abs. 5 UStG").FontSize(11);                    
+                }
                 column.Item().Text("Wir bitten um Überweisung des Rechnungsbetrages sofort ohne Abzug.").FontSize(11);
                 column.Item().Text("");
                 column.Item().Text("Mit freundlichen Grüßen").FontSize(11);

@@ -76,7 +76,6 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBox Text="{Binding ObjectNumber}" Grid.Row="0"/>
-                        <CheckBox Grid.Row="1" Content="13b" IsChecked="{Binding ClientId}" FontSize="18"/>
                     </Grid>
                 </materialDesign:PopupBox>
                 <Button Content="Preview" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"

@@ -58,8 +58,8 @@ namespace CYR.Invoice
         public async Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null)
         {
             string query = "INSERT INTO Rechnungen (Rechnungsnummer,Kundennummer,Rechnungsdatum,Fälligkeitsdatum," +
-                "Nettobetrag, Bruttobetrag,Paragraf,Status,Betreff,Objektnummer,Zeitraum) VALUES (@Rechnungsnummer,@Kundennummer,@Rechnungsdatum,@Fälligkeitsdatum," +
-                "@Nettobetrag, @Bruttobetrag,@Paragraf,@Status,@Betreff,@Objektnummer,@Zeitraum)";
+                "Nettobetrag, Bruttobetrag,Paragraf,Status,Betreff,Objektnummer,start_date,end_date) VALUES (@Rechnungsnummer,@Kundennummer,@Rechnungsdatum,@Fälligkeitsdatum," +
+                "@Nettobetrag, @Bruttobetrag,@Paragraf,@Status,@Betreff,@Objektnummer,@start_date,@end_date)";
             string executionDate = $"{invoice.StartDate}-{invoice.EndDate}";
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
             {
@@ -73,7 +73,8 @@ namespace CYR.Invoice
                 {"Status",invoice.State },
                 {"Betreff",invoice.Subject},
                 {"Objektnummer",invoice.ObjectNumber},
-                {"Zeitraum", invoice.StartDate}
+                {"start_date", invoice.StartDate},
+                {"end_date", invoice.EndDate}
             };
             if (transaction != null)
             {
