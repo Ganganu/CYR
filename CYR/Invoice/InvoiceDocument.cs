@@ -221,7 +221,7 @@ namespace CYR.Invoice
                         .FontSize(10);
                     column.Item().Text($"{Model.Seller.BIC}")
                         .FontSize(10);
-                    column.Item().Text($"{Model.Seller.USTIDNr}")
+                    column.Item().Text($"{Model.Seller.USTIDNR}")
                         .FontSize(10);
                     column.Item().Text($"{Model.Seller.STNR}")
                         .FontSize(10);

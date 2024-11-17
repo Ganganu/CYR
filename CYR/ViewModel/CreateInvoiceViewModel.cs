@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
@@ -12,8 +13,12 @@ using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq.Expressions;
+using System.Net.Mail;
 using System.Windows;
+using System.Xml.Linq;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace CYR.ViewModel
 {
@@ -25,13 +30,15 @@ namespace CYR.ViewModel
         private readonly IInvoicePositionRepository _invoicePositionRepository;
         private readonly IDatabaseConnection _databaseConnection;
         private readonly IDialogService _dialogService;
+        private readonly IConfigurationService _configurationService;
         private int _positionCounter = 1;
         private Client _client;
         private InvoiceModel _invoiceModel;
         private string? _dialogResponse;
         public CreateInvoiceViewModel(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository,
             IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository,
-            IDatabaseConnection databaseConnection, IDialogService dialogService,INavigationService navigationService)
+            IDatabaseConnection databaseConnection, IDialogService dialogService,INavigationService navigationService,
+            IConfigurationService configurationService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -40,7 +47,8 @@ namespace CYR.ViewModel
             _databaseConnection = databaseConnection;
             _dialogService = dialogService;
             NavigationService = navigationService;
-            InvoiceDate = DateTime.Now;
+            _configurationService = configurationService;
+            InvoiceDate = DateTime.Now;            
             Initialize();
         }
         private void Initialize()
@@ -119,7 +127,8 @@ namespace CYR.ViewModel
         private void CreateInvoice()
         {
             IEnumerable<InvoicePosition> positions = Positions;
-            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel);
+            UserSettings userSettings = _configurationService.GetUserSettings();
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel, userSettings);
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }
@@ -211,7 +220,9 @@ namespace CYR.ViewModel
                 }
             }
             IEnumerable<InvoicePosition> positions = Positions;
-            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel);
+            UserSettings userSettings = _configurationService.GetUserSettings();
+            var model = InvoiceDocumentDataSource.GetInvoiceDetails(_client, positions, _invoiceModel, userSettings);
+            //model.Seller = _user;
             model.Subject = Subject;
             model.ObjectNumber = ObjectNumber;
             model.Mwst = IsMwstApplicable;

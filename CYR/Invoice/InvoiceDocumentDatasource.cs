@@ -13,7 +13,7 @@ namespace CYR.Invoice
         {
             _invoiceNumber = invoiceNumber;
         }
-        public static InvoiceModel GetInvoiceDetails(Client client, IEnumerable<InvoicePosition> positions,InvoiceModel invoiceModel)
+        public static InvoiceModel GetInvoiceDetails(Client client, IEnumerable<InvoicePosition> positions,InvoiceModel invoiceModel,UserSettings user)
         {
             ConfigReader configReader = new ConfigReader();
             return new InvoiceModel
@@ -23,7 +23,7 @@ namespace CYR.Invoice
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
                 //Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
-                Seller = new User.User(new Settings.UserSettings()),
+                Seller = user,
                 Customer = GetCustomerAddress(client),
 
 
@@ -41,6 +41,6 @@ namespace CYR.Invoice
                 PLZ = client.PLZ,
                 ClientNumber = client.ClientNumber
             };
-        }
+        }        
     }
 }

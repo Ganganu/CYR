@@ -67,6 +67,7 @@ namespace CYR
             _serviceProvider = services.BuildServiceProvider();
 
             IConfigurationService configService = _serviceProvider.GetRequiredService<IConfigurationService>();
+            UserSettings settings = configService.GetUserSettings();
 
             //Dialog Registrations
             DialogService.RegisterDialog<Notification,NotificationViewModel>();

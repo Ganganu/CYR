@@ -45,7 +45,7 @@
                     <TextBox Grid.Row="0" Text="{Binding Name}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="Name"/>
                     <TextBox Grid.Row="1" Text="{Binding Street}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="Street"/>
                     <TextBox Grid.Row="2" Text="{Binding City}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="City"/>
-                    <TextBox Grid.Row="3" Text="{Binding PLZ}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="PLZ"/>
+                    <TextBox Grid.Row="3" Text="{Binding Plz}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="PLZ"/>
                     <TextBox Grid.Row="4" Text="{Binding HouseNumber}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="House number"/>
                     <TextBox Grid.Row="5" Text="{Binding Telefonnumber}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="Telefon number"/>
                     <TextBox Grid.Row="6" Text="{Binding EmailAddress}" Style="{StaticResource MaterialDesignFilledTextBox}" materialDesign:HintAssist.Hint="Email address"/>

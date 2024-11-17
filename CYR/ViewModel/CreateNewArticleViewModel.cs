@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CYR.OrderItems;
 using CYR.Services;
 using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace CYR.ViewModel
 {

@@ -1,5 +1,6 @@
 ﻿using CYR.Clients;
 using CYR.Model;
+using CYR.Settings;
 
 namespace CYR.Invoice
 {
@@ -12,7 +13,7 @@ namespace CYR.Invoice
         public string EndDate { get; set; }
 
 
-        public User.User Seller { get; set; }
+        public UserSettings Seller { get; set; }
         public Client Customer { get; set; }
         public decimal NetAmount { get; set; }
         public decimal GrossAmount { get; set; }
