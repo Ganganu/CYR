@@ -1,5 +1,6 @@
 ﻿using CYR.Clients;
 using CYR.Model;
+using CYR.Settings;
 using CYR.User;
 using QuestPDF.Helpers;
 
@@ -21,10 +22,11 @@ namespace CYR.Invoice
                 IssueDate = invoiceModel.IssueDate,
                 DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
 
-                Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
+                //Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
+                Seller = new User.User(new Settings.UserSettings()),
                 Customer = GetCustomerAddress(client),
 
-                
+
                 Items = positions.ToList(),
                 Comments = Placeholders.Paragraph()
             };

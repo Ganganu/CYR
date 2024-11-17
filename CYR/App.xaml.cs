@@ -7,6 +7,7 @@ using CYR.Invoice;
 using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;
+using CYR.Settings;
 using CYR.UnitOfMeasure;
 using CYR.View;
 using CYR.ViewModel;
@@ -45,6 +46,8 @@ namespace CYR
             services.AddSingleton<ArticleViewModel>();
             services.AddSingleton<CreateClientView>();
             services.AddSingleton<CreateClientViewModel>();
+            services.AddSingleton<SettingsViewModel>();
+            services.AddSingleton<SettingsView>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDialogService, DialogService>();
@@ -54,11 +57,16 @@ namespace CYR
             services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
             services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
             services.AddSingleton<Client>();
+            services.AddSingleton<User.User>();
+            services.AddSingleton<UserSettings>();
             services.AddSingleton<InvoiceDocument>();
             services.AddSingleton<IRetrieveClients, RetrieveClients>();
+            services.AddSingleton<IConfigurationService, ConfigurationService>();
             services.AddSingleton<IDatabaseConnection, SQLLiteConnection>((provider) => new SQLLiteConnection(connectionString));
             services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
+
+            IConfigurationService configService = _serviceProvider.GetRequiredService<IConfigurationService>();
 
             //Dialog Registrations
             DialogService.RegisterDialog<Notification,NotificationViewModel>();

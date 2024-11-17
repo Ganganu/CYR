@@ -7,6 +7,7 @@ using CYR.Invoice;
 using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;
+using CYR.Settings;
 using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;

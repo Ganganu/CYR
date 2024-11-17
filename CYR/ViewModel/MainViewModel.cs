@@ -32,5 +32,10 @@ namespace CYR.ViewModel
         {
             Navigation.NavigateTo<ArticleViewModel>();
         }
+        [RelayCommand]
+        private void NavigateToSettingsView()
+        {
+            Navigation.NavigateTo<SettingsViewModel>();
+        }
     }
 }

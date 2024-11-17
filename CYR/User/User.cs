@@ -1,19 +1,28 @@
-﻿namespace CYR.User
+﻿using CYR.Settings;
+
+namespace CYR.User
 {
     public class User
     {
-        public string? Name { get; set; } = "Igor Ganganu Fliesenleger";
-        public string Street { get; set; } = "Westerfeldweg";
-        public string City { get; set; } = "Wedemark";
-        public string PLZ { get; set; } = "30900";
-        public int HouseNumber { get; set; } = 23;
-        public string Telefonnumber { get; set; } = "0157 37 94 23 28";
-        public string EmailAddress { get; set; } = "igorganganu@yahoo.com";
-        public string BankName { get; set; } = "Sparkasse Hannover";
-        public string IBAN { get; set; } = "DE05 2505 1928 1827 1231 11";
-        public string BIC { get; set; } = "SPHKDE2XXX";
-        public string USTIDNr { get; set; } = "11111112234";
-        public string STNR { get; set; } = "16/112/55555";
+        private readonly UserSettings _userSettings;
+
+        public User(UserSettings userSettings)
+        {
+            _userSettings = userSettings;
+
+        }
+        public string Name { get { return _userSettings.Name; } }
+        public string Street { get { return _userSettings.Street; } }
+        public string City { get { return _userSettings.City; } }
+        public string PLZ { get { return _userSettings.PLZ; } }
+        public string HouseNumber { get { return _userSettings.HouseNumber; } }
+        public string Telefonnumber { get { return _userSettings.Telefonnumber; } }
+        public string EmailAddress { get { return _userSettings.EmailAddress; } }
+        public string BankName { get { return _userSettings.BankName; } }
+        public string IBAN { get { return _userSettings.IBAN; } }
+        public string BIC { get { return _userSettings.BIC; } }
+        public string USTIDNr { get { return _userSettings.USTIDNR; } }
+        public string STNR { get { return _userSettings.STNR; } }
 
     }
 }
