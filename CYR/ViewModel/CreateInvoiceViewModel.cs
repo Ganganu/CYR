@@ -135,6 +135,19 @@ namespace CYR.ViewModel
         [RelayCommand]
         private async Task SaveInvoice()
         {
+            if (Positions.Count <= 0)
+            {
+                return;
+            }
+            bool checkPositionNull = Positions.Any(p => p.OrderItem == null || p.OrderItem.Id == null);
+            if (checkPositionNull)
+            {
+                ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",
+                                "Abbrechen",
+                                "Warning",
+                                Visibility.Collapsed, "");
+                return;
+            }
             using (var connection = new SQLiteConnection(_databaseConnection.ConnectionString))
             {
                 await connection.OpenAsync();
@@ -184,7 +197,7 @@ namespace CYR.ViewModel
                             invoiceModel.GrossAmount = invoiceModel.NetAmount;                                                        
                         }
                         _invoiceModel = invoiceModel;
-
+                        
                         // Save invoice
                         await _invoiceRepository.InsertAsync(invoiceModel, transaction);
 
@@ -192,7 +205,7 @@ namespace CYR.ViewModel
                         foreach (var position in Positions)
                         {
                             var invoicePositionModel = new InvoicePositionModel
-                            {
+                            {                                
                                 InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
                                 Description = position.OrderItem.Description,
                                 Quantity = position.Quantity,
