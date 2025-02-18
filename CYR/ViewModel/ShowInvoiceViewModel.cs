@@ -9,11 +9,14 @@ namespace CYR.ViewModel
     public partial class ShowInvoiceViewModel : ObservableObject, IParameterReceiver
     {        
         private readonly IInvoicePositionRepository _invoicePositionRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
 
-        public ShowInvoiceViewModel(INavigationService navigationService, IInvoicePositionRepository invoicePositionRepository)
+        public ShowInvoiceViewModel(INavigationService navigationService, IInvoicePositionRepository invoicePositionRepository,
+            IInvoiceRepository invoiceRepository)
         {
             NavigationService = navigationService;
-            _invoicePositionRepository = invoicePositionRepository;            
+            _invoicePositionRepository = invoicePositionRepository;
+            _invoiceRepository = invoiceRepository;
         }
         public INavigationService NavigationService { get; }
 
@@ -48,7 +51,8 @@ namespace CYR.ViewModel
             {
                 return;
             }
-            InvoiceModel model = (InvoiceModel)parameter;
+            //InvoiceModel model = (InvoiceModel)parameter;
+            InvoiceModel model = await _invoiceRepository.GetByIdAsync((int)parameter);
             ClientName = model.Customer.Name;
             ClientCity = model.Customer.City;
             ClientStreet = model.Customer.Street;
@@ -58,7 +62,7 @@ namespace CYR.ViewModel
             StartDate = model.StartDate;
             EndDate = model.EndDate;
             IEnumerable<InvoicePositionModel> items = await _invoicePositionRepository.GetAllPositionsByInvoiceIdAsync(model.InvoiceNumber);
-            Items = new ObservableCollection<InvoicePositionModel>(items);
+            Items = [.. items];
         }
     }
 }

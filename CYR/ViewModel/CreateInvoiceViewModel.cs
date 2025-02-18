@@ -135,11 +135,15 @@ namespace CYR.ViewModel
         [RelayCommand]
         private async Task SaveInvoice()
         {
+            if (Positions is null)
+            {
+                return;
+            }
             if (Positions.Count <= 0)
             {
                 return;
             }
-            bool checkPositionNull = Positions.Any(p => p.OrderItem == null || p.OrderItem.Id == null);
+            bool checkPositionNull = Positions.Any(p => p.OrderItem == null || p.Quantity <= 0 || p.OrderItem.Name == null);
             if (checkPositionNull)
             {
                 ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",

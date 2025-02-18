@@ -1,46 +1,47 @@
-﻿<Application x:Class="CYR.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CYR"
-             xmlns:vm="clr-namespace:CYR.ViewModel"
-             xmlns:v="clr-namespace:CYR.View"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-                <materialDesign:BundledTheme
-                    BaseTheme="Light"
-                    PrimaryColor="Grey"
-                    SecondaryColor="Orange" />
-            </ResourceDictionary.MergedDictionaries>
-            <DataTemplate DataType="{x:Type vm:ClientViewModel}">
-                <v:ClientView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:InvoiceViewModel}">
-                <v:InvoiceView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:CreateInvoiceViewModel}">
-                <v:CreateInvoiceView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:GetInvoiceViewModel}">
-                <v:GetInvoiceView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
-                <v:ArticleView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:CreateClientViewModel}">
-                <v:CreateClientView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:CreateNewArticleViewModel}">
-                <v:CreateNewArticleView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:ShowInvoiceViewModel}">
-                <v:ShowInvoiceView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-                <v:SettingsView/>
-            </DataTemplate>
-        </ResourceDictionary>
-    </Application.Resources>
+﻿<Application
+  x:Class="CYR.App"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="clr-namespace:CYR"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:v="clr-namespace:CYR.View"
+  xmlns:vm="clr-namespace:CYR.ViewModel">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+        <materialDesign:BundledTheme
+          BaseTheme="Light"
+          PrimaryColor="Grey"
+          SecondaryColor="Orange" />
+      </ResourceDictionary.MergedDictionaries>
+      <DataTemplate DataType="{x:Type vm:ClientViewModel}">
+        <v:ClientView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:InvoiceViewModel}">
+        <v:InvoiceView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:CreateInvoiceViewModel}">
+        <v:CreateInvoiceView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:GetInvoiceViewModel}">
+        <v:GetInvoiceView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
+        <v:ArticleView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:CreateClientViewModel}">
+        <v:CreateClientView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:CreateNewArticleViewModel}">
+        <v:CreateNewArticleView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:ShowInvoiceViewModel}">
+        <v:ShowInvoiceView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+        <v:SettingsView />
+      </DataTemplate>
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>

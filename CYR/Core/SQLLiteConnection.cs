@@ -38,18 +38,18 @@ namespace CYR.Core
         public async Task<IDataReader> ExecuteSelectQueryAsync(string query, Dictionary<string, object> parameters)
         {
             IDataReader? reader = null;
-            using (SQLiteConnection sqlConnection = new SQLiteConnection(_connectionString))
+            SQLiteConnection sqlConnection = new SQLiteConnection(_connectionString);
+
+            sqlConnection.Open();
+            using (SQLiteCommand sqlCommand = new SQLiteCommand(query, sqlConnection))
             {
-                sqlConnection.Open();
-                using (SQLiteCommand sqlCommand = new SQLiteCommand(query, sqlConnection))
+                foreach (var parameter in parameters)
                 {
-                    foreach (var parameter in parameters)
-                    {
-                        sqlCommand.Parameters.AddWithValue(parameter.Key, parameter.Value);
-                    }
-                    reader = await sqlCommand.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+                    sqlCommand.Parameters.AddWithValue(parameter.Key, parameter.Value);
                 }
+                reader = await sqlCommand.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             }
+
             return reader;
         }
         public async Task<int> ExecuteNonQueryAsync(string query, Dictionary<string, object> parameters)

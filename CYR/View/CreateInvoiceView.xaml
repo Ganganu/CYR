@@ -246,7 +246,7 @@
                   <TextBox
                     Width="70"
                     FontSize="15"
-                    Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                    Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>

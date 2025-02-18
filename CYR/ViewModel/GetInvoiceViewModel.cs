@@ -30,7 +30,7 @@ namespace CYR.ViewModel
         private void SelectInvoice(object parameter)
         {
             InvoiceModel invoice = (InvoiceModel)parameter;
-            NavigationService.NavigateTo<ShowInvoiceViewModel>(invoice);
+            NavigationService.NavigateTo<ShowInvoiceViewModel>(invoice.InvoiceNumber);
         }
     }
 }
