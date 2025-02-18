@@ -229,7 +229,10 @@
                 <DataTemplate>
                   <ComboBox
                     DisplayMemberPath="Name"
+                    MaxDropDownHeight="150"
                     FontSize="15"
+                    IsEditable="True"
+                    Text="{Binding ManuallyInsertedArticle,UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataTemplate>
@@ -259,6 +262,17 @@
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock FontSize="15" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, Delay=500, StringFormat=N2}" />
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn>
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <Button Command="{Binding DataContext.SaveArticleCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                    <Button.Content>
+                      <materialDesign:PackIcon Kind="Add" />
+                    </Button.Content>
+                  </Button>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>

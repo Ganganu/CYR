@@ -34,6 +34,8 @@ namespace CYR.Model
         private string? _invoiceNumber;
         [ObservableProperty]
         public OrderItem.OrderItem? _orderItem;
+        [ObservableProperty]
+        public string _manuallyInsertedArticle;
         partial void OnOrderItemChanged(OrderItem.OrderItem? oldValue, OrderItem.OrderItem? newValue)
         {
             if (oldValue != newValue)

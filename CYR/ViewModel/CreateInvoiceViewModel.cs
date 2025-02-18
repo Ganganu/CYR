@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
@@ -13,12 +12,8 @@ using CYR.UnitOfMeasure;
 using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq.Expressions;
-using System.Net.Mail;
 using System.Windows;
-using System.Xml.Linq;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace CYR.ViewModel
 {
@@ -108,6 +103,20 @@ namespace CYR.ViewModel
             InvoicePosition invoicePosition = (InvoicePosition)parameter;
             Positions?.Remove(invoicePosition);
         }
+        [RelayCommand]
+        private async Task SaveArticle(object parameters)
+        {
+            if (parameters is null)
+            {
+                return;
+            }
+            InvoicePosition invoicePosition = (InvoicePosition)parameters;
+            OrderItem.OrderItem orderItem = new();
+            orderItem.Name = invoicePosition.ManuallyInsertedArticle;
+            orderItem.Description = invoicePosition.ManuallyInsertedArticle;
+            orderItem.Price = invoicePosition.Price;
+            await _orderItemRepository.InsertAsync(orderItem);
+        }
         public void ReceiveParameter(object parameter)
         {
             if (parameter == null)
@@ -141,6 +150,22 @@ namespace CYR.ViewModel
             }
             if (Positions.Count <= 0)
             {
+                return;
+            }
+            if (Positions.Any(p => p.Price < 0))
+            {
+                ShowErrorDialog("Fehler", "Der Preis eines ausgewählten Artikels ist kleiner 0.",
+                                "Abbrechen",
+                                "Warning",
+                                Visibility.Collapsed, "");
+                return;
+            }
+            if (StartDate > EndDate)
+            {
+                ShowErrorDialog("Fehler", "Das Startdatum ist größer als Enddatum!",
+                                "Abbrechen",
+                                "Warning",
+                                Visibility.Collapsed, "");
                 return;
             }
             bool checkPositionNull = Positions.Any(p => p.OrderItem == null || p.Quantity <= 0 || p.OrderItem.Name == null);
