@@ -36,6 +36,18 @@ namespace CYR.Model
         public OrderItem.OrderItem? _orderItem;
         [ObservableProperty]
         public string _manuallyInsertedArticle;
+        partial void OnManuallyInsertedArticleChanged(string? oldValue, string newValue)
+        {
+            if (oldValue != newValue)
+            {
+                if (OrderItem is null)
+                {
+                    OrderItem = new OrderItem.OrderItem();
+                    OrderItem.Name = newValue;
+                    OrderItem.Description = newValue;
+                }
+            }
+        }
         partial void OnOrderItemChanged(OrderItem.OrderItem? oldValue, OrderItem.OrderItem? newValue)
         {
             if (oldValue != newValue)

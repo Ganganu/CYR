@@ -198,7 +198,7 @@
                   <TextBox
                     Width="70"
                     FontSize="15"
-                    Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{##.##}}" />
+                    Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
@@ -232,7 +232,7 @@
                     MaxDropDownHeight="150"
                     FontSize="15"
                     IsEditable="True"
-                    Text="{Binding ManuallyInsertedArticle,UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ManuallyInsertedArticle,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataTemplate>
@@ -249,7 +249,7 @@
                   <TextBox
                     Width="70"
                     FontSize="15"
-                    Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
+                    Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
