@@ -12,8 +12,8 @@
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
         <materialDesign:BundledTheme
           BaseTheme="Light"
-          PrimaryColor="Grey"
-          SecondaryColor="Orange" />
+          PrimaryColor="Orange"
+          SecondaryColor="Purple" />
       </ResourceDictionary.MergedDictionaries>
       <DataTemplate DataType="{x:Type vm:ClientViewModel}">
         <v:ClientView />
