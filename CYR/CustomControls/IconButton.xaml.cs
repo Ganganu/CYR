@@ -40,5 +40,27 @@ namespace CYR.CustomControls
             get => (PackIconKind)GetValue(IconKindProperty);
             set => SetValue(IconKindProperty, value);
         }
+
+        public static readonly DependencyProperty GroupNameProperty =
+            DependencyProperty.Register(
+                nameof(GroupName),
+                typeof(string),
+                typeof(IconButton),
+                new PropertyMetadata(string.Empty, OnGroupNameChanged));
+
+        public string GroupName
+        {
+            get => (string)GetValue(GroupNameProperty);
+            set => SetValue(GroupNameProperty, value);
+        }
+
+        private static void OnGroupNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var iconButton = d as IconButton;
+            if (iconButton != null)
+            {
+                iconButton.SMenuButton.GroupName = (string)e.NewValue;
+            }
+        }
     }
 }

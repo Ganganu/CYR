@@ -162,7 +162,7 @@ namespace CYR.ViewModel
             }
             if (StartDate > EndDate)
             {
-                ShowErrorDialog("Fehler", "Das Startdatum ist größer als Enddatum!",
+                ShowErrorDialog("Fehler", "Das Startdatum ist größer als das Enddatum!",
                                 "Abbrechen",
                                 "Warning",
                                 Visibility.Collapsed, "");
@@ -233,16 +233,19 @@ namespace CYR.ViewModel
                         // Save each position
                         foreach (var position in Positions)
                         {
-                            var invoicePositionModel = new InvoicePositionModel
-                            {                                
-                                InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
-                                Description = position.OrderItem.Description,
-                                Quantity = position.Quantity,
-                                UnitOfMeasure = position.UnitOfMeasure.Name,
-                                UnitPrice = position.Price,
-                                TotalPrice = position.TotalPrice
-                            };
-                            await _invoicePositionRepository.InsertAsync(invoicePositionModel, transaction);
+                            InvoicePositionModel ipm;
+                            if (position.OrderItem is not null && position.OrderItem.Id == 0)
+                            {
+                                OrderItem.OrderItem manuallyInsertedOrderItem = ManuallyInsertedItemToOrderItem(position);
+                                ipm = CreateInvoicePositionModel(manuallyInsertedOrderItem, position, invoiceModel);
+                                position.OrderItem.Name = manuallyInsertedOrderItem.Name;
+                                position.OrderItem.Description = manuallyInsertedOrderItem.Description;
+                            }
+                            else
+                            {
+                                ipm = CreateInvoicePositionModel(position.OrderItem, position, invoiceModel);
+                            }
+                            await _invoicePositionRepository.InsertAsync(ipm, transaction);
                         }
 
                         transaction.Commit();
@@ -272,6 +275,29 @@ namespace CYR.ViewModel
             model.EndDate = EndDate.ToShortDateString();
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
+        }
+
+        private InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
+        {
+            var invoicePositionModel = new InvoicePositionModel
+            {
+                InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
+                Description = orderItem.Description,
+                Quantity = position.Quantity,
+                UnitOfMeasure = position.UnitOfMeasure.Name,
+                UnitPrice = orderItem.Price,
+                TotalPrice = position.TotalPrice
+            };
+            return invoicePositionModel;
+        }
+
+        private OrderItem.OrderItem ManuallyInsertedItemToOrderItem(InvoicePosition invoicePosition)
+        {
+            OrderItem.OrderItem item = new OrderItem.OrderItem();
+            item.Name = invoicePosition.ManuallyInsertedArticle;
+            item.Price = invoicePosition.Price;
+            item.Description = invoicePosition.ManuallyInsertedArticle;
+            return item;
         }
 
         private void ShowErrorDialog(string title,

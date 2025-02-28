@@ -107,7 +107,7 @@ namespace CYR.Model
             if (orderItemMessageCollectionChanged.Value)
             {
                 var latestItems = await GetAllItems();
-                Items = new ObservableCollection<OrderItem.OrderItem>(latestItems);
+                Items = [.. latestItems];
             }
         }
     }

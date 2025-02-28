@@ -10,15 +10,17 @@
   d:DesignWidth="800"
   mc:Ignorable="d">
   <Grid>
-    <Button
-      Height="55"
+    <RadioButton
+      Name="SMenuButton"
+      Height="45"
       HorizontalContentAlignment="Left"
       Background="Transparent"
       BorderBrush="Transparent"
       Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
-      Cursor="Arrow">
-      <Button.Template>
-        <ControlTemplate TargetType="{x:Type Button}">
+      Cursor="Arrow"
+      GroupName="{Binding GroupName, RelativeSource={RelativeSource AncestorType=UserControl}}">
+      <RadioButton.Template>
+        <ControlTemplate TargetType="{x:Type RadioButton}">
           <Border
             Name="Border"
             Background="{TemplateBinding Background}"
@@ -42,14 +44,14 @@
             </StackPanel>
           </Border>
           <ControlTemplate.Triggers>
-            <Trigger Property="Button.IsFocused" Value="True">
+            <Trigger Property="RadioButton.IsChecked" Value="True">
               <Setter TargetName="Border" Property="Background" Value="Orange" />
               <Setter TargetName="Icon" Property="Foreground" Value="Black" />
               <Setter TargetName="TextBlock" Property="Foreground" Value="Black" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
-      </Button.Template>
-    </Button>
+      </RadioButton.Template>
+    </RadioButton>
   </Grid>
 </UserControl>
