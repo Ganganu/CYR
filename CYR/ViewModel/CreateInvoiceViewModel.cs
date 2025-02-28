@@ -19,18 +19,21 @@ namespace CYR.ViewModel
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private readonly ISaveInvoiceInvoicePositionService _saveInvoiceInvoicePositionService;
+        private readonly IPreviewInvoiceService _previewInvoiceService;
         private int _positionCounter = 1;
         private Client _client;
 
         public CreateInvoiceViewModel(IOrderItemRepository orderItemRepository,
             IUnitOfMeasureRepository unitOfMeasureRepository,
             INavigationService navigationService,
-            ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService)
+            ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
+            IPreviewInvoiceService previewInvoiceService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
             NavigationService = navigationService;
             _saveInvoiceInvoicePositionService = saveInvoiceInvoicePositionService;
+            _previewInvoiceService = previewInvoiceService;
             InvoiceDate = DateTime.Now;
             Initialize();
         }
@@ -121,9 +124,21 @@ namespace CYR.ViewModel
             }
         }
         [RelayCommand]
-        private void PreviewInvoice()
+        private async Task PreviewInvoice()
         {
-
+            CreateInvoiceModel createInvoiceModel = new()
+            {
+                Client = _client,
+                EndDate = EndDate,
+                InvoiceDate = InvoiceDate,
+                InvoiceNumber = InvoiceNumber,
+                IsMwstApplicable = IsMwstApplicable,
+                ObjectNumber = ObjectNumber,
+                Positions = Positions,
+                StartDate = StartDate,
+                Subject = Subject
+            };
+            await _previewInvoiceService.SaveInvoice(createInvoiceModel);
         }
         [RelayCommand]
         private async Task SaveInvoice()
