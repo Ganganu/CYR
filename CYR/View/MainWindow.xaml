@@ -32,31 +32,50 @@
           VerticalAlignment="Center"
           Source="/Ressources/LogoDoubleG1.png" />
       </Grid>
-      <Grid Grid.Row="1" Margin="-1 0 -1 0">
+      <Grid Grid.Row="1">
         <StackPanel Orientation="Vertical">
           <cc:IconButton
             ButtonText="Kunden"
             Command="{Binding NavigateToClientViewCommand}"
             GroupName="NavigationButtons"
             IconKind="Person" />
-          <cc:IconButton
-            ButtonText="Rechnungen"
-            Command="{Binding NavigateToInvoiceViewCommand}"
-            GroupName="NavigationButtons"
-            IconKind="ReceiptText" />
+          <Separator />
+          <cc:FlatExpander
+            HeaderIcon="ReceiptText"
+            HeaderText="Rechnungen"
+            IconForeground="#FEE3BB">
+            <cc:FlatExpander.Content>
+              <StackPanel>
+                <cc:IconButton
+                  ButtonText="Neue Rechnung"
+                  Command="{Binding NavigateToCreateNewInvoiceCommand}"
+                  GroupName="NavigationButtons"
+                  IconKind="ReceiptTextAdd" />
+                <cc:IconButton
+                  ButtonText="Rechnungen durchsuchen"
+                  Command="{Binding NavigateToGetInvoicesCommand}"
+                  GroupName="NavigationButtons"
+                  IconKind="InvoiceList" />
+              </StackPanel>
+            </cc:FlatExpander.Content>
+          </cc:FlatExpander>
+          <Separator />
           <cc:IconButton
             ButtonText="Kostenvoranschläge"
             GroupName="NavigationButtons"
             IconKind="Euro" />
+          <Separator />
           <cc:IconButton
             ButtonText="Angebote"
             GroupName="NavigationButtons"
             IconKind="InvoiceTextCheckOutline" />
+          <Separator />
           <cc:IconButton
             ButtonText="Artikel/Dienstleistungen"
             Command="{Binding NavigateToArticleViewCommand}"
             GroupName="NavigationButtons"
             IconKind="PackageVariantClosed" />
+          <Separator />
         </StackPanel>
       </Grid>
       <Grid Grid.Row="2">

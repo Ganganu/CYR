@@ -30,17 +30,14 @@ namespace CYR
             IServiceCollection services = new ServiceCollection();
             services.AddSingleton<MainWindow>(provider => new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
             services.AddSingleton<ClientView>();
-            services.AddSingleton<InvoiceView>();
             services.AddSingleton<CreateNewArticleView>();
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<ClientViewModel>();
             services.AddSingleton<CreateInvoiceViewModel>();
-            services.AddSingleton<InvoiceViewModel>();
             services.AddTransient<GetInvoiceViewModel>();
             services.AddSingleton<ShowInvoiceViewModel>();
             services.AddSingleton<CreateNewArticleViewModel>();
             services.AddSingleton<ArticleView>();
-            services.AddSingleton<InvoiceView>();
             services.AddSingleton<CreateInvoiceView>();
             services.AddSingleton<GetInvoiceView>();
             services.AddSingleton<ArticleViewModel>();
