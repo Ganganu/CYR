@@ -1,48 +1,107 @@
-﻿<UserControl x:Class="CYR.View.CreateNewArticleView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:CYR.View"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:vm="clr-namespace:CYR.ViewModel"
-             mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=vm:CreateNewArticleViewModel, IsDesignTimeCreatable=False}"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid>
+﻿<UserControl
+  x:Class="CYR.View.CreateNewArticleView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:CYR.View"
+  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:vm="clr-namespace:CYR.ViewModel"
+  d:DataContext="{d:DesignInstance Type=vm:CreateNewArticleViewModel,
+                                   IsDesignTimeCreatable=False}"
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+  mc:Ignorable="d">
+  <Grid>
+    <Border>
+      <Border.Background>
+        <LinearGradientBrush Opacity=".6" StartPoint="0 2" EndPoint="1 1">
+          <GradientStop Offset="0.1" Color="#a7d5f2" />
+          <GradientStop Offset="1.1" Color="#efc6ff" />
+        </LinearGradientBrush>
+      </Border.Background>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="1.5*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="5*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border
+          Grid.Row="1"
+          Grid.Column="1"
+          Background="White"
+          BorderBrush="Transparent"
+          CornerRadius="10">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="5*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+              <RowDefinition Height="*" />
+              <RowDefinition Height="2*" />
+              <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Command="{Binding NavigateBackCommand}" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatButton}" Margin="0 10 0 10">
-                <Button.Content>
-                    <materialDesign:PackIcon Kind="ArrowLeft"/>
-                </Button.Content>
-            </Button>
-            <TextBox
-                Grid.Row="1"
-                materialDesign:HintAssist.Foreground="Black"
-                materialDesign:HintAssist.Hint="Name"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox
-                Grid.Row="2"
-                materialDesign:HintAssist.Foreground="Black"
-                materialDesign:HintAssist.Hint="Beschreibung"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox
-                Grid.Row="3"
-                materialDesign:HintAssist.Foreground="Black"
-                materialDesign:HintAssist.Hint="Preis"
-                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                Text="{Binding Price, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
-            <Button Command="{Binding SaveArticleCommand}" Grid.Row="4" Content="Save" Margin="30 50 30 50"/>
-        </Grid>
-    </Grid>
+            <Grid Grid.Row="0" Grid.Column="1">
+              <Label
+                Margin="0,20,0,0"
+                Content="Neuen Artikel speichern"
+                FontSize="25" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1">
+              <StackPanel>
+                <Label Content="Name" FontSize="16" />
+                <TextBox
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Beispiel: Gips"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="14"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Beschreibung" FontSize="16" />
+                <TextBox
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Artikel beschreiben"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="14"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Preis" />
+                <TextBox
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Preis"
+                  materialDesign:HintAssist.IsFloating="False"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="1">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                  Grid.Column="0"
+                  Margin="0,0,5,0"
+                  Content="Abbrechen"
+                  Style="{StaticResource MaterialDesignFlatButton}" />
+                <Button
+                  Grid.Column="1"
+                  Margin="5,0,0,0"
+                  Command="{Binding SaveArticleCommand}"
+                  Content="Speichern" />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Border>
+      </Grid>
+    </Border>
+  </Grid>
 </UserControl>

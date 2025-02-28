@@ -9,7 +9,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="clr-namespace:CYR.ViewModel"
   Title="MainWindow"
-  Width="1400"
+  Width="1500"
   Height="850"
   d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
                                    IsDesignTimeCreatable=False}"
@@ -76,6 +76,25 @@
             GroupName="NavigationButtons"
             IconKind="PackageVariantClosed" />
           <Separator />
+          <cc:FlatExpander
+            HeaderIcon="ReceiptText"
+            HeaderText="Artikel/Dienstleistungen"
+            IconForeground="#FEE3BB">
+            <cc:FlatExpander.Content>
+              <StackPanel>
+                <cc:IconButton
+                  ButtonText="Durchsuchen"
+                  Command="{Binding NavigateToArticleViewCommand}"
+                  GroupName="NavigationButtons"
+                  IconKind="Search" />
+                <cc:IconButton
+                  ButtonText="Hinzufügen"
+                  Command="{Binding NavigateToCreateNewArticleCommand}"
+                  GroupName="NavigationButtons"
+                  IconKind="Add" />
+              </StackPanel>
+            </cc:FlatExpander.Content>
+          </cc:FlatExpander>
         </StackPanel>
       </Grid>
       <Grid Grid.Row="2">

@@ -73,12 +73,12 @@ namespace CYR.Invoice
                     if (Model.Mwst)
                     {
                         column.Item().AlignRight().Text($"MwSt.         19%").FontSize(14);
-                        column.Item().AlignRight().Text($"Brutto-Summe: {(totalPrice * MWST):0.00}€").FontSize(14);
+                        column.Item().AlignRight().Text($"Gesamtbetrag: {(totalPrice * MWST):0.00}€").FontSize(14);
                     }
                     else
                     {
                         column.Item().AlignRight().Text("").FontSize(14);
-                        column.Item().AlignRight().Text($"Brutto-Summe: {(totalPrice):0.00}€").FontSize(14);
+                        column.Item().AlignRight().Text($"Gesamtbetrag: {(totalPrice):0.00}€").FontSize(14);
                     }
                     column.Item().Element(ComposeComments);
                 });

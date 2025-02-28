@@ -42,5 +42,10 @@ namespace CYR.ViewModel
         {
             Navigation.NavigateTo<GetInvoiceViewModel>();
         }
+        [RelayCommand]
+        private void NavigateToCreateNewArticle()
+        {
+            Navigation.NavigateTo<CreateNewArticleViewModel>();
+        }
     }
 }

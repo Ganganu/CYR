@@ -10,10 +10,9 @@ namespace CYR.ViewModel
     public partial class ArticleViewModel : ObservableObject, IParameterReceiver
     {
         private readonly IOrderItemRepository _orderItemRepository;
-        public ArticleViewModel(IOrderItemRepository orderItemRepository, INavigationService navigationService)
+        public ArticleViewModel(IOrderItemRepository orderItemRepository)
         {
             _orderItemRepository = orderItemRepository;
-            Navigation = navigationService;
             Initialize();
         }
 
@@ -24,15 +23,8 @@ namespace CYR.ViewModel
         }
 
         [ObservableProperty]
-        private INavigationService _navigation;
-        [ObservableProperty]
         private ObservableCollection<OrderItem.OrderItem>? _orderItems;
 
-        [RelayCommand]
-        private void AddNewRow()
-        {
-            Navigation.NavigateTo<CreateNewArticleViewModel>();
-        }
         [RelayCommand]
         private async Task DeleteRow(object parameter)
         {
