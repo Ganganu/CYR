@@ -160,7 +160,7 @@
           Margin="0,0,10,0"
           HorizontalAlignment="Right"
           VerticalAlignment="Center"
-          Command="{Binding CreateInvoiceCommand}"
+          Command="{Binding PreviewInvoiceCommand}"
           Content="Preview"
           Cursor="Hand" />
         <Button
@@ -229,12 +229,12 @@
                 <DataTemplate>
                   <ComboBox
                     DisplayMemberPath="Name"
-                    MaxDropDownHeight="150"
                     FontSize="15"
                     IsEditable="True"
-                    Text="{Binding ManuallyInsertedArticle,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    MaxDropDownHeight="150"
+                    SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ManuallyInsertedArticle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>

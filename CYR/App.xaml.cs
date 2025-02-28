@@ -56,6 +56,7 @@ namespace CYR
             services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
             services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
             services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
+            services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();
             services.AddSingleton<Client>();
             services.AddSingleton<User.User>();
             services.AddSingleton<UserSettings>();
