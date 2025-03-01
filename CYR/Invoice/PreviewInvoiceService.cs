@@ -1,12 +1,10 @@
 ﻿using CYR.Clients;
-using CYR.Core;
 using CYR.Dialog;
 using CYR.Model;
 using CYR.Services;
 using CYR.Settings;
 using CYR.ViewModel;
 using QuestPDF.Fluent;
-using System.Data.SQLite;
 using System.Linq.Expressions;
 using System.Windows;
 
@@ -59,85 +57,71 @@ namespace CYR.Invoice
             {
                 ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",
                 "Abbrechen",
-                                "Warning",
-                                Visibility.Collapsed, "", createInvoiceModel);
+                "Warning",
+                Visibility.Collapsed, "", createInvoiceModel);
                 return;
             }
 
-            try
+            if (createInvoiceModel.Client == null)
             {
-                if (createInvoiceModel.Client == null)
+                ShowErrorDialog("Warnung", "Wählen Sie einen Kunden bevor Sie eine Rechnung schreiben. Möchten Sie zum Kundentab navigieren",
+                    "Nein",
+                    "Warning",
+                    Visibility.Visible, "Ja", createInvoiceModel);
+                if (_dialogResponse == "True")
                 {
-                    ShowErrorDialog("Warnung", "Wählen Sie einen Kunden bevor Sie eine Rechnung schreiben. Möchten Sie zum Kundentab navigieren",
-                        "Nein",
-                        "Warning",
-                        Visibility.Visible, "Ja", createInvoiceModel);
-                    if (_dialogResponse == "True")
-                    {
-                        NavigationService.NavigateTo<ClientViewModel>();
-                    }
-                    return;
+                    NavigationService.NavigateTo<ClientViewModel>();
                 }
-                // Create and populate invoice
-                Client client = new Client
-                {
-                    ClientNumber = createInvoiceModel.Client.ClientNumber
-                };
+                return;
+            }
 
-                InvoiceModel invoiceModel = new InvoiceModel
+            Client client = new Client
+            {
+                ClientNumber = createInvoiceModel.Client.ClientNumber
+            };
+
+            InvoiceModel invoiceModel = new InvoiceModel
+            {
+                InvoiceNumber = createInvoiceModel.InvoiceNumber,
+                Customer = client,
+                IssueDate = createInvoiceModel.InvoiceDate.ToShortDateString(),
+                DueDate = DateTime.Now.ToShortDateString(),
+                NetAmount = createInvoiceModel.Positions.Sum(x => x.Price * x.Quantity),
+                Paragraph = "13b",
+                State = InvoiceState.Open,
+                Subject = createInvoiceModel.Subject,
+                ObjectNumber = createInvoiceModel.ObjectNumber,
+                Mwst = createInvoiceModel.IsMwstApplicable,
+                StartDate = createInvoiceModel.StartDate.ToShortDateString(),
+                EndDate = createInvoiceModel.EndDate.ToShortDateString()
+            };
+            if (createInvoiceModel.IsMwstApplicable)
+            {
+                invoiceModel.GrossAmount = Math.Round(invoiceModel.NetAmount * 1.19m, 2);
+            }
+            else
+            {
+                invoiceModel.GrossAmount = invoiceModel.NetAmount;
+            }
+            _invoiceModel = invoiceModel;
+
+            foreach (var position in createInvoiceModel.Positions)
+            {
+                InvoicePositionModel ipm;
+                if (position.OrderItem is not null && position.OrderItem.Id == 0)
                 {
-                    InvoiceNumber = createInvoiceModel.InvoiceNumber,
-                    Customer = client,
-                    IssueDate = createInvoiceModel.InvoiceDate.ToShortDateString(),
-                    DueDate = DateTime.Now.ToShortDateString(),
-                    NetAmount = createInvoiceModel.Positions.Sum(x => x.Price * x.Quantity),
-                    Paragraph = "13b",
-                    State = InvoiceState.Open,
-                    Subject = createInvoiceModel.Subject,
-                    ObjectNumber = createInvoiceModel.ObjectNumber,
-                    Mwst = createInvoiceModel.IsMwstApplicable,
-                    StartDate = createInvoiceModel.StartDate.ToShortDateString(),
-                    EndDate = createInvoiceModel.EndDate.ToShortDateString()
-                };
-                if (createInvoiceModel.IsMwstApplicable)
-                {
-                    invoiceModel.GrossAmount = Math.Round(invoiceModel.NetAmount * 1.19m, 2);
+                    OrderItem.OrderItem manuallyInsertedOrderItem = ManuallyInsertedItemToOrderItem(position);
+                    ipm = CreateInvoicePositionModel(manuallyInsertedOrderItem, position, invoiceModel);
+                    position.OrderItem.Name = manuallyInsertedOrderItem.Name;
+                    position.OrderItem.Description = manuallyInsertedOrderItem.Description;
                 }
                 else
                 {
-                    invoiceModel.GrossAmount = invoiceModel.NetAmount;
+                    ipm = CreateInvoicePositionModel(position.OrderItem, position, invoiceModel);
                 }
-                _invoiceModel = invoiceModel;
+                await _invoicePositionRepository.InsertAsync(ipm, null);
+            }
 
-                foreach (var position in createInvoiceModel.Positions)
-                {
-                    InvoicePositionModel ipm;
-                    if (position.OrderItem is not null && position.OrderItem.Id == 0)
-                    {
-                        OrderItem.OrderItem manuallyInsertedOrderItem = ManuallyInsertedItemToOrderItem(position);
-                        ipm = CreateInvoicePositionModel(manuallyInsertedOrderItem, position, invoiceModel);
-                        position.OrderItem.Name = manuallyInsertedOrderItem.Name;
-                        position.OrderItem.Description = manuallyInsertedOrderItem.Description;
-                    }
-                    else
-                    {
-                        ipm = CreateInvoicePositionModel(position.OrderItem, position, invoiceModel);
-                    }
-                    await _invoicePositionRepository.InsertAsync(ipm, null);
-                }
-
-            }
-            catch (SQLiteException ex)
-            {
-                ShowErrorDialog("Fehler", $"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} existiert bereits!" +
-                $"Ändern Sie die Rechnungsnummer und versuchen Sie es erneut.", "Abbrechen", "Error", Visibility.Collapsed,
-                "", createInvoiceModel);
-                return;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
             CreateInvoice(createInvoiceModel);
         }
 
@@ -155,7 +139,7 @@ namespace CYR.Invoice
             document.GeneratePdfAndShow();
         }
 
-        private InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
+        private static InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
         {
             var invoicePositionModel = new InvoicePositionModel
             {
@@ -169,7 +153,7 @@ namespace CYR.Invoice
             return invoicePositionModel;
         }
 
-        private OrderItem.OrderItem ManuallyInsertedItemToOrderItem(InvoicePosition invoicePosition)
+        private static OrderItem.OrderItem ManuallyInsertedItemToOrderItem(InvoicePosition invoicePosition)
         {
             OrderItem.OrderItem item = new OrderItem.OrderItem();
             item.Name = invoicePosition.ManuallyInsertedArticle;
