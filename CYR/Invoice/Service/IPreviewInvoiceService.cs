@@ -1,6 +1,7 @@
-﻿using CYR.Services;
+﻿using CYR.Invoice.Model;
+using CYR.Services;
 
-namespace CYR.Invoice
+namespace CYR.Invoice.Service
 {
     public interface IPreviewInvoiceService
     {

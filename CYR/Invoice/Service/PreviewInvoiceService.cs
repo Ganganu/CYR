@@ -1,5 +1,7 @@
 ﻿using CYR.Clients;
 using CYR.Dialog;
+using CYR.Invoice.Model;
+using CYR.Invoice.Repository;
 using CYR.Model;
 using CYR.Services;
 using CYR.Settings;
@@ -8,7 +10,7 @@ using QuestPDF.Fluent;
 using System.Linq.Expressions;
 using System.Windows;
 
-namespace CYR.Invoice
+namespace CYR.Invoice.Service
 {
     public class PreviewInvoiceService : IPreviewInvoiceService
     {
@@ -168,7 +170,7 @@ namespace CYR.Invoice
             string icon,
             Visibility okButtonVisibility, string okButtonText, CreateInvoiceModel createInvoiceModel)
         {
-            _dialogService.ShowDialog<ErrorDialogViewModel>(result =>
+            _dialogService.ShowDialog(result =>
             {
                 _dialogResponse = result;
             },

@@ -2,7 +2,7 @@
 using CYR.Clients;
 using CYR.Model;
 
-namespace CYR.Invoice
+namespace CYR.Invoice.Model
 {
     public class CreateInvoiceModel
     {

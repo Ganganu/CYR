@@ -4,6 +4,8 @@ using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice;
+using CYR.Invoice.Repository;
+using CYR.Invoice.Service;
 using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;

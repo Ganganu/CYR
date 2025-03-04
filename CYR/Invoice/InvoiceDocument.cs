@@ -1,4 +1,5 @@
-﻿using QuestPDF.Fluent;
+﻿using CYR.Invoice.Model;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Globalization;

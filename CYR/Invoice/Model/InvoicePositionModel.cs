@@ -1,4 +1,4 @@
-﻿namespace CYR.Invoice
+﻿namespace CYR.Invoice.Model
 {
     public class InvoicePositionModel
     {

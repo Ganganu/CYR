@@ -9,8 +9,9 @@ using CYR.Model;
 using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;
+using CYR.Invoice.Model;
 
-namespace CYR.Invoice
+namespace CYR.Invoice.Repository
 {
     public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionService
     {
@@ -204,7 +205,7 @@ namespace CYR.Invoice
             string icon,
             Visibility okButtonVisibility, string okButtonText, CreateInvoiceModel createInvoiceModel)
         {
-            _dialogService.ShowDialog<ErrorDialogViewModel>(result =>
+            _dialogService.ShowDialog(result =>
             {
                 _dialogResponse = result;
             },

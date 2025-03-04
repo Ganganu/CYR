@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CYR.Invoice;
+using CYR.Invoice.Model;
+using CYR.Invoice.Repository;
 using CYR.Services;
 using System.Collections.ObjectModel;
 

@@ -1,4 +1,5 @@
 ﻿using CYR.Clients;
+using CYR.Invoice.Model;
 using CYR.Model;
 using CYR.Settings;
 using CYR.User;
