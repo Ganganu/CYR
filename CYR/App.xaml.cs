@@ -6,7 +6,7 @@ using CYR.Dialog;
 using CYR.Invoice;
 using CYR.Invoice.Repository;
 using CYR.Invoice.Service;
-using CYR.Model;
+using CYR.Invoice.View;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
@@ -47,6 +47,7 @@ namespace CYR
             services.AddSingleton<CreateClientViewModel>();
             services.AddSingleton<SettingsViewModel>();
             services.AddSingleton<SettingsView>();
+            services.AddSingleton<InvoiceView>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDialogService, DialogService>();

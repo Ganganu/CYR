@@ -34,12 +34,6 @@
       </Grid>
       <Grid Grid.Row="1">
         <StackPanel Orientation="Vertical">
-          <cc:IconButton
-            ButtonText="Kunden"
-            Command="{Binding NavigateToClientViewCommand}"
-            GroupName="NavigationButtons"
-            IconKind="Person" />
-          <Separator />
           <cc:FlatExpander
             HeaderIcon="ReceiptText"
             HeaderText="Rechnungen"
@@ -71,10 +65,10 @@
             IconKind="InvoiceTextCheckOutline" />
           <Separator />
           <cc:IconButton
-            ButtonText="Artikel/Dienstleistungen"
-            Command="{Binding NavigateToArticleViewCommand}"
+            ButtonText="Kunden"
+            Command="{Binding NavigateToClientViewCommand}"
             GroupName="NavigationButtons"
-            IconKind="PackageVariantClosed" />
+            IconKind="Person" />
           <Separator />
           <cc:FlatExpander
             HeaderIcon="ReceiptText"

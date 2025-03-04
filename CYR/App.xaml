@@ -5,6 +5,7 @@
   xmlns:local="clr-namespace:CYR"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:v="clr-namespace:CYR.View"
+  xmlns:ivm="clr-namespace:CYR.Invoice.View"
   xmlns:vm="clr-namespace:CYR.ViewModel">
   <Application.Resources>
     <ResourceDictionary>
@@ -19,8 +20,11 @@
         <v:ClientView />
       </DataTemplate>
       <DataTemplate DataType="{x:Type vm:CreateInvoiceViewModel}">
-        <v:CreateInvoiceView />
+        <ivm:InvoiceView />
       </DataTemplate>
+      <!--<DataTemplate DataType="{x:Type vm:CreateInvoiceViewModel}">
+        <v:CreateInvoiceView />
+      </DataTemplate>-->
       <DataTemplate DataType="{x:Type vm:GetInvoiceViewModel}">
         <v:GetInvoiceView />
       </DataTemplate>

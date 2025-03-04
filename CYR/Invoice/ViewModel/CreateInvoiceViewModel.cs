@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
-using CYR.Core;
-using CYR.Dialog;
 using CYR.Invoice;
 using CYR.Invoice.Model;
 using CYR.Invoice.Repository;
@@ -10,9 +8,7 @@ using CYR.Invoice.Service;
 using CYR.Model;
 using CYR.OrderItems;
 using CYR.Services;
-using CYR.Settings;
 using CYR.UnitOfMeasure;
-using QuestPDF.Fluent;
 using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel
