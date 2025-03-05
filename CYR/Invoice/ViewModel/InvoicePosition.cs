@@ -29,6 +29,8 @@ namespace CYR.Model
         }
 
         [ObservableProperty]
+        private bool _isInvoicePositionSelected;
+        [ObservableProperty]
         private string? _id;
         [ObservableProperty]
         private string? _invoiceNumber;
@@ -61,8 +63,8 @@ namespace CYR.Model
         }
 
         [ObservableProperty]
-        private decimal _quantity;
-        partial void OnQuantityChanged(decimal oldValue, decimal newValue)
+        private decimal? _quantity;
+        partial void OnQuantityChanged(decimal? oldValue, decimal? newValue)
         {
             if (oldValue != newValue)
             {
@@ -78,8 +80,8 @@ namespace CYR.Model
         private UnitOfMeasureModel? _unitOfMeasure;
 
         [ObservableProperty]
-        private decimal _price;
-        partial void OnPriceChanged(decimal oldValue, decimal newValue)
+        private decimal? _price;
+        partial void OnPriceChanged(decimal? oldValue, decimal? newValue)
         {
             if (oldValue != newValue)
             {
@@ -88,7 +90,7 @@ namespace CYR.Model
         }
 
         [ObservableProperty]
-        public decimal _totalPrice;
+        public decimal? _totalPrice;
         [ObservableProperty]
         private ObservableCollection<OrderItem.OrderItem>? _items;
 

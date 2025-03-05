@@ -17,7 +17,7 @@ namespace CYR.Invoice.Service
         private readonly IInvoicePositionRepository _invoicePositionRepository;
         private readonly IDialogService _dialogService;
         private readonly IConfigurationService _configurationService;
-        private InvoiceModel _invoiceModel;
+        private InvoiceModel? _invoiceModel;
         private string? _dialogResponse;
         public PreviewInvoiceService(INavigationService navigationService, IInvoicePositionRepository invoicePositionRepository,
             IDialogService dialogService, IConfigurationService configurationService)
@@ -86,7 +86,7 @@ namespace CYR.Invoice.Service
             {
                 InvoiceNumber = createInvoiceModel.InvoiceNumber,
                 Customer = client,
-                IssueDate = createInvoiceModel.InvoiceDate.ToShortDateString(),
+                IssueDate = createInvoiceModel.InvoiceDate.Value.ToShortDateString(),
                 DueDate = DateTime.Now.ToShortDateString(),
                 NetAmount = createInvoiceModel.Positions.Sum(x => x.Price * x.Quantity),
                 Paragraph = "13b",
@@ -94,12 +94,12 @@ namespace CYR.Invoice.Service
                 Subject = createInvoiceModel.Subject,
                 ObjectNumber = createInvoiceModel.ObjectNumber,
                 Mwst = createInvoiceModel.IsMwstApplicable,
-                StartDate = createInvoiceModel.StartDate.ToShortDateString(),
-                EndDate = createInvoiceModel.EndDate.ToShortDateString()
+                StartDate = createInvoiceModel.StartDate.Value.ToShortDateString(),
+                EndDate = createInvoiceModel.EndDate.Value.ToShortDateString()
             };
             if (createInvoiceModel.IsMwstApplicable)
             {
-                invoiceModel.GrossAmount = Math.Round(invoiceModel.NetAmount * 1.19m, 2);
+                invoiceModel.GrossAmount = Math.Round((decimal)invoiceModel.NetAmount * 1.19m, 2);
             }
             else
             {
@@ -121,7 +121,7 @@ namespace CYR.Invoice.Service
                 {
                     ipm = CreateInvoicePositionModel(position.OrderItem, position, invoiceModel);
                 }
-                await _invoicePositionRepository.InsertAsync(ipm, null);
+                //await _invoicePositionRepository.InsertAsync(ipm, null);
             }
 
             CreateInvoice(createInvoiceModel);
@@ -135,8 +135,8 @@ namespace CYR.Invoice.Service
             model.Subject = createInvoiceModel.Subject;
             model.ObjectNumber = createInvoiceModel.ObjectNumber;
             model.Mwst = createInvoiceModel.IsMwstApplicable;
-            model.StartDate = createInvoiceModel.StartDate.ToShortDateString();
-            model.EndDate = createInvoiceModel.EndDate.ToShortDateString();
+            model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+            model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }

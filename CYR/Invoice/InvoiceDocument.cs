@@ -68,7 +68,7 @@ namespace CYR.Invoice
                     column.Item().Element(ComposeCommentsTop);
 
                     column.Item().Element(ComposeTable);
-                    decimal totalPrice = Model.Items.Sum(x => x.Price * x.Quantity);
+                    decimal? totalPrice = Model.Items.Sum(x => x.Price * x.Quantity);
                     string formattedTotalPrice = string.Format(CultureInfo.CreateSpecificCulture("de-DE"), "{0:N2}", totalPrice);
                     column.Item().AlignRight().Text($"Netto-Summe: {formattedTotalPrice}€").FontSize(14);
                     if (Model.Mwst)
@@ -168,8 +168,8 @@ namespace CYR.Invoice
                     table.Cell().Element(CellStyle).Text(item.Quantity);
                     table.Cell().Element(CellStyle).Text(item.UnitOfMeasure?.Name);
                     table.Cell().Element(CellStyle).Text(item.OrderItem.Name);
-                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price.ToString("N2", new CultureInfo("de-DE"))}€");
-                    table.Cell().Element(CellStyle).AlignRight().Text($"{(item.Price * item.Quantity).ToString("N2", new CultureInfo("de-DE"))}€");
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price?.ToString("N2", new CultureInfo("de-DE"))}€");
+                    table.Cell().Element(CellStyle).AlignRight().Text($"{(item.Price * item.Quantity)?.ToString("N2", new CultureInfo("de-DE"))}€");
 
                     static IContainer CellStyle(IContainer container)
                     {

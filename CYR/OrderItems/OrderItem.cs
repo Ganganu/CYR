@@ -11,6 +11,6 @@ namespace CYR.OrderItem
         [ObservableProperty]
         private string? _name;
         [ObservableProperty]
-        private decimal _price;
+        private decimal? _price;
     }
 }

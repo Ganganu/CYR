@@ -9,8 +9,8 @@ namespace CYR.Invoice
 {
     public static class InvoiceDocumentDataSource
     {
-        private static int _invoiceNumber;
-        public static void SetInvoiceNumber(int invoiceNumber)
+        private static int? _invoiceNumber;
+        public static void SetInvoiceNumber(int? invoiceNumber)
         {
             _invoiceNumber = invoiceNumber;
         }

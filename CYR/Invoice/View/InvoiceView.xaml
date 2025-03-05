@@ -16,7 +16,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
@@ -49,7 +49,7 @@
           Grid.Column="1"
           HorizontalAlignment="Right"
           Orientation="Horizontal">
-          <Button Style="{StaticResource MaterialDesignFlatButton}">
+          <Button Command="{Binding PreviewInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
               <materialDesign:PackIcon
                 Width="30"
@@ -68,11 +68,13 @@
             </Button.Content>
           </Button>
         </StackPanel>
-        <Separator
+        <Border
           Grid.Row="1"
           Grid.Column="0"
           Grid.ColumnSpan="2"
-          Margin="0,15,0,0" />
+          Margin="0,15,0,0"
+          BorderBrush="LightGray"
+          BorderThickness="0,0,0,4" />
       </Grid>
 
       <!--  Second Row  -->
@@ -90,52 +92,51 @@
           Grid.Column="0"
           Margin="0,0,50,0">
           <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
           </Grid.RowDefinitions>
           <Label
             Grid.Row="0"
-            Content="Absender"
-            FontSize="20" />
-          <ComboBox
-            Grid.Row="1"
-            Height="40"
-            Margin="0,5,0,0"
-            BorderBrush="LightGray"
-            BorderThickness="1"
-            Style="{StaticResource MaterialDesignOutlinedComboBox}" />
-          <Label
-            Grid.Row="2"
-            Margin="0,10,0,0"
             Content="Empfänger"
             FontSize="20" />
           <ComboBox
-            Grid.Row="3"
-            Height="40"
-            Margin="0,5,0,0"
+            Grid.Row="1"
+            materialDesign:HintAssist.Hint="Kunden auswählen"
+            materialDesign:HintAssist.IsFloating="False"
             BorderBrush="LightGray"
             BorderThickness="1"
+            DisplayMemberPath="Name"
+            ItemsSource="{Binding Clients}"
+            SelectedItem="{Binding SelectedClient}"
             Style="{StaticResource MaterialDesignOutlinedComboBox}" />
           <Label
-            Grid.Row="4"
-            Margin="0,10,0,0"
+            Grid.Row="2"
+            Margin="0,5,0,0"
             Content="Betreff"
             FontSize="20" />
           <TextBox
-            Grid.Row="5"
-            Margin="0,5,0,0"
+            Grid.Row="3"
+            Grid.RowSpan="2"
+            Height="150"
+            materialDesign:HintAssist.Hint="z.B. Durchgeführte Arbeit"
+            materialDesign:HintAssist.IsFloating="False"
+            AcceptsReturn="True"
+            AcceptsTab="True"
             BorderBrush="LightGray"
             BorderThickness="1"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+            SpellCheck.IsEnabled="True"
+            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+            Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap"
+            VerticalScrollBarVisibility="Auto" />
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1">
           <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
           </Grid.RowDefinitions>
           <Label
             Grid.Row="0"
@@ -159,11 +160,14 @@
                 FontSize="16" />
               <DatePicker
                 Grid.Row="1"
-                Height="45"
                 Margin="0,5,0,0"
                 VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Rechnungsdatum auswählen"
+                materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
+                SelectedDate="{Binding InvoiceDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
               <Label
                 Grid.Row="2"
@@ -172,9 +176,12 @@
               <TextBox
                 Grid.Row="3"
                 Margin="0,5,0,0"
+                materialDesign:HintAssist.Hint="Rechnungsnummer eingeben"
+                materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding InvoiceNumber}" />
             </Grid>
             <Grid Grid.Column="1" Margin="15,0,0,0">
               <Grid.RowDefinitions>
@@ -189,11 +196,14 @@
                 FontSize="16" />
               <DatePicker
                 Grid.Row="1"
-                Height="45"
                 Margin="0,5,0,0"
                 VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Startdatum auswählen"
+                materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
+                SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
               <Label
                 Grid.Row="2"
@@ -201,21 +211,112 @@
                 FontSize="16" />
               <DatePicker
                 Grid.Row="3"
-                Height="45"
                 Margin="0,5,0,0"
                 VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Enddatum auswählen"
+                materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
-                FontSize="16"
+                SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
             </Grid>
           </Grid>
+          <materialDesign:PopupBox
+            Grid.Row="2"
+            PlacementMode="TopAndAlignCentres"
+            PopupUniformCornerRadius="10"
+            StaysOpen="True">
+            <Grid Grid.Row="2">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                  Grid.Column="0"
+                  Content="Name"
+                  FontSize="18" />
+                <Label
+                  Grid.Column="1"
+                  Margin="-10,0,0,0"
+                  Content="Beschreibung"
+                  FontSize="18" />
+                <Label
+                  Grid.Column="2"
+                  Margin="-10,0,0,0"
+                  Content="Preis"
+                  FontSize="18" />
+              </Grid>
+              <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                  Grid.Column="0"
+                  Width="250"
+                  MaxWidth="350"
+                  HorizontalAlignment="Left"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Artikelname"
+                  materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                  materialDesign:TextFieldAssist.LeadingIcon="Search"
+                  Background="White"
+                  BorderBrush="Transparent"
+                  FontSize="14"
+                  Foreground="Gray"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                  Grid.Column="1"
+                  Width="250"
+                  MaxWidth="350"
+                  Margin="-10,0,0,0"
+                  HorizontalAlignment="Left"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Artikel Beschreibung"
+                  materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                  materialDesign:TextFieldAssist.LeadingIcon="Search"
+                  Background="White"
+                  BorderBrush="Transparent"
+                  FontSize="14"
+                  Foreground="Gray"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                <TextBox
+                  Grid.Column="2"
+                  Width="250"
+                  MaxWidth="350"
+                  Margin="-10,0,0,0"
+                  HorizontalAlignment="Left"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Artikel Preis"
+                  materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                  materialDesign:TextFieldAssist.LeadingIcon="Search"
+                  Background="White"
+                  BorderBrush="Transparent"
+                  FontSize="14"
+                  Foreground="Gray"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+              </Grid>
+            </Grid>
+          </materialDesign:PopupBox>
         </Grid>
-        <Separator
+        <Border
           Grid.Row="1"
           Grid.Column="0"
           Grid.ColumnSpan="2"
-          Margin="0,15,0,0" />
+          Margin="0,15,0,0"
+          BorderBrush="LightGray"
+          BorderThickness="0,0,0,2" />
       </Grid>
 
       <!--  Third Row  -->
@@ -223,49 +324,147 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="auto" />
           <RowDefinition Height="auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Label
-          Grid.Row="0"
-          Content="Items"
-          FontSize="24" />
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Positions}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Border
-                Height="55"
-                Margin="0,0,0,0"
-                Background="White"
-                BorderBrush="LightGray"
-                BorderThickness="1"
-                CornerRadius="10">
-                <Grid Margin="5,0">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                  </Grid.ColumnDefinitions>
-                  <CheckBox />
-                  <TextBlock Grid.Column="1" Text="{Binding Id}" />
-                  <TextBox Grid.Column="2" Text="{Binding Quantity}" />
-                  <ComboBox
-                    Grid.Column="3"
-                    DisplayMemberPath="Name"
-                    ItemsSource="{Binding UnitsOfMeasure}" />
-                  <ComboBox
-                    Grid.Column="4"
-                    DisplayMemberPath="Name"
-                    ItemsSource="{Binding Items}" />
-                  <TextBox Grid.Column="5" Text="{Binding Price}" />
-                  <TextBox Grid.Column="6" Text="{Binding TotalPrice}" />
-                </Grid>
-              </Border>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid Grid.Row="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+          </Grid.ColumnDefinitions>
+          <Label
+            Grid.Column="0"
+            Content="Items"
+            FontSize="24" />
+          <Button
+            HorizontalAlignment="Right"
+            BorderBrush="Red"
+            BorderThickness="0.5"
+            Command="{Binding DeleteInvoicePositionCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
+            </Button.Content>
+          </Button>
+        </Grid>
+        <Border
+          Grid.Row="2"
+          Background="White"
+          BorderBrush="LightGray"
+          BorderThickness="1"
+          CornerRadius="10">
+          <DataGrid
+            AutoGenerateColumns="False"
+            Background="Transparent"
+            BorderBrush="LightGray"
+            BorderThickness="0"
+            ItemsSource="{Binding Positions}">
+            <DataGrid.Columns>
+              <DataGridTemplateColumn Header="">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsInvoicePositionSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTextColumn
+                Binding="{Binding Id}"
+                Header="#"
+                IsReadOnly="True" />
+              <DataGridTemplateColumn
+                MinWidth="150"
+                MaxWidth="200"
+                Header="Artikelbezeichnung">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <ComboBox
+                      materialDesign:HintAssist.Hint="Artikel auswählen"
+                      materialDesign:HintAssist.IsFloating="False"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
+                      MaxDropDownHeight="150"
+                      SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource MaterialDesignDataGridComboBox}"
+                      Text="{Binding ManuallyInsertedArticle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn
+                MinWidth="100"
+                MaxWidth="150"
+                Header="Menge">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBox
+                      materialDesign:HintAssist.Hint="z.B. 10.0"
+                      materialDesign:HintAssist.IsFloating="False"
+                      Style="{StaticResource MaterialDesignTextBoxBase}"
+                      Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn
+                MinWidth="50"
+                MaxWidth="155"
+                Header="Einheit">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <ComboBox
+                      materialDesign:HintAssist.Hint="Einheit auswählen"
+                      materialDesign:HintAssist.IsFloating="False"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding UnitsOfMeasure}"
+                      SelectedItem="{Binding UnitOfMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource MaterialDesignDataGridComboBox}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn
+                MinWidth="100"
+                MaxWidth="200"
+                Header="E-Preis">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBox
+                      materialDesign:HintAssist.Hint="Einheitspreis"
+                      materialDesign:HintAssist.IsFloating="False"
+                      Style="{StaticResource MaterialDesignTextBoxBase}"
+                      Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Header="G-Preis">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </Border>
+        <Border
+          Grid.Row="3"
+          Margin="0,10,0,0"
+          BorderBrush="LightGray"
+          BorderThickness="0,0,0,2" />
+      </Grid>
+      <Grid Grid.Row="3" Margin="0,0,0,10">
+        <Button
+          Grid.Row="2"
+          HorizontalAlignment="Left"
+          Command="{Binding AddNewRowCommand}"
+          Style="{StaticResource MaterialDesignFlatButton}">
+          <Button.Content>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon VerticalAlignment="Center" Kind="Add" />
+              <Label
+                VerticalAlignment="Center"
+                Content="Neue Zeile"
+                Foreground="Orange" />
+            </StackPanel>
+          </Button.Content>
+        </Button>
       </Grid>
     </Grid>
   </Grid>

@@ -24,7 +24,7 @@ namespace CYR.Invoice.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int invoiceId)
+        public async Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int? invoiceId)
         {
             List<InvoicePositionModel> invoicePositions = new List<InvoicePositionModel>();
             InvoicePositionModel invoicePosition;

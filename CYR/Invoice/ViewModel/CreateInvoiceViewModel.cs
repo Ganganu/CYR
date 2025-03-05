@@ -19,43 +19,45 @@ namespace CYR.ViewModel
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private readonly ISaveInvoiceInvoicePositionService _saveInvoiceInvoicePositionService;
         private readonly IPreviewInvoiceService _previewInvoiceService;
+        private readonly IRetrieveClients _retrieveClients;
         private int _positionCounter = 1;
-        private Client _client;
+        private Client? _client;
 
         public CreateInvoiceViewModel(IOrderItemRepository orderItemRepository,
             IUnitOfMeasureRepository unitOfMeasureRepository,
             INavigationService navigationService,
             ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
-            IPreviewInvoiceService previewInvoiceService)
+            IPreviewInvoiceService previewInvoiceService,
+            IRetrieveClients retrieveClients)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
             NavigationService = navigationService;
             _saveInvoiceInvoicePositionService = saveInvoiceInvoicePositionService;
             _previewInvoiceService = previewInvoiceService;
-            InvoiceDate = DateTime.Now;
+            _retrieveClients = retrieveClients;
             Initialize();
         }
-        private void Initialize()
+        private async void Initialize()
         {
-            Positions = new ObservableCollection<InvoicePosition> { new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now;
+            Positions = new ObservableCollection<InvoicePosition> { new(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
+            IEnumerable<Client> cl = await _retrieveClients.Handle();
+            Clients = [.. cl];
         }
         [ObservableProperty]
-        private string _clientId;
+        private string? _clientId;
         [ObservableProperty]
-        private string _clientName;
+        private string? _clientName;
         [ObservableProperty]
-        private string _clientStreet;
+        private string? _clientStreet;
         [ObservableProperty]
-        private string _clientCityPlz;
+        private string? _clientCityPlz;
         [ObservableProperty]
-        private int _invoiceNumber;
+        private int? _invoiceNumber;
         [ObservableProperty]
-        private string _issueDate;
+        private string? _issueDate;
         [ObservableProperty]
-        private string _dueDate;
+        private string? _dueDate;
         [ObservableProperty]
         private decimal? _netAmount;
         [ObservableProperty]
@@ -67,19 +69,31 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private bool _isMwstApplicable;
         [ObservableProperty]
-        private DateTime _invoiceDate;
+        private DateTime? _invoiceDate;
         [ObservableProperty]
-        private DateTime _startDate;
+        private DateTime? _startDate;
         [ObservableProperty]
-        private DateTime _endDate;
+        private DateTime? _endDate;
+        [ObservableProperty]
+        private ObservableCollection<Client> _clients;
+        [ObservableProperty]
+        private Client? _selectedClient;
         public INavigationService NavigationService { get; }
-        partial void OnInvoiceNumberChanged(int value)
+        partial void OnInvoiceNumberChanged(int? value)
         {
             InvoiceDocumentDataSource.SetInvoiceNumber(value);
         }
+
+        partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)      
+        {
+            if (newValue != oldValue)
+            {
+                _client = newValue;
+            }
+        }
+
         [ObservableProperty]
         private ObservableCollection<InvoicePosition>? _positions;
-
 
         [RelayCommand]
         private void AddNewRow()
@@ -156,5 +170,15 @@ namespace CYR.ViewModel
             };
             await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
         }
+        [RelayCommand]
+        private void DeleteInvoicePosition()
+        {
+            var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();
+            if (selectedPositions is null)  return;
+            foreach (var position in selectedPositions)
+            {
+                Positions?.Remove(position);
+            }
+        } 
     }
 }

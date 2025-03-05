@@ -101,7 +101,7 @@ namespace CYR.Invoice.Repository
                         {
                             InvoiceNumber = createInvoiceModel.InvoiceNumber,
                             Customer = client,
-                            IssueDate = createInvoiceModel.InvoiceDate.ToShortDateString(),
+                            IssueDate = createInvoiceModel.InvoiceDate.Value.ToShortDateString(),
                             DueDate = DateTime.Now.ToShortDateString(),
                             NetAmount = createInvoiceModel.Positions.Sum(x => x.Price * x.Quantity),
                             Paragraph = "13b",
@@ -109,12 +109,12 @@ namespace CYR.Invoice.Repository
                             Subject = createInvoiceModel.Subject,
                             ObjectNumber = createInvoiceModel.ObjectNumber,
                             Mwst = createInvoiceModel.IsMwstApplicable,
-                            StartDate = createInvoiceModel.StartDate.ToShortDateString(),
-                            EndDate = createInvoiceModel.EndDate.ToShortDateString()
+                            StartDate = createInvoiceModel.StartDate.Value.ToShortDateString(),
+                            EndDate = createInvoiceModel.EndDate.Value.ToShortDateString()
                         };
                         if (createInvoiceModel.IsMwstApplicable)
                         {
-                            invoiceModel.GrossAmount = Math.Round(invoiceModel.NetAmount * 1.19m, 2);
+                            invoiceModel.GrossAmount = Math.Round((decimal)invoiceModel.NetAmount * 1.19m, 2);
                         }
                         else
                         {
@@ -153,7 +153,7 @@ namespace CYR.Invoice.Repository
                         "", createInvoiceModel);
                         return;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         throw;
                     }
@@ -170,8 +170,8 @@ namespace CYR.Invoice.Repository
             model.Subject = createInvoiceModel.Subject;
             model.ObjectNumber = createInvoiceModel.ObjectNumber;
             model.Mwst = createInvoiceModel.IsMwstApplicable;
-            model.StartDate = createInvoiceModel.StartDate.ToShortDateString();
-            model.EndDate = createInvoiceModel.EndDate.ToShortDateString();
+            model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+            model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }

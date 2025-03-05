@@ -154,43 +154,6 @@
               Style="{StaticResource MaterialDesignOutlinedTextBox}" />
           </Grid>
         </Grid>
-        <!--<ListView Grid.Row="2" ItemsSource="{Binding OrderItems, UpdateSourceTrigger=PropertyChanged}">
-          <ListView.View>
-            <GridView>
-              <GridViewColumn Header="Name">
-                <GridViewColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                  </DataTemplate>
-                </GridViewColumn.CellTemplate>
-              </GridViewColumn>
-              <GridViewColumn Header="Beschreibung">
-                <GridViewColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding Description}" />
-                  </DataTemplate>
-                </GridViewColumn.CellTemplate>
-              </GridViewColumn>
-              <GridViewColumn Header="Preis">
-                <GridViewColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock Text="{Binding Price}" />
-                  </DataTemplate>
-                </GridViewColumn.CellTemplate>
-              </GridViewColumn>
-              <GridViewColumn>
-                <GridViewColumn.CellTemplate>
-                  <DataTemplate>
-                    <Button
-                      Command="{Binding DataContext.DeleteRowCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                      CommandParameter="{Binding}"
-                      Content="X" />
-                  </DataTemplate>
-                </GridViewColumn.CellTemplate>
-              </GridViewColumn>
-            </GridView>
-          </ListView.View>
-        </ListView>-->
         <ScrollViewer
           Grid.Row="3"
           Margin="0,10,0,0"
@@ -240,7 +203,10 @@
                             <materialDesign:PackIcon Kind="Edit" />
                           </Button.Content>
                         </Button>
-                        <Button Background="Red" Command="{Binding DataContext.DeleteRowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                        <Button
+                          Background="Red"
+                          Command="{Binding DataContext.DeleteRowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                          CommandParameter="{Binding}">
                           <Button.Content>
                             <materialDesign:PackIcon Kind="Delete" />
                           </Button.Content>
