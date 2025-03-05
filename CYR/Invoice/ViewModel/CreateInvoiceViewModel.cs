@@ -6,6 +6,7 @@ using CYR.Invoice.Model;
 using CYR.Invoice.Repository;
 using CYR.Invoice.Service;
 using CYR.Model;
+using CYR.OrderItem;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.UnitOfMeasure;
@@ -110,16 +111,16 @@ namespace CYR.ViewModel
         [RelayCommand]
         private async Task SaveArticle(object parameters)
         {
-            if (parameters is null)
+            var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();
+            if (selectedPositions is null) return;
+            foreach (var position in selectedPositions)
             {
-                return;
+                OrderItem.OrderItem orderItem = new();
+                orderItem.Name = position.ManuallyInsertedArticle;
+                orderItem.Description = position.ManuallyInsertedArticle;
+                orderItem.Price = position.Price;
+                await _orderItemRepository.InsertAsync(orderItem);
             }
-            InvoicePosition invoicePosition = (InvoicePosition)parameters;
-            OrderItem.OrderItem orderItem = new();
-            orderItem.Name = invoicePosition.ManuallyInsertedArticle;
-            orderItem.Description = invoicePosition.ManuallyInsertedArticle;
-            orderItem.Price = invoicePosition.Price;
-            await _orderItemRepository.InsertAsync(orderItem);
         }
         public void ReceiveParameter(object parameter)
         {

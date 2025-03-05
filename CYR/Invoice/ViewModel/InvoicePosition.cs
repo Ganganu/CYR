@@ -37,8 +37,8 @@ namespace CYR.Model
         [ObservableProperty]
         public OrderItem.OrderItem? _orderItem;
         [ObservableProperty]
-        public string _manuallyInsertedArticle;
-        partial void OnManuallyInsertedArticleChanged(string? oldValue, string newValue)
+        public string? _manuallyInsertedArticle;
+        partial void OnManuallyInsertedArticleChanged(string? oldValue, string? newValue)
         {
             if (oldValue != newValue)
             {
