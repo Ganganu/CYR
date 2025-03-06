@@ -120,8 +120,11 @@ namespace CYR.Invoice
                         .FontSize(11);
                     column.Item().Text($"Datum: {Model.IssueDate}")
                         .FontSize(11);
-                    column.Item().Text($"Zeitraum: {Model.StartDate} - {Model.EndDate}")
-                        .FontSize(11);
+                    if (!string.IsNullOrEmpty(Model.StartDate) || !string.IsNullOrEmpty(Model.EndDate))
+                    {                        
+                        column.Item().Text($"Zeitraum: {Model.StartDate} - {Model.EndDate}")
+                            .FontSize(11);
+                    }
                 });
             });
         }
@@ -183,11 +186,15 @@ namespace CYR.Invoice
             container.Background(Colors.Grey.Lighten3).PaddingTop(20).Column(column =>
             {
                 column.Spacing(5);
-                if (!Model.Mwst)
+                if (string.IsNullOrEmpty(Model.Notiz))
                 {
-                    column.Item().Text("Bauleistung im Sinne von §13b Abs. 5 UStG").FontSize(11);                    
+                    if (!Model.Mwst)
+                    {
+                        column.Item().Text("Bauleistung im Sinne von §13b Abs. 5 UStG").FontSize(11);
+                    }
+                    column.Item().Text("Wir bitten um Überweisung des Rechnungsbetrages sofort ohne Abzug.").FontSize(11);
                 }
-                column.Item().Text("Wir bitten um Überweisung des Rechnungsbetrages sofort ohne Abzug.").FontSize(11);
+                column.Item().Text(Model.Notiz).FontSize(11);
                 column.Item().Text("");
                 column.Item().Text("Mit freundlichen Grüßen").FontSize(11);
                 column.Item().Text(Model.Seller.Name).FontSize(11);

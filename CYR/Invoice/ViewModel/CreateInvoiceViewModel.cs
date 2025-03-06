@@ -46,13 +46,7 @@ namespace CYR.ViewModel
             Clients = [.. cl];
         }
         [ObservableProperty]
-        private string? _clientId;
-        [ObservableProperty]
-        private string? _clientName;
-        [ObservableProperty]
-        private string? _clientStreet;
-        [ObservableProperty]
-        private string? _clientCityPlz;
+        private string? _notiz;
         [ObservableProperty]
         private int? _invoiceNumber;
         [ObservableProperty]
@@ -132,9 +126,9 @@ namespace CYR.ViewModel
             _client = clientParameter;
             if (clientParameter != null)
             {
-                ClientName = clientParameter.Name;
-                ClientStreet = clientParameter.Street;
-                ClientCityPlz = $"{clientParameter.City} {clientParameter.PLZ}";
+                //ClientName = clientParameter.Name;
+                //ClientStreet = clientParameter.Street;
+                //ClientCityPlz = $"{clientParameter.City} {clientParameter.PLZ}";
             }
         }
         [RelayCommand]
@@ -149,6 +143,7 @@ namespace CYR.ViewModel
                 IsMwstApplicable = IsMwstApplicable,
                 ObjectNumber = ObjectNumber,
                 Positions = Positions,
+                Notiz = Notiz,
                 StartDate = StartDate,
                 Subject = Subject
             };
@@ -166,6 +161,7 @@ namespace CYR.ViewModel
                 IsMwstApplicable = IsMwstApplicable,
                 ObjectNumber = ObjectNumber,
                 Positions = Positions,
+                Notiz = Notiz,
                 StartDate = StartDate,
                 Subject = Subject
             };

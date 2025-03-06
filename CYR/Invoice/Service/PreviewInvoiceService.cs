@@ -82,21 +82,27 @@ namespace CYR.Invoice.Service
                 ClientNumber = createInvoiceModel.Client.ClientNumber
             };
 
-            InvoiceModel invoiceModel = new InvoiceModel
+            if (createInvoiceModel.StartDate.HasValue)
             {
-                InvoiceNumber = createInvoiceModel.InvoiceNumber,
-                Customer = client,
-                IssueDate = createInvoiceModel.InvoiceDate.Value.ToShortDateString(),
-                DueDate = DateTime.Now.ToShortDateString(),
-                NetAmount = createInvoiceModel.Positions.Sum(x => x.Price * x.Quantity),
-                Paragraph = "13b",
-                State = InvoiceState.Open,
-                Subject = createInvoiceModel.Subject,
-                ObjectNumber = createInvoiceModel.ObjectNumber,
-                Mwst = createInvoiceModel.IsMwstApplicable,
-                StartDate = createInvoiceModel.StartDate.Value.ToShortDateString(),
-                EndDate = createInvoiceModel.EndDate.Value.ToShortDateString()
-            };
+
+            }
+
+            InvoiceModel invoiceModel = new InvoiceModel();
+            invoiceModel.InvoiceNumber = createInvoiceModel.InvoiceNumber;
+            invoiceModel.Customer = client;
+            invoiceModel.IssueDate = createInvoiceModel.InvoiceDate.Value.ToShortDateString();
+            invoiceModel.DueDate = DateTime.Now.ToShortDateString();
+            invoiceModel.NetAmount = createInvoiceModel?.Positions.Sum(x => x.Price * x.Quantity);
+            invoiceModel.Paragraph = "13b";
+            invoiceModel.State = InvoiceState.Open;
+            invoiceModel.Subject = createInvoiceModel.Subject;
+            invoiceModel.ObjectNumber = createInvoiceModel.ObjectNumber;
+            invoiceModel.Mwst = createInvoiceModel.IsMwstApplicable;
+            if (createInvoiceModel.StartDate.HasValue)
+                invoiceModel.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+            if (createInvoiceModel.EndDate.HasValue)
+                invoiceModel.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
+
             if (createInvoiceModel.IsMwstApplicable)
             {
                 invoiceModel.GrossAmount = Math.Round((decimal)invoiceModel.NetAmount * 1.19m, 2);
@@ -135,8 +141,11 @@ namespace CYR.Invoice.Service
             model.Subject = createInvoiceModel.Subject;
             model.ObjectNumber = createInvoiceModel.ObjectNumber;
             model.Mwst = createInvoiceModel.IsMwstApplicable;
-            model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
-            model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
+            model.Notiz = createInvoiceModel.Notiz;
+            if (createInvoiceModel.StartDate.HasValue)
+                model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+            if (createInvoiceModel.EndDate.HasValue)
+                model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
             var document = new InvoiceDocument(model);
             document.GeneratePdfAndShow();
         }
