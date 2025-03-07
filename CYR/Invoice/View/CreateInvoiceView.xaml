@@ -108,7 +108,10 @@
             BorderBrush="LightGray"
             BorderThickness="1"
             DisplayMemberPath="Name"
+            FontSize="14"
+            IsEditable="True"
             ItemsSource="{Binding Clients}"
+            MaxDropDownHeight="200"
             SelectedItem="{Binding SelectedClient}"
             Style="{StaticResource MaterialDesignOutlinedComboBox}" />
           <Label
@@ -140,7 +143,7 @@
           </Grid.RowDefinitions>
           <Label
             Grid.Row="0"
-            Content="Invoice Details"
+            Content="Details zur Rechnung"
             FontSize="20" />
           <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -183,11 +186,10 @@
                 BorderThickness="1"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding InvoiceNumber}" />
-              <CheckBox Grid.Row="4" Margin="0 10 0 0">
-              </CheckBox>
             </Grid>
             <Grid Grid.Column="1" Margin="15,0,0,0">
               <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -223,6 +225,18 @@
                 SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
                 SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+              <CheckBox
+                Grid.Row="4"
+                Margin="0,10,0,0"
+                VerticalContentAlignment="Center"
+                IsChecked="{Binding IsMwstApplicable}">
+                <CheckBox.Content>
+                  <Label
+                    Margin="0,-4,0,0"
+                    Content="MwSt."
+                    FontSize="18" />
+                </CheckBox.Content>
+              </CheckBox>
             </Grid>
           </Grid>
           <materialDesign:PopupBox
@@ -263,10 +277,10 @@
                   AcceptsTab="True"
                   BorderBrush="LightGray"
                   BorderThickness="1"
-                  TextWrapping="Wrap"
                   SpellCheck.IsEnabled="True"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Notiz, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding Notiz, UpdateSourceTrigger=PropertyChanged}"
+                  TextWrapping="Wrap" />
               </Grid>
             </Grid>
           </materialDesign:PopupBox>
