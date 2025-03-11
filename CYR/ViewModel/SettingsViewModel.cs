@@ -7,14 +7,16 @@ using System.Windows.Media;
 
 namespace CYR.ViewModel
 {
-    public partial class SettingsViewModel : ObservableObject
+    public partial class SettingsViewModel : ObservableRecipient
     {
         private readonly IConfigurationService _configurationService;
+        private readonly ISelectImageService _selectImageService;
         private readonly UserSettings _userSettings;
 
-        public SettingsViewModel(IConfigurationService configurationService)
+        public SettingsViewModel(IConfigurationService configurationService, ISelectImageService selectImageService)
         {
             _configurationService = configurationService;
+            _selectImageService = selectImageService;
             _userSettings = _configurationService.GetUserSettings();
 
             LoadSettings();
@@ -34,6 +36,7 @@ namespace CYR.ViewModel
             Bic = _userSettings.BIC;
             Ustidnr = _userSettings.USTIDNR;
             Stnr = _userSettings.STNR;
+            Logo = _userSettings.Logo;
         }
 
         [ObservableProperty]
@@ -74,6 +77,9 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private string _stnr = string.Empty;
 
+        [ObservableProperty]
+        private ImageSource _logo;
+
         [RelayCommand]
         private void SaveSettings()
         {
@@ -89,8 +95,15 @@ namespace CYR.ViewModel
             _userSettings.BIC = Bic ?? string.Empty;
             _userSettings.USTIDNR = Ustidnr ?? string.Empty;
             _userSettings.STNR = Stnr ?? string.Empty;
+            _userSettings.Logo = Logo;
 
             _configurationService.SaveSettings();
+            Messenger.Send(new LogoEvent(Logo));
+        }
+        [RelayCommand]
+        private void SelectImage()
+        {
+            Logo = _selectImageService.SelectImage();
         }
     }
 }

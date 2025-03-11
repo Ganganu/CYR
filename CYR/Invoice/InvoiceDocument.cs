@@ -1,4 +1,6 @@
 ﻿using CYR.Invoice.Model;
+using CYR.Services;
+using CYR.Settings;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -8,12 +10,17 @@ namespace CYR.Invoice
 {
     public class InvoiceDocument : IDocument
     {
+        private readonly IConfigurationService _configurationService;
+        private readonly UserSettings _userSettings;
+
         private const decimal MWST = 1.19m;
         public InvoiceModel Model { get; }
 
-        public InvoiceDocument(InvoiceModel model)
+        public InvoiceDocument(InvoiceModel model, IConfigurationService configurationService)
         {
             Model = model;
+            _configurationService = configurationService;
+            _userSettings = configurationService.GetUserSettings();
         }
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
@@ -51,8 +58,7 @@ namespace CYR.Invoice
                         .FontColor(Colors.Blue.Medium)
                         .Underline(true);
                 });
-
-                row.ConstantItem(200).Image("Ressources/IGF.png");
+                row.ConstantItem(200).Image(new Uri(_userSettings.Logo.ToString()).LocalPath);
             });
 
 

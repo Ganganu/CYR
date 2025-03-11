@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Invoice;
 using CYR.Invoice.Model;
@@ -9,18 +10,24 @@ using CYR.Model;
 using CYR.OrderItem;
 using CYR.OrderItems;
 using CYR.Services;
+using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Media;
 
 namespace CYR.ViewModel
 {
-    public partial class CreateInvoiceViewModel : ObservableObject, IParameterReceiver
+    public partial class CreateInvoiceViewModel : ObservableRecipient, IParameterReceiver, IRecipient<LogoEvent>
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
         private readonly ISaveInvoiceInvoicePositionService _saveInvoiceInvoicePositionService;
         private readonly IPreviewInvoiceService _previewInvoiceService;
         private readonly IRetrieveClients _retrieveClients;
+        private readonly IConfigurationService _configurationService;
+        private readonly UserSettings _userSettings;
         private int _positionCounter = 1;
         private Client? _client;
 
@@ -29,7 +36,8 @@ namespace CYR.ViewModel
             INavigationService navigationService,
             ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
             IPreviewInvoiceService previewInvoiceService,
-            IRetrieveClients retrieveClients)
+            IRetrieveClients retrieveClients, 
+            IConfigurationService configurationService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -37,13 +45,17 @@ namespace CYR.ViewModel
             _saveInvoiceInvoicePositionService = saveInvoiceInvoicePositionService;
             _previewInvoiceService = previewInvoiceService;
             _retrieveClients = retrieveClients;
+            _configurationService = configurationService;
+            _userSettings = _configurationService.GetUserSettings();
             Initialize();
+            Messenger.RegisterAll(this);
         }
         private async void Initialize()
         {
             Positions = new ObservableCollection<InvoicePosition> { new(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
             IEnumerable<Client> cl = await _retrieveClients.Handle();
             Clients = [.. cl];
+            Logo = _userSettings.Logo;
         }
         [ObservableProperty]
         private string? _notiz;
@@ -73,6 +85,8 @@ namespace CYR.ViewModel
         private ObservableCollection<Client> _clients;
         [ObservableProperty]
         private Client? _selectedClient;
+        [ObservableProperty]
+        private ImageSource _logo;
         public INavigationService NavigationService { get; }
         partial void OnInvoiceNumberChanged(int? value)
         {
@@ -176,6 +190,31 @@ namespace CYR.ViewModel
             {
                 Positions?.Remove(position);
             }
-        } 
+        }
+        [RelayCommand]
+        private void OpenImageInDefaultApp()
+        {
+            string imagePath = $@"C:\GGA\Kleine_Projekte\IGF.png";
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                try
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = imagePath,
+                        UseShellExecute = true // Ensures the default image viewer is used
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error opening image: {ex.Message}");
+                }
+            }
+        }
+
+        public void Receive(LogoEvent message)
+        {
+            Logo = message.Logo;
+        }
     }
 }

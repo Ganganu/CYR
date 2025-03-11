@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Windows.Media;
 
 namespace CYR.Settings
 {
@@ -86,6 +87,12 @@ namespace CYR.Settings
         {
             get { return (string)this["STNR"]; }
             set { this["STNR"] = value; }
+        }
+        [ConfigurationProperty("Logo", DefaultValue = null)]
+        public ImageSource Logo
+        {
+            get { return (ImageSource)this[nameof(Logo)]; }
+            set { this[nameof(Logo)] = value; }
         }
     }
 }

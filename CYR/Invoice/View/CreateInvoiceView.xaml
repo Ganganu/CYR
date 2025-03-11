@@ -55,7 +55,16 @@
                 Width="30"
                 Height="30"
                 VerticalAlignment="Center"
-                Kind="Download" />
+                Kind="FileFind" />
+            </Button.Content>
+          </Button>
+          <Button Command="{Binding SaveInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                VerticalAlignment="Center"
+                Kind="ContentSaveAdd" />
             </Button.Content>
           </Button>
           <Button Style="{StaticResource MaterialDesignFlatButton}">
@@ -244,11 +253,13 @@
             PlacementMode="TopAndAlignCentres"
             PopupUniformCornerRadius="10"
             StaysOpen="True">
-            <Grid Width="600" Height="300">
+            <Grid Width="600" Height="500">
               <Grid Margin="10">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="auto" />
                   <RowDefinition Height="auto" />
+                  <RowDefinition Height="auto" />
+                  <RowDefinition Height="*" />
                   <RowDefinition Height="auto" />
                   <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -281,6 +292,44 @@
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding Notiz, UpdateSourceTrigger=PropertyChanged}"
                   TextWrapping="Wrap" />
+                <Label
+                  Grid.Row="4"
+                  Content="Bild/Logo"
+                  FontSize="16" />
+                <Grid Grid.Row="5">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+                  <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button Command="{Binding OpenImageInDefaultAppCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                      <Button.Content>
+                        <materialDesign:PackIcon
+                          Width="15"
+                          Height="15"
+                          VerticalAlignment="Center"
+                          Kind="ImageOutline" />
+                      </Button.Content>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFlatButton}">
+                      <Button.Content>
+                        <materialDesign:PackIcon
+                          Width="15"
+                          Height="15"
+                          VerticalAlignment="Center"
+                          Kind="ImageSearch" />
+                      </Button.Content>
+                    </Button>
+                  </StackPanel>
+                  <Image
+                    Grid.Row="1"
+                    Width="100"
+                    Height="100"
+                    Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
               </Grid>
             </Grid>
           </materialDesign:PopupBox>

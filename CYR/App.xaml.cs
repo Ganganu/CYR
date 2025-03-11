@@ -57,6 +57,7 @@ namespace CYR
             services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
             services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();
             services.AddSingleton<IPreviewInvoiceService, PreviewInvoiceService>();
+            services.AddSingleton<ISelectImageService, SelectImageService>();
             services.AddSingleton<Client>();
             services.AddSingleton<User.User>();
             services.AddSingleton<UserSettings>();

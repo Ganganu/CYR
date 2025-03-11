@@ -146,7 +146,7 @@ namespace CYR.Invoice.Service
                 model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
             if (createInvoiceModel.EndDate.HasValue)
                 model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
-            var document = new InvoiceDocument(model);
+            var document = new InvoiceDocument(model, _configurationService);
             document.GeneratePdfAndShow();
         }
 

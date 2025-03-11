@@ -172,7 +172,7 @@ namespace CYR.Invoice.Repository
             model.Mwst = createInvoiceModel.IsMwstApplicable;
             model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
             model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
-            var document = new InvoiceDocument(model);
+            var document = new InvoiceDocument(model, _configurationService);
             document.GeneratePdfAndShow();
         }
 
