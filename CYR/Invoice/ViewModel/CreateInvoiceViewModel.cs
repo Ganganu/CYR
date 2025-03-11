@@ -27,7 +27,9 @@ namespace CYR.ViewModel
         private readonly IPreviewInvoiceService _previewInvoiceService;
         private readonly IRetrieveClients _retrieveClients;
         private readonly IConfigurationService _configurationService;
+        private readonly IOpenImageService _openImageService;
         private readonly UserSettings _userSettings;
+
         private int _positionCounter = 1;
         private Client? _client;
 
@@ -37,7 +39,8 @@ namespace CYR.ViewModel
             ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
             IPreviewInvoiceService previewInvoiceService,
             IRetrieveClients retrieveClients, 
-            IConfigurationService configurationService)
+            IConfigurationService configurationService,
+            IOpenImageService openImageService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -46,6 +49,7 @@ namespace CYR.ViewModel
             _previewInvoiceService = previewInvoiceService;
             _retrieveClients = retrieveClients;
             _configurationService = configurationService;
+            _openImageService = openImageService;
             _userSettings = _configurationService.GetUserSettings();
             Initialize();
             Messenger.RegisterAll(this);
@@ -194,22 +198,8 @@ namespace CYR.ViewModel
         [RelayCommand]
         private void OpenImageInDefaultApp()
         {
-            string imagePath = $@"C:\GGA\Kleine_Projekte\IGF.png";
-            if (!string.IsNullOrEmpty(imagePath))
-            {
-                try
-                {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = imagePath,
-                        UseShellExecute = true // Ensures the default image viewer is used
-                    });
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error opening image: {ex.Message}");
-                }
-            }
+            string imagePath = new Uri(Logo.ToString()).LocalPath;      
+            _openImageService.OpenImage(imagePath);
         }
 
         public void Receive(LogoEvent message)

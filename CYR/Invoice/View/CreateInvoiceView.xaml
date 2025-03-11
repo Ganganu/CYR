@@ -314,15 +314,6 @@
                           Kind="ImageOutline" />
                       </Button.Content>
                     </Button>
-                    <Button Style="{StaticResource MaterialDesignFlatButton}">
-                      <Button.Content>
-                        <materialDesign:PackIcon
-                          Width="15"
-                          Height="15"
-                          VerticalAlignment="Center"
-                          Kind="ImageSearch" />
-                      </Button.Content>
-                    </Button>
                   </StackPanel>
                   <Image
                     Grid.Row="1"
