@@ -8,13 +8,13 @@ using System.Globalization;
 
 namespace CYR.Invoice
 {
-    public class InvoiceDocument : IDocument
+    public class InvoiceDocument :  IInvoiceDocument
     {
         private readonly IConfigurationService _configurationService;
         private readonly UserSettings _userSettings;
 
         private const decimal MWST = 1.19m;
-        public InvoiceModel Model { get; }
+        public InvoiceModel Model { get; set; }
 
         public InvoiceDocument(InvoiceModel model, IConfigurationService configurationService)
         {
@@ -101,7 +101,7 @@ namespace CYR.Invoice
                 column.Item().Text($"Betreff: {Model.Subject}").FontSize(12).Bold();
                 if (!string.IsNullOrEmpty(Model.ObjectNumber))
                 {
-                    column.Item().Text($"Objektnummer: {Model.ObjectNumber}").FontSize(12);                    
+                    column.Item().Text($"Objektnummer: {Model.ObjectNumber}").FontSize(12);
                 }
                 column.Item().Text("Sehr geehrter Damen und Herren,").FontSize(9);
                 column.Item().Text("wir danken Ihnen für den Auftrag und erlauben uns Ihnen folgende Leistungen in Rechnung zu stellen.").FontSize(9);
@@ -127,7 +127,7 @@ namespace CYR.Invoice
                     column.Item().Text($"Datum: {Model.IssueDate}")
                         .FontSize(11);
                     if (!string.IsNullOrEmpty(Model.StartDate) || !string.IsNullOrEmpty(Model.EndDate))
-                    {                        
+                    {
                         column.Item().Text($"Zeitraum: {Model.StartDate} - {Model.EndDate}")
                             .FontSize(11);
                     }

@@ -20,12 +20,12 @@ namespace CYR.Invoice.Repository
         private readonly IInvoicePositionRepository _invoicePositionRepository;
         private readonly IDialogService _dialogService;
         private readonly IConfigurationService _configurationService;
-
+        private readonly IInvoiceDocument _invoiceDocument;
         private InvoiceModel _invoiceModel;
         private string? _dialogResponse;
         public SaveInvoiceInvoicePositionService(IDatabaseConnection databaseConnection,
             INavigationService navigationService, IInvoiceRepository invoiceRepository, IInvoicePositionRepository invoicePositionRepository,
-            IDialogService dialogService, IConfigurationService configurationService)
+            IDialogService dialogService, IConfigurationService configurationService, IInvoiceDocument invoiceDocument)
         {
             _databaseConnection = databaseConnection;
             NavigationService = navigationService;
@@ -33,6 +33,7 @@ namespace CYR.Invoice.Repository
             _invoicePositionRepository = invoicePositionRepository;
             _dialogService = dialogService;
             _configurationService = configurationService;
+            _invoiceDocument = invoiceDocument;
         }
 
         public INavigationService NavigationService { get; }
@@ -172,8 +173,8 @@ namespace CYR.Invoice.Repository
             model.Mwst = createInvoiceModel.IsMwstApplicable;
             model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
             model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
-            var document = new InvoiceDocument(model, _configurationService);
-            document.GeneratePdfAndShow();
+            _invoiceDocument.Model = model;
+            _invoiceDocument.GeneratePdfAndShow();
         }
 
         private InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)

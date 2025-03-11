@@ -14,16 +14,16 @@ namespace CYR.Invoice.Service
 {
     public class PreviewInvoiceService : IPreviewInvoiceService
     {
-        private readonly IInvoicePositionRepository _invoicePositionRepository;
+        private readonly IInvoiceDocument _invoiceDocument;
         private readonly IDialogService _dialogService;
         private readonly IConfigurationService _configurationService;
         private InvoiceModel? _invoiceModel;
         private string? _dialogResponse;
-        public PreviewInvoiceService(INavigationService navigationService, IInvoicePositionRepository invoicePositionRepository,
+        public PreviewInvoiceService(INavigationService navigationService, IInvoiceDocument invoiceDocument,
             IDialogService dialogService, IConfigurationService configurationService)
         {
             NavigationService = navigationService;
-            _invoicePositionRepository = invoicePositionRepository;
+            _invoiceDocument = invoiceDocument;
             _dialogService = dialogService;
             _configurationService = configurationService;
         }
@@ -146,8 +146,9 @@ namespace CYR.Invoice.Service
                 model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
             if (createInvoiceModel.EndDate.HasValue)
                 model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
-            var document = new InvoiceDocument(model, _configurationService);
-            document.GeneratePdfAndShow();
+            _invoiceDocument.Model = model;
+            _invoiceDocument.GeneratePdfAndShow();
+
         }
 
         private static InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)

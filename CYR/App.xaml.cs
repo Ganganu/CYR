@@ -4,6 +4,7 @@ using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice;
+using CYR.Invoice.Model;
 using CYR.Invoice.Repository;
 using CYR.Invoice.Service;
 using CYR.Invoice.View;
@@ -59,7 +60,9 @@ namespace CYR
             services.AddSingleton<IPreviewInvoiceService, PreviewInvoiceService>();
             services.AddSingleton<ISelectImageService, SelectImageService>();
             services.AddSingleton<IOpenImageService, OpenImageService>();
+            services.AddSingleton<IInvoiceDocument, InvoiceDocument>();
             services.AddSingleton<Client>();
+            services.AddSingleton<InvoiceModel>();
             services.AddSingleton<User.User>();
             services.AddSingleton<UserSettings>();
             services.AddSingleton<InvoiceDocument>();

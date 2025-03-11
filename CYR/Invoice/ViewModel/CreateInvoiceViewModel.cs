@@ -7,14 +7,11 @@ using CYR.Invoice.Model;
 using CYR.Invoice.Repository;
 using CYR.Invoice.Service;
 using CYR.Model;
-using CYR.OrderItem;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows;
 using System.Windows.Media;
 
 namespace CYR.ViewModel
