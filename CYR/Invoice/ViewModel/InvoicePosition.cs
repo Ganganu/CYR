@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using CYR.Invoice.Model;
 using CYR.OrderItems;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 
 namespace CYR.Model
 {
-    public partial class InvoicePosition : ObservableObject
+    public partial class InvoicePosition : ObservableRecipient
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
@@ -91,6 +92,15 @@ namespace CYR.Model
 
         [ObservableProperty]
         public decimal? _totalPrice;
+
+        partial void OnTotalPriceChanged(decimal? oldValue, decimal? newValue)
+        {
+            if (oldValue != newValue)
+            {
+                Messenger.Send(new InvoiceTotalPriceEvent(newValue));
+            }
+        }
+
         [ObservableProperty]
         private ObservableCollection<OrderItem.OrderItem>? _items;
 

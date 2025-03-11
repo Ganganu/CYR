@@ -479,8 +479,12 @@
           BorderThickness="0,0,0,2" />
       </Grid>
       <Grid Grid.Row="3" Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Button
-          Grid.Row="2"
+          Grid.Column="0"
           HorizontalAlignment="Left"
           Command="{Binding AddNewRowCommand}"
           Style="{StaticResource MaterialDesignFlatButton}">
@@ -494,6 +498,9 @@
             </StackPanel>
           </Button.Content>
         </Button>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Label Content="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
       </Grid>
     </Grid>
   </Grid>

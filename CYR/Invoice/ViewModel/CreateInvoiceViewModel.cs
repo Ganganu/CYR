@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace CYR.ViewModel
 {
-    public partial class CreateInvoiceViewModel : ObservableRecipient, IParameterReceiver, IRecipient<LogoEvent>
+    public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
@@ -88,12 +88,13 @@ namespace CYR.ViewModel
         private Client? _selectedClient;
         [ObservableProperty]
         private ImageSource _logo;
+        [ObservableProperty]
+        private decimal? _totalPrice = 0.0m;
         public INavigationService NavigationService { get; }
         partial void OnInvoiceNumberChanged(int? value)
         {
             InvoiceDocumentDataSource.SetInvoiceNumber(value);
         }
-
         partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)      
         {
             if (newValue != oldValue)
@@ -131,21 +132,7 @@ namespace CYR.ViewModel
                 await _orderItemRepository.InsertAsync(orderItem);
             }
         }
-        public void ReceiveParameter(object parameter)
-        {
-            if (parameter == null)
-            {
-                return;
-            }
-            Client clientParameter = parameter as Client;
-            _client = clientParameter;
-            if (clientParameter != null)
-            {
-                //ClientName = clientParameter.Name;
-                //ClientStreet = clientParameter.Street;
-                //ClientCityPlz = $"{clientParameter.City} {clientParameter.PLZ}";
-            }
-        }
+
         [RelayCommand]
         private async Task PreviewInvoice()
         {
@@ -202,6 +189,15 @@ namespace CYR.ViewModel
         public void Receive(LogoEvent message)
         {
             Logo = message.Logo;
+        }
+
+        public void Receive(InvoiceTotalPriceEvent message)
+        {
+            TotalPrice = 0;
+            foreach (var item in Positions)
+            {
+                TotalPrice += item.TotalPrice;
+            }
         }
     }
 }
