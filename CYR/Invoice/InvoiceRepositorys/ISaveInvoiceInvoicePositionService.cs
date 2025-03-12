@@ -1,7 +1,7 @@
-﻿using CYR.Invoice.Model;
+﻿using CYR.Invoice.InvoiceModels;
 using CYR.Services;
 
-namespace CYR.Invoice.Repository
+namespace CYR.Invoice.InvoiceRepositorys
 {
     public interface ISaveInvoiceInvoicePositionService
     {

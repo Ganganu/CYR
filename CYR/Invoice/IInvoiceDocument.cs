@@ -1,4 +1,4 @@
-﻿using CYR.Invoice.Model;
+﻿using CYR.Invoice.InvoiceModels;
 using QuestPDF.Infrastructure;
 
 namespace CYR.Invoice

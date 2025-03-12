@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using CYR.Invoice.Model;
+using CYR.Invoice.InvoiceModels;
 using CYR.OrderItems;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 
-namespace CYR.Model
+namespace CYR.Invoice.InvoiceViewModels
 {
     public partial class InvoicePosition : ObservableRecipient
     {
@@ -25,8 +25,8 @@ namespace CYR.Model
 
         private async void Initialize()
         {
-            Items = new ObservableCollection<OrderItem.OrderItem>(await GetAllItems());
-            UnitsOfMeasure = new ObservableCollection<UnitOfMeasureModel>(await GetAllUnitOfMeasures());
+            Items = [.. await GetAllItems()];
+            UnitsOfMeasure = [.. await GetAllUnitOfMeasures()];
         }
 
         [ObservableProperty]

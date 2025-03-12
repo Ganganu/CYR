@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace CYR.Invoice.ViewModel
+namespace CYR.Invoice.InvoiceViewModels
 {
     public partial class InvoiceActionsViewModel : ObservableRecipient
     {

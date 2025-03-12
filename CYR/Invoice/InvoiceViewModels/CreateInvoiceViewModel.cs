@@ -2,11 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
-using CYR.Invoice;
-using CYR.Invoice.Model;
-using CYR.Invoice.Repository;
-using CYR.Invoice.Service;
-using CYR.Model;
+using CYR.Invoice.InvoiceModels;
+using CYR.Invoice.InvoiceRepositorys;
+using CYR.Invoice.InvoiceServices;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
@@ -14,7 +12,7 @@ using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
-namespace CYR.ViewModel
+namespace CYR.Invoice.InvoiceViewModels
 {
     public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>
     {

@@ -5,13 +5,13 @@ using CYR.Core;
 using CYR.ViewModel;
 using CYR.Dialog;
 using System.Linq.Expressions;
-using CYR.Model;
 using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;
-using CYR.Invoice.Model;
+using CYR.Invoice.InvoiceViewModels;
+using CYR.Invoice.InvoiceModels;
 
-namespace CYR.Invoice.Repository
+namespace CYR.Invoice.InvoiceRepositorys
 {
     public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionService
     {

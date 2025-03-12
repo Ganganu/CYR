@@ -1,4 +1,4 @@
-﻿using CYR.Invoice.Model;
+﻿using CYR.Invoice.InvoiceModels;
 using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CYR.ViewModel;
 
 namespace CYR.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace CYR.Invoice.Service
+﻿namespace CYR.Invoice.InvoiceServices
 {
     public interface IOpenImageService
     {

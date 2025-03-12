@@ -1,10 +1,10 @@
 ﻿using CYR.Clients;
 using CYR.Core;
-using CYR.Invoice.Model;
+using CYR.Invoice.InvoiceModels;
 using System.Data.Common;
 using System.Data.SQLite;
 
-namespace CYR.Invoice.Repository
+namespace CYR.Invoice.InvoiceRepositorys
 {
     public class InvoiceRepository : IInvoiceRepository
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CYR.Clients;
-using CYR.Model;
+using CYR.Invoice.InvoiceViewModels;
 
-namespace CYR.Invoice.Model
+namespace CYR.Invoice.InvoiceModels
 {
     public class CreateInvoiceModel
     {

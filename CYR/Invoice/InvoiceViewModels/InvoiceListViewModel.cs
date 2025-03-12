@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CYR.Invoice.Model;
-using CYR.Invoice.Repository;
-using CYR.Invoice.ViewModel;
+using CYR.Invoice.InvoiceModels;
+using CYR.Invoice.InvoiceRepositorys;
 using CYR.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace CYR.ViewModel
+namespace CYR.Invoice.InvoiceViewModels
 {
     public partial class InvoiceListViewModel : ObservableRecipient
     {

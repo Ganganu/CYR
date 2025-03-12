@@ -5,7 +5,7 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:vm="clr-namespace:CYR.ViewModel"
+  xmlns:vm="clr-namespace:CYR.Invoice.InvoiceViewModels"
   d:DataContext="{d:DesignInstance Type=vm:CreateInvoiceViewModel,
                                    IsDesignTimeCreatable=False}"
   d:DesignHeight="850"

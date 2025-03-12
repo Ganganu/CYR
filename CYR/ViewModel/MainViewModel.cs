@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Dialog;
+using CYR.Invoice.InvoiceViewModels;
 using CYR.Services;
 
 namespace CYR.ViewModel

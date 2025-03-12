@@ -1,10 +1,9 @@
 ﻿using CYR.Dialog;
-using CYR.Invoice.Model;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Windows;
 
-namespace CYR.Invoice.Service
+namespace CYR.Invoice.InvoiceServices
 {
     public class OpenImageService : IOpenImageService
     {

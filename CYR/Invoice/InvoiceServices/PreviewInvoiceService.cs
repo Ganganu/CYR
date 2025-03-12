@@ -1,16 +1,14 @@
 ﻿using CYR.Clients;
 using CYR.Dialog;
-using CYR.Invoice.Model;
-using CYR.Invoice.Repository;
-using CYR.Model;
+using CYR.Invoice.InvoiceModels;
+using CYR.Invoice.InvoiceViewModels;
 using CYR.Services;
 using CYR.Settings;
-using CYR.ViewModel;
 using QuestPDF.Fluent;
 using System.Linq.Expressions;
 using System.Windows;
 
-namespace CYR.Invoice.Service
+namespace CYR.Invoice.InvoiceServices
 {
     public class PreviewInvoiceService : IPreviewInvoiceService
     {

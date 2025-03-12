@@ -1,7 +1,7 @@
 ﻿using System.Data.SQLite;
-using CYR.Invoice.Model;
+using CYR.Invoice.InvoiceModels;
 
-namespace CYR.Invoice.Repository
+namespace CYR.Invoice.InvoiceRepositorys
 {
     public interface IInvoiceRepository
     {

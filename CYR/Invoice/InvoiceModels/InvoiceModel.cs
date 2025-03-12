@@ -1,8 +1,8 @@
 ﻿using CYR.Clients;
-using CYR.Model;
+using CYR.Invoice.InvoiceViewModels;
 using CYR.Settings;
 
-namespace CYR.Invoice.Model
+namespace CYR.Invoice.InvoiceModels
 {
     public class InvoiceModel
     {
