@@ -113,12 +113,6 @@ namespace CYR.ViewModel
             Positions?.Add(new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() });
         }
         [RelayCommand]
-        private void DeleteRow(object parameter)
-        {
-            InvoicePosition invoicePosition = (InvoicePosition)parameter;
-            Positions?.Remove(invoicePosition);
-        }
-        [RelayCommand]
         private async Task SaveArticle(object parameters)
         {
             var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();
@@ -177,6 +171,7 @@ namespace CYR.ViewModel
             foreach (var position in selectedPositions)
             {
                 Positions?.Remove(position);
+                _positionCounter--;
             }
         }
         [RelayCommand]
