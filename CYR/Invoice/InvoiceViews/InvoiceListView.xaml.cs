@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CYR.View
+namespace CYR.Invoice.InvoiceViews
 {
     /// <summary>
     /// Interaktionslogik für GetInvoiceView.xaml
