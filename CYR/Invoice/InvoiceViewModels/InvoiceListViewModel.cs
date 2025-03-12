@@ -2,25 +2,34 @@
 using CommunityToolkit.Mvvm.Input;
 using CYR.Invoice.Model;
 using CYR.Invoice.Repository;
+using CYR.Invoice.ViewModel;
 using CYR.Services;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CYR.ViewModel
 {
-    public partial class InvoiceListViewModel : ObservableObject
+    public partial class InvoiceListViewModel : ObservableRecipient
     {
         private readonly IInvoiceRepository _invoiceRepository;
-        public InvoiceListViewModel(IInvoiceRepository invoiceRepository, INavigationService navigationService)
+        private readonly InvoiceActionsViewModel _invoiceActionsViewModel;
+
+        public InvoiceListViewModel(IInvoiceRepository invoiceRepository,
+            INavigationService navigationService, InvoiceActionsViewModel invoiceActionsViewModel)
         {
             _invoiceRepository = invoiceRepository;
             NavigationService = navigationService;
+            _invoiceActionsViewModel = invoiceActionsViewModel;
             Initialize();
         }
         private async void Initialize()
         {
             IEnumerable<InvoiceModel> invoices = await _invoiceRepository.GetAllAsync(); 
-            Invoices = new ObservableCollection<InvoiceModel>(invoices);
+            Invoices = [.. invoices];
+            IsInvoiceActionViewVisible = Visibility.Collapsed;
         }
+        [ObservableProperty]
+        private Visibility? _isInvoiceActionViewVisible;
 
         [ObservableProperty]
         private ObservableCollection<InvoiceModel>? _invoices;
