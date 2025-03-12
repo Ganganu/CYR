@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Services;
@@ -11,24 +12,20 @@ namespace CYR.Invoice.InvoiceViewModels
     public partial class InvoiceListViewModel : ObservableRecipient
     {
         private readonly IInvoiceRepository _invoiceRepository;
-        private readonly InvoiceActionsViewModel _invoiceActionsViewModel;
+        
 
         public InvoiceListViewModel(IInvoiceRepository invoiceRepository,
-            INavigationService navigationService, InvoiceActionsViewModel invoiceActionsViewModel)
+            INavigationService navigationService)
         {
             _invoiceRepository = invoiceRepository;
             NavigationService = navigationService;
-            _invoiceActionsViewModel = invoiceActionsViewModel;
             Initialize();
         }
         private async void Initialize()
         {
-            IEnumerable<InvoiceModel> invoices = await _invoiceRepository.GetAllAsync(); 
+            IEnumerable<InvoiceModel> invoices = await _invoiceRepository.GetAllAsync();
             Invoices = [.. invoices];
-            IsInvoiceActionViewVisible = Visibility.Collapsed;
         }
-        [ObservableProperty]
-        private Visibility? _isInvoiceActionViewVisible;
 
         [ObservableProperty]
         private ObservableCollection<InvoiceModel>? _invoices;
@@ -40,6 +37,6 @@ namespace CYR.Invoice.InvoiceViewModels
         {
             InvoiceModel invoice = (InvoiceModel)parameter;
             NavigationService.NavigateTo<ShowInvoiceViewModel>(invoice.InvoiceNumber);
-        }
+        }        
     }
 }

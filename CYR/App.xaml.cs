@@ -41,7 +41,6 @@ namespace CYR
             services.AddTransient<InvoiceListViewModel>();
             services.AddSingleton<ShowInvoiceViewModel>();
             services.AddSingleton<CreateNewArticleViewModel>();
-            services.AddSingleton<InvoiceActionsViewModel>();
             services.AddTransient<ArticleView>();
             services.AddSingleton<CreateInvoiceView>();
             services.AddSingleton<InvoiceListView>();
@@ -50,7 +49,6 @@ namespace CYR
             services.AddSingleton<CreateClientViewModel>();
             services.AddSingleton<SettingsViewModel>();
             services.AddSingleton<SettingsView>();
-            services.AddSingleton<InvoiceActionsView>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDialogService, DialogService>();
