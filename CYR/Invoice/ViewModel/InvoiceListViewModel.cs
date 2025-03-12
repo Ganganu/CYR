@@ -7,10 +7,10 @@ using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel
 {
-    public partial class GetInvoiceViewModel : ObservableObject
+    public partial class InvoiceListViewModel : ObservableObject
     {
         private readonly IInvoiceRepository _invoiceRepository;
-        public GetInvoiceViewModel(IInvoiceRepository invoiceRepository, INavigationService navigationService)
+        public InvoiceListViewModel(IInvoiceRepository invoiceRepository, INavigationService navigationService)
         {
             _invoiceRepository = invoiceRepository;
             NavigationService = navigationService;

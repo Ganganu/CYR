@@ -23,8 +23,8 @@
       <DataTemplate DataType="{x:Type vm:CreateInvoiceViewModel}">
         <iv:CreateInvoiceView />
       </DataTemplate>
-      <DataTemplate DataType="{x:Type vm:GetInvoiceViewModel}">
-        <v:GetInvoiceView />
+      <DataTemplate DataType="{x:Type vm:InvoiceListViewModel}">
+        <v:InvoiceListView />
       </DataTemplate>
       <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
         <v:ArticleView />

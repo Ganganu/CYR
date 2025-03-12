@@ -40,7 +40,7 @@ namespace CYR.ViewModel
         [RelayCommand]
         private void NavigateToGetInvoices()
         {
-            Navigation.NavigateTo<GetInvoiceViewModel>();
+            Navigation.NavigateTo<InvoiceListViewModel>();
         }
         [RelayCommand]
         private void NavigateToCreateNewArticle()

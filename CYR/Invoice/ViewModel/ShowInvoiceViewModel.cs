@@ -43,7 +43,7 @@ namespace CYR.ViewModel
         [RelayCommand]
         private void NavigateBack()
         {
-            NavigationService.NavigateTo<GetInvoiceViewModel>();
+            NavigationService.NavigateTo<InvoiceListViewModel>();
         }
 
         public async void ReceiveParameter(object parameter)
