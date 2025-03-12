@@ -19,15 +19,13 @@ namespace CYR.Invoice.Service
         private readonly IConfigurationService _configurationService;
         private InvoiceModel? _invoiceModel;
         private string? _dialogResponse;
-        public PreviewInvoiceService(INavigationService navigationService, IInvoiceDocument invoiceDocument,
+        public PreviewInvoiceService(IInvoiceDocument invoiceDocument,
             IDialogService dialogService, IConfigurationService configurationService)
         {
-            NavigationService = navigationService;
             _invoiceDocument = invoiceDocument;
             _dialogService = dialogService;
             _configurationService = configurationService;
         }
-        public INavigationService NavigationService { get; }
         public async Task SaveInvoice(CreateInvoiceModel createInvoiceModel)
         {
             if (createInvoiceModel.Positions is null)
@@ -66,14 +64,18 @@ namespace CYR.Invoice.Service
 
             if (createInvoiceModel.Client == null)
             {
-                ShowErrorDialog("Warnung", "Wählen Sie einen Kunden bevor Sie eine Rechnung schreiben. Möchten Sie zum Kundentab navigieren",
-                    "Nein",
+                ShowErrorDialog("Warnung", "Wählen Sie einen Kunden bevor Sie eine Rechnung schreiben.",
+                    "Ok",
                     "Warning",
-                    Visibility.Visible, "Ja", createInvoiceModel);
-                if (_dialogResponse == "True")
-                {
-                    NavigationService.NavigateTo<ClientViewModel>();
-                }
+                    Visibility.Collapsed, "", null);     
+                return;
+            }
+            if (createInvoiceModel.InvoiceDate is null)
+            {
+                ShowErrorDialog("Warnung", "Das Rechnungsdatum fehlt.",
+                      "Ok",
+                      "Warning",
+                      Visibility.Collapsed, "", null);
                 return;
             }
 
@@ -126,14 +128,13 @@ namespace CYR.Invoice.Service
                 else
                 {
                     ipm = CreateInvoicePositionModel(position.OrderItem, position, invoiceModel);
-                }
-                //await _invoicePositionRepository.InsertAsync(ipm, null);
+                }                
             }
 
-            CreateInvoice(createInvoiceModel);
+            await CreateInvoice(createInvoiceModel);
         }
 
-        private void CreateInvoice(CreateInvoiceModel createInvoiceModel)
+        private async Task CreateInvoice(CreateInvoiceModel createInvoiceModel)
         {
             IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
             UserSettings userSettings = _configurationService.GetUserSettings();
@@ -148,7 +149,6 @@ namespace CYR.Invoice.Service
                 model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
             _invoiceDocument.Model = model;
             _invoiceDocument.GeneratePdfAndShow();
-
         }
 
         private static InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
@@ -178,7 +178,7 @@ namespace CYR.Invoice.Service
             string message,
             string cancelButtonText,
             string icon,
-            Visibility okButtonVisibility, string okButtonText, CreateInvoiceModel createInvoiceModel)
+            Visibility okButtonVisibility, string okButtonText, CreateInvoiceModel? createInvoiceModel)
         {
             _dialogService.ShowDialog(result =>
             {

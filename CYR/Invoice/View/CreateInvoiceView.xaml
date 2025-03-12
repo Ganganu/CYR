@@ -67,15 +67,6 @@
                 Kind="ContentSaveAdd" />
             </Button.Content>
           </Button>
-          <Button Style="{StaticResource MaterialDesignFlatButton}">
-            <Button.Content>
-              <materialDesign:PackIcon
-                Width="30"
-                Height="30"
-                VerticalAlignment="Center"
-                Kind="Printer" />
-            </Button.Content>
-          </Button>
         </StackPanel>
         <Border
           Grid.Row="1"
@@ -499,7 +490,21 @@
           </Button.Content>
         </Button>
         <StackPanel Grid.Column="1" Orientation="Horizontal">
-          <Label Content="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}" />
+          <Label
+            VerticalAlignment="Center"
+            Content="Gesamtpreis:"
+            FontSize="16"
+            FontWeight="Bold" />
+          <TextBlock
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="Bold"
+            Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+          <Label
+            VerticalAlignment="Center"
+            Content="€"
+            FontSize="16"
+            FontWeight="Bold" />
         </StackPanel>
       </Grid>
     </Grid>

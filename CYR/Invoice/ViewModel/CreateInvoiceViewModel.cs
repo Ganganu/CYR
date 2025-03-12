@@ -103,6 +103,12 @@ namespace CYR.ViewModel
             }
         }
 
+        partial void OnIsMwstApplicableChanged(bool value)
+        {
+            if (value == true) TotalPrice *= 1.19m;
+            else TotalPrice /= 1.19m;
+        }
+
         [ObservableProperty]
         private ObservableCollection<InvoicePosition>? _positions;
 
@@ -162,6 +168,11 @@ namespace CYR.ViewModel
                 Subject = Subject
             };
             await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
+        }
+        [RelayCommand]
+        private void PrintInvoice()
+        {
+
         }
         [RelayCommand]
         private void DeleteInvoicePosition()

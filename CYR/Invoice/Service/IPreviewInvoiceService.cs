@@ -5,8 +5,6 @@ namespace CYR.Invoice.Service
 {
     public interface IPreviewInvoiceService
     {
-        INavigationService NavigationService { get; }
-
         Task SaveInvoice(CreateInvoiceModel createInvoiceModel);
     }
 }

@@ -48,6 +48,7 @@ namespace CYR.Model
                     OrderItem = new OrderItem.OrderItem();
                     OrderItem.Name = newValue;
                     OrderItem.Description = newValue;
+                    OrderItem.Price = 0;
                 }
             }
         }
@@ -87,6 +88,10 @@ namespace CYR.Model
             if (oldValue != newValue)
             {
                 TotalPrice = Quantity * Price;
+                if (OrderItem is not null)
+                {
+                    OrderItem.Price = Price;                    
+                }
             }
         }
 
