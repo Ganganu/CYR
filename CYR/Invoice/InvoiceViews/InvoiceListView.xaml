@@ -89,7 +89,7 @@
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <CheckBox />
+                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text=" - R " />
                     <TextBlock Text="{Binding InvoiceNumber}" />
                   </StackPanel>
