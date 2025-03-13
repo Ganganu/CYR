@@ -36,6 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DropDownMenuControl\DropDownMenuControl.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Ressources\LogoDoubleG1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
