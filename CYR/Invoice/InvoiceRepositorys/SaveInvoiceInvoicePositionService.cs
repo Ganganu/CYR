@@ -106,7 +106,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                             DueDate = DateTime.Now.ToShortDateString(),
                             NetAmount = createInvoiceModel.Positions.Sum(x => x.Price * x.Quantity),
                             Paragraph = "13b",
-                            State = InvoiceState.Open,
+                            State = InvoiceState.Closed,
                             Subject = createInvoiceModel.Subject,
                             ObjectNumber = createInvoiceModel.ObjectNumber,
                             Mwst = createInvoiceModel.IsMwstApplicable,

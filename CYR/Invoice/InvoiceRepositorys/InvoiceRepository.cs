@@ -45,7 +45,14 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
                     invoice.Subject = reader["Betreff"].ToString();
                     invoice.ObjectNumber = reader["Objektnummer"].ToString();
-                    //invoice.State = (InvoiceState)reader["Status"];
+                    if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(),out var state))
+                    {
+                        invoice.State = state;                        
+                    }
+                    else
+                    {
+                        invoice.State = InvoiceState.Closed;
+                    }
                     invoiceList.Add(invoice);
                 }
                 return invoiceList;
