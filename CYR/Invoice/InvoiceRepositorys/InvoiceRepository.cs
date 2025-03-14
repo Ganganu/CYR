@@ -146,7 +146,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {"Nettobetrag",invoice.NetAmount },
                 {"Bruttobetrag",invoice.GrossAmount },
                 {"Paragraf",invoice.Paragraph },
-                {"Status",invoice.State },
+                {"Status", (int)invoice.State },
                 {"Betreff",invoice.Subject},
                 {"Objektnummer",invoice.ObjectNumber},
                 {"start_date", invoice.StartDate},

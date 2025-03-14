@@ -1,10 +1,11 @@
-﻿using CYR.Clients;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CYR.Clients;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Settings;
 
 namespace CYR.Invoice.InvoiceModels
 {
-    public class InvoiceModel
+    public partial class InvoiceModel : ObservableRecipient
     {
         public InvoiceModel()
         {
@@ -22,7 +23,8 @@ namespace CYR.Invoice.InvoiceModels
         public decimal? NetAmount { get; set; }
         public decimal? GrossAmount { get; set; }
         public string? Paragraph { get; set; }
-        public InvoiceState State { get; set; }
+        [ObservableProperty]
+        private InvoiceState _state;
         public string? ObjectNumber { get; set; }
         public string? Subject { get; set; }
         public bool Mwst { get; set; }
