@@ -50,5 +50,17 @@ namespace CYR.Invoice.InvoiceViewModels
                 }
             }
         }
+        [RelayCommand]
+        private void SetInvoiceStateOpen()
+        {
+            foreach (var item in Invoices)
+            {
+                if (item.State == InvoiceState.Closed && (bool)item.IsSelected)
+                {
+                    item.State = InvoiceState.Open;
+                    _invoiceRepository.UpdateAsync(item);
+                }
+            }
+        }
     }
 }
