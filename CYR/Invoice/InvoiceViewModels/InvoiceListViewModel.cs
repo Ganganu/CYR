@@ -37,6 +37,18 @@ namespace CYR.Invoice.InvoiceViewModels
         {
             InvoiceModel invoice = (InvoiceModel)parameter;
             NavigationService.NavigateTo<ShowInvoiceViewModel>(invoice.InvoiceNumber);
-        }        
+        }
+        [RelayCommand]
+        private void SetInvoiceStateClosed()
+        {
+            foreach (var item in Invoices)
+            {
+                if (item.State == InvoiceState.Open && (bool)item.IsSelected)
+                {                    
+                    item.State = InvoiceState.Closed;
+                    _invoiceRepository.UpdateAsync(item);
+                }
+            }
+        }
     }
 }

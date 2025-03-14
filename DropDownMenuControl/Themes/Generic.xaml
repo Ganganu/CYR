@@ -20,7 +20,7 @@
                         Grid.Column="0"
                         Margin="0,0,10,0"
                         VerticalAlignment="Center"
-                        Text="Status auswaehlen" />
+                        Text="{Binding DropDownTextPart, RelativeSource={RelativeSource AncestorType={x:Type local:DropDownMenu}}}" />
                       <Grid Grid.Column="1">
                         <Viewbox>
                           <Path
@@ -28,7 +28,7 @@
                             Height="5"
                             VerticalAlignment="Center"
                             Data="M480-360 280-560h400L480-360Z"
-                            Fill="Black"
+                            Fill="{Binding IconFill, RelativeSource={RelativeSource AncestorType={x:Type local:DropDownMenu}}}"
                             Stretch="Fill" />
                         </Viewbox>
                       </Grid>
@@ -38,9 +38,10 @@
               </CheckBox.Template>
             </CheckBox>
             <Popup
+              AllowsTransparency="True"
               IsOpen="{TemplateBinding IsOpen}"
               Placement="Bottom"
-              StaysOpen="False" AllowsTransparency="True">
+              StaysOpen="False">
               <Border Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
                 <ContentControl Content="{TemplateBinding Content}" />
               </Border>

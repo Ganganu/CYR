@@ -45,9 +45,12 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
                     invoice.Subject = reader["Betreff"].ToString();
                     invoice.ObjectNumber = reader["Objektnummer"].ToString();
-                    if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(),out var state))
+                    invoice.StartDate = reader["start_date"].ToString();
+                    invoice.EndDate = reader["end_date"].ToString();
+                    invoice.Paragraph = reader["Paragraf"].ToString();
+                    if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(), out var state))
                     {
-                        invoice.State = state;                        
+                        invoice.State = state;
                     }
                     else
                     {
@@ -124,9 +127,34 @@ namespace CYR.Invoice.InvoiceRepositorys
             }
         }
 
-        public Task UpdateAsync(InvoiceModel invoice)
+        public async Task UpdateAsync(InvoiceModel invoice)
         {
-            throw new NotImplementedException();
+            string query = @"
+                                UPDATE Rechnungen 
+                                SET Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum, 
+                                    Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Paragraf = @Paragraf, 
+                                    Status = @Status, Betreff = @Betreff, Objektnummer = @Objektnummer, 
+                                    start_date = @start_date, end_date = @end_date 
+                                WHERE Rechnungsnummer = @Rechnungsnummer";
+
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                {"Rechnungsnummer",invoice.InvoiceNumber },
+                {"Kundennummer",invoice.Customer.ClientNumber },
+                {"Rechnungsdatum",invoice.IssueDate },
+                {"Fälligkeitsdatum",invoice.DueDate},
+                {"Nettobetrag",invoice.NetAmount },
+                {"Bruttobetrag",invoice.GrossAmount },
+                {"Paragraf",invoice.Paragraph },
+                {"Status",invoice.State },
+                {"Betreff",invoice.Subject},
+                {"Objektnummer",invoice.ObjectNumber},
+                {"start_date", invoice.StartDate},
+                {"end_date", invoice.EndDate}
+
+            };
+
+            await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
     }
 }

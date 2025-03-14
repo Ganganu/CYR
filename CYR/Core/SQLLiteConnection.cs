@@ -84,7 +84,6 @@ namespace CYR.Core
 
                     using (SQLiteDataReader reader = (SQLiteDataReader)await sqlCommand.ExecuteReaderAsync())
                     {
-                        // Return true if there is at least one record
                         return await reader.ReadAsync();
                     }
                 }
