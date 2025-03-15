@@ -54,6 +54,7 @@
                     <Button
                       Width="{Binding Width, ElementName=bDDM}"
                       Content="Open"
+                      Command="{Binding SetInvoiceStateOpenCommand}"
                       Style="{StaticResource MaterialDesignFlatButton}" />
                     <Separator Background="LightGray" />
                     <Button
