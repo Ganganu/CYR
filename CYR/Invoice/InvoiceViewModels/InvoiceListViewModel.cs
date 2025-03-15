@@ -32,6 +32,11 @@ namespace CYR.Invoice.InvoiceViewModels
 
         public INavigationService NavigationService { get; }
 
+        [ObservableProperty]
+        private bool _isSelectAllInvoicesChecked;
+
+        
+
         [RelayCommand]
         private void SelectInvoice(object parameter)
         {

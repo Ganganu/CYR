@@ -105,17 +105,17 @@
           IsReadOnly="True"
           ItemsSource="{Binding Invoices}">
           <DataGrid.Columns>
-            <DataGridTemplateColumn Header="Rechnung">
+            <DataGridTemplateColumn>
+              <DataGridTemplateColumn.Header>
+                <CheckBox IsChecked="{Binding IsSelectAllInvoicesChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+              </DataGridTemplateColumn.Header>
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                  <StackPanel Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Text=" - R " />
-                    <TextBlock Text="{Binding InvoiceNumber}" />
-                  </StackPanel>
+                  <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
+            <DataGridTextColumn Header="Rechnung" Binding="{Binding InvoiceNumber}"/>
             <DataGridTextColumn Binding="{Binding Customer.ClientNumber}" Header="Kundenummer" />
             <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
             <DataGridTextColumn Binding="{Binding NetAmount}" Header="Netto" />
@@ -125,7 +125,7 @@
               Binding="{Binding Subject}"
               Header="Betreff" />
             <DataGridTextColumn Binding="{Binding ObjectNumber}" Header="Objektnummer" />
-            <DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Status">
               <DataGridTemplateColumn.CellTemplateSelector>
                 <StaticResource ResourceKey="StateTemplateSelector" />
               </DataGridTemplateColumn.CellTemplateSelector>
@@ -136,7 +136,7 @@
               Command="{Binding SelectInvoiceCommand}"
               CommandParameter="{Binding SelectedItem, ElementName=dgInvoices}"
               MouseAction="LeftDoubleClick" />
-          </DataGrid.InputBindings>          
+          </DataGrid.InputBindings>
         </DataGrid>
       </Border>
     </Grid>
