@@ -53,8 +53,8 @@
                   <StackPanel Background="White">
                     <Button
                       Width="{Binding Width, ElementName=bDDM}"
-                      Content="Open"
                       Command="{Binding SetInvoiceStateOpenCommand}"
+                      Content="Open"
                       Style="{StaticResource MaterialDesignFlatButton}" />
                     <Separator Background="LightGray" />
                     <Button
@@ -136,7 +136,7 @@
               Command="{Binding SelectInvoiceCommand}"
               CommandParameter="{Binding SelectedItem, ElementName=dgInvoices}"
               MouseAction="LeftDoubleClick" />
-          </DataGrid.InputBindings>
+          </DataGrid.InputBindings>          
         </DataGrid>
       </Border>
     </Grid>

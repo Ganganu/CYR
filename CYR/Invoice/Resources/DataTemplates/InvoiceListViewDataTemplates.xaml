@@ -3,8 +3,10 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:converters="clr-namespace:CYR.Invoice.Resources.DataTemplates.Converters"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
   <converters:StateToBackgroundConverter x:Key="StateToBackgroundConverter" />
   <converters:StateToBorderBrushConverter x:Key="StateToBorderBrushConverter" />
+
   <DataTemplate x:Key="OpenTemplate">
     <Border
       Background="{Binding State, Converter={StaticResource StateToBackgroundConverter}}"

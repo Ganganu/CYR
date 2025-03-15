@@ -32,6 +32,7 @@ namespace CYR.Invoice.InvoiceModels
         public List<InvoicePosition> Items { get; set; }
         public string Comments { get; set; }
         public string? Notiz {  get; set; }
-        public bool? IsSelected { get; set; }
+        [ObservableProperty]
+        private bool? _isSelected;
     }
 }
