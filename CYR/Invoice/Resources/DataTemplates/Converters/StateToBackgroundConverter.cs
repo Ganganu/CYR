@@ -10,8 +10,8 @@ namespace CYR.Invoice.Resources.DataTemplates.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var state = (InvoiceState)value;
-            return state == InvoiceState.Open ? new SolidColorBrush(Color.FromRgb(235, 249, 235)) :
-                                               new SolidColorBrush(Color.FromRgb(253, 235, 235));
+            return state == InvoiceState.Open ? new SolidColorBrush(Color.FromRgb(253, 235, 235)) :
+                                               new SolidColorBrush(Color.FromRgb(235, 249, 235));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

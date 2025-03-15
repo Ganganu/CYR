@@ -6,6 +6,7 @@
 
   <converters:StateToBackgroundConverter x:Key="StateToBackgroundConverter" />
   <converters:StateToBorderBrushConverter x:Key="StateToBorderBrushConverter" />
+  <converters:StateToStringConverter x:Key="StateToStringConverter" />
 
   <DataTemplate x:Key="OpenTemplate">
     <Border
@@ -13,7 +14,7 @@
       BorderBrush="{Binding State, Converter={StaticResource StateToBorderBrushConverter}}"
       BorderThickness=".5"
       CornerRadius="5">
-      <Label Content="{Binding State}" Foreground="{Binding State, Converter={StaticResource StateToBorderBrushConverter}}" />
+      <Label Content="{Binding State, Converter={StaticResource StateToStringConverter}}" Foreground="{Binding State, Converter={StaticResource StateToBorderBrushConverter}}" />
     </Border>
   </DataTemplate>
 
@@ -23,7 +24,7 @@
       BorderBrush="{Binding State, Converter={StaticResource StateToBorderBrushConverter}}"
       BorderThickness=".5"
       CornerRadius="5">
-      <Label Content="{Binding State}" Foreground="{Binding State, Converter={StaticResource StateToBorderBrushConverter}}" />
+      <Label Content="{Binding State, Converter={StaticResource StateToStringConverter}}" Foreground="{Binding State, Converter={StaticResource StateToBorderBrushConverter}}" />
     </Border>
   </DataTemplate>
 
