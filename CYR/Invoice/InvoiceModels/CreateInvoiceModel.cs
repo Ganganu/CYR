@@ -16,6 +16,5 @@ namespace CYR.Invoice.InvoiceModels
         public string? ObjectNumber { get; set; }
         public bool IsMwstApplicable { get; set; }
         public string? Notiz { get; set; }
-
     }
 }

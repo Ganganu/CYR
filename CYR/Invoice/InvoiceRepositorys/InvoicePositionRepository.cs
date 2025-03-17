@@ -31,7 +31,6 @@ namespace CYR.Invoice.InvoiceRepositorys
             string query = "SELECT * FROM Rechnungspositionen INNER JOIN Rechnungen " +
                 $"ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE {invoiceId}";
 
-
             using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
             {
                 while (await reader.ReadAsync())

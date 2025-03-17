@@ -15,70 +15,409 @@
   FontSize="18"
   mc:Ignorable="d">
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-      <Button
-        Grid.Row="0"
-        Margin="0,10,0,10"
-        HorizontalAlignment="Left"
-        Command="{Binding NavigateBackCommand}"
-        Style="{StaticResource MaterialDesignFlatButton}">
-        <Button.Content>
-          <materialDesign:PackIcon Kind="ArrowLeft" />
-        </Button.Content>
-      </Button>
-      <TextBlock Grid.Row="1" Text="{Binding ClientName}" />
-      <TextBlock Grid.Row="2" Text="{Binding ClientStreet}" />
-      <StackPanel Grid.Row="3" Orientation="Horizontal">
-        <TextBlock Text="{Binding ClientZip}" />
-        <TextBlock Text=" " />
-        <TextBlock Text="{Binding ClientCity}" />
-      </StackPanel>
-    </Grid>
-    <Grid Grid.Row="1">
+    <Grid Margin="20,10,20,0">
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="{Binding Subject}" />
-      <TextBlock Grid.Row="1" Text="{Binding ObjectNumber}" />
-      <StackPanel Grid.Row="2" Orientation="Horizontal">
-        <TextBlock Text="Zeitraum: " />
-        <TextBlock Text="{Binding StartDate}" />
-        <TextBlock Text="-" />
-        <TextBlock Text="{Binding EndDate}" />
-      </StackPanel>
-    </Grid>
-    <Grid Grid.Row="2">
-      <DataGrid
-        AutoGenerateColumns="False"
-        Background="White"
-        CanUserAddRows="False"
-        ItemsSource="{Binding Items}">
-        <DataGrid.Columns>
-          <DataGridTextColumn Binding="{Binding Quantity}" Header="Menge" />
-          <DataGridTextColumn Binding="{Binding UnitOfMeasure}" Header="Einheit" />
-          <DataGridTextColumn Binding="{Binding Description}" Header="Beschreibung" />
-          <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Nettopreis" />
-          <DataGridTextColumn Binding="{Binding TotalPrice}" Header="Gesamtpreis" />
-        </DataGrid.Columns>
-      </DataGrid>
+      <Grid Grid.Row="0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <StackPanel
+          Grid.Row="0"
+          Grid.Column="0"
+          Orientation="Horizontal">
+          <materialDesign:PackIcon
+            Width="30"
+            Height="30"
+            VerticalAlignment="Center"
+            Foreground="LightGray"
+            Kind="File" />
+          <Label
+            VerticalAlignment="Center"
+            Content="Rechnung"
+            FontSize="28" />
+          <Label
+            VerticalAlignment="Center"
+            Content="{Binding InvoiceModel.InvoiceNumber}"
+            FontSize="28" />
+        </StackPanel>
+        <StackPanel
+          Grid.Row="0"
+          Grid.Column="1"
+          HorizontalAlignment="Right"
+          Orientation="Horizontal">
+          <Button Command="{Binding PreviewInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                VerticalAlignment="Center"
+                Kind="FileFind" />
+            </Button.Content>
+          </Button>          
+        </StackPanel>
+        <Border
+          Grid.Row="1"
+          Grid.Column="0"
+          Grid.ColumnSpan="2"
+          Margin="0,15,0,0"
+          BorderBrush="LightGray"
+          BorderThickness="0,0,0,4" />
+      </Grid>
+
+      <!--  Second Row  -->
+      <Grid Grid.Row="1" Margin="0,20,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid
+          Grid.Row="0"
+          Grid.Column="0"
+          Margin="0,0,50,0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Label
+            Grid.Row="0"
+            Content="Empfänger"
+            FontSize="20" />
+          <TextBox
+            Grid.Row="1"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            FontSize="14"
+            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+            Text="{Binding InvoiceModel.Customer.Name}" />
+          <Label
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            Content="Betreff"
+            FontSize="20" />
+          <TextBox
+            Grid.Row="3"
+            Grid.RowSpan="2"
+            Height="150"
+            materialDesign:HintAssist.Hint="z.B. Durchgeführte Arbeit"
+            materialDesign:HintAssist.IsFloating="False"
+            AcceptsReturn="True"
+            AcceptsTab="True"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            SpellCheck.IsEnabled="True"
+            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+            Text="{Binding InvoiceModel.Subject, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap"
+            VerticalScrollBarVisibility="Auto" />
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+          </Grid.RowDefinitions>
+          <Label
+            Grid.Row="0"
+            Content="Details zur Rechnung"
+            FontSize="20" />
+          <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Margin="0,0,15,0">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+              </Grid.RowDefinitions>
+              <Label
+                Grid.Row="0"
+                Content="Rechnungsdatum *"
+                FontSize="16" />
+              <DatePicker
+                Grid.Row="1"
+                Margin="0,5,0,0"
+                VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Rechnungsdatum auswählen"
+                materialDesign:HintAssist.IsFloating="False"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                Text="{Binding InvoiceModel.IssueDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long"
+                Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+              <Label
+                Grid.Row="2"
+                Content="Fußzeile"
+                FontSize="16" />
+              <TextBox
+                Grid.Row="3"
+                Height="150"
+                materialDesign:HintAssist.Hint="z.B. wann muss die Rechnung bezahlt werden"
+                materialDesign:HintAssist.IsFloating="False"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                SpellCheck.IsEnabled="True"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding InvoiceModel.InvoiceNumber, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
+            </Grid>
+            <Grid Grid.Column="1" Margin="15,0,0,0">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+              </Grid.RowDefinitions>
+              <Label
+                Grid.Row="0"
+                Content="Zeitraum Von"
+                FontSize="16" />
+              <DatePicker
+                Grid.Row="1"
+                Margin="0,5,0,0"
+                VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Startdatum auswählen"
+                materialDesign:HintAssist.IsFloating="False"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                Text="{Binding InvoiceModel.StartDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long"
+                Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+              <Label
+                Grid.Row="2"
+                Content="Zeitraum Bis"
+                FontSize="16" />
+              <DatePicker
+                Grid.Row="3"
+                Margin="0,5,0,0"
+                VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Enddatum auswählen"
+                materialDesign:HintAssist.IsFloating="False"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                Text="{Binding InvoiceModel.EndDate, UpdateSourceTrigger=PropertyChanged}"
+                SelectedDateFormat="Long"
+                Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+              <CheckBox
+                Grid.Row="4"
+                Margin="0,10,0,0"
+                VerticalContentAlignment="Center"
+                IsChecked="{Binding InvoiceModel.Mwst}">
+                <CheckBox.Content>
+                  <Label
+                    Margin="0,-4,0,0"
+                    Content="MwSt."
+                    FontSize="18" />
+                </CheckBox.Content>
+              </CheckBox>
+            </Grid>
+          </Grid>
+          <materialDesign:PopupBox
+            Grid.Row="2"
+            PlacementMode="TopAndAlignCentres"
+            PopupUniformCornerRadius="10"
+            StaysOpen="True">
+            <Grid Width="400" Height="400">
+              <Grid Margin="10">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="auto" />
+                  <RowDefinition Height="auto" />
+                  <RowDefinition Height="auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label
+                  Grid.Row="0"
+                  Content="Objektnummer"
+                  FontSize="16" />
+                <TextBox
+                  Grid.Row="1"
+                  materialDesign:HintAssist.Hint="wenn ein Objektnummer existiert"
+                  materialDesign:HintAssist.IsFloating="False"
+                  BorderBrush="LightGray"
+                  BorderThickness="1"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding InvoiceModel.ObjectNumber}" />
+                <Label
+                  Grid.Row="4"
+                  Content="Bild/Logo"
+                  FontSize="16" />
+                <Grid Grid.Row="5">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+                  <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button Command="{Binding OpenImageInDefaultAppCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                      <Button.Content>
+                        <materialDesign:PackIcon
+                          Width="15"
+                          Height="15"
+                          VerticalAlignment="Center"
+                          Kind="ImageOutline" />
+                      </Button.Content>
+                    </Button>
+                  </StackPanel>
+                  <Image
+                    Grid.Row="1"
+                    Width="100"
+                    Height="100"
+                    Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+              </Grid>
+            </Grid>
+          </materialDesign:PopupBox>
+        </Grid>
+        <Border
+          Grid.Row="1"
+          Grid.Column="0"
+          Grid.ColumnSpan="2"
+          Margin="0,15,0,0"
+          BorderBrush="LightGray"
+          BorderThickness="0,0,0,2" />
+      </Grid>
+
+      <!--  Third Row  -->
+      <Grid Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+          </Grid.ColumnDefinitions>
+          <Label
+            Grid.Column="0"
+            Content="Artikel/Dienstleistungen"
+            FontSize="24" />          
+        </Grid>
+        <Border
+          Grid.Row="2"
+          Background="White"
+          BorderBrush="LightGray"
+          BorderThickness="1"
+          CornerRadius="10">
+          <DataGrid            
+            AutoGenerateColumns="False"
+            Background="Transparent"
+            CanUserAddRows="False"
+            BorderBrush="LightGray"
+            BorderThickness="0"
+            ItemsSource="{Binding Items}">
+            <DataGrid.Columns>
+              <DataGridTextColumn
+                Binding="{Binding Id}"
+                Header="#"
+                IsReadOnly="True" />
+              <DataGridTemplateColumn
+                MinWidth="150"
+                MaxWidth="200">                
+                <DataGridTemplateColumn.CellTemplate>                  
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Description}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn
+                MinWidth="100"
+                MaxWidth="150"
+                Header="Menge">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn
+                MinWidth="50"
+                MaxWidth="155"
+                Header="Einheit">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding UnitOfMeasure}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn
+                MinWidth="100"
+                MaxWidth="200"
+                Header="E-Preis">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <TextBlock Text="{Binding UnitPrice}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Header="G-Preis">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                      <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                      <TextBlock VerticalAlignment="Center" Text=" €" />
+                    </StackPanel>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </Border>
+        <Border
+          Grid.Row="3"
+          Margin="0,10,0,0"
+          BorderBrush="LightGray"
+          BorderThickness="0,0,0,2" />
+      </Grid>
+      <Grid Grid.Row="3" Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Label
+            VerticalAlignment="Center"
+            Content="Gesamtpreis:"
+            FontSize="16"
+            FontWeight="Bold" />
+          <TextBlock
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="Bold"
+            Text="{Binding InvoiceModel.GrossAmount, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+          <Label
+            VerticalAlignment="Center"
+            Content="€"
+            FontSize="16"
+            FontWeight="Bold" />
+        </StackPanel>
+      </Grid>
     </Grid>
   </Grid>
 </UserControl>

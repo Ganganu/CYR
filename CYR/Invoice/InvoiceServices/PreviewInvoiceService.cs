@@ -156,7 +156,7 @@ namespace CYR.Invoice.InvoiceServices
                 InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
                 Description = orderItem.Description,
                 Quantity = position.Quantity,
-                UnitOfMeasure = position.UnitOfMeasure.Name,
+                UnitOfMeasure = position.UnitOfMeasure != null ? position.UnitOfMeasure.Name : "stk",
                 UnitPrice = orderItem.Price,
                 TotalPrice = position.TotalPrice
             };

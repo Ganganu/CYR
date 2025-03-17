@@ -308,8 +308,6 @@
                   </StackPanel>
                   <Image
                     Grid.Row="1"
-                    Width="100"
-                    Height="100"
                     Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
               </Grid>
@@ -340,7 +338,7 @@
           </Grid.ColumnDefinitions>
           <Label
             Grid.Column="0"
-            Content="Items"
+            Content="Artikel/Dienstleistungen"
             FontSize="24" />
           <Button
             Grid.Column="1"
@@ -377,7 +375,8 @@
             Background="Transparent"
             BorderBrush="LightGray"
             BorderThickness="0"
-            ItemsSource="{Binding Positions}">
+            CanUserAddRows="False"
+            ItemsSource="{Binding Positions}" Cursor="">
             <DataGrid.Columns>
               <DataGridTemplateColumn Header="">
                 <DataGridTemplateColumn.CellTemplate>

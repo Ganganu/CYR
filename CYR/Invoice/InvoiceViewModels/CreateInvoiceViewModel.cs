@@ -168,11 +168,6 @@ namespace CYR.Invoice.InvoiceViewModels
             await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
         }
         [RelayCommand]
-        private void PrintInvoice()
-        {
-
-        }
-        [RelayCommand]
         private void DeleteInvoicePosition()
         {
             var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();

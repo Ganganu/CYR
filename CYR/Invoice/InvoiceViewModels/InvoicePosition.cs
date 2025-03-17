@@ -22,6 +22,9 @@ namespace CYR.Invoice.InvoiceViewModels
             });
             Initialize();
         }
+        public InvoicePosition()
+        {            
+        }
 
         private async void Initialize()
         {
