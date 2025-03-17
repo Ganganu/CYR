@@ -2,6 +2,7 @@
 using CYR.Invoice.InvoiceModels;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Globalization;
 
 namespace CYR.Invoice.InvoiceRepositorys
 {
@@ -36,7 +37,8 @@ namespace CYR.Invoice.InvoiceRepositorys
                 while (await reader.ReadAsync())
                 {
                     invoicePosition = new InvoicePositionModel();
-                    invoicePosition.Quantity = Convert.ToDecimal(reader["Menge"]);
+                    string test = reader["Menge"].ToString();
+                    invoicePosition.Quantity = Convert.ToDecimal(reader["Menge"], CultureInfo.InvariantCulture);
                     invoicePosition.UnitOfMeasure = reader["Einheit"].ToString();
                     invoicePosition.Description = reader["Beschreibung"].ToString();
                     invoicePosition.UnitPrice = Convert.ToDecimal(reader["Einheitspreis"]);

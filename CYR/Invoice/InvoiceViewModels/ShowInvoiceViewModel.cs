@@ -87,6 +87,7 @@ namespace CYR.Invoice.InvoiceViewModels
             {
                 InvoicePosition invoicePosition = new();
                 invoicePosition.OrderItem = new OrderItem.OrderItem();
+                invoicePosition.OrderItem.Id = Convert.ToInt32(item.Id);
                 invoicePosition.OrderItem.Description = item.Description;
                 invoicePosition.OrderItem.Name = item.Description;
                 invoicePosition.OrderItem.Price = item.UnitPrice;
