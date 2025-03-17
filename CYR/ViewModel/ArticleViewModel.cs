@@ -34,7 +34,7 @@ namespace CYR.ViewModel
             OrderItems = new ObservableCollection<OrderItem.OrderItem>(items);
         }
 
-        public void ReceiveParameter(object parameter)
+        public async Task ReceiveParameter(object parameter)
         {
             if (parameter != null)
             {

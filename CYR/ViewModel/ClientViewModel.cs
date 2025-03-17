@@ -38,7 +38,7 @@ namespace CYR.ViewModel
             Navigation.NavigateTo<CreateClientViewModel>();
         }
 
-        public void ReceiveParameter(object parameter)
+        public async Task ReceiveParameter(object parameter)
         {            
             if (parameter != null) 
             {

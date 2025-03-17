@@ -4,13 +4,12 @@ namespace CYR.Services
 {
     public interface IParameterReceiver
     {
-        void ReceiveParameter(object parameter);
+        Task ReceiveParameter(object parameter);
     }
 
     public interface INavigationService
     {
         public ObservableObject CurrentView { get;  set; }
-        //void NavigateTo<T>() where T : ObservableObject;
         void NavigateTo<T>(object parameter = null) where T : ObservableObject;
     }
 

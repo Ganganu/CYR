@@ -46,13 +46,12 @@ namespace CYR.Invoice.InvoiceViewModels
             NavigationService.NavigateTo<InvoiceListViewModel>();
         }
 
-        public async void ReceiveParameter(object parameter)
+        public async Task ReceiveParameter(object parameter)
         {
             if (parameter == null)
             {
                 return;
             }
-            //InvoiceModel model = (InvoiceModel)parameter;
             InvoiceModel model = await _invoiceRepository.GetByIdAsync((int)parameter);
             ClientName = model.Customer.Name;
             ClientCity = model.Customer.City;
