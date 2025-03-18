@@ -171,8 +171,10 @@ namespace CYR.Invoice.InvoiceRepositorys
             model.Subject = createInvoiceModel.Subject;
             model.ObjectNumber = createInvoiceModel.ObjectNumber;
             model.Mwst = createInvoiceModel.IsMwstApplicable;
-            model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
-            model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
+            if (createInvoiceModel.StartDate.HasValue)
+                model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+            if (createInvoiceModel.EndDate.HasValue)
+                model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
             _invoiceDocument.Model = model;
             _invoiceDocument.GeneratePdfAndShow();
         }
@@ -184,7 +186,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                 InvoiceNumber = invoiceModel.InvoiceNumber.ToString(),
                 Description = orderItem.Description,
                 Quantity = position.Quantity,
-                UnitOfMeasure = position.UnitOfMeasure.Name,
+                UnitOfMeasure = position.UnitOfMeasure != null ? position.UnitOfMeasure.Name : "",
                 UnitPrice = orderItem.Price,
                 TotalPrice = position.TotalPrice
             };
