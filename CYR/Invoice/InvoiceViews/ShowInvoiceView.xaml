@@ -103,7 +103,8 @@
             Grid.Row="1"
             BorderBrush="LightGray"
             BorderThickness="1"
-            FontSize="14"
+            FontSize="15"
+            IsEnabled="False"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
             Text="{Binding InvoiceModel.Customer.Name}" />
           <Label
@@ -121,6 +122,7 @@
             AcceptsTab="True"
             BorderBrush="LightGray"
             BorderThickness="1"
+            IsEnabled="False"
             SpellCheck.IsEnabled="True"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
             Text="{Binding InvoiceModel.Subject, UpdateSourceTrigger=PropertyChanged}"
@@ -152,7 +154,7 @@
               </Grid.RowDefinitions>
               <Label
                 Grid.Row="0"
-                Content="Rechnungsdatum *"
+                Content="Rechnungsdatum"
                 FontSize="16" />
               <DatePicker
                 Grid.Row="1"
@@ -162,6 +164,7 @@
                 materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
+                IsEnabled="False"
                 SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                 Text="{Binding InvoiceModel.IssueDate, UpdateSourceTrigger=PropertyChanged}" />
@@ -178,6 +181,7 @@
                 AcceptsTab="True"
                 BorderBrush="LightGray"
                 BorderThickness="1"
+                IsEnabled="False"
                 SpellCheck.IsEnabled="True"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding InvoiceModel.InvoiceNumber, UpdateSourceTrigger=PropertyChanged}"
@@ -203,6 +207,7 @@
                 materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
+                IsEnabled="False"
                 SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                 Text="{Binding InvoiceModel.StartDate, UpdateSourceTrigger=PropertyChanged}" />
@@ -218,6 +223,7 @@
                 materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
+                IsEnabled="False"
                 SelectedDateFormat="Long"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                 Text="{Binding InvoiceModel.EndDate, UpdateSourceTrigger=PropertyChanged}" />
@@ -225,7 +231,8 @@
                 Grid.Row="4"
                 Margin="0,10,0,0"
                 VerticalContentAlignment="Center"
-                IsChecked="{Binding InvoiceModel.Mwst}">
+                IsChecked="{Binding InvoiceModel.Mwst}"
+                IsEnabled="False">
                 <CheckBox.Content>
                   <Label
                     Margin="0,-4,0,0"
@@ -258,6 +265,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   BorderBrush="LightGray"
                   BorderThickness="1"
+                  IsEnabled="False"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding InvoiceModel.ObjectNumber}" />
                 <Label
@@ -273,7 +281,10 @@
                     Grid.Row="0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <Button Command="{Binding OpenImageInDefaultAppCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button
+                      Command="{Binding OpenImageInDefaultAppCommand}"
+                      IsEnabled="False"
+                      Style="{StaticResource MaterialDesignFlatButton}">
                       <Button.Content>
                         <materialDesign:PackIcon
                           Width="15"
@@ -287,6 +298,7 @@
                     Grid.Row="1"
                     Width="100"
                     Height="100"
+                    IsEnabled="False"
                     Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
               </Grid>

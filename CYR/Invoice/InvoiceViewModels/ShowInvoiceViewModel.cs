@@ -5,7 +5,6 @@ using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.Services;
-using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 
 namespace CYR.Invoice.InvoiceViewModels
@@ -86,23 +85,28 @@ namespace CYR.Invoice.InvoiceViewModels
 
         private ObservableCollection<InvoicePosition> ConvertInvoicePositionModelToInvoicePosition(ObservableCollection<InvoicePositionModel>? items)
         {
-            ObservableCollection<InvoicePosition> invoicePositions = new ObservableCollection<InvoicePosition>();
+            ObservableCollection<InvoicePosition> invoicePositions = [];
+            if (items is null) return [];
             foreach (var item in items)
             {
-                InvoicePosition invoicePosition = new();
-                invoicePosition.OrderItem = new OrderItem.OrderItem();
-                invoicePosition.OrderItem.Id = Convert.ToInt32(item.Id);
-                invoicePosition.OrderItem.Description = item.Description;
-                invoicePosition.OrderItem.Name = item.Description;
-                invoicePosition.OrderItem.Price = item.UnitPrice;
-                invoicePosition.UnitOfMeasure = new()
+                InvoicePosition invoicePosition = new()
                 {
-                    Name = item.UnitOfMeasure
+                    OrderItem = new OrderItem.OrderItem
+                    {
+                        Id = Convert.ToInt32(item.Id),
+                        Description = item.Description,
+                        Name = item.Description,
+                        Price = item.UnitPrice
+                    },
+                    UnitOfMeasure = new()
+                    {
+                        Name = item.UnitOfMeasure
+                    },
+                    InvoiceNumber = item.InvoiceNumber,
+                    Price = item.UnitPrice,
+                    Quantity = item.Quantity,
+                    TotalPrice = item.TotalPrice
                 };
-                invoicePosition.InvoiceNumber = item.InvoiceNumber;
-                invoicePosition.Price = item.UnitPrice;
-                invoicePosition.Quantity = item.Quantity;
-                invoicePosition.TotalPrice = item.TotalPrice;
                 invoicePositions.Add(invoicePosition);
             }
             return invoicePositions;
