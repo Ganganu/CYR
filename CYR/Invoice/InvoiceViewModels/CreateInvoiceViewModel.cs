@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels
 {
-    public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>
+    public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
@@ -197,6 +197,12 @@ namespace CYR.Invoice.InvoiceViewModels
             {
                 TotalPrice += item.TotalPrice;
             }
+        }
+
+        public async Task ReceiveParameter(object parameter)
+        {
+            CreateInvoiceModel createInvoiceModel = (CreateInvoiceModel)parameter;
+            Positions = createInvoiceModel.Positions;
         }
     }
 }

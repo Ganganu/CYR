@@ -65,6 +65,15 @@
                 Kind="FileFind" />
             </Button.Content>
           </Button>
+          <Button Command="{Binding EditInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon
+                Width="30"
+                Height="30"
+                VerticalAlignment="Center"
+                Kind="Edit" />
+            </Button.Content>
+          </Button>
         </StackPanel>
         <Border
           Grid.Row="1"

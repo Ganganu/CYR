@@ -111,5 +111,31 @@ namespace CYR.Invoice.InvoiceViewModels
             }
             return invoicePositions;
         }
+        [RelayCommand]
+        private void EditInvoice()
+        {
+            CreateInvoiceModel createInvoiceModel = new()
+            {
+                Client = new Client
+                {
+                    ClientNumber = InvoiceModel.Customer.ClientNumber,
+                    City = InvoiceModel.Customer.City,
+                    EmailAddress = InvoiceModel.Customer.EmailAddress,
+                    Name = InvoiceModel.Customer.Name,
+                    PLZ = InvoiceModel.Customer.PLZ,
+                    Street = InvoiceModel.Customer.Street
+                },
+                EndDate = DateTime.Parse(InvoiceModel.EndDate),
+                InvoiceDate = DateTime.Parse(InvoiceModel.IssueDate),
+                InvoiceNumber = InvoiceModel.InvoiceNumber,
+                IsMwstApplicable = InvoiceModel.Mwst,
+                ObjectNumber = InvoiceModel.ObjectNumber,
+                Positions = ConvertInvoicePositionModelToInvoicePosition(Items),
+                //Notiz = Notiz,
+                StartDate = DateTime.Parse(InvoiceModel.StartDate),
+                Subject = InvoiceModel.Subject
+            };
+            NavigationService.NavigateTo<CreateInvoiceViewModel>(createInvoiceModel);
+        }
     }
 }
