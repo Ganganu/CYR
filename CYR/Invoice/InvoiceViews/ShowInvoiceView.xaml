@@ -64,7 +64,7 @@
                 VerticalAlignment="Center"
                 Kind="FileFind" />
             </Button.Content>
-          </Button>          
+          </Button>
         </StackPanel>
         <Border
           Grid.Row="1"
@@ -162,9 +162,9 @@
                 materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
-                Text="{Binding InvoiceModel.IssueDate, UpdateSourceTrigger=PropertyChanged}"
                 SelectedDateFormat="Long"
-                Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                Text="{Binding InvoiceModel.IssueDate, UpdateSourceTrigger=PropertyChanged}" />
               <Label
                 Grid.Row="2"
                 Content="Fußzeile"
@@ -203,9 +203,9 @@
                 materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
-                Text="{Binding InvoiceModel.StartDate, UpdateSourceTrigger=PropertyChanged}"
                 SelectedDateFormat="Long"
-                Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                Text="{Binding InvoiceModel.StartDate, UpdateSourceTrigger=PropertyChanged}" />
               <Label
                 Grid.Row="2"
                 Content="Zeitraum Bis"
@@ -218,9 +218,9 @@
                 materialDesign:HintAssist.IsFloating="False"
                 BorderBrush="LightGray"
                 BorderThickness="1"
-                Text="{Binding InvoiceModel.EndDate, UpdateSourceTrigger=PropertyChanged}"
                 SelectedDateFormat="Long"
-                Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                Text="{Binding InvoiceModel.EndDate, UpdateSourceTrigger=PropertyChanged}" />
               <CheckBox
                 Grid.Row="4"
                 Margin="0,10,0,0"
@@ -318,7 +318,7 @@
           <Label
             Grid.Column="0"
             Content="Artikel/Dienstleistungen"
-            FontSize="24" />          
+            FontSize="24" />
         </Grid>
         <Border
           Grid.Row="2"
@@ -326,12 +326,12 @@
           BorderBrush="LightGray"
           BorderThickness="1"
           CornerRadius="10">
-          <DataGrid            
+          <DataGrid
             AutoGenerateColumns="False"
             Background="Transparent"
-            CanUserAddRows="False"
             BorderBrush="LightGray"
             BorderThickness="0"
+            CanUserAddRows="False"
             ItemsSource="{Binding Items}">
             <DataGrid.Columns>
               <DataGridTextColumn
@@ -340,8 +340,9 @@
                 IsReadOnly="True" />
               <DataGridTemplateColumn
                 MinWidth="150"
-                MaxWidth="200">                
-                <DataGridTemplateColumn.CellTemplate>                  
+                MaxWidth="200"
+                Header="Bezeichnung">
+                <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <TextBlock Text="{Binding Description}" />
                   </DataTemplate>

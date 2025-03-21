@@ -4,7 +4,7 @@ namespace CYR.Invoice.InvoiceModels
 {
     public enum InvoiceState
     {
-        [Display(Name = "Offen")]
+        [Display(Name = "Unbezahlt")]
         Open = 0,
         [Display(Name = "Bezahlt")]
         Closed = 1

@@ -90,6 +90,10 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoiceModel.ObjectNumber = reader["Objektnummer"].ToString();
                     invoiceModel.StartDate = reader["start_date"].ToString();
                     invoiceModel.EndDate = reader["end_date"].ToString();
+                    if (invoiceModel.GrossAmount > invoiceModel.NetAmount)
+                    {
+                        invoiceModel.Mwst = true;
+                    }
                 }
             }
             return invoiceModel;

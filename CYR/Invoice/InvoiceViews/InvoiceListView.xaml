@@ -54,13 +54,13 @@
                     <Button
                       Width="{Binding Width, ElementName=bDDM}"
                       Command="{Binding SetInvoiceStateOpenCommand}"
-                      Content="Open"
+                      Content="Unbezahlt"
                       Style="{StaticResource MaterialDesignFlatButton}" />
                     <Separator Background="LightGray" />
                     <Button
                       Width="{Binding Width, ElementName=bDDM}"
                       Command="{Binding SetInvoiceStateClosedCommand}"
-                      Content="Closed"
+                      Content="Bezahlt"
                       Style="{StaticResource MaterialDesignFlatButton}" />
                   </StackPanel>
                 </Border>
@@ -115,7 +115,7 @@
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn Header="Rechnung" Binding="{Binding InvoiceNumber}"/>
+            <DataGridTextColumn Binding="{Binding InvoiceNumber}" Header="Rechnung" />
             <DataGridTextColumn Binding="{Binding Customer.ClientNumber}" Header="Kundenummer" />
             <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
             <DataGridTextColumn Binding="{Binding NetAmount}" Header="Netto" />

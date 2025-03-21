@@ -46,7 +46,7 @@ namespace CYR.Invoice.InvoiceViewModels
             }
             InvoiceModel = await _invoiceRepository.GetByIdAsync((int)parameter);
             IEnumerable<InvoicePositionModel> items = await _invoicePositionRepository.GetAllPositionsByInvoiceIdAsync(InvoiceModel.InvoiceNumber);
-            List<InvoicePositionModel> listItems = items.ToList();
+            List<InvoicePositionModel> listItems = [.. items];
             for (int i = 0; i < listItems.Count; i++)
             {
                 listItems[i].Id = (i + 1).ToString();
@@ -56,6 +56,10 @@ namespace CYR.Invoice.InvoiceViewModels
         [RelayCommand]
         private async Task PreviewInvoice()
         {
+            if (InvoiceModel is null)
+            {
+                return;
+            }
             CreateInvoiceModel createInvoiceModel = new()
             {
                 Client = new Client
