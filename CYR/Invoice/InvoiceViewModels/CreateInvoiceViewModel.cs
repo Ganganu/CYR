@@ -201,6 +201,7 @@ namespace CYR.Invoice.InvoiceViewModels
 
         public async Task ReceiveParameter(object parameter)
         {
+            if (parameter is null) return;
             CreateInvoiceModel createInvoiceModel = (CreateInvoiceModel)parameter;
             Positions = createInvoiceModel.Positions;
         }

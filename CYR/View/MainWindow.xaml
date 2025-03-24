@@ -8,7 +8,7 @@
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="clr-namespace:CYR.ViewModel"
-  Title="MainWindow"
+  Title="CYR"
   Width="1500"
   Height="850"
   d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
@@ -57,13 +57,15 @@
           <cc:IconButton
             ButtonText="Kostenvoranschläge"
             GroupName="NavigationButtons"
-            IconKind="Euro" />
-          <Separator />
+            IconKind="Euro"
+            Visibility="Collapsed" />
+          <Separator Visibility="Collapsed" />
           <cc:IconButton
             ButtonText="Angebote"
             GroupName="NavigationButtons"
-            IconKind="InvoiceTextCheckOutline" />
-          <Separator />
+            IconKind="InvoiceTextCheckOutline"
+            Visibility="Collapsed" />
+          <Separator Visibility="Collapsed" />
           <cc:IconButton
             ButtonText="Kunden"
             Command="{Binding NavigateToClientViewCommand}"
