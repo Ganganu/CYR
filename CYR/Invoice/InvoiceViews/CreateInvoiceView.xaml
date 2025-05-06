@@ -306,9 +306,7 @@
                       </Button.Content>
                     </Button>
                   </StackPanel>
-                  <Image
-                    Grid.Row="1"
-                    Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
+                  <Image Grid.Row="1" Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
               </Grid>
             </Grid>
@@ -376,7 +374,8 @@
             BorderBrush="LightGray"
             BorderThickness="0"
             CanUserAddRows="False"
-            ItemsSource="{Binding Positions}" Cursor="">
+            Cursor=""
+            ItemsSource="{Binding Positions}">
             <DataGrid.Columns>
               <DataGridTemplateColumn Header="">
                 <DataGridTemplateColumn.CellTemplate>

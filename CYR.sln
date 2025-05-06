@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CYR", "CYR\CYR.csproj", "{D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DropDownMenuControl", "DropDownMenuControl\DropDownMenuControl.csproj", "{4E270486-2173-40F2-907A-E1F3B80BF059}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolBarControl", "ToolBarControl\ToolBarControl.csproj", "{4140B5D5-95C5-429E-973F-FBB194825DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconGGA", "IconGGA\IconGGA.csproj", "{D0C8FBD1-403C-40E5-B571-720BF43FED66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{4E270486-2173-40F2-907A-E1F3B80BF059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E270486-2173-40F2-907A-E1F3B80BF059}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E270486-2173-40F2-907A-E1F3B80BF059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4140B5D5-95C5-429E-973F-FBB194825DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4140B5D5-95C5-429E-973F-FBB194825DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4140B5D5-95C5-429E-973F-FBB194825DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4140B5D5-95C5-429E-973F-FBB194825DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0C8FBD1-403C-40E5-B571-720BF43FED66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0C8FBD1-403C-40E5-B571-720BF43FED66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0C8FBD1-403C-40E5-B571-720BF43FED66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0C8FBD1-403C-40E5-B571-720BF43FED66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

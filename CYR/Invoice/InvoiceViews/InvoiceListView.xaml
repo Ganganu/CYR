@@ -3,7 +3,9 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:customddm="clr-namespace:DropDownMenuControl;assembly=DropDownMenuControl"
+  xmlns:customtbc="clr-namespace:ToolBarControl;assembly=ToolBarControl"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:icons="clr-namespace:IconGGA;assembly=IconGGA"
   xmlns:irdt="clr-namespace:CYR.Invoice.Resources.DataTemplates"
   xmlns:local="clr-namespace:CYR.Invoice.InvoiceViews"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -21,7 +23,14 @@
       OpenTemplate="{StaticResource OpenTemplate}" />
   </UserControl.Resources>
   <Grid Background="White">
-    <Grid Margin="10" Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    <Grid
+      Grid.Row="0"
+      Margin="10"
+      Background="Transparent">
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
@@ -140,5 +149,17 @@
         </DataGrid>
       </Border>
     </Grid>
+
+
+    <icons:PackIcon
+      Grid.Row="1"
+      Width="50"
+      Height="50"
+      Kind="Happy" />
+    <icons:PackIcon
+      Grid.Row="1"
+      Margin="50,0,0,0"
+      Kind="Sad" />
+
   </Grid>
 </UserControl>
