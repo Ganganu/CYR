@@ -36,12 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DropDownMenuControl\DropDownMenuControl.csproj" />
-    <ProjectReference Include="..\IconGGA\IconGGA.csproj" />
-    <ProjectReference Include="..\ToolBarControl\ToolBarControl.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="EasyControls">
       <HintPath>..\..\EasyControls\EasyControls\bin\Debug\net8.0-windows\EasyControls.dll</HintPath>
     </Reference>
