@@ -116,11 +116,11 @@ namespace CYR.Invoice
                 {
                     column.Item().Text($"Kundennummer: {Model.Customer.ClientNumber}")
                         .FontSize(11);
-                    column.Item().Text($"Datum: {Model.IssueDate}")
+                    column.Item().Text($"Datum: {Model.IssueDate.Value.ToShortDateString()}")
                         .FontSize(11);
-                    if (!string.IsNullOrEmpty(Model.StartDate.ToString()) || !string.IsNullOrEmpty(Model.EndDate.ToString()))
+                    if (!string.IsNullOrEmpty(Model.StartDate.Value.ToShortDateString()) || !string.IsNullOrEmpty(Model.EndDate.Value.ToShortDateString()))
                     {
-                        column.Item().Text($"Zeitraum: {Model.StartDate} - {Model.EndDate}")
+                        column.Item().Text($"Zeitraum: {Model.StartDate.Value.ToShortDateString()} - {Model.EndDate.Value.ToShortDateString()}")
                             .FontSize(11);
                     }
                 });

@@ -240,7 +240,7 @@
                 Grid.Row="4"
                 Margin="0,10,0,0"
                 VerticalContentAlignment="Center"
-                IsChecked="{Binding InvoiceModel.Mwst}"
+                IsChecked="{Binding InvoiceModel.IsMwstApplicable}"
                 IsEnabled="False">
                 <CheckBox.Content>
                   <Label
