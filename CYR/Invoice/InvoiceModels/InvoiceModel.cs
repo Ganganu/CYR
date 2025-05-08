@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Settings;
@@ -12,27 +13,35 @@ namespace CYR.Invoice.InvoiceModels
             IsSelected = false;
         }
         public int? InvoiceNumber { get; set; }
-        public string? IssueDate { get; set; } 
-        public string? DueDate { get; set; } 
-        public string? StartDate { get; set; } 
-        public string? EndDate { get; set; } 
+        public DateTime? IssueDate { get; set; } 
+        public DateTime? DueDate { get; set; } 
+        public DateTime? StartDate { get; set; } 
+        public DateTime? EndDate { get; set; } 
 
 
         public UserSettings Seller { get; set; }
         public Client Customer { get; set; }
         public decimal? NetAmount { get; set; }
         public decimal? GrossAmount { get; set; }
-        public string? Paragraph { get; set; }
         [ObservableProperty]
         private InvoiceState _state;
-        public string? ObjectNumber { get; set; }
-        public string? Subject { get; set; }
-        public bool Mwst { get; set; }
+        [ObservableProperty]
+        private bool _isMwstApplicable;
 
         public List<InvoicePosition> Items { get; set; }
-        public string Comments { get; set; }
-        public string? Notiz {  get; set; }
+
+        public string? CommentsTop { get; set; }
+        public string? CommentsBottom { get; set; }
+
         [ObservableProperty]
         private bool? _isSelected;
+
+        partial void OnIsMwstApplicableChanged(bool oldValue, bool newValue)
+        {
+            if (oldValue != newValue)
+            {
+                Messenger.Send(new InvoiceMwstEvent(newValue));
+            }
+        }
     }
 }

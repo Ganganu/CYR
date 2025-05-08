@@ -127,11 +127,6 @@
             <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
             <DataGridTextColumn Binding="{Binding NetAmount}" Header="Netto" />
             <DataGridTextColumn Binding="{Binding GrossAmount}" Header="Brutto" />
-            <DataGridTextColumn
-              Width="250"
-              Binding="{Binding Subject}"
-              Header="Betreff" />
-            <DataGridTextColumn Binding="{Binding ObjectNumber}" Header="Objektnummer" />
             <DataGridTemplateColumn Header="Status">
               <DataGridTemplateColumn.CellTemplateSelector>
                 <StaticResource ResourceKey="StateTemplateSelector" />
@@ -147,9 +142,6 @@
         </DataGrid>
       </Border>
     </Grid>
-
-    <controls:PackIcon Kind="Happy" Grid.Row="1"/>
-    <controls:DropDownMenu DropDownTextPart="test" Grid.Row="1" Width="15"
-                           Height="15"/>
+    <controls:ToolBarRTB Grid.Row="1" />
   </Grid>
 </UserControl>

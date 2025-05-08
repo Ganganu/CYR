@@ -21,15 +21,13 @@ namespace CYR.Invoice
             {
                 InvoiceNumber = _invoiceNumber,
                 IssueDate = invoiceModel.IssueDate,
-                DueDate = (DateTime.Now + TimeSpan.FromDays(14)).ToString(),
+                DueDate = DateTime.Now + TimeSpan.FromDays(14),
 
                 //Seller = new User.User { Name = configReader.CompanyName, City = configReader.City, HouseNumber = configReader.HouseNumber, Street = configReader.Street },
                 Seller = user,
                 Customer = GetCustomerAddress(client),
 
-
-                Items = positions.ToList(),
-                Comments = Placeholders.Paragraph()
+                Items = [.. positions]
             };
         }
         private static Client GetCustomerAddress(Client client)

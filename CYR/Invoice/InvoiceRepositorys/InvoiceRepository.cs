@@ -39,15 +39,12 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoice.Customer.City = reader["Ort"].ToString();
                     invoice.Customer.ClientNumber = reader["Kundennummer"].ToString();
                     invoice.Customer.Name = reader["Name"].ToString();
-                    invoice.IssueDate = reader["Rechnungsdatum"].ToString();
-                    invoice.DueDate = reader["Fälligkeitsdatum"].ToString();
+                    invoice.IssueDate = Convert.ToDateTime(reader["Rechnungsdatum"]);
+                    invoice.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoice.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
                     invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
-                    invoice.Subject = reader["Betreff"].ToString();
-                    invoice.ObjectNumber = reader["Objektnummer"].ToString();
-                    invoice.StartDate = reader["start_date"].ToString();
-                    invoice.EndDate = reader["end_date"].ToString();
-                    invoice.Paragraph = reader["Paragraf"].ToString();
+                    invoice.StartDate = Convert.ToDateTime(reader["start_date"]);
+                    invoice.EndDate = Convert.ToDateTime(reader["end_date"]);
                     if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(), out var state))
                     {
                         invoice.State = state;
@@ -82,17 +79,17 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoiceModel.Customer.City = reader["Ort"].ToString();
                     invoiceModel.Customer.ClientNumber = reader["Kundennummer"].ToString();
                     invoiceModel.Customer.Name = reader["Name"].ToString();
-                    invoiceModel.IssueDate = reader["Rechnungsdatum"].ToString();
-                    invoiceModel.DueDate = reader["Fälligkeitsdatum"].ToString();
+                    invoiceModel.IssueDate = Convert.ToDateTime(reader["Rechnungsdatum"]);
+                    invoiceModel.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoiceModel.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
                     invoiceModel.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
-                    invoiceModel.Subject = reader["Betreff"].ToString();
-                    invoiceModel.ObjectNumber = reader["Objektnummer"].ToString();
-                    invoiceModel.StartDate = reader["start_date"].ToString();
-                    invoiceModel.EndDate = reader["end_date"].ToString();
+                    invoiceModel.StartDate = Convert.ToDateTime(reader["start_date"]);
+                    invoiceModel.EndDate = Convert.ToDateTime(reader["end_date"]);
+                    invoiceModel.CommentsTop =reader["commentstop"].ToString();
+                    invoiceModel.CommentsBottom =reader["commentsbottom"].ToString();
                     if (invoiceModel.GrossAmount > invoiceModel.NetAmount)
                     {
-                        invoiceModel.Mwst = true;
+                        invoiceModel.IsMwstApplicable = true;
                     }
                 }
             }
@@ -102,10 +99,10 @@ namespace CYR.Invoice.InvoiceRepositorys
         public async Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null)
         {
             string query = "INSERT INTO Rechnungen (Rechnungsnummer,Kundennummer,Rechnungsdatum,Fälligkeitsdatum," +
-                "Nettobetrag, Bruttobetrag,Paragraf,Status,Betreff,Objektnummer,start_date,end_date) " +
+                "Nettobetrag, Bruttobetrag,Status,start_date,end_date, commentstop, commentsbottom) " +
                 "VALUES (@Rechnungsnummer,@Kundennummer,@Rechnungsdatum,@Fälligkeitsdatum," +
-                "@Nettobetrag, @Bruttobetrag,@Paragraf,@Status,@Betreff,@Objektnummer,@start_date,@end_date)";
-            string executionDate = $"{invoice.StartDate}-{invoice.EndDate}";
+                "@Nettobetrag, @Bruttobetrag,@Status,@start_date,@end_date,@commentstop, @commentsbottom)";
+
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
             {
                 {"Rechnungsnummer",invoice.InvoiceNumber },
@@ -114,12 +111,11 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {"Fälligkeitsdatum",invoice.DueDate},
                 {"Nettobetrag",invoice.NetAmount },
                 {"Bruttobetrag",invoice.GrossAmount },
-                {"Paragraf",invoice.Paragraph },
                 {"Status",invoice.State },
-                {"Betreff",invoice.Subject},
-                {"Objektnummer",invoice.ObjectNumber},
                 {"start_date", invoice.StartDate},
-                {"end_date", invoice.EndDate}
+                {"end_date", invoice.EndDate},
+                {"commentstop", invoice.CommentsTop},
+                {"commentsbottom", invoice.CommentsBottom}
             };
             if (transaction != null)
             {
@@ -136,9 +132,8 @@ namespace CYR.Invoice.InvoiceRepositorys
             string query = @"
                                 UPDATE Rechnungen 
                                 SET Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum, 
-                                    Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Paragraf = @Paragraf, 
-                                    Status = @Status, Betreff = @Betreff, Objektnummer = @Objektnummer, 
-                                    start_date = @start_date, end_date = @end_date 
+                                    Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,  
+                                    start_date = @start_date, end_date = @end_date, commentstop = @commentstop, commentsbottom = @commentsbottom
                                 WHERE Rechnungsnummer = @Rechnungsnummer";
 
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
@@ -149,12 +144,11 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {"Fälligkeitsdatum",invoice.DueDate},
                 {"Nettobetrag",invoice.NetAmount },
                 {"Bruttobetrag",invoice.GrossAmount },
-                {"Paragraf",invoice.Paragraph },
                 {"Status", (int)invoice.State },
-                {"Betreff",invoice.Subject},
-                {"Objektnummer",invoice.ObjectNumber},
                 {"start_date", invoice.StartDate},
-                {"end_date", invoice.EndDate}
+                {"end_date", invoice.EndDate},
+                {"commentstop", invoice.CommentsTop},
+                {"commentsbottom", invoice.CommentsBottom}
 
             };
 

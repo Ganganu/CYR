@@ -11,10 +11,12 @@ using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using static QuestPDF.Helpers.Colors;
 
 namespace CYR.Invoice.InvoiceViewModels
 {
-    public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver
+    public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver,
+                                                IRecipient<InvoiceMwstEvent>
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
@@ -46,6 +48,7 @@ namespace CYR.Invoice.InvoiceViewModels
             _configurationService = configurationService;
             _openImageService = openImageService;
             _userSettings = _configurationService.GetUserSettings();
+            InvoiceModel = new InvoiceModel();
             Initialize();
             Messenger.RegisterAll(this);
         }
@@ -56,30 +59,9 @@ namespace CYR.Invoice.InvoiceViewModels
             Clients = [.. cl];
             Logo = _userSettings.Logo;
         }
+
         [ObservableProperty]
-        private string? _notiz;
-        [ObservableProperty]
-        private int? _invoiceNumber;
-        [ObservableProperty]
-        private string? _issueDate;
-        [ObservableProperty]
-        private string? _dueDate;
-        [ObservableProperty]
-        private decimal? _netAmount;
-        [ObservableProperty]
-        private decimal? _grossAmount;
-        [ObservableProperty]
-        private string? _subject;
-        [ObservableProperty]
-        private string? _objectNumber;
-        [ObservableProperty]
-        private bool _isMwstApplicable;
-        [ObservableProperty]
-        private DateTime? _invoiceDate;
-        [ObservableProperty]
-        private DateTime? _startDate;
-        [ObservableProperty]
-        private DateTime? _endDate;
+        private InvoiceModel _invoiceModel;
         [ObservableProperty]
         private ObservableCollection<Client> _clients;
         [ObservableProperty]
@@ -89,22 +71,13 @@ namespace CYR.Invoice.InvoiceViewModels
         [ObservableProperty]
         private decimal? _totalPrice = 0.0m;
         public INavigationService NavigationService { get; }
-        partial void OnInvoiceNumberChanged(int? value)
-        {
-            InvoiceDocumentDataSource.SetInvoiceNumber(value);
-        }
+
         partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)      
         {
             if (newValue != oldValue)
             {
                 _client = newValue;
             }
-        }
-
-        partial void OnIsMwstApplicableChanged(bool value)
-        {
-            if (value == true) TotalPrice *= 1.19m;
-            else TotalPrice /= 1.19m;
         }
 
         [ObservableProperty]
@@ -137,15 +110,14 @@ namespace CYR.Invoice.InvoiceViewModels
             CreateInvoiceModel createInvoiceModel = new()
             {
                 Client = _client,
-                EndDate = EndDate,
-                InvoiceDate = InvoiceDate,
-                InvoiceNumber = InvoiceNumber,
-                IsMwstApplicable = IsMwstApplicable,
-                ObjectNumber = ObjectNumber,
+                EndDate = InvoiceModel.EndDate,
+                InvoiceDate = InvoiceModel.IssueDate,
+                InvoiceNumber = InvoiceModel.InvoiceNumber,
+                IsMwstApplicable = InvoiceModel.IsMwstApplicable,
                 Positions = Positions,
-                Notiz = Notiz,
-                StartDate = StartDate,
-                Subject = Subject
+                StartDate = InvoiceModel.StartDate,
+                CommentsBottom = InvoiceModel.CommentsBottom,
+                CommentsTop = InvoiceModel.CommentsTop
             };
             await _previewInvoiceService.SaveInvoice(createInvoiceModel);
         }
@@ -155,15 +127,14 @@ namespace CYR.Invoice.InvoiceViewModels
             CreateInvoiceModel createInvoiceModel = new()
             {
                 Client = _client,
-                EndDate = EndDate,
-                InvoiceDate = InvoiceDate,
-                InvoiceNumber = InvoiceNumber,
-                IsMwstApplicable = IsMwstApplicable,
-                ObjectNumber = ObjectNumber,
+                EndDate = InvoiceModel.EndDate,
+                InvoiceDate = InvoiceModel.IssueDate,
+                InvoiceNumber = InvoiceModel.InvoiceNumber,
+                IsMwstApplicable = InvoiceModel.IsMwstApplicable,
                 Positions = Positions,
-                Notiz = Notiz,
-                StartDate = StartDate,
-                Subject = Subject
+                StartDate = InvoiceModel.StartDate,
+                CommentsBottom = InvoiceModel.CommentsBottom,
+                CommentsTop = InvoiceModel.CommentsTop
             };
             await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
         }
@@ -204,6 +175,12 @@ namespace CYR.Invoice.InvoiceViewModels
             if (parameter is null) return;
             CreateInvoiceModel createInvoiceModel = (CreateInvoiceModel)parameter;
             Positions = createInvoiceModel.Positions;
+        }
+
+        public void Receive(InvoiceMwstEvent message)
+        {
+            if (message.isMwstApplicable == true) TotalPrice *= 1.19m;
+            else TotalPrice /= 1.19m;
         }
     }
 }

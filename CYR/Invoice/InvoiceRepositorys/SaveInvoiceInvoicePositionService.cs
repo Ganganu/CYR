@@ -101,18 +101,17 @@ namespace CYR.Invoice.InvoiceRepositorys
                         InvoiceModel invoiceModel = new InvoiceModel();
                         invoiceModel.InvoiceNumber = createInvoiceModel.InvoiceNumber;
                         invoiceModel.Customer = client;
-                        invoiceModel.IssueDate = createInvoiceModel.InvoiceDate.Value.ToShortDateString();
-                        invoiceModel.DueDate = DateTime.Now.ToShortDateString();
+                        invoiceModel.IssueDate = createInvoiceModel.InvoiceDate;
+                        invoiceModel.DueDate = DateTime.Now;
                         invoiceModel.NetAmount = createInvoiceModel?.Positions.Sum(x => x.Price * x.Quantity);
-                        invoiceModel.Paragraph = "13b";
                         invoiceModel.State = InvoiceState.Open;
-                        invoiceModel.Subject = createInvoiceModel.Subject;
-                        invoiceModel.ObjectNumber = createInvoiceModel.ObjectNumber;
-                        invoiceModel.Mwst = createInvoiceModel.IsMwstApplicable;
+                        invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
+                        invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
+                        invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
                         if (createInvoiceModel.StartDate.HasValue)
-                            invoiceModel.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+                            invoiceModel.StartDate = createInvoiceModel.StartDate;
                         if (createInvoiceModel.EndDate.HasValue)
-                            invoiceModel.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
+                            invoiceModel.EndDate = createInvoiceModel.EndDate;
                         if (createInvoiceModel.IsMwstApplicable)
                         {
                             invoiceModel.GrossAmount = Math.Round((decimal)invoiceModel.NetAmount * 1.19m, 2);
@@ -168,13 +167,13 @@ namespace CYR.Invoice.InvoiceRepositorys
             IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
             UserSettings userSettings = _configurationService.GetUserSettings();
             var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
-            model.Subject = createInvoiceModel.Subject;
-            model.ObjectNumber = createInvoiceModel.ObjectNumber;
-            model.Mwst = createInvoiceModel.IsMwstApplicable;
+            model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
             if (createInvoiceModel.StartDate.HasValue)
-                model.StartDate = createInvoiceModel.StartDate.Value.ToShortDateString();
+                model.StartDate = createInvoiceModel.StartDate;
             if (createInvoiceModel.EndDate.HasValue)
-                model.EndDate = createInvoiceModel.EndDate.Value.ToShortDateString();
+                model.EndDate = createInvoiceModel.EndDate;
+            model.CommentsTop = createInvoiceModel.CommentsTop;
+            model.CommentsBottom = createInvoiceModel.CommentsBottom;
             _invoiceDocument.Model = model;
             _invoiceDocument.GeneratePdfAndShow();
         }

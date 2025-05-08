@@ -77,7 +77,7 @@ namespace CYR.Invoice
                     decimal? totalPrice = Model.Items.Sum(x => x.Price * x.Quantity);
                     string formattedTotalPrice = string.Format(CultureInfo.CreateSpecificCulture("de-DE"), "{0:N2}", totalPrice);
                     column.Item().AlignRight().Text($"Netto-Summe: {formattedTotalPrice}€").FontSize(14);
-                    if (Model.Mwst)
+                    if (Model.IsMwstApplicable)
                     {
                         column.Item().AlignRight().Text($"MwSt.         19%").FontSize(14);
                         column.Item().AlignRight().Text($"Gesamtbetrag: {(totalPrice * MWST):0.00}€").FontSize(14);
@@ -96,15 +96,7 @@ namespace CYR.Invoice
             container.Background(Colors.Grey.Lighten3).PaddingTop(10).Column(column =>
             {
                 column.Spacing(5);
-                column.Item().Text($"Rechnung {DateTime.Parse(DateTime.Now.ToString()).Year} - {Model.InvoiceNumber}").FontSize(12).Bold();
-                column.Item().Text(@"(bitte bei Bezahlung abgeben)").FontSize(8);
-                column.Item().Text($"Betreff: {Model.Subject}").FontSize(12).Bold();
-                if (!string.IsNullOrEmpty(Model.ObjectNumber))
-                {
-                    column.Item().Text($"Objektnummer: {Model.ObjectNumber}").FontSize(12);
-                }
-                column.Item().Text("Sehr geehrter Damen und Herren,").FontSize(9);
-                column.Item().Text("wir danken Ihnen für den Auftrag und erlauben uns Ihnen folgende Leistungen in Rechnung zu stellen.").FontSize(9);
+                column.Item().Text(Model.CommentsTop);
             });
         }
         void ComposeClientInformations(IContainer container)
@@ -126,7 +118,7 @@ namespace CYR.Invoice
                         .FontSize(11);
                     column.Item().Text($"Datum: {Model.IssueDate}")
                         .FontSize(11);
-                    if (!string.IsNullOrEmpty(Model.StartDate) || !string.IsNullOrEmpty(Model.EndDate))
+                    if (!string.IsNullOrEmpty(Model.StartDate.ToString()) || !string.IsNullOrEmpty(Model.EndDate.ToString()))
                     {
                         column.Item().Text($"Zeitraum: {Model.StartDate} - {Model.EndDate}")
                             .FontSize(11);
@@ -191,18 +183,9 @@ namespace CYR.Invoice
         {
             container.Background(Colors.Grey.Lighten3).PaddingTop(20).Column(column =>
             {
+                column.Spacing(5);                
+                column.Item().Text(Model.CommentsBottom);
                 column.Spacing(5);
-                if (string.IsNullOrEmpty(Model.Notiz))
-                {
-                    if (!Model.Mwst)
-                    {
-                        column.Item().Text("Bauleistung im Sinne von §13b Abs. 5 UStG").FontSize(11);
-                    }
-                    column.Item().Text("Wir bitten um Überweisung des Rechnungsbetrages sofort ohne Abzug.").FontSize(11);
-                }
-                column.Item().Text(Model.Notiz).FontSize(11);
-                column.Item().Text("");
-                column.Item().Text("Mit freundlichen Grüßen").FontSize(11);
                 column.Item().Text(Model.Seller.Name).FontSize(11);
             });
         }

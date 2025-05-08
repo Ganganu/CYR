@@ -36,9 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EasyControls">
-      <HintPath>..\..\EasyControls\EasyControls\bin\Debug\net8.0-windows\EasyControls.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\EasyControls\EasyControls\EasyControls.csproj" />
   </ItemGroup>
 
   <ItemGroup>
