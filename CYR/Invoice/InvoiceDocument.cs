@@ -58,7 +58,7 @@ namespace CYR.Invoice
                         .FontColor(Colors.Blue.Medium)
                         .Underline(true);
                 });
-                row.ConstantItem(200).Image(new Uri(_userSettings.Logo.ToString()).LocalPath);
+                row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
             });
 
 

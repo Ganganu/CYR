@@ -26,6 +26,7 @@ namespace CYR.Invoice.InvoiceViewModels
         private readonly IConfigurationService _configurationService;
         private readonly IOpenImageService _openImageService;
         private readonly UserSettings _userSettings;
+        private readonly ISelectImageService _selectImageService;
 
         private int _positionCounter = 1;
         private Client? _client;
@@ -35,9 +36,10 @@ namespace CYR.Invoice.InvoiceViewModels
             INavigationService navigationService,
             ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
             IPreviewInvoiceService previewInvoiceService,
-            IRetrieveClients retrieveClients, 
+            IRetrieveClients retrieveClients,
             IConfigurationService configurationService,
-            IOpenImageService openImageService)
+            IOpenImageService openImageService,
+            ISelectImageService selectImageService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -51,6 +53,7 @@ namespace CYR.Invoice.InvoiceViewModels
             InvoiceModel = new InvoiceModel();
             Initialize();
             Messenger.RegisterAll(this);
+            _selectImageService = selectImageService;
         }
         private async void Initialize()
         {
@@ -58,6 +61,7 @@ namespace CYR.Invoice.InvoiceViewModels
             IEnumerable<Client> cl = await _retrieveClients.Handle();
             Clients = [.. cl];
             Logo = _userSettings.Logo;
+            InvoiceModel.Logo = Logo;
         }
 
         [ObservableProperty]
@@ -72,7 +76,7 @@ namespace CYR.Invoice.InvoiceViewModels
         private decimal? _totalPrice = 0.0m;
         public INavigationService NavigationService { get; }
 
-        partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)      
+        partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)
         {
             if (newValue != oldValue)
             {
@@ -117,7 +121,8 @@ namespace CYR.Invoice.InvoiceViewModels
                 Positions = Positions,
                 StartDate = InvoiceModel.StartDate,
                 CommentsBottom = InvoiceModel.CommentsBottom,
-                CommentsTop = InvoiceModel.CommentsTop
+                CommentsTop = InvoiceModel.CommentsTop,
+                Logo = InvoiceModel.Logo
             };
             await _previewInvoiceService.SaveInvoice(createInvoiceModel);
         }
@@ -134,7 +139,9 @@ namespace CYR.Invoice.InvoiceViewModels
                 Positions = Positions,
                 StartDate = InvoiceModel.StartDate,
                 CommentsBottom = InvoiceModel.CommentsBottom,
-                CommentsTop = InvoiceModel.CommentsTop
+                CommentsTop = InvoiceModel.CommentsTop,
+                Logo = InvoiceModel.Logo
+
             };
             await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
         }
@@ -142,7 +149,7 @@ namespace CYR.Invoice.InvoiceViewModels
         private void DeleteInvoicePosition()
         {
             var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();
-            if (selectedPositions is null)  return;
+            if (selectedPositions is null) return;
             foreach (var position in selectedPositions)
             {
                 Positions?.Remove(position);
@@ -152,8 +159,13 @@ namespace CYR.Invoice.InvoiceViewModels
         [RelayCommand]
         private void OpenImageInDefaultApp()
         {
-            string imagePath = new Uri(Logo.ToString()).LocalPath;      
+            string imagePath = new Uri(Logo.ToString()).LocalPath;
             _openImageService.OpenImage(imagePath);
+        }
+        [RelayCommand]
+        private void SelectLogo()
+        {
+            Logo = _selectImageService.SelectImage();
         }
 
         public void Receive(LogoEvent message)
@@ -181,6 +193,13 @@ namespace CYR.Invoice.InvoiceViewModels
         {
             if (message.isMwstApplicable == true) TotalPrice *= 1.19m;
             else TotalPrice /= 1.19m;
+        }
+        partial void OnLogoChanged(ImageSource? oldValue, ImageSource newValue)
+        {
+            if (oldValue != newValue)
+            {
+                InvoiceModel.Logo = Logo;
+            }
         }
     }
 }

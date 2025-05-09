@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Invoice.InvoiceViewModels;
@@ -32,6 +33,7 @@ namespace CYR.Invoice.InvoiceModels
 
         public string? CommentsTop { get; set; }
         public string? CommentsBottom { get; set; }
+        public ImageSource Logo { get; set; }
 
         [ObservableProperty]
         private bool? _isSelected;

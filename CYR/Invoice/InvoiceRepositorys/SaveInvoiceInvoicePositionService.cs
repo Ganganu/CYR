@@ -108,6 +108,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                         invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
                         invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
                         invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
+                        invoiceModel.Logo = createInvoiceModel.Logo;
                         if (createInvoiceModel.StartDate.HasValue)
                             invoiceModel.StartDate = createInvoiceModel.StartDate;
                         if (createInvoiceModel.EndDate.HasValue)
@@ -174,6 +175,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                 model.EndDate = createInvoiceModel.EndDate;
             model.CommentsTop = createInvoiceModel.CommentsTop;
             model.CommentsBottom = createInvoiceModel.CommentsBottom;
+            model.Logo = createInvoiceModel.Logo;
             _invoiceDocument.Model = model;
             _invoiceDocument.GeneratePdfAndShow();
         }
