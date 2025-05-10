@@ -11,7 +11,6 @@ using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
-using static QuestPDF.Helpers.Colors;
 
 namespace CYR.Invoice.InvoiceViewModels
 {

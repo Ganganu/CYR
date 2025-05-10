@@ -142,6 +142,12 @@
         </DataGrid>
       </Border>
     </Grid>
-    <controls:ToolBarRTB Grid.Row="1" />
+    <Border Margin="10"
+      Grid.Row="1"
+      BorderBrush="LightGray"
+      BorderThickness="1"
+      CornerRadius="5">
+      <controls:ToolBarRTB />
+    </Border>
   </Grid>
 </UserControl>

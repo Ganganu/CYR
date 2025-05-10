@@ -10,17 +10,12 @@ namespace CYR.Invoice
 {
     public class InvoiceDocument :  IInvoiceDocument
     {
-        private readonly IConfigurationService _configurationService;
-        private readonly UserSettings _userSettings;
-
         private const decimal MWST = 1.19m;
         public InvoiceModel Model { get; set; }
 
-        public InvoiceDocument(InvoiceModel model, IConfigurationService configurationService)
+        public InvoiceDocument(InvoiceModel model)
         {
             Model = model;
-            _configurationService = configurationService;
-            _userSettings = configurationService.GetUserSettings();
         }
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
@@ -118,10 +113,13 @@ namespace CYR.Invoice
                         .FontSize(11);
                     column.Item().Text($"Datum: {Model.IssueDate.Value.ToShortDateString()}")
                         .FontSize(11);
-                    if (!string.IsNullOrEmpty(Model.StartDate.Value.ToShortDateString()) || !string.IsNullOrEmpty(Model.EndDate.Value.ToShortDateString()))
+                    if (Model.StartDate.HasValue && Model.EndDate.HasValue)
                     {
-                        column.Item().Text($"Zeitraum: {Model.StartDate.Value.ToShortDateString()} - {Model.EndDate.Value.ToShortDateString()}")
-                            .FontSize(11);
+                        if (!string.IsNullOrEmpty(Model.StartDate.Value.ToShortDateString()) || !string.IsNullOrEmpty(Model.EndDate.Value.ToShortDateString()))
+                        {
+                            column.Item().Text($"Zeitraum: {Model.StartDate.Value.ToShortDateString()} - {Model.EndDate.Value.ToShortDateString()}")
+                                .FontSize(11);
+                        }
                     }
                 });
             });
