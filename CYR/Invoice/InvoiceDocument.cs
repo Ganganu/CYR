@@ -1,4 +1,5 @@
 ﻿using CYR.Invoice.InvoiceModels;
+using CYR.PDF;
 using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;
@@ -8,7 +9,7 @@ using System.Globalization;
 
 namespace CYR.Invoice
 {
-    public class InvoiceDocument :  IInvoiceDocument
+    public class InvoiceDocument : IInvoiceDocument
     {
         private const decimal MWST = 1.19m;
         public InvoiceModel Model { get; set; }
@@ -91,9 +92,25 @@ namespace CYR.Invoice
             container.Background(Colors.Grey.Lighten3).PaddingTop(10).Column(column =>
             {
                 column.Spacing(5);
-                column.Item().Text(Model.CommentsTop);
+                RunParser runParser = new();
+                List<Run> runs = runParser.GetRunsAndData(Model.CommentsTop);
+                foreach (var run in runs)
+                {
+                    var fontSize = run.FontSize;
+                    var fontWeight = StringToQuestPdfConverter.ToFontWeight(run.FontWeight);
+                    var fontStyle = run.FontStyle;
+                    var textDecorations = run.TextDecorations;
+                    column.Item().Text(text => {
+                        text.Span(run.Text)
+                        .FontSize(fontSize)
+                        .Style(TextStyle.Default.Weight(fontWeight))
+                        .Style(TextStyle.Default.Underline(textDecorations?.Length > 0 && textDecorations == "Underline"))
+                        .Style(TextStyle.Default.Italic(fontStyle?.Length > 0 && fontStyle == "Italic"));                    
+                    });
+                }
             });
         }
+
         void ComposeClientInformations(IContainer container)
         {
             container.AlignTop().PaddingVertical(10).Row(row =>
@@ -181,7 +198,7 @@ namespace CYR.Invoice
         {
             container.Background(Colors.Grey.Lighten3).PaddingTop(20).Column(column =>
             {
-                column.Spacing(5);                
+                column.Spacing(5);
                 column.Item().Text(Model.CommentsBottom);
                 column.Spacing(5);
                 column.Item().Text(Model.Seller.Name).FontSize(11);
