@@ -124,10 +124,17 @@
             Grid.Row="3"
             Grid.RowSpan="2"
             controls:RichTextBoxHelper.DocumentXaml="{Binding InvoiceModel.CommentsTop, UpdateSourceTrigger=PropertyChanged}" />-->
-          <controls:ToolBarRTB
+          <Grid
             Grid.Row="3"
             Grid.RowSpan="2"
-            Text="{Binding InvoiceModel.CommentsTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            Height="150">
+            <Border
+              BorderBrush="LightGray"
+              BorderThickness="1"
+              CornerRadius="5">
+              <controls:ToolBarRTB VerticalAlignment="Top" Text="{Binding InvoiceModel.CommentsTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            </Border>
+          </Grid>
           <!--<TextBox
             Grid.Row="3"
             Grid.RowSpan="2"
