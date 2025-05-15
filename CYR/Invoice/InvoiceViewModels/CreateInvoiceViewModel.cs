@@ -200,5 +200,11 @@ namespace CYR.Invoice.InvoiceViewModels
                 InvoiceModel.Logo = Logo;
             }
         }
+        [RelayCommand]
+        private void SaveXml(object parameter)
+        {
+            var dataContext = (CreateInvoiceViewModel)parameter;
+            var xml = dataContext.InvoiceModel.CommentsTop;
+        }
     }
 }

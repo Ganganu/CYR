@@ -115,15 +115,18 @@
             MaxDropDownHeight="200"
             SelectedItem="{Binding SelectedClient}"
             Style="{StaticResource MaterialDesignOutlinedComboBox}" />
-          <Label
-            Grid.Row="2"
-            Margin="0,5,0,0"
-            Content="Kommentare oben *"
-            FontSize="20" />
-          <!--<RichTextBox
-            Grid.Row="3"
-            Grid.RowSpan="2"
-            controls:RichTextBoxHelper.DocumentXaml="{Binding InvoiceModel.CommentsTop, UpdateSourceTrigger=PropertyChanged}" />-->
+          <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label
+              Margin="0,5,0,0"
+              Content="Kommentare oben *"
+              FontSize="20" />
+            <Button
+              VerticalAlignment="Bottom"
+              Command="{Binding SaveXmlCommand}"
+              CommandParameter="{Binding}"
+              Content="{materialDesign:PackIcon Kind=Add}"
+              Style="{StaticResource MaterialDesignToolButton}" />
+          </StackPanel>
           <Grid
             Grid.Row="3"
             Grid.RowSpan="2"
@@ -135,21 +138,6 @@
               <controls:ToolBarRTB VerticalAlignment="Top" Text="{Binding InvoiceModel.CommentsTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </Border>
           </Grid>
-          <!--<TextBox
-            Grid.Row="3"
-            Grid.RowSpan="2"
-            Height="150"
-            materialDesign:HintAssist.Hint="z.B. Durchgeführte Arbeit"
-            materialDesign:HintAssist.IsFloating="False"
-            AcceptsReturn="True"
-            AcceptsTab="True"
-            BorderBrush="LightGray"
-            BorderThickness="1"
-            SpellCheck.IsEnabled="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding InvoiceModel.CommentsTop, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap"
-            VerticalScrollBarVisibility="Auto" />-->
         </Grid>
         <Grid Grid.Row="0" Grid.Column="1">
           <Grid.RowDefinitions>
