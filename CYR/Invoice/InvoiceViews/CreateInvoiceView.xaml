@@ -126,6 +126,11 @@
               CommandParameter="{Binding}"
               Content="{materialDesign:PackIcon Kind=Add}"
               Style="{StaticResource MaterialDesignToolButton}" />
+            <Button
+              VerticalAlignment="Bottom"
+              Command="{Binding LoadXmlCommand}"
+              Content="{materialDesign:PackIcon Kind=FileFind}"
+              Style="{StaticResource MaterialDesignToolButton}" />
           </StackPanel>
           <Grid
             Grid.Row="3"

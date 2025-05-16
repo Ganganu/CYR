@@ -31,7 +31,8 @@ namespace CYR.Invoice.InvoiceModels
 
         public List<InvoicePosition> Items { get; set; }
 
-        public string? CommentsTop { get; set; }
+        [ObservableProperty]
+        private string? _commentsTop;
         public string? CommentsBottom { get; set; }
         public ImageSource Logo { get; set; }
 

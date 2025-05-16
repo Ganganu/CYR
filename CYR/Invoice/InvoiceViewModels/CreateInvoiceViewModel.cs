@@ -6,10 +6,12 @@ using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.OrderItems;
+using CYR.PDF;
 using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels
@@ -26,6 +28,7 @@ namespace CYR.Invoice.InvoiceViewModels
         private readonly IOpenImageService _openImageService;
         private readonly UserSettings _userSettings;
         private readonly ISelectImageService _selectImageService;
+        private readonly IXMLService _xmlService;
 
         private int _positionCounter = 1;
         private Client? _client;
@@ -38,7 +41,8 @@ namespace CYR.Invoice.InvoiceViewModels
             IRetrieveClients retrieveClients,
             IConfigurationService configurationService,
             IOpenImageService openImageService,
-            ISelectImageService selectImageService)
+            ISelectImageService selectImageService,
+            IXMLService xmlService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -53,6 +57,7 @@ namespace CYR.Invoice.InvoiceViewModels
             Initialize();
             Messenger.RegisterAll(this);
             _selectImageService = selectImageService;
+            _xmlService = xmlService;
         }
         private async void Initialize()
         {
@@ -205,6 +210,27 @@ namespace CYR.Invoice.InvoiceViewModels
         {
             var dataContext = (CreateInvoiceViewModel)parameter;
             var xml = dataContext.InvoiceModel.CommentsTop;
+            _xmlService.SaveAsync(xml);
+        }
+        [RelayCommand]
+        private void LoadXml()
+        {
+            RunParser runParser = new();
+            string comments = _xmlService.LoadAsync();
+            var runs = runParser.GetRunsAndData(comments);
+            foreach (var run in runs)
+            {
+                var fontSize = run.FontSize;
+                var fontWeight = StringToQuestPdfConverter.ToFontWeight(run.FontWeight);
+                var fontStyle = run.FontStyle;
+                var textDecorations = run.TextDecorations;
+                var text = run.Text;
+                string xamlText = "<FlowDocument xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
+                     "<Paragraph><Run FontWeight=\"Bold\">" + System.Security.SecurityElement.Escape(text) + "</Run></Paragraph>" +
+                     "</FlowDocument>";
+                InvoiceModel.CommentsTop = xamlText;
+                //InvoiceModel.CommentsTop = run.Text;
+            }
         }
     }
 }
