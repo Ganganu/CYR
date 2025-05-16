@@ -81,6 +81,7 @@ namespace CYR
             //Dialog Registrations
             DialogService.RegisterDialog<Notification,NotificationViewModel>();
             DialogService.RegisterDialog<ErrorDialogView, ErrorDialogViewModel>();
+            DialogService.RegisterDialog<ItemsListView, ItemsListDialogViewModel>();
         }
         protected override void OnStartup(StartupEventArgs e)
         {

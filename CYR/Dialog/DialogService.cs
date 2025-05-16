@@ -66,6 +66,7 @@ namespace CYR.Dialog
             }
 
             dialog.Content = content;
+            dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             dialog.ShowDialog();
         }
 

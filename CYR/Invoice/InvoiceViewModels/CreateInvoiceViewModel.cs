@@ -2,18 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
+using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.OrderItems;
-using CYR.PDF;
 using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
-using System.Data.Common;
+using System.Linq.Expressions;
+using System.Windows;
 using System.Windows.Media;
-using System.Xml;
 
 namespace CYR.Invoice.InvoiceViewModels
 {
@@ -30,6 +30,9 @@ namespace CYR.Invoice.InvoiceViewModels
         private readonly UserSettings _userSettings;
         private readonly ISelectImageService _selectImageService;
         private readonly IXMLService _xmlService;
+        private readonly IDialogService _dialogService;
+
+        private string? _dialogResponse;
 
         private int _positionCounter = 1;
         private Client? _client;
@@ -43,7 +46,8 @@ namespace CYR.Invoice.InvoiceViewModels
             IConfigurationService configurationService,
             IOpenImageService openImageService,
             ISelectImageService selectImageService,
-            IXMLService xmlService)
+            IXMLService xmlService,
+            IDialogService dialogService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -59,6 +63,7 @@ namespace CYR.Invoice.InvoiceViewModels
             Messenger.RegisterAll(this);
             _selectImageService = selectImageService;
             _xmlService = xmlService;
+            _dialogService = dialogService;
         }
         private async void Initialize()
         {
@@ -217,6 +222,19 @@ namespace CYR.Invoice.InvoiceViewModels
         private void LoadXml()
         {
             InvoiceModel.CommentsTop = _xmlService.LoadAsync();
+            ShowListDialog("test", ["a,b"]);
+        }
+        private void ShowListDialog(string title, List<string> files)
+        {
+            _dialogService.ShowDialog(result =>
+            {
+                _dialogResponse = result;
+            },
+            new Dictionary<Expression<Func<ItemsListDialogViewModel, object>>, object>
+            {
+                { vm => vm.Title, title },
+                { vm => vm.Files,  files}
+            });
         }
     }
 }
