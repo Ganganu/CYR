@@ -1,4 +1,8 @@
 ﻿using System.IO;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Xml;
+using CYR.Invoice.InvoiceModels;
 using CYR.PDF;
 
 namespace CYR.Invoice
@@ -24,7 +28,20 @@ namespace CYR.Invoice
         {
             string commentsPath = $@"{_directoryPath}\Comments";
             string xmlText = File.ReadAllText($@"{commentsPath}\test.xml");
-            return xmlText;
+            string convertedXml = ConvertSectionToFlowDocument(xmlText);
+            return convertedXml;
+        }
+        private static string ConvertSectionToFlowDocument(string xmlContent)
+        {
+            var stringReader = new StringReader(xmlContent);
+            var xmlReader = XmlReader.Create(stringReader);
+            Section section = (Section)XamlReader.Load(xmlReader);
+
+            FlowDocument flowDoc = new();
+            flowDoc.Blocks.Add(section);
+
+            string xamlString = XamlWriter.Save(flowDoc);
+            return xamlString;
         }
     }
 }

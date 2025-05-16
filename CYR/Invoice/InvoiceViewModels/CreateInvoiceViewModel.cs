@@ -13,6 +13,7 @@ using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Windows.Media;
+using System.Xml;
 
 namespace CYR.Invoice.InvoiceViewModels
 {
@@ -215,22 +216,7 @@ namespace CYR.Invoice.InvoiceViewModels
         [RelayCommand]
         private void LoadXml()
         {
-            RunParser runParser = new();
-            string comments = _xmlService.LoadAsync();
-            var runs = runParser.GetRunsAndData(comments);
-            foreach (var run in runs)
-            {
-                var fontSize = run.FontSize;
-                var fontWeight = StringToQuestPdfConverter.ToFontWeight(run.FontWeight);
-                var fontStyle = run.FontStyle;
-                var textDecorations = run.TextDecorations;
-                var text = run.Text;
-                string xamlText = "<FlowDocument xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
-                     "<Paragraph><Run FontWeight=\"Bold\">" + System.Security.SecurityElement.Escape(text) + "</Run></Paragraph>" +
-                     "</FlowDocument>";
-                InvoiceModel.CommentsTop = xamlText;
-                //InvoiceModel.CommentsTop = run.Text;
-            }
+            InvoiceModel.CommentsTop = _xmlService.LoadAsync();
         }
     }
 }
