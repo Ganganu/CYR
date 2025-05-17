@@ -2,6 +2,6 @@
 {
     public interface IFileService
     {
-        List<string> LoadFileNamesFromPath(string path);
+        List<FileModel> LoadFileNamesFromPath(string path);
     }
 }

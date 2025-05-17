@@ -22,10 +22,10 @@ namespace CYR.Invoice
             }
             return false;
         }
-        public string LoadAsync()
+        public string LoadAsync(string path)
         {
             string commentsPath = $@"{_directoryPath}\Comments";
-            string xmlText = File.ReadAllText($@"{commentsPath}\test.xml");
+            string xmlText = File.ReadAllText($@"{commentsPath}\{path}");
             string convertedXml = ConvertSectionToFlowDocument(xmlText);
             return convertedXml;
         }

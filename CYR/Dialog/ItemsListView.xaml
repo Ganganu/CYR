@@ -6,21 +6,20 @@
   xmlns:local="clr-namespace:CYR.Dialog"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  MinWidth="300"
-  MinHeight="300"
   d:DataContext="{d:DesignInstance Type=local:ItemsListDialogViewModel,
                                    IsDesignTimeCreatable=False}"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
   <Border
-    Background="white"
+    Background="White"
     BorderBrush="Orange"
     BorderThickness="2"
     CornerRadius="5">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
         <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0" Orientation="Vertical">
@@ -30,14 +29,42 @@
           Margin="0,10,0,0"
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
+          Foreground="Orange"
           Kind="{Binding Icon}" />
         <TextBlock
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
           FontSize="25"
           Text="{Binding Title}" />
+        <Border
+          Margin="10,0,10,0"
+          BorderBrush="LightGray"
+          BorderThickness="2" />
       </StackPanel>
-      <ListView Grid.Row="1" ItemsSource="{Binding Files}" />
+      <ListView
+        Grid.Row="1"
+        Height="250"
+        Margin="0,2,0,0"
+        DisplayMemberPath="FileName"
+        ItemsSource="{Binding Files}"
+        SelectedItem="{Binding SelectedFile}" />
+      <StackPanel
+        Grid.Row="2"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Bottom"
+        Orientation="Horizontal">
+        <Button
+          Name="btnCancel"
+          Margin="0,0,5,0"
+          Click="btnCancel_Click"
+          Content="Abbrechen" />
+        <Button
+          Margin="0,0,5,0"
+          Command="{Binding SendSelectedFileCommand}"
+          Name="btnAccept"
+          Click="btnAccept_Click"
+          Content="Übernehmen" />
+      </StackPanel>
     </Grid>
   </Border>
 </UserControl>

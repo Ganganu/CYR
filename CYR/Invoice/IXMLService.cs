@@ -4,7 +4,7 @@ namespace CYR.Invoice
 {
     public interface IXMLService
     {
-        string LoadAsync();
+        string LoadAsync(string path);
         bool SaveAsync(string text);
     }
 }

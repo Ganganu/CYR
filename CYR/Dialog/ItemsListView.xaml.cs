@@ -24,5 +24,17 @@ namespace CYR.Dialog
         {
             InitializeComponent();
         }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            var window = this.Parent as Window;
+            window.DialogResult = false;
+        }
+
+        private void btnAccept_Click(object sender, RoutedEventArgs e)
+        {
+            var window = this.Parent as Window;
+            window.DialogResult = false;
+        }
     }
 }

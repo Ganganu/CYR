@@ -18,7 +18,7 @@ using System.Windows.Media;
 namespace CYR.Invoice.InvoiceViewModels
 {
     public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver,
-                                                IRecipient<InvoiceMwstEvent>
+                                                IRecipient<InvoiceMwstEvent>, IRecipient<ItemsListDialogViewModel>
     {
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
@@ -225,16 +225,15 @@ namespace CYR.Invoice.InvoiceViewModels
         [RelayCommand]
         private void LoadXml()
         {
-            InvoiceModel.CommentsTop = _xmlService.LoadAsync();
             string commentsPath = $@"{_directoryPath}\Comments";
-            List<string> files = _fileService.LoadFileNamesFromPath(commentsPath);
+            List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
             XmlFiles = [.. files];
             ShowListDialog("Boilerplate Notizen", XmlFiles, "File");
         }
 
         [ObservableProperty]
-        private ObservableCollection<string> _xmlFiles;
-        private void ShowListDialog(string title, ObservableCollection<string> files, string icon)
+        private ObservableCollection<FileModel> _xmlFiles;
+        private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon)
         {
             _dialogService.ShowDialog(result =>
             {
@@ -246,6 +245,11 @@ namespace CYR.Invoice.InvoiceViewModels
                 { vm => vm.Files,  files},
                 { vm => vm.Icon,  icon}
             });
+        }
+
+        public void Receive(ItemsListDialogViewModel message)
+        {
+            InvoiceModel.CommentsTop = message.XmlString;
         }
     }
 }

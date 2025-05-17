@@ -9,13 +9,16 @@ namespace CYR.Services
 
         }
 
-        public List<string> LoadFileNamesFromPath(string path)
-        {
+        public List<FileModel> LoadFileNamesFromPath(string path)
+        {            
             string[] filesFullPath = Directory.GetFiles(path);
-            List<string> files = new();
+            List<FileModel> files = new();
             foreach (var file in filesFullPath)
             {
-                files.Add(Path.GetFileName(file));
+                FileModel model = new FileModel();
+                model.FullPath = file;
+                model.FileName = Path.GetFileName(file);
+                files.Add(model);
             }
             return files;
         }
