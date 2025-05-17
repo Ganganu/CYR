@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CYR.Dialog
 {
@@ -6,12 +7,14 @@ namespace CYR.Dialog
     {
         public ItemsListDialogViewModel()
         {
-            
+
         }
 
         [ObservableProperty]
-        private string _title;
+        private string? _title;
         [ObservableProperty]
-        private List<string> _files;
+        private ObservableCollection<string>? _files;
+        [ObservableProperty]
+        private string? _icon;
     }
 }

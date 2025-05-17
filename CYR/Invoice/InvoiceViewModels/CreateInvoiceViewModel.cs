@@ -30,9 +30,11 @@ namespace CYR.Invoice.InvoiceViewModels
         private readonly UserSettings _userSettings;
         private readonly ISelectImageService _selectImageService;
         private readonly IXMLService _xmlService;
+        private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
 
         private string? _dialogResponse;
+        private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
 
         private int _positionCounter = 1;
         private Client? _client;
@@ -47,7 +49,8 @@ namespace CYR.Invoice.InvoiceViewModels
             IOpenImageService openImageService,
             ISelectImageService selectImageService,
             IXMLService xmlService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IFileService fileService)
         {
             _orderItemRepository = orderItemRepository;
             _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -64,6 +67,7 @@ namespace CYR.Invoice.InvoiceViewModels
             _selectImageService = selectImageService;
             _xmlService = xmlService;
             _dialogService = dialogService;
+            _fileService = fileService;
         }
         private async void Initialize()
         {
@@ -222,9 +226,15 @@ namespace CYR.Invoice.InvoiceViewModels
         private void LoadXml()
         {
             InvoiceModel.CommentsTop = _xmlService.LoadAsync();
-            ShowListDialog("test", ["a,b"]);
+            string commentsPath = $@"{_directoryPath}\Comments";
+            List<string> files = _fileService.LoadFileNamesFromPath(commentsPath);
+            XmlFiles = [.. files];
+            ShowListDialog("Boilerplate Notizen", XmlFiles, "File");
         }
-        private void ShowListDialog(string title, List<string> files)
+
+        [ObservableProperty]
+        private ObservableCollection<string> _xmlFiles;
+        private void ShowListDialog(string title, ObservableCollection<string> files, string icon)
         {
             _dialogService.ShowDialog(result =>
             {
@@ -233,7 +243,8 @@ namespace CYR.Invoice.InvoiceViewModels
             new Dictionary<Expression<Func<ItemsListDialogViewModel, object>>, object>
             {
                 { vm => vm.Title, title },
-                { vm => vm.Files,  files}
+                { vm => vm.Files,  files},
+                { vm => vm.Icon,  icon}
             });
         }
     }

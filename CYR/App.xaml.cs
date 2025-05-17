@@ -63,6 +63,7 @@ namespace CYR
             services.AddSingleton<ISelectImageService, SelectImageService>();
             services.AddSingleton<IOpenImageService, OpenImageService>();
             services.AddSingleton<IXMLService, XMLService>();
+            services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IInvoiceDocument, InvoiceDocument>();
             services.AddSingleton<Client>();
             services.AddSingleton<InvoiceModel>();

@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Windows;
 
 namespace CYR.Dialog
@@ -7,21 +9,41 @@ namespace CYR.Dialog
     {
         public void ShowDialog<TViewModel>(Action<string> callback, Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters = null);
     }
+
     public class DialogService : IDialogService
     {
-        static Dictionary<Type, Type> _mappings = new Dictionary<Type, Type>();
-        public static void RegisterDialog<TView,TViewModel>()
+        static Dictionary<Type, (Type ViewType, Func<object[]>? ConstructorParamsFactory)> _mappings =
+            new Dictionary<Type, (Type, Func<object[]>?)>();
+
+        public static void RegisterDialog<TView, TViewModel>()
+            where TView : new()
+            where TViewModel : new()
         {
-            _mappings.Add(typeof(TViewModel), typeof(TView));
+            _mappings[typeof(TViewModel)] = (typeof(TView), null);
+        }
+
+        public static void RegisterDialog<TView, TViewModel>(Func<object[]> constructorParamsFactory)
+            where TView : new()
+        {
+            _mappings[typeof(TViewModel)] = (typeof(TView), constructorParamsFactory);
         }
 
         public void ShowDialog<TViewModel>(Action<string> callback, Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters = null)
         {
-            var type = _mappings[typeof(TViewModel)];
-            ShowDialogInternal(type, callback, typeof(TViewModel), viewModelParameters);
+            if (!_mappings.TryGetValue(typeof(TViewModel), out var mapping))
+            {
+                throw new InvalidOperationException($"No view registered for view model type {typeof(TViewModel).Name}");
+            }
+
+            ShowDialogInternal(mapping.ViewType, callback, typeof(TViewModel), mapping.ConstructorParamsFactory, viewModelParameters);
         }
 
-        private static void ShowDialogInternal<TViewModel>(Type type, Action<string> callback, Type? vmType, Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters)
+        private static void ShowDialogInternal<TViewModel>(
+            Type viewType,
+            Action<string> callback,
+            Type? vmType,
+            Func<object[]>? constructorParamsFactory,
+            Dictionary<Expression<Func<TViewModel, object>>, object>? viewModelParameters)
         {
             var dialog = new DialogWindow();
             EventHandler closeEventHandler = null;
@@ -32,10 +54,21 @@ namespace CYR.Dialog
             };
             dialog.Closed += closeEventHandler;
 
-            var content = Activator.CreateInstance(type);
+            var content = Activator.CreateInstance(viewType);
+
             if (vmType != null)
             {
-                var vm = Activator.CreateInstance(vmType);
+                object vm;
+
+                if (constructorParamsFactory != null)
+                {
+                    var constructorParams = constructorParamsFactory();
+                    vm = Activator.CreateInstance(vmType, constructorParams);
+                }
+                else
+                {
+                    vm = Activator.CreateInstance(vmType);
+                }
 
                 if (viewModelParameters != null)
                 {
@@ -69,6 +102,5 @@ namespace CYR.Dialog
             dialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             dialog.ShowDialog();
         }
-
     }
 }
