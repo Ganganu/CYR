@@ -43,8 +43,10 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoice.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoice.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
                     invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
-                    invoice.StartDate = Convert.ToDateTime(reader["start_date"]);
-                    invoice.EndDate = Convert.ToDateTime(reader["end_date"]);
+                    if (DateTime.TryParseExact(reader["start_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime st))
+                        invoice.StartDate = st;
+                    if (DateTime.TryParseExact(reader["end_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime et))
+                        invoice.EndDate = et;
                     if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(), out var state))
                     {
                         invoice.State = state;
@@ -83,8 +85,10 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoiceModel.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoiceModel.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
                     invoiceModel.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
-                    invoiceModel.StartDate = Convert.ToDateTime(reader["start_date"]);
-                    invoiceModel.EndDate = Convert.ToDateTime(reader["end_date"]);
+                    if (DateTime.TryParseExact(reader["start_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime st))
+                        invoiceModel.StartDate = st;
+                    if (DateTime.TryParseExact(reader["end_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime et))
+                        invoiceModel.EndDate = et;
                     invoiceModel.CommentsTop =reader["commentstop"].ToString();
                     invoiceModel.CommentsBottom =reader["commentsbottom"].ToString();
                     if (invoiceModel.GrossAmount > invoiceModel.NetAmount)
