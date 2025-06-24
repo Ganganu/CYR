@@ -83,7 +83,7 @@ namespace CYR.Invoice
                         column.Item().AlignRight().Text("").FontSize(14);
                         column.Item().AlignRight().Text($"Gesamtbetrag: {(totalPrice):0.00}€").FontSize(14);
                     }
-                    column.Item().Element(ComposeComments);
+                    column.Item().Element(ComposeCommentsBottom);
                 });
             });
         }
@@ -194,14 +194,27 @@ namespace CYR.Invoice
                 }
             });
         }
-        void ComposeComments(IContainer container)
+        void ComposeCommentsBottom(IContainer container)
         {
-            container.Background(Colors.Grey.Lighten3).PaddingTop(20).Column(column =>
+            container.Background(Colors.Grey.Lighten3).PaddingTop(10).Column(column =>
             {
                 column.Spacing(5);
-                column.Item().Text(Model.CommentsBottom);
-                column.Spacing(5);
-                column.Item().Text(Model.Seller.Name).FontSize(11);
+                RunParser runParser = new();
+                List<Run> runs = runParser.GetRunsAndData(Model.CommentsTop);
+                foreach (var run in runs)
+                {
+                    var fontSize = run.FontSize;
+                    var fontWeight = StringToQuestPdfConverter.ToFontWeight(run.FontWeight);
+                    var fontStyle = run.FontStyle;
+                    var textDecorations = run.TextDecorations;
+                    column.Item().Text(text => {
+                        text.Span(run.Text)
+                        .FontSize(fontSize)
+                        .Style(TextStyle.Default.Weight(fontWeight))
+                        .Style(TextStyle.Default.Underline(textDecorations?.Length > 0 && textDecorations == "Underline"))
+                        .Style(TextStyle.Default.Italic(fontStyle?.Length > 0 && fontStyle == "Italic"));
+                    });
+                }
             });
         }
         void ComposeFooter(IContainer container)

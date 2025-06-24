@@ -117,10 +117,8 @@
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel>
-                  <TextBlock Text="{Binding ClientNumber}"
-                             FontSize="15" />
-                  <TextBlock Text="{Binding Name}"
-                             FontSize="15" />
+                  <TextBlock FontSize="15" Text="{Binding ClientNumber}" />
+                  <TextBlock FontSize="15" Text="{Binding Name}" />
                   <TextBlock Text="{Binding Street}" />
                 </StackPanel>
               </DataTemplate>
@@ -277,19 +275,13 @@
                   Grid.Row="1"
                   Content="Kommentare Fußzeile"
                   FontSize="16" />
-                <TextBox
+                <Border
                   Grid.Row="2"
-                  Height="150"
-                  materialDesign:HintAssist.Hint="z.B. wann muss die Rechnung bezahlt werden"
-                  materialDesign:HintAssist.IsFloating="False"
-                  AcceptsReturn="True"
-                  AcceptsTab="True"
                   BorderBrush="LightGray"
                   BorderThickness="1"
-                  SpellCheck.IsEnabled="True"
-                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding InvoiceModel.CommentsBottom, UpdateSourceTrigger=PropertyChanged}"
-                  TextWrapping="Wrap" />
+                  CornerRadius="5">
+                  <controls:ToolBarRTB VerticalAlignment="Top" Text="{Binding InvoiceModel.CommentsBottom, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                </Border>
                 <Label
                   Grid.Row="4"
                   Content="Bild/Logo"

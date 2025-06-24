@@ -10,7 +10,7 @@ namespace CYR.Services
         }
 
         public List<FileModel> LoadFileNamesFromPath(string path)
-        {            
+        {
             string[] filesFullPath = Directory.GetFiles(path);
             List<FileModel> files = new();
             foreach (var file in filesFullPath)
