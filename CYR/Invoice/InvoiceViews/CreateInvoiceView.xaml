@@ -108,13 +108,24 @@
             materialDesign:HintAssist.IsFloating="False"
             BorderBrush="LightGray"
             BorderThickness="1"
-            DisplayMemberPath="Name"
             FontSize="14"
             IsEditable="True"
             ItemsSource="{Binding Clients}"
             MaxDropDownHeight="200"
             SelectedItem="{Binding SelectedClient}"
-            Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+            Style="{StaticResource MaterialDesignOutlinedComboBox}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <TextBlock Text="{Binding ClientNumber}"
+                             FontSize="15" />
+                  <TextBlock Text="{Binding Name}"
+                             FontSize="15" />
+                  <TextBlock Text="{Binding Street}" />
+                </StackPanel>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
           <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label
               Margin="0,5,0,0"

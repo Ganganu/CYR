@@ -11,5 +11,10 @@ namespace CYR.Clients
         public string EmailAddress { get; set; }
         public string Telefonnumber { get; set; } 
         public string? CreationDate { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
