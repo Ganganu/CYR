@@ -33,7 +33,8 @@ namespace CYR.Invoice.InvoiceModels
 
         [ObservableProperty]
         private string? _commentsTop;
-        public string? CommentsBottom { get; set; }
+        [ObservableProperty]
+        private string? _commentsBottom;
         public ImageSource Logo { get; set; }
 
         [ObservableProperty]

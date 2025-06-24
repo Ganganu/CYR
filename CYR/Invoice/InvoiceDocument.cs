@@ -200,7 +200,7 @@ namespace CYR.Invoice
             {
                 column.Spacing(5);
                 RunParser runParser = new();
-                List<Run> runs = runParser.GetRunsAndData(Model.CommentsTop);
+                List<Run> runs = runParser.GetRunsAndData(Model.CommentsBottom);
                 foreach (var run in runs)
                 {
                     var fontSize = run.FontSize;
