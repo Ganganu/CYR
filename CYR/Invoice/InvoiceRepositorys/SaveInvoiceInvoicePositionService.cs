@@ -55,15 +55,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                                 "Warning",
                                 Visibility.Collapsed, "", createInvoiceModel);
                 return;
-            }
-            if (createInvoiceModel.StartDate > createInvoiceModel.EndDate)
-            {
-                ShowErrorDialog("Fehler", "Das Startdatum ist größer als das Enddatum!",
-                                "Abbrechen",
-                                "Warning",
-                                Visibility.Collapsed, "", createInvoiceModel);
-                return;
-            }
+            }            
             bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || p.Quantity <= 0 || p.OrderItem.Name == null);
             if (checkPositionNull)
             {
@@ -108,11 +100,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                         invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
                         invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
                         invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
-                        invoiceModel.Logo = createInvoiceModel.Logo;
-                        if (createInvoiceModel.StartDate.HasValue)
-                            invoiceModel.StartDate = createInvoiceModel.StartDate;
-                        if (createInvoiceModel.EndDate.HasValue)
-                            invoiceModel.EndDate = createInvoiceModel.EndDate;
+                        invoiceModel.Logo = createInvoiceModel.Logo;                       
                         if (createInvoiceModel.IsMwstApplicable)
                         {
                             invoiceModel.GrossAmount = Math.Round((decimal)invoiceModel.NetAmount * 1.19m, 2);
@@ -168,11 +156,7 @@ namespace CYR.Invoice.InvoiceRepositorys
             IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
             UserSettings userSettings = _configurationService.GetUserSettings();
             var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
-            model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
-            if (createInvoiceModel.StartDate.HasValue)
-                model.StartDate = createInvoiceModel.StartDate;
-            if (createInvoiceModel.EndDate.HasValue)
-                model.EndDate = createInvoiceModel.EndDate;
+            model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
             model.CommentsTop = createInvoiceModel.CommentsTop;
             model.CommentsBottom = createInvoiceModel.CommentsBottom;
             model.Logo = createInvoiceModel.Logo;

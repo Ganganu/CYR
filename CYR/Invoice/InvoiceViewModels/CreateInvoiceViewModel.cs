@@ -128,12 +128,10 @@ namespace CYR.Invoice.InvoiceViewModels
             CreateInvoiceModel createInvoiceModel = new()
             {
                 Client = _client,
-                EndDate = InvoiceModel.EndDate,
                 InvoiceDate = InvoiceModel.IssueDate,
                 InvoiceNumber = InvoiceModel.InvoiceNumber,
                 IsMwstApplicable = InvoiceModel.IsMwstApplicable,
                 Positions = Positions,
-                StartDate = InvoiceModel.StartDate,
                 CommentsBottom = InvoiceModel.CommentsBottom,
                 CommentsTop = InvoiceModel.CommentsTop,
                 Logo = InvoiceModel.Logo
@@ -146,12 +144,10 @@ namespace CYR.Invoice.InvoiceViewModels
             CreateInvoiceModel createInvoiceModel = new()
             {
                 Client = _client,
-                EndDate = InvoiceModel.EndDate,
                 InvoiceDate = InvoiceModel.IssueDate,
                 InvoiceNumber = InvoiceModel.InvoiceNumber,
                 IsMwstApplicable = InvoiceModel.IsMwstApplicable,
                 Positions = Positions,
-                StartDate = InvoiceModel.StartDate,
                 CommentsBottom = InvoiceModel.CommentsBottom,
                 CommentsTop = InvoiceModel.CommentsTop,
                 Logo = InvoiceModel.Logo

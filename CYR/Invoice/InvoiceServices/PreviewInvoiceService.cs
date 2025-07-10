@@ -42,14 +42,7 @@ namespace CYR.Invoice.InvoiceServices
                                 Visibility.Collapsed, "", createInvoiceModel);
                 return;
             }
-            if (createInvoiceModel.StartDate > createInvoiceModel.EndDate)
-            {
-                ShowErrorDialog("Fehler", "Das Startdatum ist größer als das Enddatum!",
-                                "Abbrechen",
-                                "Warning",
-                                Visibility.Collapsed, "", createInvoiceModel);
-                return;
-            }
+            
             bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || p.Quantity <= 0 || p.OrderItem.Name == null);
             if (checkPositionNull)
             {
@@ -80,12 +73,7 @@ namespace CYR.Invoice.InvoiceServices
             Client client = new Client
             {
                 ClientNumber = createInvoiceModel.Client.ClientNumber
-            };
-
-            if (createInvoiceModel.StartDate.HasValue)
-            {
-
-            }
+            };            
 
             InvoiceModel invoiceModel = new InvoiceModel();
             invoiceModel.InvoiceNumber = createInvoiceModel.InvoiceNumber;
@@ -97,11 +85,7 @@ namespace CYR.Invoice.InvoiceServices
             invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
             invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
             invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
-            invoiceModel.Logo = createInvoiceModel.Logo;
-            if (createInvoiceModel.StartDate.HasValue)
-                invoiceModel.StartDate = createInvoiceModel.StartDate;
-            if (createInvoiceModel.EndDate.HasValue)
-                invoiceModel.EndDate = createInvoiceModel.EndDate;
+            invoiceModel.Logo = createInvoiceModel.Logo;            
 
             if (createInvoiceModel.IsMwstApplicable)
             {
@@ -137,11 +121,7 @@ namespace CYR.Invoice.InvoiceServices
             IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
             UserSettings userSettings = _configurationService.GetUserSettings();
             var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
-            model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
-            if (createInvoiceModel.StartDate.HasValue)
-                model.StartDate = createInvoiceModel.StartDate;
-            if (createInvoiceModel.EndDate.HasValue)
-                model.EndDate = createInvoiceModel.EndDate;
+            model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
             model.CommentsTop = createInvoiceModel.CommentsTop;
             model.CommentsBottom = createInvoiceModel.CommentsBottom;
             model.Logo = createInvoiceModel.Logo;
