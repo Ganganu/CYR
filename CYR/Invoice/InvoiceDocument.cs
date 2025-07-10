@@ -129,15 +129,7 @@ namespace CYR.Invoice
                     column.Item().Text($"Kundennummer: {Model.Customer.ClientNumber}")
                         .FontSize(11);
                     column.Item().Text($"Datum: {Model.IssueDate.Value.ToShortDateString()}")
-                        .FontSize(11);
-                    if (Model.StartDate.HasValue && Model.EndDate.HasValue)
-                    {
-                        if (!string.IsNullOrEmpty(Model.StartDate.Value.ToShortDateString()) || !string.IsNullOrEmpty(Model.EndDate.Value.ToShortDateString()))
-                        {
-                            column.Item().Text($"Zeitraum: {Model.StartDate.Value.ToShortDateString()} - {Model.EndDate.Value.ToShortDateString()}")
-                                .FontSize(11);
-                        }
-                    }
+                        .FontSize(11);                    
                 });
             });
         }

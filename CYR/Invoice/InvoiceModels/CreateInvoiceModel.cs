@@ -8,8 +8,6 @@ namespace CYR.Invoice.InvoiceModels
     public class CreateInvoiceModel
     {
         public ObservableCollection<InvoicePosition> Positions { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
         public Client Client { get; set; }
         public int? InvoiceNumber { get; set; }
         public DateTime? InvoiceDate { get; set; }

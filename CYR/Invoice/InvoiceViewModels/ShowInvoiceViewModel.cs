@@ -70,14 +70,12 @@ namespace CYR.Invoice.InvoiceViewModels
                     PLZ = InvoiceModel.Customer.PLZ,
                     Street = InvoiceModel.Customer.Street
                 },
-                EndDate = InvoiceModel.EndDate,
                 InvoiceDate = InvoiceModel.IssueDate,
                 InvoiceNumber = InvoiceModel.InvoiceNumber,
                 IsMwstApplicable = InvoiceModel.IsMwstApplicable,
                 Positions = ConvertInvoicePositionModelToInvoicePosition(Items),
                 CommentsBottom = InvoiceModel.CommentsBottom,
-                CommentsTop = InvoiceModel.CommentsTop,
-                StartDate = InvoiceModel.StartDate
+                CommentsTop = InvoiceModel.CommentsTop
             };
             await _previewInvoiceService.SaveInvoice(createInvoiceModel);
         }
@@ -124,12 +122,10 @@ namespace CYR.Invoice.InvoiceViewModels
                     PLZ = InvoiceModel.Customer.PLZ,
                     Street = InvoiceModel.Customer.Street
                 },
-                EndDate = InvoiceModel.EndDate,
                 InvoiceDate = InvoiceModel.IssueDate,
                 InvoiceNumber = InvoiceModel.InvoiceNumber,
                 IsMwstApplicable = InvoiceModel.IsMwstApplicable,
                 Positions = ConvertInvoicePositionModelToInvoicePosition(Items),
-                StartDate = InvoiceModel.StartDate,
             };
             NavigationService.NavigateTo<CreateInvoiceViewModel>(createInvoiceModel);
         }

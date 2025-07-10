@@ -16,9 +16,6 @@ namespace CYR.Invoice.InvoiceModels
         public int? InvoiceNumber { get; set; }
         public DateTime? IssueDate { get; set; } 
         public DateTime? DueDate { get; set; } 
-        public DateTime? StartDate { get; set; } 
-        public DateTime? EndDate { get; set; } 
-
 
         public UserSettings Seller { get; set; }
         public Client Customer { get; set; }

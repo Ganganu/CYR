@@ -42,11 +42,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoice.IssueDate = Convert.ToDateTime(reader["Rechnungsdatum"]);
                     invoice.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoice.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
-                    invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
-                    if (DateTime.TryParseExact(reader["start_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime st))
-                        invoice.StartDate = st;
-                    if (DateTime.TryParseExact(reader["end_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime et))
-                        invoice.EndDate = et;
+                    invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);                    
                     if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(), out var state))
                     {
                         invoice.State = state;
@@ -84,11 +80,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoiceModel.IssueDate = Convert.ToDateTime(reader["Rechnungsdatum"]);
                     invoiceModel.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoiceModel.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
-                    invoiceModel.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
-                    if (DateTime.TryParseExact(reader["start_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime st))
-                        invoiceModel.StartDate = st;
-                    if (DateTime.TryParseExact(reader["end_date"].ToString(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime et))
-                        invoiceModel.EndDate = et;
+                    invoiceModel.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);                    
                     invoiceModel.CommentsTop =reader["commentstop"].ToString();
                     invoiceModel.CommentsBottom =reader["commentsbottom"].ToString();
                     if (invoiceModel.GrossAmount > invoiceModel.NetAmount)
@@ -103,9 +95,9 @@ namespace CYR.Invoice.InvoiceRepositorys
         public async Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null)
         {
             string query = "INSERT INTO Rechnungen (Rechnungsnummer,Kundennummer,Rechnungsdatum,Fälligkeitsdatum," +
-                "Nettobetrag, Bruttobetrag,Status,start_date,end_date, commentstop, commentsbottom) " +
+                "Nettobetrag, Bruttobetrag,Status, commentstop, commentsbottom) " +
                 "VALUES (@Rechnungsnummer,@Kundennummer,@Rechnungsdatum,@Fälligkeitsdatum," +
-                "@Nettobetrag, @Bruttobetrag,@Status,@start_date,@end_date,@commentstop, @commentsbottom)";
+                "@Nettobetrag, @Bruttobetrag,@Status,@commentstop, @commentsbottom)";
 
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
             {
@@ -116,8 +108,6 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {"Nettobetrag",invoice.NetAmount },
                 {"Bruttobetrag",invoice.GrossAmount },
                 {"Status",invoice.State },
-                {"start_date", invoice.StartDate},
-                {"end_date", invoice.EndDate},
                 {"commentstop", invoice.CommentsTop},
                 {"commentsbottom", invoice.CommentsBottom}
             };
@@ -137,7 +127,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                                 UPDATE Rechnungen 
                                 SET Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum, 
                                     Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,  
-                                    start_date = @start_date, end_date = @end_date, commentstop = @commentstop, commentsbottom = @commentsbottom
+                                    commentstop = @commentstop, commentsbottom = @commentsbottom
                                 WHERE Rechnungsnummer = @Rechnungsnummer";
 
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
@@ -149,8 +139,6 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {"Nettobetrag",invoice.NetAmount },
                 {"Bruttobetrag",invoice.GrossAmount },
                 {"Status", (int)invoice.State },
-                {"start_date", invoice.StartDate},
-                {"end_date", invoice.EndDate},
                 {"commentstop", invoice.CommentsTop},
                 {"commentsbottom", invoice.CommentsBottom}
 
