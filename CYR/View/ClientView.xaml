@@ -16,6 +16,7 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
+    <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" />
     <DataGrid
       Grid.Row="0"
       AutoGenerateColumns="False"
@@ -24,21 +25,6 @@
       IsReadOnly="True"
       ItemsSource="{Binding Clients}">
       <DataGrid.Columns>
-        <DataGridTemplateColumn Header="Funktionen">
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <materialDesign:PopupBox>
-                <StackPanel>
-                  <Button Content="Bearbeiten" />
-                  <Button
-                    Command="{Binding DataContext.CreateInvoiceCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                    CommandParameter="{Binding}"
-                    Content="Neue Rechnung" />
-                </StackPanel>
-              </materialDesign:PopupBox>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
         <DataGridTextColumn Binding="{Binding ClientNumber}" Header="Kundennummer" />
         <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
         <DataGridTextColumn Binding="{Binding Street}" Header="Straße" />
