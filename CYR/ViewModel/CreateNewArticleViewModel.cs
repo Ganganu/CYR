@@ -8,7 +8,7 @@ namespace CYR.ViewModel
 {
     public partial class CreateNewArticleViewModel : ObservableObject
     {
-        private IEnumerable<OrderItem.OrderItem> _articles;
+        private IEnumerable<OrderItem> _articles;
         private readonly IOrderItemRepository _orderItemRepository;
         public CreateNewArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository) 
         {
@@ -41,7 +41,7 @@ namespace CYR.ViewModel
         [RelayCommand]
         private async Task SaveArticle()
         {
-            OrderItem.OrderItem orderItem = new OrderItem.OrderItem();
+            OrderItem orderItem = new OrderItem();
             orderItem.Name = Name;
             orderItem.Description = Description;
             orderItem.Price = Price;

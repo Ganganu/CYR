@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace CYR.OrderItem
+namespace CYR.OrderItems
 {
     public partial class OrderItem :ObservableObject
     {

@@ -39,7 +39,7 @@ namespace CYR.Invoice.InvoiceViewModels
         [ObservableProperty]
         private string? _invoiceNumber;
         [ObservableProperty]
-        public OrderItem.OrderItem? _orderItem;
+        public OrderItem? _orderItem;
         [ObservableProperty]
         public string? _manuallyInsertedArticle;
         partial void OnManuallyInsertedArticleChanged(string? oldValue, string? newValue)
@@ -48,14 +48,14 @@ namespace CYR.Invoice.InvoiceViewModels
             {
                 if (OrderItem is null)
                 {
-                    OrderItem = new OrderItem.OrderItem();
+                    OrderItem = new OrderItem();
                     OrderItem.Name = newValue;
                     OrderItem.Description = newValue;
                     OrderItem.Price = 0;
                 }
             }
         }
-        partial void OnOrderItemChanged(OrderItem.OrderItem? oldValue, OrderItem.OrderItem? newValue)
+        partial void OnOrderItemChanged(OrderItem? oldValue, OrderItem? newValue)
         {
             if (oldValue != newValue)
             {
@@ -110,9 +110,9 @@ namespace CYR.Invoice.InvoiceViewModels
         }
 
         [ObservableProperty]
-        private ObservableCollection<OrderItem.OrderItem>? _items;
+        private ObservableCollection<OrderItem>? _items;
 
-        private async Task<IEnumerable<OrderItem.OrderItem>> GetAllItems()
+        private async Task<IEnumerable<OrderItem>> GetAllItems()
         {
             return await _orderItemRepository.GetAllAsync();
         }

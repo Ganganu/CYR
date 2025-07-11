@@ -11,7 +11,7 @@ namespace CYR.OrderItems
         {
             _databaseConnection = databaseConnection;
         }
-        public async Task DeleteAsync(OrderItem.OrderItem orderItem)
+        public async Task DeleteAsync(OrderItem orderItem)
         {
             string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
@@ -21,17 +21,17 @@ namespace CYR.OrderItems
             int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
-        public async Task<IEnumerable<OrderItem.OrderItem>> GetAllAsync()
+        public async Task<IEnumerable<OrderItem>> GetAllAsync()
         {
-            List<OrderItem.OrderItem> orderItems = new List<OrderItem.OrderItem>();
-            OrderItem.OrderItem orderItem;
+            List<OrderItem> orderItems = new List<OrderItem>();
+            OrderItem orderItem;
             string query = "SELECT * FROM Produkte_Dienstleistungen";
 
             using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
             {
                 while (await reader.ReadAsync())
                 {
-                    orderItem = new OrderItem.OrderItem();
+                    orderItem = new OrderItem();
                     orderItem.Id = Convert.ToInt32(reader["Produktnummer"]);
                     orderItem.Description = reader["Beschreibung"].ToString();
                     orderItem.Name = reader["Name"].ToString();
@@ -42,12 +42,12 @@ namespace CYR.OrderItems
             }
         }
 
-        public Task<IEnumerable<OrderItem.OrderItem>> GetByIdAsync(int id)
+        public Task<IEnumerable<OrderItem>> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task InsertAsync(OrderItem.OrderItem orderItem)
+        public async Task InsertAsync(OrderItem orderItem)
         {
             string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis) VALUES (@Name,@Beschreibung,@Preis)";
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
@@ -59,7 +59,7 @@ namespace CYR.OrderItems
             int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
-        public Task UpdateAsync(OrderItem.OrderItem orderItem)
+        public Task UpdateAsync(OrderItem orderItem)
         {
             throw new NotImplementedException();
         }

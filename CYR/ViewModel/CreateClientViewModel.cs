@@ -14,8 +14,8 @@ namespace CYR.ViewModel
         public CreateClientViewModel(INavigationService navigationService, IClientRepository clientRepository,IAddressRepository addressRepository)
         {
             Navigation = navigationService;
-            this._clientRepository = clientRepository;
-            this._addressRepository = addressRepository;
+            _clientRepository = clientRepository;
+            _addressRepository = addressRepository;
         }
 
         [ObservableProperty]
@@ -49,7 +49,7 @@ namespace CYR.ViewModel
         private async void SaveClient()
         {
             Client client = new Client();
-            Address.Address address = new Address.Address();
+            AddressModel address = new AddressModel();
             client.ClientNumber = ClientNumber;
             client.Name = ClientName;
             client.Telefonnumber = ClientTelefonnumber;

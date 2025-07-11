@@ -2,10 +2,10 @@
 {
     public interface IAddressRepository
     {
-        Task<IEnumerable<Address>> GetAllAsync();
-        Task<IEnumerable<Address>> GetByClientNumberAsync(string clientNumber);
-        Task DeleteAsync(Address client);
-        Task UpdateAsync(Address client);
-        Task InsertAsync(Address client);
+        Task<IEnumerable<AddressModel>> GetAllAsync();
+        Task<IEnumerable<AddressModel>> GetByClientNumberAsync(string clientNumber);
+        Task DeleteAsync(AddressModel client);
+        Task UpdateAsync(AddressModel client);
+        Task InsertAsync(AddressModel client);
     }
 }

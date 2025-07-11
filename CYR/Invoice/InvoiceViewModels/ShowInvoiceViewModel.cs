@@ -4,6 +4,7 @@ using CYR.Clients;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
+using CYR.OrderItems;
 using CYR.Services;
 using System.Collections.ObjectModel;
 
@@ -88,7 +89,7 @@ namespace CYR.Invoice.InvoiceViewModels
             {
                 InvoicePosition invoicePosition = new()
                 {
-                    OrderItem = new OrderItem.OrderItem
+                    OrderItem = new OrderItem
                     {
                         Id = Convert.ToInt32(item.Id),
                         Description = item.Description,

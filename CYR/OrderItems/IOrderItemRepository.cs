@@ -2,10 +2,10 @@
 {
     public interface IOrderItemRepository
     {
-        Task DeleteAsync(OrderItem.OrderItem orderItem);
-        Task<IEnumerable<OrderItem.OrderItem>> GetAllAsync();
-        Task<IEnumerable<OrderItem.OrderItem>> GetByIdAsync(int id);
-        Task InsertAsync(OrderItem.OrderItem orderItem);
-        Task UpdateAsync(OrderItem.OrderItem orderItem);
+        Task DeleteAsync(OrderItem orderItem);
+        Task<IEnumerable<OrderItem>> GetAllAsync();
+        Task<IEnumerable<OrderItem>> GetByIdAsync(int id);
+        Task InsertAsync(OrderItem orderItem);
+        Task UpdateAsync(OrderItem orderItem);
     }
 }

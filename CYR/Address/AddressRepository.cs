@@ -10,22 +10,22 @@ namespace CYR.Address
         {
             this._databaseConnection = databaseConnection;
         }
-        public Task DeleteAsync(Address address)
+        public Task DeleteAsync(AddressModel address)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Address>> GetAllAsync()
+        public Task<IEnumerable<AddressModel>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Address>> GetByClientNumberAsync(string clientNumber)
+        public Task<IEnumerable<AddressModel>> GetByClientNumberAsync(string clientNumber)
         {
             throw new NotImplementedException();
         }
 
-        public async Task InsertAsync(Address address)
+        public async Task InsertAsync(AddressModel address)
         {
             if (await CheckAddressExists(address)) return;
             string query = @"INSERT INTO Adresse (Kundennummer, Strasse, PLZ, Ort) 
@@ -39,11 +39,11 @@ namespace CYR.Address
             int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
-        public Task UpdateAsync(Address address)
+        public Task UpdateAsync(AddressModel address)
         {
             throw new NotImplementedException();
         }
-        private async Task<bool> CheckAddressExists(Address address)
+        private async Task<bool> CheckAddressExists(AddressModel address)
         {
             string query = @"SELECT 1 FROM Adresse WHERE Kundennummer = @Kundennummer AND
                             Strasse = @Strasse AND PLZ = @PLZ AND Ort = @Ort";

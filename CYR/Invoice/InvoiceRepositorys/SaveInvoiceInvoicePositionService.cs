@@ -10,6 +10,7 @@ using CYR.Settings;
 using QuestPDF.Fluent;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Invoice.InvoiceModels;
+using CYR.OrderItems;
 
 namespace CYR.Invoice.InvoiceRepositorys
 {
@@ -120,7 +121,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                             InvoicePositionModel ipm;
                             if (position.OrderItem is not null && position.OrderItem.Id == 0)
                             {
-                                OrderItem.OrderItem manuallyInsertedOrderItem = ManuallyInsertedItemToOrderItem(position);
+                                OrderItem manuallyInsertedOrderItem = ManuallyInsertedItemToOrderItem(position);
                                 ipm = CreateInvoicePositionModel(manuallyInsertedOrderItem, position, invoiceModel);
                                 position.OrderItem.Name = manuallyInsertedOrderItem.Name;
                                 position.OrderItem.Description = manuallyInsertedOrderItem.Description;
@@ -164,7 +165,7 @@ namespace CYR.Invoice.InvoiceRepositorys
             _invoiceDocument.GeneratePdfAndShow();
         }
 
-        private InvoicePositionModel CreateInvoicePositionModel(OrderItem.OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
+        private InvoicePositionModel CreateInvoicePositionModel(OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
         {
             var invoicePositionModel = new InvoicePositionModel
             {
@@ -178,9 +179,9 @@ namespace CYR.Invoice.InvoiceRepositorys
             return invoicePositionModel;
         }
 
-        private OrderItem.OrderItem ManuallyInsertedItemToOrderItem(InvoicePosition invoicePosition)
+        private OrderItem ManuallyInsertedItemToOrderItem(InvoicePosition invoicePosition)
         {
-            OrderItem.OrderItem item = new OrderItem.OrderItem();
+            OrderItem item = new OrderItem();
             item.Name = invoicePosition.ManuallyInsertedArticle;
             item.Price = invoicePosition.Price;
             item.Description = invoicePosition.ManuallyInsertedArticle;

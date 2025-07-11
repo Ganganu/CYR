@@ -114,7 +114,7 @@ namespace CYR.Invoice.InvoiceViewModels
             if (selectedPositions is null) return;
             foreach (var position in selectedPositions)
             {
-                OrderItem.OrderItem orderItem = new();
+                OrderItem orderItem = new();
                 orderItem.Name = position.ManuallyInsertedArticle;
                 orderItem.Description = position.ManuallyInsertedArticle;
                 orderItem.Price = position.Price;

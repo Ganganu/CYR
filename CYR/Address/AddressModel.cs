@@ -1,6 +1,6 @@
 ﻿namespace CYR.Address
 {
-    public class Address
+    public class AddressModel
     {
         public string CompanyName { get; set; }
         public string Street { get; set; }

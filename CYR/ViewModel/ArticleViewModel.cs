@@ -18,27 +18,27 @@ namespace CYR.ViewModel
 
         private async void Initialize()
         {
-            IEnumerable<OrderItem.OrderItem> orderItems = await _orderItemRepository.GetAllAsync();
-            OrderItems = new ObservableCollection<OrderItem.OrderItem>(orderItems);
+            IEnumerable<OrderItem> orderItems = await _orderItemRepository.GetAllAsync();
+            OrderItems = new ObservableCollection<OrderItem>(orderItems);
         }
 
         [ObservableProperty]
-        private ObservableCollection<OrderItem.OrderItem>? _orderItems;
+        private ObservableCollection<OrderItem>? _orderItems;
 
         [RelayCommand]
         private async Task DeleteRow(object parameter)
         {
-            OrderItem.OrderItem orderItem = (OrderItem.OrderItem)parameter;
+            OrderItem orderItem = (OrderItem)parameter;
             await _orderItemRepository.DeleteAsync(orderItem);
             var items = await _orderItemRepository.GetAllAsync();
-            OrderItems = new ObservableCollection<OrderItem.OrderItem>(items);
+            OrderItems = new ObservableCollection<OrderItem>(items);
         }
 
         public async Task ReceiveParameter(object parameter)
         {
             if (parameter != null)
             {
-                ObservableCollection<OrderItem.OrderItem> oi = new ObservableCollection<OrderItem.OrderItem>((List<OrderItem.OrderItem>)parameter);
+                ObservableCollection<OrderItem> oi = new ObservableCollection<OrderItem>((List<OrderItem>)parameter);
                 if (oi != null)
                 {
                     OrderItems = oi;
