@@ -72,7 +72,7 @@ namespace CYR
             services.AddSingleton<InvoiceDocument>();
             services.AddSingleton<IRetrieveClients, RetrieveClients>();
             services.AddSingleton<IConfigurationService, ConfigurationService>();
-            services.AddSingleton<IDatabaseConnection, SQLLiteConnection>((provider) => new SQLLiteConnection(connectionString));
+            services.AddSingleton<IDatabaseConnection, SQLiteConnectionManager>((provider) => new SQLiteConnectionManager(connectionString));
             services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
             _serviceProvider = services.BuildServiceProvider();
 

@@ -61,7 +61,7 @@ public partial class ClientViewModel : ObservableObject, IParameterReceiver
             {
                 try
                 {
-                    Client c = await _clientRepository.DeleteAsync(client);
+                    var c = await _clientRepository.DeleteAsync(client);
                 }
                 catch (Exception)
                 {

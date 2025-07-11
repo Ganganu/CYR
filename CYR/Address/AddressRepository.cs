@@ -6,7 +6,7 @@ namespace CYR.Address
     {
         private readonly IDatabaseConnection _databaseConnection;
 
-        public AddressRepository(IDatabaseConnection databaseConnection) 
+        public AddressRepository(IDatabaseConnection databaseConnection)
         {
             this._databaseConnection = databaseConnection;
         }
@@ -45,14 +45,25 @@ namespace CYR.Address
         }
         private async Task<bool> CheckAddressExists(AddressModel address)
         {
-            string query = @"SELECT 1 FROM Adresse WHERE Kundennummer = @Kundennummer AND
-                            Strasse = @Strasse AND PLZ = @PLZ AND Ort = @Ort";
-            Dictionary<string, object> queryParameters = new Dictionary<string, object>();
-            queryParameters["Kundennummer"] = address.CompanyName;
-            queryParameters["Strasse"] = address.Street;
-            queryParameters["PLZ"] = address.PLZ;
-            queryParameters["Ort"] = address.City;
-            return await _databaseConnection.ExecuteSelectQueryAsyncCheck(query, queryParameters);
+            string query = @"
+        SELECT COUNT(*) 
+        FROM Adresse 
+        WHERE Kundennummer = @Kundennummer 
+          AND Strasse = @Strasse 
+          AND PLZ = @PLZ 
+          AND Ort = @Ort";
+
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        {
+            { "@Kundennummer", address.CompanyName },
+            { "@Strasse", address.Street },
+            { "@PLZ", address.PLZ },
+            { "@Ort", address.City }
+        };
+
+            int count = await _databaseConnection.ExecuteScalarAsync<int>(query, queryParameters);
+
+            return count > 0;
         }
     }
 }
