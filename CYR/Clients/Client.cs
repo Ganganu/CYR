@@ -1,8 +1,12 @@
 ﻿
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace CYR.Clients
 {
-    public class Client
+    public partial class Client : ObservableRecipient
     {
+        [ObservableProperty]
+        private bool _isSelected;
         public string? ClientNumber { get; set; }
         public string? Name { get; set; }
         public string Street { get; set; } 

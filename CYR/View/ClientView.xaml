@@ -14,17 +14,50 @@
   mc:Ignorable="d">
   <Grid Background="White">
     <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed" />
+    <StackPanel Grid.Row="0">
+      <Label
+        HorizontalAlignment="Center"
+        Content="Kunden"
+        FontSize="35" />
+      <Border
+        Margin="5"
+        BorderBrush="LightGray"
+        BorderThickness="2" />
+    </StackPanel>
+    <Grid Grid.Row="1">
+      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+        <Button Style="{StaticResource MaterialDesignFlatButton}">
+          <Button.Content>
+            <materialDesign:PackIcon Kind="Edit" />
+          </Button.Content>
+        </Button>
+        <Button Command="{Binding DeleteClientCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+          <Button.Content>
+            <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
+          </Button.Content>
+        </Button>
+
+      </StackPanel>
+    </Grid>
     <DataGrid
-      Grid.Row="0"
+      Grid.Row="2"
       AutoGenerateColumns="False"
       CanUserAddRows="False"
       CanUserReorderColumns="False"
       IsReadOnly="True"
       ItemsSource="{Binding Clients}">
       <DataGrid.Columns>
+        <DataGridTemplateColumn>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn Binding="{Binding ClientNumber}" Header="Kundennummer" />
         <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
         <DataGridTextColumn Binding="{Binding Street}" Header="Straße" />
@@ -35,6 +68,7 @@
       </DataGrid.Columns>
     </DataGrid>
     <Button
+      Grid.Row="2"
       Margin="0,0,20,30"
       HorizontalAlignment="Right"
       VerticalAlignment="Bottom"
