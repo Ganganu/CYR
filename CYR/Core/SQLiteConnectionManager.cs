@@ -86,6 +86,22 @@ namespace CYR.Core
             }
             return await command.ExecuteNonQueryAsync();
         }
+
+        public async Task<IDataReader> ExecuteReaderInTransactionAsync(SQLiteTransaction transaction, string query, Dictionary<string, object> parameters)
+        {
+            var connection = transaction.Connection;
+            using (var command = new SQLiteCommand(query, connection, transaction))
+            {
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                }
+                // CommandBehavior.SingleResult is a good option here, as we expect one result set.
+                // DO NOT use CommandBehavior.CloseConnection here, as it would close the transaction's connection.
+                return await command.ExecuteReaderAsync(CommandBehavior.SingleResult);
+            }
+        }
+
         public async Task ExecuteTransactionAsync(Func<SQLiteTransaction, Task> transactionOperations)
         {
             var connection = await GetOpenConnectionAsync();

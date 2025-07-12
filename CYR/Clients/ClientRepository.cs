@@ -1,5 +1,6 @@
 ﻿using CYR.Core;
 using System.Data.Common;
+using System.Data.SQLite;
 
 namespace CYR.Clients;
 
@@ -15,6 +16,7 @@ public class ClientRepository : IClientRepository
     public async Task<bool> DeleteAsync(Client client)
     {
         bool succes = false;
+        List<string> invoiceNumbers = new List<string>();
 
         await _connection.ExecuteTransactionAsync(async (transaction) =>
         {
@@ -24,19 +26,52 @@ public class ClientRepository : IClientRepository
                 { "@Kundennummer", client.ClientNumber }
             };
             await _connection.ExecuteNonQueryInTransactionAsync(transaction, addressQuery, addressParams);
+
+            //get Rechnungsnummer für Rechnungsposition
+            string selectInvoiceNumber = "SELECT r.Rechnungsnummer from Rechnungen as r inner join Kunden as k on r.Kundennummer = k.Kundennummer" +
+            " where k.Kundennummer = @Kundennummer";
+            var selectInvoiceParams = new Dictionary<string, object>
+            {
+                { "@Kundennummer", client.ClientNumber }
+            };
+            using (var reader = (SQLiteDataReader)await _connection.ExecuteReaderInTransactionAsync(transaction, selectInvoiceNumber, selectInvoiceParams))
+            {
+                while (await reader.ReadAsync())
+                {
+                    invoiceNumbers.Add(reader.GetString(0));
+                }
+            }
+            //delete Rechnungspositionen wegen FK
+            if (invoiceNumbers.Any())
+            {
+                var parameterNames = invoiceNumbers.Select((_, index) => $"@Rechnungsnummer{index}").ToList();
+                string inClause = string.Join(",", parameterNames);
+                string orderPositionQuery = $"DELETE FROM Rechnungspositionen WHERE Rechnungsnummer IN ({inClause})";
+                var orderPositionParams = new Dictionary<string, object>();
+                for (int i = 0; i < invoiceNumbers.Count; i++)
+                {
+                    orderPositionParams.Add(parameterNames[i], invoiceNumbers[i]);
+                }
+
+                await _connection.ExecuteNonQueryInTransactionAsync(transaction, orderPositionQuery, orderPositionParams);
+            }
+
+
+            //delete Rechnung nachdem Rechnungsposition
             string orderQuery = "DELETE FROM Rechnungen WHERE Kundennummer = @Kundennummer";
             var orderParams = new Dictionary<string, object>
             {
                 { "@Kundennummer", client.ClientNumber }
             };
             await _connection.ExecuteNonQueryInTransactionAsync(transaction, orderQuery, orderParams);
+
             string clientQuery = "DELETE FROM Kunden WHERE Kundennummer = @Kundennummer";
             var clientParams = new Dictionary<string, object>
             {
                 { "@Kundennummer", client.ClientNumber }
             };
             int clientAffectedRows = await _connection.ExecuteNonQueryInTransactionAsync(transaction, clientQuery, clientParams);
-            succes = clientAffectedRows > 0; 
+            succes = clientAffectedRows > 0;
         });
 
         return succes;
@@ -74,7 +109,7 @@ public class ClientRepository : IClientRepository
     public async Task<Client> InsertAsync(Client client)
     {
         string query = "INSERT INTO Kunden (Kundennummer,Name,Telefonnummer,Email,Erstellungsdatum) VALUES (@Kundennummer,@Name,@Telefonnummer,@Email,@Erstellungsdatum)";
-        Dictionary<string,object> queryParameters = new Dictionary<string, object>
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
             { "Kundennummer", client.ClientNumber },
             { "Name", client.Name },
