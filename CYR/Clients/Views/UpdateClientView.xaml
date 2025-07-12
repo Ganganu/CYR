@@ -44,10 +44,14 @@
       Background="White"
       CornerRadius="10">
       <StackPanel>
-        <Label
-          HorizontalAlignment="Center"
-          Content="Kundendaten bearbeiten"
-          FontSize="25" />
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+          <TextBlock FontSize="25" Text="Kundendaten bearbeiten für den Kunden" />
+          <TextBlock
+            FontSize="25"
+            FontWeight="Bold"
+            Text="{Binding ClientNumber}"
+            TextWrapping="Wrap" />
+        </StackPanel>
         <Border
           Margin="5,5,5,0"
           BorderBrush="LightGray"
@@ -119,8 +123,8 @@
           <Button
             Grid.Column="1"
             Margin="5,0,0,0"
-            Command="{Binding SaveClientCommand}"
-            Content="Speichern" />
+            Command="{Binding UpdateClientCommand}"
+            Content="Aktualisieren" />
         </Grid>
 
       </StackPanel>

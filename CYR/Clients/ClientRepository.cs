@@ -1,6 +1,7 @@
-﻿using CYR.Core;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.SQLite;
+using System.Transactions;
+using CYR.Core;
 
 namespace CYR.Clients;
 
@@ -121,8 +122,36 @@ public class ClientRepository : IClientRepository
         return newClient;
     }
 
-    public Task<bool> UpdateAsync(Client client)
+    public async Task<bool> UpdateAsync(Client client)
     {
-        throw new NotImplementedException();
+        bool succes = false;
+
+        await _connection.ExecuteTransactionAsync(async (transaction) =>
+        {
+            string updateAddress = "update Adresse set Strasse = @Strasse, PLZ = @PLZ, Ort = @Ort where Kundennummer = @Kundennummer ";
+            var addressParams = new Dictionary<string, object>
+            {
+                { "@Kundennummer", client.ClientNumber },
+                { "@Strasse", client.Street },
+                { "@PLZ", client.PLZ },
+                { "@Ort", client.City }
+            };
+            await _connection.ExecuteNonQueryInTransactionAsync(transaction, updateAddress, addressParams);
+
+            string updateClient = "update Kunden set Name = @Name, Telefonnummer = @Telefonnummer," +
+            "Email = @Email, Erstellungsdatum = @Erstellungsdatum where Kundennummer = @Kundennummer ";
+            var updateParams = new Dictionary<string, object>
+            {   
+                { "@Kundennummer", client.ClientNumber },
+                { "@Name", client.Name },
+                { "@Telefonnummer", client.Telefonnumber },
+                { "@Email", client.EmailAddress },
+                { "@Erstellungsdatum", client.CreationDate }
+            };
+            int clientAffectedRows = await _connection.ExecuteNonQueryInTransactionAsync(transaction, updateClient, updateParams);
+            succes = clientAffectedRows > 0;
+        });
+
+        return succes;
     }
 }
