@@ -1,9 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Clients;
+using CYR.Clients.ViewModels;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Services;
-using System.Collections.ObjectModel;
 
 namespace CYR.ViewModel;
 
@@ -54,6 +55,9 @@ public partial class ClientViewModel : ObservableObject, IParameterReceiver
     [RelayCommand]
     private async Task DeleteClient()
     {
+        if (Clients is null || !Clients.Any())
+            return;
+
         var clientsToDelete = Clients.Where(c => c.IsSelected).ToList();
         try
         {
@@ -75,8 +79,17 @@ public partial class ClientViewModel : ObservableObject, IParameterReceiver
         }
         catch (Exception)
         {
-
             throw;
         }
+    }
+    [RelayCommand]
+    private async Task UpdateClient()
+    {
+        if (Clients is null || !Clients.Any())
+            return;
+
+        var clientToUpdate = Clients.First(c => c.IsSelected);
+        if (clientToUpdate is null) return;
+        Navigation.NavigateTo<UpdateClientViewModel>(clientToUpdate);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CYR.Address;
 using CYR.Clients;
+using CYR.Clients.ViewModels;
+using CYR.Clients.Views;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice;
@@ -50,6 +52,8 @@ namespace CYR
             services.AddSingleton<CreateClientViewModel>();
             services.AddSingleton<SettingsViewModel>();
             services.AddSingleton<SettingsView>();
+            services.AddSingleton<UpdateClientViewModel>();
+            services.AddSingleton<UpdateClientView>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDialogService, DialogService>();

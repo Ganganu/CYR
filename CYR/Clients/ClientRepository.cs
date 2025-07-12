@@ -41,7 +41,7 @@ public class ClientRepository : IClientRepository
                     invoiceNumbers.Add(reader.GetString(0));
                 }
             }
-            //delete Rechnungspositionen wegen FK
+            //delete mehrere Rechnungspositionen wegen FK
             if (invoiceNumbers.Any())
             {
                 var parameterNames = invoiceNumbers.Select((_, index) => $"@Rechnungsnummer{index}").ToList();

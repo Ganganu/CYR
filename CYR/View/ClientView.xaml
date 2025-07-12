@@ -30,7 +30,7 @@
     </StackPanel>
     <Grid Grid.Row="1">
       <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Style="{StaticResource MaterialDesignFlatButton}">
+        <Button Command="{Binding UpdateClientCommand}" Style="{StaticResource MaterialDesignFlatButton}">
           <Button.Content>
             <materialDesign:PackIcon Kind="Edit" />
           </Button.Content>
