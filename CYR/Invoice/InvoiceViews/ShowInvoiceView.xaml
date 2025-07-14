@@ -43,14 +43,15 @@
             VerticalAlignment="Center"
             Foreground="LightGray"
             Kind="File" />
-          <Label
-            VerticalAlignment="Center"
-            Content="Rechnung"
-            FontSize="28" />
-          <Label
-            VerticalAlignment="Center"
-            Content="{Binding InvoiceModel.InvoiceNumber}"
-            FontSize="28" />
+          <Label VerticalAlignment="Center" FontSize="28">
+            <Label.Content>
+              <TextBlock>
+                <Run Text="Rechnung" />
+                <Run Text="{Binding InvoiceModel.InvoiceNumber}" />
+                <Run Text="bearbeiten" />
+              </TextBlock>
+            </Label.Content>
+          </Label>
         </StackPanel>
         <StackPanel
           Grid.Row="0"
@@ -82,7 +83,7 @@
                     Grid.Row="0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <Button Command="{Binding OpenImageInDefaultAppCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button Style="{StaticResource MaterialDesignFlatButton}">
                       <Button.Content>
                         <materialDesign:PackIcon
                           Width="15"
@@ -91,7 +92,7 @@
                           Kind="ImageOutline" />
                       </Button.Content>
                     </Button>
-                    <Button Command="{Binding SelectLogoCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button Style="{StaticResource MaterialDesignFlatButton}">
                       <Button.Content>
                         <materialDesign:PackIcon
                           Width="15"
@@ -101,7 +102,7 @@
                       </Button.Content>
                     </Button>
                   </StackPanel>
-                  <Image Grid.Row="1" Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
+                  <Image Grid.Row="1" />
                 </Grid>
               </Grid>
             </Grid>
@@ -158,28 +159,22 @@
             Grid.Row="0"
             Content="Empfänger *"
             FontSize="20" />
-          <ComboBox
+          <Label
             Grid.Row="1"
-            materialDesign:HintAssist.Hint="Kunden auswählen"
-            materialDesign:HintAssist.IsFloating="False"
             BorderBrush="LightGray"
             BorderThickness="1"
             FontSize="14"
-            IsEditable="True"
-            ItemsSource="{Binding Clients}"
-            MaxDropDownHeight="200"
-            SelectedItem="{Binding SelectedClient}"
-            Style="{StaticResource MaterialDesignOutlinedComboBox}">
-            <ComboBox.ItemTemplate>
-              <DataTemplate>
-                <StackPanel>
-                  <TextBlock FontSize="15" Text="{Binding ClientNumber}" />
-                  <TextBlock FontSize="15" Text="{Binding Name}" />
-                  <TextBlock Text="{Binding Street}" />
-                </StackPanel>
-              </DataTemplate>
-            </ComboBox.ItemTemplate>
-          </ComboBox>
+            Style="{StaticResource MaterialDesignLabel}">
+            <Label.Content>
+              <TextBlock>
+                <Run Text="{Binding InvoiceModel.Customer.Name}" />
+                <Run Text=", " />
+                <Run Text="{Binding InvoiceModel.Customer.Street}" />
+                <Run Text=", " />
+                <Run Text="{Binding InvoiceModel.Customer.City}" />
+              </TextBlock>
+            </Label.Content>
+          </Label>
           <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label
               Margin="0,5,0,0"
@@ -187,13 +182,10 @@
               FontSize="20" />
             <Button
               VerticalAlignment="Bottom"
-              Command="{Binding SaveXmlCommand}"
-              CommandParameter="{Binding}"
               Content="{materialDesign:PackIcon Kind=Add}"
               Style="{StaticResource MaterialDesignToolButton}" />
             <Button
               VerticalAlignment="Bottom"
-              Command="{Binding LoadXmlCommand}"
               Content="{materialDesign:PackIcon Kind=FileFind}"
               Style="{StaticResource MaterialDesignToolButton}" />
           </StackPanel>
@@ -269,6 +261,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   BorderBrush="LightGray"
                   BorderThickness="1"
+                  IsEnabled="False"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding InvoiceModel.InvoiceNumber}" />
               </Grid>
@@ -279,13 +272,11 @@
                   FontSize="20" />
                 <Button
                   VerticalAlignment="Bottom"
-                  Command="{Binding SaveXmlCommand}"
                   CommandParameter="{Binding}"
                   Content="{materialDesign:PackIcon Kind=Add}"
                   Style="{StaticResource MaterialDesignToolButton}" />
                 <Button
                   VerticalAlignment="Bottom"
-                  Command="{Binding LoadXmlCommand}"
                   Content="{materialDesign:PackIcon Kind=FileFind}"
                   Style="{StaticResource MaterialDesignToolButton}" />
               </StackPanel>
