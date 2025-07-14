@@ -42,16 +42,11 @@
             Height="30"
             VerticalAlignment="Center"
             Foreground="LightGray"
-            Kind="File" />
-          <Label VerticalAlignment="Center" FontSize="28">
-            <Label.Content>
-              <TextBlock>
-                <Run Text="Rechnung" />
-                <Run Text="{Binding InvoiceModel.InvoiceNumber}" />
-                <Run Text="bearbeiten" />
-              </TextBlock>
-            </Label.Content>
-          </Label>
+            Kind="FilePlus" />
+          <Label
+            VerticalAlignment="Center"
+            Content="Neue Rechnung erstellen"
+            FontSize="28" />
         </StackPanel>
         <StackPanel
           Grid.Row="0"
@@ -83,7 +78,7 @@
                     Grid.Row="0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button Command="{Binding OpenImageInDefaultAppCommand}" Style="{StaticResource MaterialDesignFlatButton}">
                       <Button.Content>
                         <materialDesign:PackIcon
                           Width="15"
@@ -92,7 +87,7 @@
                           Kind="ImageOutline" />
                       </Button.Content>
                     </Button>
-                    <Button Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button Command="{Binding SelectLogoCommand}" Style="{StaticResource MaterialDesignFlatButton}">
                       <Button.Content>
                         <materialDesign:PackIcon
                           Width="15"
@@ -102,7 +97,7 @@
                       </Button.Content>
                     </Button>
                   </StackPanel>
-                  <Image Grid.Row="1" />
+                  <Image Grid.Row="1" Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
               </Grid>
             </Grid>
@@ -116,13 +111,13 @@
                 Kind="FileFind" />
             </Button.Content>
           </Button>
-          <Button Command="{Binding EditInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+          <Button Command="{Binding SaveInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
               <materialDesign:PackIcon
                 Width="30"
                 Height="30"
                 VerticalAlignment="Center"
-                Kind="Edit" />
+                Kind="ContentSaveAdd" />
             </Button.Content>
           </Button>
         </StackPanel>
@@ -159,22 +154,28 @@
             Grid.Row="0"
             Content="Empfänger *"
             FontSize="20" />
-          <Label
+          <ComboBox
             Grid.Row="1"
+            materialDesign:HintAssist.Hint="Kunden auswählen"
+            materialDesign:HintAssist.IsFloating="False"
             BorderBrush="LightGray"
             BorderThickness="1"
             FontSize="14"
-            Style="{StaticResource MaterialDesignLabel}">
-            <Label.Content>
-              <TextBlock>
-                <Run Text="{Binding InvoiceModel.Customer.Name}" />
-                <Run Text=", " />
-                <Run Text="{Binding InvoiceModel.Customer.Street}" />
-                <Run Text=", " />
-                <Run Text="{Binding InvoiceModel.Customer.City}" />
-              </TextBlock>
-            </Label.Content>
-          </Label>
+            IsEditable="True"
+            ItemsSource="{Binding Clients}"
+            MaxDropDownHeight="200"
+            SelectedItem="{Binding SelectedClient}"
+            Style="{StaticResource MaterialDesignOutlinedComboBox}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <TextBlock FontSize="15" Text="{Binding ClientNumber}" />
+                  <TextBlock FontSize="15" Text="{Binding Name}" />
+                  <TextBlock Text="{Binding Street}" />
+                </StackPanel>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
           <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label
               Margin="0,5,0,0"
@@ -182,10 +183,13 @@
               FontSize="20" />
             <Button
               VerticalAlignment="Bottom"
+              Command="{Binding SaveXmlCommand}"
+              CommandParameter="{Binding}"
               Content="{materialDesign:PackIcon Kind=Add}"
               Style="{StaticResource MaterialDesignToolButton}" />
             <Button
               VerticalAlignment="Bottom"
+              Command="{Binding LoadXmlCommand}"
               Content="{materialDesign:PackIcon Kind=FileFind}"
               Style="{StaticResource MaterialDesignToolButton}" />
           </StackPanel>
@@ -261,7 +265,6 @@
                   materialDesign:HintAssist.IsFloating="False"
                   BorderBrush="LightGray"
                   BorderThickness="1"
-                  IsEnabled="False"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding InvoiceModel.InvoiceNumber}" />
               </Grid>
@@ -272,11 +275,13 @@
                   FontSize="20" />
                 <Button
                   VerticalAlignment="Bottom"
+                  Command="{Binding SaveXmlCommand}"
                   CommandParameter="{Binding}"
                   Content="{materialDesign:PackIcon Kind=Add}"
                   Style="{StaticResource MaterialDesignToolButton}" />
                 <Button
                   VerticalAlignment="Bottom"
+                  Command="{Binding LoadXmlCommand}"
                   Content="{materialDesign:PackIcon Kind=FileFind}"
                   Style="{StaticResource MaterialDesignToolButton}" />
               </StackPanel>
@@ -316,11 +321,50 @@
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
           </Grid.ColumnDefinitions>
           <Label
             Grid.Column="0"
             Content="Artikel/Dienstleistungen"
             FontSize="24" />
+          <CheckBox
+            Grid.Column="1"
+            Margin="0,0,5,0"
+            HorizontalAlignment="Right"
+            VerticalContentAlignment="Center"
+            IsChecked="{Binding InvoiceModel.IsMwstApplicable}">
+            <CheckBox.Content>
+              <Label
+                Margin="0,-4,0,0"
+                Content="MwSt."
+                FontSize="18" />
+            </CheckBox.Content>
+          </CheckBox>
+          <Button
+            Grid.Column="2"
+            Margin="0,0,5,0"
+            HorizontalAlignment="Right"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            Command="{Binding DeleteInvoicePositionCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
+            </Button.Content>
+          </Button>
+          <Button
+            Grid.Column="3"
+            Margin="0,0,5,0"
+            HorizontalAlignment="Right"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            Command="{Binding SaveArticleCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon Kind="AddBold" />
+            </Button.Content>
+          </Button>
         </Grid>
         <Border
           Grid.Row="2"
@@ -334,8 +378,16 @@
             BorderBrush="LightGray"
             BorderThickness="0"
             CanUserAddRows="False"
-            ItemsSource="{Binding Items}">
+            Cursor=""
+            ItemsSource="{Binding Positions}">
             <DataGrid.Columns>
+              <DataGridTemplateColumn Header="">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsInvoicePositionSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
               <DataGridTextColumn
                 Binding="{Binding Id}"
                 Header="#"
@@ -343,10 +395,19 @@
               <DataGridTemplateColumn
                 MinWidth="150"
                 MaxWidth="200"
-                Header="Bezeichnung">
+                Header="Artikelbezeichnung">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding Description}" />
+                    <ComboBox
+                      materialDesign:HintAssist.Hint="Artikel auswählen"
+                      materialDesign:HintAssist.IsFloating="False"
+                      DisplayMemberPath="Name"
+                      IsEditable="True"
+                      ItemsSource="{Binding Items, UpdateSourceTrigger=PropertyChanged}"
+                      MaxDropDownHeight="150"
+                      SelectedItem="{Binding OrderItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource MaterialDesignDataGridComboBox}"
+                      Text="{Binding ManuallyInsertedArticle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -356,7 +417,11 @@
                 Header="Menge">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                    <TextBox
+                      materialDesign:HintAssist.Hint="z.B. 10.0"
+                      materialDesign:HintAssist.IsFloating="False"
+                      Style="{StaticResource MaterialDesignTextBoxBase}"
+                      Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -366,7 +431,13 @@
                 Header="Einheit">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding UnitOfMeasure}" />
+                    <ComboBox
+                      materialDesign:HintAssist.Hint="Einheit auswählen"
+                      materialDesign:HintAssist.IsFloating="False"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding UnitsOfMeasure}"
+                      SelectedItem="{Binding UnitOfMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource MaterialDesignDataGridComboBox}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -376,17 +447,18 @@
                 Header="E-Preis">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Text="{Binding UnitPrice}" />
+                    <TextBox
+                      materialDesign:HintAssist.Hint="Einheitspreis"
+                      materialDesign:HintAssist.IsFloating="False"
+                      Style="{StaticResource MaterialDesignTextBoxBase}"
+                      Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
               <DataGridTemplateColumn Header="G-Preis">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                      <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
-                      <TextBlock VerticalAlignment="Center" Text=" €" />
-                    </StackPanel>
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -402,7 +474,23 @@
       <Grid Grid.Row="3" Margin="0,0,0,10">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Button
+          Grid.Column="0"
+          HorizontalAlignment="Left"
+          Command="{Binding AddNewRowCommand}"
+          Style="{StaticResource MaterialDesignFlatButton}">
+          <Button.Content>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon VerticalAlignment="Center" Kind="Add" />
+              <Label
+                VerticalAlignment="Center"
+                Content="Neue Zeile"
+                Foreground="Orange" />
+            </StackPanel>
+          </Button.Content>
+        </Button>
         <StackPanel Grid.Column="1" Orientation="Horizontal">
           <Label
             VerticalAlignment="Center"
@@ -413,7 +501,7 @@
             VerticalAlignment="Center"
             FontSize="16"
             FontWeight="Bold"
-            Text="{Binding InvoiceModel.GrossAmount, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+            Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
           <Label
             VerticalAlignment="Center"
             Content="€"

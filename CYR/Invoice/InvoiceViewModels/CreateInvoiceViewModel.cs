@@ -12,7 +12,6 @@ using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
-using System.Windows;
 using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels
