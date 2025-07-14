@@ -1,10 +1,8 @@
 ﻿using System.Data.SQLite;
 using System.Linq.Expressions;
-using System.Net;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CYR.Address;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Extensions;
@@ -80,7 +78,14 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
 
         try
         {
+            ShowNotificationDialog("Kunde aktualisieren", $"Möchten Sie wirklich die Daten speichern?",
+            "Nein", "User", Visibility.Visible, "Ja");
+            if (_dialogResponse != "True")
+            {
+                return;
+            }
             await _clientRepository.UpdateAsync(clientToUpdate);
+
         }
         catch (SQLiteException ex)
         {
