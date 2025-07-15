@@ -11,6 +11,7 @@
                                    IsDesignTimeCreatable=False}"
   d:DesignHeight="450"
   d:DesignWidth="800"
+  FontFamily="Segoe UI"
   mc:Ignorable="d">
   <Grid Margin="10" Background="White">
     <Grid.RowDefinitions>
@@ -18,7 +19,10 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0">
-      <Label Content="Kunden" FontSize="35" />
+      <Label
+        Content="Kunden"
+        FontSize="35"
+        FontWeight="DemiBold" />
       <Border
         Margin="0,10,0,10"
         BorderBrush="LightGray"

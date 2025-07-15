@@ -61,6 +61,7 @@
       CornerRadius="10">
       <StackPanel>
         <Label
+          Margin="0,20,0,0"
           HorizontalAlignment="Center"
           Content="Neuen Kunden hinzufügen"
           FontSize="25" />
