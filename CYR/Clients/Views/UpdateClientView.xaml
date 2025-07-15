@@ -10,13 +10,7 @@
   d:DataContext="{d:DesignInstance Type=vm:UpdateClientViewModel,
                                    IsDesignTimeCreatable=False}"
   mc:Ignorable="d">
-  <Grid>
-    <Grid.Background>
-      <LinearGradientBrush Opacity=".2" StartPoint="0 2" EndPoint="1 1">
-        <GradientStop Offset="0.1" Color="#a7d5f2" />
-        <GradientStop Offset="1.1" Color="#efc6ff" />
-      </LinearGradientBrush>
-    </Grid.Background>
+  <Grid Background="White">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="4*" />
@@ -41,69 +35,94 @@
     <Border
       Grid.Row="1"
       Grid.Column="1"
-      Background="White"
+      Background="Transparent"
+      BorderBrush="Orange"
+      BorderThickness="1"
+      CornerRadius="10">
+      <Border.Effect>
+        <DropShadowEffect
+          BlurRadius="10"
+          Direction="250"
+          Opacity="1"
+          ShadowDepth="5"
+          Color="Black" />
+      </Border.Effect>
+    </Border>
+    <Border
+      Grid.Row="1"
+      Grid.Column="1"
+      Background="#f5f5f5"
+      BorderBrush="Orange"
+      BorderThickness="1"
       CornerRadius="10">
       <StackPanel>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-          <TextBlock FontSize="25" Text="Kundendaten bearbeiten für den Kunden" />
-          <TextBlock
-            FontSize="25"
-            FontWeight="Bold"
-            Text="{Binding ClientNumber}"
-            TextWrapping="Wrap" />
+          <TextBlock FontSize="25">
+            <Run Text="Den Kunden" />
+            <Run FontWeight="Bold" Text="{Binding ClientNumber}" />
+            <Run FontWeight="Bold" Text="{Binding ClientName}" />
+            <Run Text="bearbeiten" />
+          </TextBlock>
         </StackPanel>
         <Border
-          Margin="5,5,5,0"
-          BorderBrush="LightGray"
-          BorderThickness="0,2,0,0" />
+          Margin="5,20,5,20"
+          BorderBrush="Orange"
+          BorderThickness="2" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="kundenname"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientName, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="Telefonnummer"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientTelefonnumber, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="Email"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientEmail, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="Straße"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientStreet, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="PLZ"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientPLZ, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="Ort"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientCity, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox
           Margin="5,5,5,0"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="Erstellungsdatum"
+          materialDesign:HintAssist.IsFloating="False"
           FontSize="15"
-          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
           Text="{Binding ClientCreationDate, UpdateSourceTrigger=PropertyChanged}" />
         <Label
           Margin="0,5,0,0"
