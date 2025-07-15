@@ -84,7 +84,7 @@
             </Button.Content>
           </Button>
           <StackPanel VerticalAlignment="Center">
-            <Button>
+            <Button Command="{Binding CreateNewInvoiceCommand}">
               <Button.Content>
                 <StackPanel Orientation="Horizontal">
                   <materialDesign:PackIcon
@@ -142,11 +142,11 @@
         </DataGrid>
       </Border>
     </Grid>
-    <Border Margin="10"
-            Grid.Row="1"
-            BorderBrush="LightGray"
-            BorderThickness="1"
-            CornerRadius="5">
-    </Border>
+    <Border
+      Grid.Row="1"
+      Margin="10"
+      BorderBrush="LightGray"
+      BorderThickness="1"
+      CornerRadius="5" />
   </Grid>
 </UserControl>

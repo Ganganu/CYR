@@ -65,4 +65,10 @@ public partial class InvoiceListViewModel : ObservableRecipient
             }
         }
     }
+
+    [RelayCommand]
+    private void CreateNewInvoice()
+    {
+        NavigationService.NavigateTo<CreateInvoiceViewModel>();
+    }
 }
