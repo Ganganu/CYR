@@ -12,213 +12,103 @@
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
-  <Grid>
-    <Grid.Background>
-      <LinearGradientBrush Opacity=".2" StartPoint="0 2" EndPoint="1 1">
-        <GradientStop Offset="0.1" Color="#a7d5f2" />
-        <GradientStop Offset="1.1" Color="#efc6ff" />
-      </LinearGradientBrush>
-    </Grid.Background>
+  <Grid Background="White">
     <Border
-      Margin="30,30,30,0"
+      Margin="10"
       BorderThickness="2"
       CornerRadius="5">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="auto" />
-          <RowDefinition Height="auto" />
-          <RowDefinition Height="auto" />
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-          </Grid.ColumnDefinitions>
           <Label
             Grid.Column="0"
             VerticalAlignment="Center"
             VerticalContentAlignment="Center"
             Content="Artikel und Dienstleistungen"
-            FontSize="28" />
-          <StackPanel
-            Grid.Column="1"
-            HorizontalAlignment="Right"
-            Orientation="Horizontal">
-            <Button Style="{StaticResource MaterialDesignFlatButton}">
+            FontSize="35"
+            FontWeight="DemiBold" />
+        </Grid>
+        <Grid Grid.Row="0">
+          <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button
+              Margin="5,0,5,0"
+              BorderBrush="LightGray"
+              BorderThickness="1"
+              Style="{StaticResource MaterialDesignFlatButton}">
+              <Button.Content>
+                <materialDesign:PackIcon Kind="TableImport" />
+              </Button.Content>
+            </Button>
+            <Button
+              BorderBrush="LightGray"
+              BorderThickness="1"
+              Style="{StaticResource MaterialDesignFlatButton}">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Printer" />
               </Button.Content>
             </Button>
-            <Button Style="{StaticResource MaterialDesignFlatButton}">
-              <Button.Content>
-                <materialDesign:PackIcon Kind="Upload" />
-              </Button.Content>
-            </Button>
-          </StackPanel>
-        </Grid>
-        <Grid Grid.Row="1">
-          <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <Label Content="Rows selected" />
-            <Button Style="{StaticResource MaterialDesignFlatButton}">
-              <Button.Content>
-                <materialDesign:PackIcon Kind="Delete" />
-              </Button.Content>
-            </Button>
-            <Button Style="{StaticResource MaterialDesignFlatButton}">
+            <Button
+              Margin="5,0,5,0"
+              BorderBrush="LightGray"
+              BorderThickness="1"
+              Command="{Binding UpdateOrderItemCommand}"
+              Style="{StaticResource MaterialDesignFlatButton}">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Edit" />
               </Button.Content>
             </Button>
-
+            <Button
+              BorderBrush="LightGray"
+              BorderThickness="1"
+              Command="{Binding DeleteArticleCommand}"
+              Foreground="Red"
+              Style="{StaticResource MaterialDesignFlatButton}">
+              <Button.Content>
+                <materialDesign:PackIcon Kind="Delete" />
+              </Button.Content>
+            </Button>
+            <Button Margin="5,0,0,0" Command="{Binding}">
+              <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                  <materialDesign:PackIcon
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Kind="PlusCircleOutline" />
+                  <TextBlock VerticalAlignment="Top" Text="Hinzufügen" />
+                </StackPanel>
+              </Button.Content>
+            </Button>
           </StackPanel>
         </Grid>
-        <Grid Grid.Row="2">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
-          <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label
-              Grid.Column="0"
-              Content="Name"
-              FontSize="18" />
-            <Label
-              Grid.Column="1"
-              Margin="-10,0,0,0"
-              Content="Beschreibung"
-              FontSize="18" />
-            <Label
-              Grid.Column="2"
-              Margin="-10,0,0,0"
-              Content="Preis"
-              FontSize="18" />
-          </Grid>
-          <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBox
-              Grid.Column="0"
-              Width="250"
-              MaxWidth="350"
-              HorizontalAlignment="Left"
-              materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Artikelname"
-              materialDesign:HintAssist.IsFloating="False"
-              materialDesign:TextFieldAssist.HasLeadingIcon="True"
-              materialDesign:TextFieldAssist.LeadingIcon="Search"
-              Background="White"
-              BorderBrush="Transparent"
-              FontSize="14"
-              Foreground="Gray"
-              Style="{StaticResource MaterialDesignOutlinedTextBox}" />
-            <TextBox
-              Grid.Column="1"
-              Width="250"
-              MaxWidth="350"
-              Margin="-10,0,0,0"
-              HorizontalAlignment="Left"
-              materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Artikel Beschreibung"
-              materialDesign:HintAssist.IsFloating="False"
-              materialDesign:TextFieldAssist.HasLeadingIcon="True"
-              materialDesign:TextFieldAssist.LeadingIcon="Search"
-              Background="White"
-              BorderBrush="Transparent"
-              FontSize="14"
-              Foreground="Gray"
-              Style="{StaticResource MaterialDesignOutlinedTextBox}" />
-            <TextBox
-              Grid.Column="2"
-              Width="250"
-              MaxWidth="350"
-              Margin="-10,0,0,0"
-              HorizontalAlignment="Left"
-              materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Artikel Preis"
-              materialDesign:HintAssist.IsFloating="False"
-              materialDesign:TextFieldAssist.HasLeadingIcon="True"
-              materialDesign:TextFieldAssist.LeadingIcon="Search"
-              Background="White"
-              BorderBrush="Transparent"
-              FontSize="14"
-              Foreground="Gray"
-              Style="{StaticResource MaterialDesignOutlinedTextBox}" />
-          </Grid>
-        </Grid>
-        <ScrollViewer
-          Grid.Row="3"
-          Margin="0,10,0,0"
-          VerticalScrollBarVisibility="Auto">
-          <ItemsControl ItemsSource="{Binding OrderItems, UpdateSourceTrigger=PropertyChanged}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <Border
-                  Height="55"
-                  Margin="0,0,0,0"
-                  Background="White"
-                  BorderBrush="LightGray"
-                  BorderThickness="0,0,0,1">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="3*" />
-                      <ColumnDefinition Width="3*" />
-                      <ColumnDefinition Width="2*" />
-                      <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label
-                      Grid.Column="0"
-                      Margin="10"
-                      VerticalAlignment="Center"
-                      Content="{Binding Name}"
-                      FontSize="16" />
-                    <Label
-                      Grid.Column="1"
-                      VerticalAlignment="Center"
-                      Content="{Binding Description}"
-                      FontSize="16" />
-                    <Label
-                      Grid.Column="2"
-                      Width="50"
-                      MaxWidth="250"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Center"
-                      Background="Transparent"
-                      BorderBrush="Transparent"
-                      BorderThickness="0"
-                      Content="{Binding Price}"
-                      FontSize="16" />
-                    <Grid Grid.Column="3">
-                      <StackPanel Orientation="Horizontal">
-                        <Button>
-                          <Button.Content>
-                            <materialDesign:PackIcon Kind="Edit" />
-                          </Button.Content>
-                        </Button>
-                        <Button
-                          Background="Red"
-                          Command="{Binding DataContext.DeleteRowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                          CommandParameter="{Binding}">
-                          <Button.Content>
-                            <materialDesign:PackIcon Kind="Delete" />
-                          </Button.Content>
-                        </Button>
-                      </StackPanel>
-                    </Grid>
-                  </Grid>
-                </Border>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-        </ScrollViewer>
+        <Border
+          Grid.Row="1"
+          BorderBrush="LightGray"
+          BorderThickness="1"
+          CornerRadius="5">
+          <DataGrid
+            AutoGenerateColumns="False"
+            Background="White"
+            CanUserAddRows="False"
+            CanUserReorderColumns="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding OrderItems}">
+            <DataGrid.Columns>
+              <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+              <DataGridTextColumn Binding="{Binding Description}" Header="Beschreibung" />
+              <DataGridTextColumn Binding="{Binding Price}" Header="Preis" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </Border>
       </Grid>
     </Border>
   </Grid>

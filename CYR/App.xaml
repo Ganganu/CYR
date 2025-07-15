@@ -8,6 +8,8 @@
   xmlns:ivm="clr-namespace:CYR.Invoice.InvoiceViewModels"
   xmlns:local="clr-namespace:CYR"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:oiv="clr-namespace:CYR.OrderItems.OrderItemViews"
+  xmlns:oivm="clr-namespace:CYR.OrderItems.OrderItemViewModels"
   xmlns:v="clr-namespace:CYR.View"
   xmlns:vm="clr-namespace:CYR.ViewModel">
   <Application.Resources>
@@ -46,6 +48,9 @@
       </DataTemplate>
       <DataTemplate DataType="{x:Type cvm:UpdateClientViewModel}">
         <cv:UpdateClientView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type oivm:UpdateOrderItemViewModel}">
+        <oiv:UpdateOrderItemView />
       </DataTemplate>
     </ResourceDictionary>
   </Application.Resources>

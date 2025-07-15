@@ -1,19 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CYR.Clients;
+using CYR.Dialog;
 using CYR.OrderItems;
+using CYR.OrderItems.OrderItemViewModels;
 using CYR.Services;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace CYR.ViewModel
 {
     public partial class ArticleViewModel : ObservableObject, IParameterReceiver
     {
         private readonly IOrderItemRepository _orderItemRepository;
-        public ArticleViewModel(IOrderItemRepository orderItemRepository)
+        private readonly IDialogService _dialogService;
+
+        private string? _dialogResponse;
+        public ArticleViewModel(INavigationService navigationService,IOrderItemRepository orderItemRepository, IDialogService dialogService)
         {
             _orderItemRepository = orderItemRepository;
+            Navigation = navigationService;
             Initialize();
+            _dialogService = dialogService;
         }
 
         private async void Initialize()
@@ -23,15 +32,49 @@ namespace CYR.ViewModel
         }
 
         [ObservableProperty]
+        private INavigationService _navigation;
+
+        [ObservableProperty]
         private ObservableCollection<OrderItem>? _orderItems;
 
         [RelayCommand]
-        private async Task DeleteRow(object parameter)
+        private async Task DeleteArticle()
         {
-            OrderItem orderItem = (OrderItem)parameter;
-            await _orderItemRepository.DeleteAsync(orderItem);
-            var items = await _orderItemRepository.GetAllAsync();
-            OrderItems = new ObservableCollection<OrderItem>(items);
+            if (OrderItems is null) return;
+            var itemsToDelete = OrderItems.Where(o => o.IsSelected == true).ToList();
+            try
+            {
+                ShowNotificationDialog("Artikel/Dienstleistungen löschen.", $"Möchten Sie wirklich die ausgewählten Artikel/Dienstaleistungen löschen?",
+                        "Nein", "Item", Visibility.Visible, "Ja");
+                if (_dialogResponse != "True")
+                {
+                    return;
+                }
+                foreach (var item in itemsToDelete)
+                {
+                    try
+                    {                        
+                        var c = await _orderItemRepository.DeleteAsync(item);
+                        OrderItems.Remove(item);
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [RelayCommand]
+        private void UpdateOrderItem()
+        {
+            if (OrderItems is null) return;
+            var itemToUpdate = OrderItems.Where(o => o.IsSelected == true).FirstOrDefault();
+            Navigation.NavigateTo<UpdateOrderItemViewModel>(itemToUpdate);
         }
 
         public async Task ReceiveParameter(object parameter)
@@ -44,6 +87,27 @@ namespace CYR.ViewModel
                     OrderItems = oi;
                 }
             }
+        }
+
+        private void ShowNotificationDialog(string title,
+            string message,
+            string cancelButtonText,
+            string icon,
+            Visibility okButtonVisibility, string okButtonText)
+        {
+            _dialogService.ShowDialog(result =>
+            {
+                _dialogResponse = result;
+            },
+            new Dictionary<Expression<Func<NotificationViewModel, object>>, object>
+            {
+                { vm => vm.Title, title },
+                { vm => vm.Message,  message},
+                { vm => vm.CancelButtonText, cancelButtonText },
+                { vm => vm.Icon,icon },
+                { vm => vm.OkButtonText, okButtonText },
+                { vm => vm.IsOkVisible, okButtonVisibility}
+            });
         }
     }
 }

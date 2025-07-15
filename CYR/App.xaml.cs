@@ -12,6 +12,8 @@ using CYR.Invoice.InvoiceServices;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Invoice.InvoiceViews;
 using CYR.OrderItems;
+using CYR.OrderItems.OrderItemViewModels;
+using CYR.OrderItems.OrderItemViews;
 using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
@@ -54,6 +56,8 @@ namespace CYR
             services.AddSingleton<SettingsView>();
             services.AddSingleton<UpdateClientViewModel>();
             services.AddSingleton<UpdateClientView>();
+            services.AddSingleton<UpdateOrderItemViewModel>();
+            services.AddSingleton<UpdateOrderItemView>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IDialogService, DialogService>();

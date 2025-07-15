@@ -1,5 +1,4 @@
-﻿using CYR.Clients;
-using CYR.Core;
+﻿using CYR.Core;
 using System.Data.Common;
 
 namespace CYR.OrderItems
@@ -11,14 +10,17 @@ namespace CYR.OrderItems
         {
             _databaseConnection = databaseConnection;
         }
-        public async Task DeleteAsync(OrderItem orderItem)
+        public async Task<bool> DeleteAsync(OrderItem orderItem)
         {
+            bool succes = false;
             string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
             {
                 { "Produktnummer", orderItem.Id}
             };
             int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            succes = affectedRows >0;
+            return succes;
         }
 
         public async Task<IEnumerable<OrderItem>> GetAllAsync()
