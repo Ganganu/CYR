@@ -42,7 +42,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoice.IssueDate = Convert.ToDateTime(reader["Rechnungsdatum"]);
                     invoice.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoice.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
-                    invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);                    
+                    invoice.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
                     if (Enum.TryParse<InvoiceState>(reader["Status"].ToString(), out var state))
                     {
                         invoice.State = state;
@@ -80,9 +80,9 @@ namespace CYR.Invoice.InvoiceRepositorys
                     invoiceModel.IssueDate = Convert.ToDateTime(reader["Rechnungsdatum"]);
                     invoiceModel.DueDate = Convert.ToDateTime(reader["Fälligkeitsdatum"]);
                     invoiceModel.NetAmount = Convert.ToDecimal(reader["Nettobetrag"]);
-                    invoiceModel.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);                    
-                    invoiceModel.CommentsTop =reader["commentstop"].ToString();
-                    invoiceModel.CommentsBottom =reader["commentsbottom"].ToString();
+                    invoiceModel.GrossAmount = Convert.ToDecimal(reader["Bruttobetrag"]);
+                    invoiceModel.CommentsTop = reader["commentstop"].ToString();
+                    invoiceModel.CommentsBottom = reader["commentsbottom"].ToString();
                     if (invoiceModel.GrossAmount > invoiceModel.NetAmount)
                     {
                         invoiceModel.IsMwstApplicable = true;
@@ -145,6 +145,55 @@ namespace CYR.Invoice.InvoiceRepositorys
             };
 
             await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        }
+
+        public async Task<bool> UpdateInvoiceAndPositions(InvoiceModel invoice)
+        {
+
+            bool succes = false;
+            await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
+            {
+                string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer";
+                var deletePositionsParams = new Dictionary<string, object>
+                {
+                    { "@Rechnungsnummer", invoice.InvoiceNumber }
+                };
+                await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deletePositionsQuery, deletePositionsParams);
+
+                foreach (var pos in invoice.Items)
+                {
+                    string insertNewPositions = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge,Einheit,Einheitspreis)" +
+                     " VALUES (@Rechnungsnummer,@Beschreibung,@Menge,@Einheit,@Einheitspreis)";
+                    var insertNewPositionsParams = new Dictionary<string, object>
+                    {
+                        { "@Rechnungsnummer", invoice.InvoiceNumber },
+                        { "@Beschreibung", pos.OrderItem.Description },
+                        { "@Menge", pos.Quantity },
+                        { "@Einheit", pos.UnitOfMeasure },
+                        { "@Einheitspreis", pos.Price }
+                    };
+                    await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, insertNewPositions, insertNewPositionsParams);
+                }
+
+                string updateInvoice = "update Rechnungen set Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum," +
+                "Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,commentstop = @commentstop, commentsbottom = @commentsbottom  " +
+                " where Rechnungsnummer = @Rechnungsnummer";
+                var updateInvoiceQueryParameters = new Dictionary<string, object>
+                {
+                    {"Rechnungsnummer",invoice.InvoiceNumber },
+                    {"Kundennummer",invoice.Customer.ClientNumber },
+                    {"Rechnungsdatum",invoice.IssueDate },
+                    {"Fälligkeitsdatum",invoice.DueDate},
+                    {"Nettobetrag",invoice.NetAmount },
+                    {"Bruttobetrag",invoice.GrossAmount },
+                    {"Status", (int)invoice.State },
+                    {"commentstop", invoice.CommentsTop},
+                    {"commentsbottom", invoice.CommentsBottom}
+                };
+                int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateInvoice, updateInvoiceQueryParameters);
+                succes = clientAffectedRows > 0;
+            });
+            return succes;
         }
     }
 }

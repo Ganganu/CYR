@@ -116,7 +116,7 @@
                 Kind="FileFind" />
             </Button.Content>
           </Button>
-          <Button Command="{Binding SaveInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+          <Button Command="{Binding UpdateInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
               <materialDesign:PackIcon
                 Width="30"

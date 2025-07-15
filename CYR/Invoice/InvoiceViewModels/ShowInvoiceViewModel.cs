@@ -90,6 +90,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
             return;
         }
         InvoiceModel = await _invoiceRepository.GetByIdAsync((int)parameter);
+        InvoiceModel.Logo = Logo;
         IEnumerable<InvoicePositionModel> items = await _invoicePositionRepository.GetAllPositionsByInvoiceIdAsync(InvoiceModel.InvoiceNumber);
         List<InvoicePositionModel> listItems = [.. items];
         for (int i = 0; i < listItems.Count; i++)
@@ -99,10 +100,11 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         Items = [.. listItems];
         ObservableCollection<InvoicePosition> calculatedPositions = [.. Positions];
         Positions = ConvertInvoicePositionModelToInvoicePositions(Items, calculatedPositions);
+        _client = InvoiceModel.Customer;
     }
 
     private ObservableCollection<InvoicePosition>? ConvertInvoicePositionModelToInvoicePositions(ObservableCollection<InvoicePositionModel> items,
-ObservableCollection<InvoicePosition> pos)
+                                                                                                 ObservableCollection<InvoicePosition> pos)
     {
         ObservableCollection<InvoicePosition>? result = new ObservableCollection<InvoicePosition>();
         var availableUnitsOfMeasure = pos[0].UnitsOfMeasure;
@@ -191,21 +193,12 @@ ObservableCollection<InvoicePosition> pos)
         await _previewInvoiceService.SaveInvoice(createInvoiceModel);
     }
     [RelayCommand]
-    private async Task SaveInvoice()
+    private async Task UpdateInvoice()
     {
-        CreateInvoiceModel createInvoiceModel = new()
-        {
-            Client = _client,
-            InvoiceDate = InvoiceModel.IssueDate,
-            InvoiceNumber = InvoiceModel.InvoiceNumber,
-            IsMwstApplicable = InvoiceModel.IsMwstApplicable,
-            Positions = Positions,
-            CommentsBottom = InvoiceModel.CommentsBottom,
-            CommentsTop = InvoiceModel.CommentsTop,
-            Logo = InvoiceModel.Logo
-
-        };
-        await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
+        InvoiceModel invoiceModel = new();
+        invoiceModel = InvoiceModel;
+        invoiceModel.Items = Positions.ToList();
+        var result = _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
     }
     [RelayCommand]
     private void DeleteInvoicePosition()
