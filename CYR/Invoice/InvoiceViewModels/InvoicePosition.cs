@@ -103,6 +103,7 @@ public partial class InvoicePosition : ObservableRecipient
 
     partial void OnTotalPriceChanged(decimal? oldValue, decimal? newValue)
     {
+        if (newValue is null) return;
         if (oldValue != newValue)
         {
             Messenger.Send(new InvoiceTotalPriceEvent(newValue));

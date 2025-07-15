@@ -149,7 +149,8 @@ namespace CYR.Invoice.InvoiceRepositorys
 
         public async Task<bool> UpdateInvoiceAndPositions(InvoiceModel invoice)
         {
-
+            decimal? nettAmount = 0;
+            decimal? grossAmount = 0;
             bool succes = false;
             await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
             {
@@ -170,11 +171,19 @@ namespace CYR.Invoice.InvoiceRepositorys
                         { "@Beschreibung", pos.OrderItem.Description },
                         { "@Menge", pos.Quantity },
                         { "@Einheit", pos.UnitOfMeasure },
-                        { "@Einheitspreis", pos.Price }
+                        { "@Einheitspreis", pos.TotalPrice }
                     };
+                    nettAmount += pos.TotalPrice;
                     await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, insertNewPositions, insertNewPositionsParams);
                 }
-
+                if (invoice.IsMwstApplicable && nettAmount.HasValue)
+                {
+                    grossAmount = nettAmount.Value * 1.19m;
+                }
+                else
+                {
+                    grossAmount = nettAmount;
+                }
                 string updateInvoice = "update Rechnungen set Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum," +
                 "Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,commentstop = @commentstop, commentsbottom = @commentsbottom  " +
                 " where Rechnungsnummer = @Rechnungsnummer";
@@ -184,8 +193,8 @@ namespace CYR.Invoice.InvoiceRepositorys
                     {"Kundennummer",invoice.Customer.ClientNumber },
                     {"Rechnungsdatum",invoice.IssueDate },
                     {"Fälligkeitsdatum",invoice.DueDate},
-                    {"Nettobetrag",invoice.NetAmount },
-                    {"Bruttobetrag",invoice.GrossAmount },
+                    {"Nettobetrag",nettAmount },
+                    {"Bruttobetrag",grossAmount },
                     {"Status", (int)invoice.State },
                     {"commentstop", invoice.CommentsTop},
                     {"commentsbottom", invoice.CommentsBottom}

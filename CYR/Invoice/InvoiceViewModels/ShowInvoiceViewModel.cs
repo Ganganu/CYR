@@ -101,6 +101,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         ObservableCollection<InvoicePosition> calculatedPositions = [.. Positions];
         Positions = ConvertInvoicePositionModelToInvoicePositions(Items, calculatedPositions);
         _client = InvoiceModel.Customer;
+        TotalPrice = InvoiceModel.GrossAmount;
     }
 
     private ObservableCollection<InvoicePosition>? ConvertInvoicePositionModelToInvoicePositions(ObservableCollection<InvoicePositionModel> items,
