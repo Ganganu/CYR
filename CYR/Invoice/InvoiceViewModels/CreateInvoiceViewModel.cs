@@ -164,6 +164,12 @@ namespace CYR.Invoice.InvoiceViewModels
                 Positions?.Remove(position);
                 _positionCounter--;
             }
+            int posCounter = 1;
+            foreach (var position in Positions)
+            {
+                position.Id = posCounter.ToString();
+                posCounter++;
+            }
         }
         [RelayCommand]
         private void OpenImageInDefaultApp()
