@@ -75,12 +75,23 @@
             </controls:DropDownMenu>
           </Border>
           <Button
-            Margin="10,0,10,0"
+            Margin="5,0,0,0"
             BorderBrush="LightGray"
             BorderThickness="1"
+            Command="{Binding UpdateInvoiceCommand}"
             Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
-              <materialDesign:PackIcon Kind="DotsHorizontal" />
+              <materialDesign:PackIcon Kind="Edit" />
+            </Button.Content>
+          </Button>
+          <Button
+            Margin="5,0,5,0"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            Command="{Binding DeleteInvoiceCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
             </Button.Content>
           </Button>
           <StackPanel VerticalAlignment="Center">
@@ -98,7 +109,11 @@
           </StackPanel>
         </StackPanel>
       </Grid>
-      <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="2" Margin="0 10 0 10"/>
+      <Border
+        Grid.Row="1"
+        Margin="0,10,0,10"
+        BorderBrush="LightGray"
+        BorderThickness="2" />
       <Border
         Grid.Row="2"
         BorderBrush="LightGray"
@@ -114,9 +129,9 @@
           ItemsSource="{Binding Invoices}">
           <DataGrid.Columns>
             <DataGridTemplateColumn>
-              <DataGridTemplateColumn.Header>
+              <!--<DataGridTemplateColumn.Header>
                 <CheckBox IsChecked="{Binding IsSelectAllInvoicesChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-              </DataGridTemplateColumn.Header>
+              </DataGridTemplateColumn.Header>-->
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                   <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />

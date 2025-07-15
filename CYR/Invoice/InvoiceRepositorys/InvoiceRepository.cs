@@ -15,9 +15,27 @@ namespace CYR.Invoice.InvoiceRepositorys
             _databaseConnection = databaseConnection;
         }
 
-        public Task DeleteAsync(InvoiceModel invoice)
+        public async Task<bool> DeleteAsync(InvoiceModel invoice)
         {
-            throw new NotImplementedException();
+            bool succes = false;
+            await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
+            {
+                string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer";
+                var deletePositionsParams = new Dictionary<string, object>
+                {
+                    { "@Rechnungsnummer", invoice.InvoiceNumber }
+                };
+                await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deletePositionsQuery, deletePositionsParams);
+
+                string deleteInvoiceQuery = "delete from Rechnungen where Rechnungsnummer = @Rechnungsnummer";
+                var deleteInvoiceParams = new Dictionary<string, object>
+                {
+                    { "@Rechnungsnummer", invoice.InvoiceNumber }
+                };
+                int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deleteInvoiceQuery, deleteInvoiceParams);
+                succes = clientAffectedRows > 0;
+            });
+            return succes;
         }
 
         public async Task<IEnumerable<InvoiceModel>> GetAllAsync()

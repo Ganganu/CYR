@@ -5,7 +5,7 @@ namespace CYR.Invoice.InvoiceRepositorys
 {
     public interface IInvoiceRepository
     {
-        Task DeleteAsync(InvoiceModel invoice);
+        Task<bool> DeleteAsync(InvoiceModel invoice);
         Task<IEnumerable<InvoiceModel>> GetAllAsync();
         Task<InvoiceModel> GetByIdAsync(int id);
         Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null);

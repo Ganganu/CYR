@@ -73,22 +73,19 @@ public partial class ClientViewModel : ObservableObject, IParameterReceiver
             {
                 try
                 {
-                    ShowNotificationDialog("Kunde löschen", $"Möchten Sie wirklich den Kunden löschen? Das würde bedeuten, dass alle Rechnungen und Daten im Zusammenhang mit diesen Kudnen auch gelsöcht werden!",
+                    ShowNotificationDialog("Kunde löschen", $"Möchten Sie wirklich den Kunden {client.ClientNumber} löschen? Das würde bedeuten, dass alle Rechnungen und Daten im Zusammenhang mit diesen Kudnen auch gelsöcht werden!",
                     "Nein", "User", Visibility.Visible, "Ja");
                     if (_dialogResponse != "True")
                     {
                         return;
                     }
                     var c = await _clientRepository.DeleteAsync(client);
+                    Clients.Remove(client);
                 }
                 catch (Exception)
                 {
                     throw;
                 }
-            }
-            foreach (var client in clientsToDelete)
-            {
-                Clients.Remove(client);
             }
         }
         catch (Exception)

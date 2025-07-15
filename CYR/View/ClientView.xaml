@@ -25,13 +25,25 @@
         BorderThickness="2" />
     </StackPanel>
     <Grid Grid.Row="0">
-      <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-        <Button Command="{Binding UpdateClientCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+      <StackPanel
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center"
+        Orientation="Horizontal">
+        <Button
+          BorderBrush="LightGray"
+          BorderThickness="1"
+          Command="{Binding UpdateClientCommand}"
+          Style="{StaticResource MaterialDesignFlatButton}">
           <Button.Content>
             <materialDesign:PackIcon Kind="Edit" />
           </Button.Content>
         </Button>
-        <Button Command="{Binding DeleteClientCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+        <Button
+          Margin="5,0,5,0"
+          BorderBrush="LightGray"
+          BorderThickness="1"
+          Command="{Binding DeleteClientCommand}"
+          Style="{StaticResource MaterialDesignFlatButton}">
           <Button.Content>
             <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
           </Button.Content>
