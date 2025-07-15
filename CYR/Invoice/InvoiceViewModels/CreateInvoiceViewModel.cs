@@ -170,6 +170,7 @@ namespace CYR.Invoice.InvoiceViewModels
                 position.Id = posCounter.ToString();
                 posCounter++;
             }
+            TotalPrice = Positions?.Sum(p => p.TotalPrice);
         }
         [RelayCommand]
         private void OpenImageInDefaultApp()

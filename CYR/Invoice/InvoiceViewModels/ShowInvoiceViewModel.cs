@@ -217,6 +217,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
             position.Id = posCounter.ToString();
             posCounter++;
         }
+        TotalPrice = Positions?.Sum(p => p.TotalPrice);
     }
     [RelayCommand]
     private void OpenImageInDefaultApp()
