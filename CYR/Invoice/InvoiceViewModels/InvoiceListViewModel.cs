@@ -91,7 +91,7 @@ public partial class InvoiceListViewModel : ObservableRecipient
             foreach (var invoice in selectedInvoices)
             {
                 ShowNotificationDialog("Kunde löschen", $"Möchten Sie wirklich die Rechnung {invoice.InvoiceNumber} löschen? Das würde bedeuten, dass alle Rechnungen und Daten im Zusammenhang mit dieser Rechnung auch gelsöcht werden!",
-                    "Nein", "User", Visibility.Visible, "Ja");
+                    "Nein", "Invoice", Visibility.Visible, "Ja");
                 if (_dialogResponse != "True")
                 {
                     return;
