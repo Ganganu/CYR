@@ -5,130 +5,129 @@ using CYR.OrderItems;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 
-namespace CYR.Invoice.InvoiceViewModels
+namespace CYR.Invoice.InvoiceViewModels;
+
+public partial class InvoicePosition : ObservableRecipient
 {
-    public partial class InvoicePosition : ObservableRecipient
+    private readonly IOrderItemRepository _orderItemRepository;
+    private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
+
+    public InvoicePosition(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository) 
     {
-        private readonly IOrderItemRepository _orderItemRepository;
-        private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
-
-        public InvoicePosition(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository) 
+        _orderItemRepository = orderItemRepository;
+        _unitOfMeasureRepository = unitOfMeasureRepository;
+        WeakReferenceMessenger.Default.Register<OrderItemMessageCollectionChanged>(this, (r,m) =>
         {
-            _orderItemRepository = orderItemRepository;
-            _unitOfMeasureRepository = unitOfMeasureRepository;
-            WeakReferenceMessenger.Default.Register<OrderItemMessageCollectionChanged>(this, (r,m) =>
+            ItemColectionChanged(m);
+        });
+        Initialize();
+    }
+    public InvoicePosition()
+    {            
+    }
+
+    private async void Initialize()
+    {
+        Items = [.. await GetAllItems()];
+        UnitsOfMeasure = [.. await GetAllUnitOfMeasures()];
+    }
+
+    [ObservableProperty]
+    private bool _isInvoicePositionSelected;
+    [ObservableProperty]
+    private string? _id;
+    [ObservableProperty]
+    private string? _invoiceNumber;
+    [ObservableProperty]
+    public OrderItem? _orderItem;
+    [ObservableProperty]
+    public string? _manuallyInsertedArticle;
+    partial void OnManuallyInsertedArticleChanged(string? oldValue, string? newValue)
+    {
+        if (oldValue != newValue)
+        {
+            if (OrderItem is null)
             {
-                ItemColectionChanged(m);
-            });
-            Initialize();
-        }
-        public InvoicePosition()
-        {            
-        }
-
-        private async void Initialize()
-        {
-            Items = [.. await GetAllItems()];
-            UnitsOfMeasure = [.. await GetAllUnitOfMeasures()];
-        }
-
-        [ObservableProperty]
-        private bool _isInvoicePositionSelected;
-        [ObservableProperty]
-        private string? _id;
-        [ObservableProperty]
-        private string? _invoiceNumber;
-        [ObservableProperty]
-        public OrderItem? _orderItem;
-        [ObservableProperty]
-        public string? _manuallyInsertedArticle;
-        partial void OnManuallyInsertedArticleChanged(string? oldValue, string? newValue)
-        {
-            if (oldValue != newValue)
-            {
-                if (OrderItem is null)
-                {
-                    OrderItem = new OrderItem();
-                    OrderItem.Name = newValue;
-                    OrderItem.Description = newValue;
-                    OrderItem.Price = 0;
-                }
+                OrderItem = new OrderItem();
+                OrderItem.Name = newValue;
+                OrderItem.Description = newValue;
+                OrderItem.Price = 0;
             }
         }
-        partial void OnOrderItemChanged(OrderItem? oldValue, OrderItem? newValue)
+    }
+    partial void OnOrderItemChanged(OrderItem? oldValue, OrderItem? newValue)
+    {
+        if (oldValue != newValue)
         {
-            if (oldValue != newValue)
+            if (OrderItem != null)
             {
-                if (OrderItem != null)
-                {
-                    Price = OrderItem.Price;
-                    TotalPrice = Quantity * Price;
-                }
-            }
-        }
-
-        [ObservableProperty]
-        private decimal? _quantity;
-        partial void OnQuantityChanged(decimal? oldValue, decimal? newValue)
-        {
-            if (oldValue != newValue)
-            {
-                if (OrderItem != null)
-                {
-                    Price = OrderItem.Price;
-                    TotalPrice = Quantity * Price;
-                }
-            }
-        }
-        
-        [ObservableProperty]
-        private UnitOfMeasureModel? _unitOfMeasure;
-
-        [ObservableProperty]
-        private decimal? _price;
-        partial void OnPriceChanged(decimal? oldValue, decimal? newValue)
-        {
-            if (oldValue != newValue)
-            {
+                Price = OrderItem.Price;
                 TotalPrice = Quantity * Price;
-                if (OrderItem is not null)
-                {
-                    OrderItem.Price = Price;                    
-                }
             }
         }
+    }
 
-        [ObservableProperty]
-        public decimal? _totalPrice;
-
-        partial void OnTotalPriceChanged(decimal? oldValue, decimal? newValue)
+    [ObservableProperty]
+    private decimal? _quantity;
+    partial void OnQuantityChanged(decimal? oldValue, decimal? newValue)
+    {
+        if (oldValue != newValue)
         {
-            if (oldValue != newValue)
+            if (OrderItem != null)
             {
-                Messenger.Send(new InvoiceTotalPriceEvent(newValue));
+                Price = OrderItem.Price;
+                TotalPrice = Quantity * Price;
             }
         }
+    }
+    
+    [ObservableProperty]
+    private UnitOfMeasureModel? _unitOfMeasure;
 
-        [ObservableProperty]
-        private ObservableCollection<OrderItem>? _items;
-
-        private async Task<IEnumerable<OrderItem>> GetAllItems()
+    [ObservableProperty]
+    private decimal? _price;
+    partial void OnPriceChanged(decimal? oldValue, decimal? newValue)
+    {
+        if (oldValue != newValue)
         {
-            return await _orderItemRepository.GetAllAsync();
-        }
-        [ObservableProperty]
-        private ObservableCollection<UnitOfMeasureModel>? _unitsOfMeasure;
-        private async Task<IEnumerable<UnitOfMeasureModel>> GetAllUnitOfMeasures()
-        {
-            return await _unitOfMeasureRepository.GetAllAsync();
-        }        
-        private async void ItemColectionChanged(OrderItemMessageCollectionChanged orderItemMessageCollectionChanged)
-        {
-            if (orderItemMessageCollectionChanged.Value)
+            TotalPrice = Quantity * Price;
+            if (OrderItem is not null)
             {
-                var latestItems = await GetAllItems();
-                Items = [.. latestItems];
+                OrderItem.Price = Price;                    
             }
+        }
+    }
+
+    [ObservableProperty]
+    public decimal? _totalPrice;
+
+    partial void OnTotalPriceChanged(decimal? oldValue, decimal? newValue)
+    {
+        if (oldValue != newValue)
+        {
+            Messenger.Send(new InvoiceTotalPriceEvent(newValue));
+        }
+    }
+
+    [ObservableProperty]
+    private ObservableCollection<OrderItem>? _items;
+
+    private async Task<IEnumerable<OrderItem>> GetAllItems()
+    {
+        return await _orderItemRepository.GetAllAsync();
+    }
+    [ObservableProperty]
+    private ObservableCollection<UnitOfMeasureModel>? _unitsOfMeasure;
+    private async Task<IEnumerable<UnitOfMeasureModel>> GetAllUnitOfMeasures()
+    {
+        return await _unitOfMeasureRepository.GetAllAsync();
+    }        
+    private async void ItemColectionChanged(OrderItemMessageCollectionChanged orderItemMessageCollectionChanged)
+    {
+        if (orderItemMessageCollectionChanged.Value)
+        {
+            var latestItems = await GetAllItems();
+            Items = [.. latestItems];
         }
     }
 }
