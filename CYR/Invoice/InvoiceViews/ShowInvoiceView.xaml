@@ -42,11 +42,16 @@
             Height="30"
             VerticalAlignment="Center"
             Foreground="LightGray"
-            Kind="FilePlus" />
-          <Label
-            VerticalAlignment="Center"
-            Content="Neue Rechnung erstellen"
-            FontSize="28" />
+            Kind="InvoiceEdit" />
+          <Label VerticalAlignment="Center" FontSize="28">
+            <Label.Content>
+              <TextBlock>
+                <Run Text="Rechnung" />
+                <Run Text="{Binding InvoiceModel.InvoiceNumber}" />
+                <Run Text="bearbeiten" />
+              </TextBlock>
+            </Label.Content>
+          </Label>
         </StackPanel>
         <StackPanel
           Grid.Row="0"

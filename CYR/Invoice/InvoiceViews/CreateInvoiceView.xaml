@@ -39,7 +39,7 @@
             Height="30"
             VerticalAlignment="Center"
             Foreground="LightGray"
-            Kind="FilePlus" />
+            Kind="InvoicePlus" />
           <Label
             VerticalAlignment="Center"
             Content="Neue Rechnung erstellen"
