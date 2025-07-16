@@ -34,63 +34,23 @@
       </Grid>
       <Grid Grid.Row="1">
         <StackPanel Orientation="Vertical">
-          <cc:FlatExpander
-            HeaderIcon="ReceiptText"
-            HeaderText="Rechnungen"
-            IconForeground="#FEE3BB">
-            <cc:FlatExpander.Content>
-              <StackPanel>
-                <cc:IconButton
-                  ButtonText="Neue Rechnung"
-                  Command="{Binding NavigateToCreateNewInvoiceCommand}"
-                  GroupName="NavigationButtons"
-                  IconKind="ReceiptTextAdd" />
-                <cc:IconButton
-                  ButtonText="Rechnungen durchsuchen"
-                  Command="{Binding NavigateToGetInvoicesCommand}"
-                  GroupName="NavigationButtons"
-                  IconKind="InvoiceList" />
-              </StackPanel>
-            </cc:FlatExpander.Content>
-          </cc:FlatExpander>
+          <cc:IconButton
+            ButtonText="Rechnungen"
+            Command="{Binding NavigateToGetInvoicesCommand}"
+            GroupName="NavigationButtons"
+            IconKind="InvoiceList" />
           <Separator />
-          <cc:IconButton
-            ButtonText="Kostenvoranschläge"
-            GroupName="NavigationButtons"
-            IconKind="Euro"
-            Visibility="Collapsed" />
-          <Separator Visibility="Collapsed" />
-          <cc:IconButton
-            ButtonText="Angebote"
-            GroupName="NavigationButtons"
-            IconKind="InvoiceTextCheckOutline"
-            Visibility="Collapsed" />
-          <Separator Visibility="Collapsed" />
           <cc:IconButton
             ButtonText="Kunden"
             Command="{Binding NavigateToClientViewCommand}"
             GroupName="NavigationButtons"
             IconKind="Person" />
           <Separator />
-          <cc:FlatExpander
-            HeaderIcon="ReceiptText"
-            HeaderText="Artikel/Dienstleistungen"
-            IconForeground="#FEE3BB">
-            <cc:FlatExpander.Content>
-              <StackPanel>
-                <cc:IconButton
-                  ButtonText="Durchsuchen"
-                  Command="{Binding NavigateToArticleViewCommand}"
-                  GroupName="NavigationButtons"
-                  IconKind="Search" />
-                <cc:IconButton
-                  ButtonText="Hinzufügen"
-                  Command="{Binding NavigateToCreateNewArticleCommand}"
-                  GroupName="NavigationButtons"
-                  IconKind="Add" />
-              </StackPanel>
-            </cc:FlatExpander.Content>
-          </cc:FlatExpander>
+          <cc:IconButton
+            ButtonText="Artikel/Dienstleistungen"
+            Command="{Binding NavigateToArticleViewCommand}"
+            GroupName="NavigationButtons"
+            IconKind="Search" />
         </StackPanel>
       </Grid>
       <Grid Grid.Row="2">

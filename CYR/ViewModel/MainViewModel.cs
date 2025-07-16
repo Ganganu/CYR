@@ -34,19 +34,9 @@ namespace CYR.ViewModel
             Navigation.NavigateTo<SettingsViewModel>();
         }
         [RelayCommand]
-        private void NavigateToCreateNewInvoice()
-        {
-            Navigation.NavigateTo<CreateInvoiceViewModel>();
-        }
-        [RelayCommand]
         private void NavigateToGetInvoices()
         {
             Navigation.NavigateTo<InvoiceListViewModel>();
-        }
-        [RelayCommand]
-        private void NavigateToCreateNewArticle()
-        {
-            Navigation.NavigateTo<CreateNewArticleViewModel>();
         }
     }
 }
