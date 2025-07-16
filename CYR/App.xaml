@@ -52,6 +52,54 @@
       <DataTemplate DataType="{x:Type oivm:UpdateOrderItemViewModel}">
         <oiv:UpdateOrderItemView />
       </DataTemplate>
+
+
+      <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="LightGray" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ToggleButton}">
+              <Border
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="5">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <ContentPresenter
+                    Grid.Column="0"
+                    Margin="{TemplateBinding Padding}"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                  <Path
+                    Grid.Column="1"
+                    Margin="5,0,5,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Data="M0,0 L4,4 L8,0 Z"
+                    Fill="Black" />
+                </Grid>
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="#EEE" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                  <Setter Property="Background" Value="#DDD" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
     </ResourceDictionary>
   </Application.Resources>
 </Application>

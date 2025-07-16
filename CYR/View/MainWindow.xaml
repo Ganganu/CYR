@@ -32,25 +32,25 @@
           VerticalAlignment="Center"
           Source="/Ressources/LogoDoubleG1.png" />
       </Grid>
-      <Grid Grid.Row="1">
+      <Grid Grid.Row="1" Margin="0,20,0,0">
         <StackPanel Orientation="Vertical">
           <cc:IconButton
             ButtonText="Rechnungen"
             Command="{Binding NavigateToGetInvoicesCommand}"
             GroupName="NavigationButtons"
             IconKind="InvoiceList" />
-          <Separator />
+          <Border BorderBrush="LightGray" BorderThickness="1" />
           <cc:IconButton
             ButtonText="Kunden"
             Command="{Binding NavigateToClientViewCommand}"
             GroupName="NavigationButtons"
             IconKind="Person" />
-          <Separator />
+          <Border BorderBrush="LightGray" BorderThickness="1" />
           <cc:IconButton
             ButtonText="Artikel/Dienstleistungen"
             Command="{Binding NavigateToArticleViewCommand}"
             GroupName="NavigationButtons"
-            IconKind="Search" />
+            IconKind="PackageVariantClosed" />
         </StackPanel>
       </Grid>
       <Grid Grid.Row="2">

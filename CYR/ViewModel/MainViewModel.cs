@@ -8,11 +8,9 @@ namespace CYR.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly IDialogService _dialogService;
-        public MainViewModel(INavigationService navigationService,IDialogService dialogService) 
+        public MainViewModel(INavigationService navigationService) 
         {
             Navigation = navigationService;
-            _dialogService = dialogService;
         }
 
         [ObservableProperty]
