@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CYR.Core;
+using CYR.Dashboard.DashboardViewModels;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
@@ -40,7 +43,11 @@ public partial class InvoiceListViewModel : ObservableRecipient
     [ObservableProperty]
     private bool _isSelectAllInvoicesChecked;
 
-    
+    [RelayCommand]
+    private void NavigateBack()
+    {
+        Messenger.Send(new NavigateBackSource(typeof(InvoiceListViewModel)));
+    }
 
     [RelayCommand]
     private void SelectInvoice(object parameter)

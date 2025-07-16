@@ -1,18 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CYR.Core;
 using CYR.Dashboard.DashboardViewModels;
-using CYR.Dialog;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Services;
 
 namespace CYR.ViewModel
 {
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBackSource>
     {
         public MainViewModel(INavigationService navigationService) 
         {
             Navigation = navigationService;
             Navigation.NavigateTo<DashboardViewModel>();
+            Messenger.RegisterAll(this);
         }
 
         [ObservableProperty]
@@ -40,6 +42,15 @@ namespace CYR.ViewModel
         }
         [RelayCommand]
         private void NavigateToDashboard()
+        {
+            Navigation.NavigateTo<DashboardViewModel>();
+        }
+
+        /// <summary>
+        /// Gesendet von einem UserControl, wenn aud Dashboard navigiert wird, um die Farbe des Buttons zu ändern.
+        /// </summary>
+        /// <param name="message"></param>
+        public void Receive(NavigateBackSource message)
         {
             Navigation.NavigateTo<DashboardViewModel>();
         }
