@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
-using CYR.Dashboard.DashboardViewModels;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;

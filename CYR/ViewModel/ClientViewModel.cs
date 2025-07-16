@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Clients.ViewModels;
+using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Services;
@@ -11,7 +13,7 @@ using System.Windows;
 
 namespace CYR.ViewModel;
 
-public partial class ClientViewModel : ObservableObject, IParameterReceiver
+public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
 {
     private readonly IRetrieveClients _retrieveClients;
     private readonly IClientRepository _clientRepository;
@@ -37,6 +39,12 @@ public partial class ClientViewModel : ObservableObject, IParameterReceiver
     private INavigationService _navigation;
     [ObservableProperty]
     private ObservableCollection<Client>? _clients;
+
+    [RelayCommand]
+    private void NavigateBack()
+    {
+        Messenger.Send(new NavigateBackSource(typeof(ClientViewModel)));
+    }
 
     [RelayCommand]
     public void CreateInvoice(Client client)
