@@ -62,5 +62,24 @@ namespace CYR.CustomControls
                 iconButton.SMenuButton.GroupName = (string)e.NewValue;
             }
         }
+
+        public static readonly DependencyProperty IsCheckedProperty =
+            DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(IconButton),
+                new PropertyMetadata(false, OnIsCheckedChanged));
+
+        public bool IsChecked
+        {
+            get => (bool)GetValue(IsCheckedProperty);
+            set => SetValue(IsCheckedProperty, value);
+        }
+
+        private static void OnIsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var iconButton = d as IconButton;
+            if (iconButton != null)
+            {
+                iconButton.SMenuButton.IsChecked = (bool)e.NewValue;
+            }
+        }
     }
 }

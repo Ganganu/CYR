@@ -14,4 +14,9 @@ public partial class MainWindow : Window
         InitializeComponent();
         Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {        
+     btnDashboard.IsChecked = true;   
+    }
 }

@@ -33,21 +33,31 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
-
-      <Grid Grid.Row="0" Margin="0,10,0,10">
+      <Grid Grid.Row="0">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <Label
+        <Border
           Grid.Column="0"
-          Content="Rechnungen"
-          FontSize="35"
-          FontWeight="DemiBold" />
+          HorizontalAlignment="Left"
+          BorderBrush="LightGray"
+          BorderThickness="1"
+          CornerRadius="5">
+          <Button Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
+                <TextBlock HorizontalAlignment="Center" Text="Zurück" />
+              </StackPanel>
+            </Button.Content>
+          </Button>
+        </Border>
         <StackPanel
-          Grid.Column="2"
+          Grid.Column="1"
           HorizontalAlignment="Right"
           Orientation="Horizontal">
           <ComboBox
@@ -142,26 +152,26 @@
             </ComboBoxItem>
           </ComboBox>
           <!--<Border x:Name="bDDM" CornerRadius="5">
-            <controls:DropDownMenu DropDownTextPart="Status auswählen" FontSize="12">
-              <controls:DropDownMenu.Content>
-                <Border BorderBrush="LightGray" BorderThickness="1">
-                  <StackPanel Background="White">
-                    <Button
-                      Width="{Binding Width, ElementName=bDDM}"
-                      Command="{Binding SetInvoiceStateOpenCommand}"
-                      Content="Unbezahlt"
-                      Style="{StaticResource MaterialDesignFlatButton}" />
-                    <Separator Background="LightGray" />
-                    <Button
-                      Width="{Binding Width, ElementName=bDDM}"
-                      Command="{Binding SetInvoiceStateClosedCommand}"
-                      Content="Bezahlt"
-                      Style="{StaticResource MaterialDesignFlatButton}" />
-                  </StackPanel>
-                </Border>
-              </controls:DropDownMenu.Content>
-            </controls:DropDownMenu>
-          </Border>-->
+    <controls:DropDownMenu DropDownTextPart="Status auswählen" FontSize="12">
+      <controls:DropDownMenu.Content>
+        <Border BorderBrush="LightGray" BorderThickness="1">
+          <StackPanel Background="White">
+            <Button
+              Width="{Binding Width, ElementName=bDDM}"
+              Command="{Binding SetInvoiceStateOpenCommand}"
+              Content="Unbezahlt"
+              Style="{StaticResource MaterialDesignFlatButton}" />
+            <Separator Background="LightGray" />
+            <Button
+              Width="{Binding Width, ElementName=bDDM}"
+              Command="{Binding SetInvoiceStateClosedCommand}"
+              Content="Bezahlt"
+              Style="{StaticResource MaterialDesignFlatButton}" />
+          </StackPanel>
+        </Border>
+      </controls:DropDownMenu.Content>
+    </controls:DropDownMenu>
+  </Border>-->
           <Button
             Margin="5,0,0,0"
             BorderBrush="LightGray"
@@ -197,13 +207,25 @@
           </StackPanel>
         </StackPanel>
       </Grid>
+      <Grid Grid.Row="1" Margin="0,10,0,10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Label
+          Grid.Column="0"
+          Content="Rechnungen"
+          FontSize="35"
+          FontWeight="DemiBold" />
+
+      </Grid>
       <Border
-        Grid.Row="1"
+        Grid.Row="2"
         Margin="0,10,0,10"
         BorderBrush="LightGray"
         BorderThickness="2" />
       <Border
-        Grid.Row="2"
+        Grid.Row="3"
         BorderBrush="LightGray"
         BorderThickness="1"
         CornerRadius="5">

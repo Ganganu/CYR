@@ -59,10 +59,10 @@
           Click="btnCancel_Click"
           Content="Abbrechen" />
         <Button
-          Margin="0,0,5,0"
-          Command="{Binding SendSelectedFileCommand}"
           Name="btnAccept"
+          Margin="0,0,5,0"
           Click="btnAccept_Click"
+          Command="{Binding SendSelectedFileCommand}"
           Content="Übernehmen" />
       </StackPanel>
     </Grid>

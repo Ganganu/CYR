@@ -4,6 +4,8 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:cv="clr-namespace:CYR.Clients.Views"
   xmlns:cvm="clr-namespace:CYR.Clients.ViewModels"
+  xmlns:dv="clr-namespace:CYR.Dashboard.DashboardViews"
+  xmlns:dvm="clr-namespace:CYR.Dashboard.DashboardViewModels"
   xmlns:iv="clr-namespace:CYR.Invoice.InvoiceViews"
   xmlns:ivm="clr-namespace:CYR.Invoice.InvoiceViewModels"
   xmlns:local="clr-namespace:CYR"
@@ -51,6 +53,9 @@
       </DataTemplate>
       <DataTemplate DataType="{x:Type oivm:UpdateOrderItemViewModel}">
         <oiv:UpdateOrderItemView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type dvm:DashboardViewModel}">
+        <dv:DashboardView />
       </DataTemplate>
 
 

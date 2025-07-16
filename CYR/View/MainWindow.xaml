@@ -13,6 +13,7 @@
   Height="850"
   d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
                                    IsDesignTimeCreatable=False}"
+  Loaded="Window_Loaded"
   mc:Ignorable="d">
   <Grid>
     <Grid.ColumnDefinitions>
@@ -34,6 +35,13 @@
       </Grid>
       <Grid Grid.Row="1" Margin="0,20,0,0">
         <StackPanel Orientation="Vertical">
+          <cc:IconButton
+            x:Name="btnDashboard"
+            ButtonText="Dashboard"
+            Command="{Binding NavigateToDashboardCommand}"
+            GroupName="NavigationButtons"
+            IconKind="MonitorDashboard" />
+          <Border BorderBrush="LightGray" BorderThickness="1" />
           <cc:IconButton
             ButtonText="Rechnungen"
             Command="{Binding NavigateToGetInvoicesCommand}"

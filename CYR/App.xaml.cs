@@ -4,6 +4,8 @@ using CYR.Clients;
 using CYR.Clients.ViewModels;
 using CYR.Clients.Views;
 using CYR.Core;
+using CYR.Dashboard.DashboardViewModels;
+using CYR.Dashboard.DashboardViews;
 using CYR.Dialog;
 using CYR.Invoice;
 using CYR.Invoice.InvoiceModels;
@@ -56,6 +58,8 @@ namespace CYR
             services.AddSingleton<SettingsView>();
             services.AddSingleton<UpdateClientViewModel>();
             services.AddSingleton<UpdateClientView>();
+            services.AddSingleton<DashboardViewModel>();
+            services.AddSingleton<DashboardView>();
             services.AddSingleton<UpdateOrderItemViewModel>();
             services.AddSingleton<UpdateOrderItemView>();
             services.AddSingleton<IOrderItemRepository, OrderItemRepository>();

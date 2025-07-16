@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CYR.Dashboard.DashboardViewModels;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Services;
@@ -11,6 +12,7 @@ namespace CYR.ViewModel
         public MainViewModel(INavigationService navigationService) 
         {
             Navigation = navigationService;
+            Navigation.NavigateTo<DashboardViewModel>();
         }
 
         [ObservableProperty]
@@ -35,6 +37,11 @@ namespace CYR.ViewModel
         private void NavigateToGetInvoices()
         {
             Navigation.NavigateTo<InvoiceListViewModel>();
+        }
+        [RelayCommand]
+        private void NavigateToDashboard()
+        {
+            Navigation.NavigateTo<DashboardViewModel>();
         }
     }
 }
