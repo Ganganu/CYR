@@ -89,7 +89,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="kundenname"
+              materialDesign:HintAssist.Hint="z.B. Unternehmen GmbH"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -98,7 +98,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Telefonnummer"
+              materialDesign:HintAssist.Hint="z.B. +49 1637361115"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -107,7 +107,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Email"
+              materialDesign:HintAssist.Hint="z.B. unternehmen@beispiel.de"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -116,7 +116,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Straße"
+              materialDesign:HintAssist.Hint="z.B. Musterstraße 21"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -125,7 +125,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="PLZ"
+              materialDesign:HintAssist.Hint="z.B. 30151"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -134,7 +134,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Ort"
+              materialDesign:HintAssist.Hint="z.B. Hannover"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -143,7 +143,7 @@
             <TextBox
               Margin="5,5,5,0"
               materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="Erstellungsdatum"
+              materialDesign:HintAssist.Hint="z.B. 16.07.2025"
               materialDesign:HintAssist.IsFloating="False"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
