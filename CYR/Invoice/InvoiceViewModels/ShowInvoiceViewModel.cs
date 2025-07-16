@@ -74,6 +74,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         _invoiceRepository = invoiceRepository;
         _invoicePositionRepository = invoicePositionRepository;
     }
+
     private async void Initialize()
     {
         Positions = new ObservableCollection<InvoicePosition> { new(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
@@ -256,6 +257,11 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         {
             InvoiceModel.Logo = Logo;
         }
+    }
+    [RelayCommand]
+    private void NavigateBack()
+    {
+        NavigationService.NavigateTo<InvoiceListViewModel>();
     }
     [RelayCommand]
     private void SaveXml(object parameter)

@@ -44,7 +44,7 @@ namespace CYR.Invoice.InvoiceServices
                 return;
             }
             
-            bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || p.Quantity <= 0 || p.OrderItem.Name == null);
+            bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || p.Quantity <= 0);
             if (checkPositionNull)
             {
                 ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",
