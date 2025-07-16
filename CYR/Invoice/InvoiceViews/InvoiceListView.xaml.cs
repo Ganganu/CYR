@@ -1,15 +1,17 @@
-﻿using System.Windows.Controls;
+﻿using System.Globalization;
+using System.Windows.Controls;
+using System.Windows.Markup;
 
-namespace CYR.Invoice.InvoiceViews
+namespace CYR.Invoice.InvoiceViews;
+
+/// <summary>
+/// Interaktionslogik für GetInvoiceView.xaml
+/// </summary>
+public partial class InvoiceListView : UserControl
 {
-    /// <summary>
-    /// Interaktionslogik für GetInvoiceView.xaml
-    /// </summary>
-    public partial class InvoiceListView : UserControl
+    public InvoiceListView()
     {
-        public InvoiceListView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
 }

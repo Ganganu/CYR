@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Globalization;
+using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace CYR.Clients.Views;
 
@@ -10,5 +12,6 @@ public partial class UpdateClientView : UserControl
     public UpdateClientView()
     {
         InitializeComponent();
+        Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
 }

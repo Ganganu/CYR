@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace CYR.Dialog;
 
@@ -11,6 +13,7 @@ public partial class Notification : UserControl
     public Notification()
     {
         InitializeComponent();
+        Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

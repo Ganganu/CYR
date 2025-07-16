@@ -69,9 +69,9 @@
                 HorizontalAlignment="Center"
                 FontSize="25">
                 <Label.Content>
-                  <TextBlock>
+                  <TextBlock TextAlignment="Center" TextWrapping="Wrap">
                     <Run Text="Artikel" />
-                    <Run Text="{Binding OrderItem.Name}" />
+                    <Run FontWeight="Bold" Text="{Binding OrderItem.Name}" />
                     <Run Text="bearbeiten" />
                   </TextBlock>
                 </Label.Content>
@@ -99,7 +99,7 @@
                   FontSize="14"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding OrderItem.Description, UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Preis" />
+                <Label Content="Preis" FontSize="16" />
                 <TextBox
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Preis"
