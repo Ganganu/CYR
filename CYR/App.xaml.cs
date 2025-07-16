@@ -56,8 +56,8 @@ namespace CYR
             services.AddSingleton<CreateClientViewModel>();
             services.AddSingleton<SettingsViewModel>();
             services.AddSingleton<SettingsView>();
-            services.AddSingleton<UpdateClientViewModel>();
-            services.AddSingleton<UpdateClientView>();
+            services.AddTransient<UpdateClientViewModel>();
+            services.AddTransient<UpdateClientView>();
             services.AddSingleton<DashboardViewModel>();
             services.AddSingleton<DashboardView>();
             services.AddSingleton<UpdateOrderItemViewModel>();
