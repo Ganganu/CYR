@@ -21,7 +21,6 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="auto" />
           <RowDefinition Height="auto" />
-          <RowDefinition Height="auto" />
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border
@@ -65,7 +64,7 @@
             </Button>
             <Button
               BorderBrush="LightGray"
-              BorderThickness="1"
+              BorderThickness="1" Command="{Binding PrintOrderItemsCommand}"
               Style="{StaticResource MaterialDesignFlatButton}">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Printer" />

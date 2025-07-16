@@ -160,6 +160,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     [RelayCommand]
     private void AddNewRow()
     {
+        _positionCounter = Convert.ToInt32(Positions.Last().Id);
         _positionCounter++;
         Positions?.Add(new InvoicePosition(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() });
     }

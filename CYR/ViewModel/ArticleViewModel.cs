@@ -16,14 +16,16 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
 {
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IDialogService _dialogService;
+    private readonly IPrintOrderItemService _printOrderItemService;
 
     private string? _dialogResponse;
-    public ArticleViewModel(INavigationService navigationService,IOrderItemRepository orderItemRepository, IDialogService dialogService)
+    public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, IDialogService dialogService, IPrintOrderItemService printOrderItemService)
     {
         _orderItemRepository = orderItemRepository;
         Navigation = navigationService;
         Initialize();
         _dialogService = dialogService;
+        _printOrderItemService = printOrderItemService;
     }
 
     private async void Initialize()
@@ -67,7 +69,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
             foreach (var item in itemsToDelete)
             {
                 try
-                {                        
+                {
                     var c = await _orderItemRepository.DeleteAsync(item);
                     OrderItems.Remove(item);
                 }
@@ -122,5 +124,17 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
             { vm => vm.OkButtonText, okButtonText },
             { vm => vm.IsOkVisible, okButtonVisibility}
         });
+    }
+
+    [RelayCommand]
+    private void InsertOrderItems()
+    {
+
+    }
+    [RelayCommand]
+    private void PrintOrderItems()
+    {
+        if (OrderItems is null) return;
+        _printOrderItemService.Print(OrderItems);
     }
 }
