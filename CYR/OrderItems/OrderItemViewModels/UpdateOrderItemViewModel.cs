@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using CYR.Core;
 using CYR.Services;
 using CYR.ViewModel;
+using System.Data.SQLite;
+using System.Windows;
 
 namespace CYR.OrderItems.OrderItemViewModels;
 
@@ -14,8 +16,10 @@ public partial class UpdateOrderItemViewModel : ObservableRecipient, IParameterR
     public UpdateOrderItemViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository)
     {
         _orderItemRepository = orderItemRepository;
-        Navigation = navigationService;
+        Navigation = navigationService;       
     }
+    [ObservableProperty]
+    private string? _updateMessage;
     [ObservableProperty]
     private OrderItem _orderItem;
     [ObservableProperty]
@@ -37,7 +41,29 @@ public partial class UpdateOrderItemViewModel : ObservableRecipient, IParameterR
     [RelayCommand]
     private async Task UpdateOrderItem()
     {
-        
+        if (OrderItem is null) return;
+        OrderItem orderItemToUpdate = CreateNewOrderItem(OrderItem);
+
+        try
+        {
+            await _orderItemRepository.UpdateAsync(orderItemToUpdate);
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        UpdateMessage = $"Artikel/Dienstleistung {orderItemToUpdate.Name} erfolgreich aktualisiert.";
+    }
+
+    private OrderItem CreateNewOrderItem(OrderItem orderItem)
+    {
+        OrderItem oi = new OrderItem();
+        oi.Id = orderItem.Id;
+        oi.Name = orderItem.Name;
+        oi.Description = orderItem.Description;
+        oi.Price = orderItem.Price;
+        return oi;
     }
 
     /// <summary>

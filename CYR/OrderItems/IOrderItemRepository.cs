@@ -6,6 +6,6 @@
         Task<IEnumerable<OrderItem>> GetAllAsync();
         Task<IEnumerable<OrderItem>> GetByIdAsync(int id);
         Task InsertAsync(OrderItem orderItem);
-        Task UpdateAsync(OrderItem orderItem);
+        Task<bool> UpdateAsync(OrderItem orderItem);
     }
 }

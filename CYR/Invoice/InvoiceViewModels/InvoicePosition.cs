@@ -123,6 +123,11 @@ public partial class InvoicePosition : ObservableRecipient
     {
         return await _unitOfMeasureRepository.GetAllAsync();
     }        
+
+    /// <summary>
+    /// Gesendet von CreateNewArticleViewModel, damit die Items geupdated werden
+    /// </summary>
+    /// <param name="orderItemMessageCollectionChanged"></param>
     private async void ItemColectionChanged(OrderItemMessageCollectionChanged orderItemMessageCollectionChanged)
     {
         if (orderItemMessageCollectionChanged.Value)

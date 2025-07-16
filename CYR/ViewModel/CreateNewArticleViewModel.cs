@@ -17,6 +17,8 @@ namespace CYR.ViewModel
         }
 
         [ObservableProperty]
+        private string? _saveMessage;
+        [ObservableProperty]
         private string _name;
         [ObservableProperty]
         private string _description;
@@ -47,10 +49,11 @@ namespace CYR.ViewModel
             orderItem.Price = Price;
             await _orderItemRepository.InsertAsync(orderItem);
             _articles = await _orderItemRepository.GetAllAsync();
-            if (_articles !=null)
+            if (_articles != null)
             {
-                WeakReferenceMessenger.Default.Send(new OrderItemMessageCollectionChanged(true));                
+                WeakReferenceMessenger.Default.Send(new OrderItemMessageCollectionChanged(true));
             }
+            SaveMessage = $"Artikel/Dienstleistung {orderItem.Name} erfolgreich gespeichert.";
         }
     }
 }

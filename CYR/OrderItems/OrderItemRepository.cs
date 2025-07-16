@@ -8,7 +8,7 @@ namespace CYR.OrderItems
         private readonly IDatabaseConnection _databaseConnection;
         public OrderItemRepository(IDatabaseConnection databaseConnection)
         {
-            _databaseConnection = databaseConnection;
+            _databaseConnection = databaseConnection;            
         }
         public async Task<bool> DeleteAsync(OrderItem orderItem)
         {
@@ -61,9 +61,19 @@ namespace CYR.OrderItems
             int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
-        public Task UpdateAsync(OrderItem orderItem)
+        public async Task<bool> UpdateAsync(OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            string query = "update Produkte_Dienstleistungen  set Name = @Name, Beschreibung = @Beschreibung, Preis = @Preis where Produktnummer = @Produktnummer";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                { "Produktnummer", orderItem.Id },
+                { "Name", orderItem.Name },
+                { "Beschreibung", orderItem.Description },
+                { "Preis", orderItem.Price }
+            };
+            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            return affectedRows > 0;
         }
     }
 }
+ 

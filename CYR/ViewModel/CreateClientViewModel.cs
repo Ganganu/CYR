@@ -5,7 +5,6 @@ using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Extensions;
-using CYR.Invoice.InvoiceModels;
 using CYR.Services;
 using System.Data.SQLite;
 using System.Linq.Expressions;

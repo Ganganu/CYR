@@ -60,8 +60,8 @@ public partial class App : Application
         services.AddTransient<UpdateClientView>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<DashboardView>();
-        services.AddSingleton<UpdateOrderItemViewModel>();
-        services.AddSingleton<UpdateOrderItemView>();
+        services.AddTransient<UpdateOrderItemViewModel>();
+        services.AddTransient<UpdateOrderItemView>();
         services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IDialogService, DialogService>();

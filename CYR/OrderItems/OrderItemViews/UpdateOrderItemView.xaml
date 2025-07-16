@@ -123,6 +123,12 @@
                   materialDesign:HintAssist.IsFloating="False"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding OrderItem.Price, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                  Margin="0,10,0,0"
+                  VerticalAlignment="Top"
+                  FontSize="15"
+                  Foreground="Green"
+                  Text="{Binding UpdateMessage}" />
               </StackPanel>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
