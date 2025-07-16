@@ -122,6 +122,12 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
     }
 
     [RelayCommand]
+    private void NavigateBack()
+    {
+        NavigationService.NavigateTo<InvoiceListViewModel>();
+    }
+
+    [RelayCommand]
     private async Task PreviewInvoice()
     {
         CreateInvoiceModel createInvoiceModel = new()
