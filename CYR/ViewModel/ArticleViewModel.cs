@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CYR.Core;
 using CYR.Dialog;
 using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
@@ -7,107 +9,118 @@ using CYR.Services;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Windows;
-using System.Windows.Navigation;
 
-namespace CYR.ViewModel
+namespace CYR.ViewModel;
+
+public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
 {
-    public partial class ArticleViewModel : ObservableObject, IParameterReceiver
+    private readonly IOrderItemRepository _orderItemRepository;
+    private readonly IDialogService _dialogService;
+
+    private string? _dialogResponse;
+    public ArticleViewModel(INavigationService navigationService,IOrderItemRepository orderItemRepository, IDialogService dialogService)
     {
-        private readonly IOrderItemRepository _orderItemRepository;
-        private readonly IDialogService _dialogService;
+        _orderItemRepository = orderItemRepository;
+        Navigation = navigationService;
+        Initialize();
+        _dialogService = dialogService;
+    }
 
-        private string? _dialogResponse;
-        public ArticleViewModel(INavigationService navigationService,IOrderItemRepository orderItemRepository, IDialogService dialogService)
+    private async void Initialize()
+    {
+        IEnumerable<OrderItem> orderItems = await _orderItemRepository.GetAllAsync();
+        OrderItems = new ObservableCollection<OrderItem>(orderItems);
+    }
+
+    [ObservableProperty]
+    private INavigationService _navigation;
+
+    [ObservableProperty]
+    private ObservableCollection<OrderItem>? _orderItems;
+
+    [RelayCommand]
+    private void NavigateBack()
+    {
+        Messenger.Send(new NavigateBackSource(typeof(ClientViewModel)));
+    }
+
+    [RelayCommand]
+    private void NavigateToCreateNewArticle()
+    {
+        Navigation.NavigateTo<CreateNewArticleViewModel>();
+    }
+
+
+    [RelayCommand]
+    private async Task DeleteArticle()
+    {
+        if (OrderItems is null) return;
+        var itemsToDelete = OrderItems.Where(o => o.IsSelected == true).ToList();
+        try
         {
-            _orderItemRepository = orderItemRepository;
-            Navigation = navigationService;
-            Initialize();
-            _dialogService = dialogService;
-        }
-
-        private async void Initialize()
-        {
-            IEnumerable<OrderItem> orderItems = await _orderItemRepository.GetAllAsync();
-            OrderItems = new ObservableCollection<OrderItem>(orderItems);
-        }
-
-        [ObservableProperty]
-        private INavigationService _navigation;
-
-        [ObservableProperty]
-        private ObservableCollection<OrderItem>? _orderItems;
-
-        [RelayCommand]
-        private async Task DeleteArticle()
-        {
-            if (OrderItems is null) return;
-            var itemsToDelete = OrderItems.Where(o => o.IsSelected == true).ToList();
-            try
+            ShowNotificationDialog("Artikel/Dienstleistungen löschen.", $"Möchten Sie wirklich die ausgewählten Artikel/Dienstaleistungen löschen?",
+                    "Nein", "Item", Visibility.Visible, "Ja");
+            if (_dialogResponse != "True")
             {
-                ShowNotificationDialog("Artikel/Dienstleistungen löschen.", $"Möchten Sie wirklich die ausgewählten Artikel/Dienstaleistungen löschen?",
-                        "Nein", "Item", Visibility.Visible, "Ja");
-                if (_dialogResponse != "True")
-                {
-                    return;
-                }
-                foreach (var item in itemsToDelete)
-                {
-                    try
-                    {                        
-                        var c = await _orderItemRepository.DeleteAsync(item);
-                        OrderItems.Remove(item);
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                }
+                return;
             }
-            catch (Exception)
+            foreach (var item in itemsToDelete)
             {
-                throw;
-            }
-        }
-
-        [RelayCommand]
-        private void UpdateOrderItem()
-        {
-            if (OrderItems is null) return;
-            var itemToUpdate = OrderItems.Where(o => o.IsSelected == true).FirstOrDefault();
-            Navigation.NavigateTo<UpdateOrderItemViewModel>(itemToUpdate);
-        }
-
-        public async Task ReceiveParameter(object parameter)
-        {
-            if (parameter != null)
-            {
-                ObservableCollection<OrderItem> oi = new ObservableCollection<OrderItem>((List<OrderItem>)parameter);
-                if (oi != null)
+                try
+                {                        
+                    var c = await _orderItemRepository.DeleteAsync(item);
+                    OrderItems.Remove(item);
+                }
+                catch (Exception)
                 {
-                    OrderItems = oi;
+                    throw;
                 }
             }
         }
-
-        private void ShowNotificationDialog(string title,
-            string message,
-            string cancelButtonText,
-            string icon,
-            Visibility okButtonVisibility, string okButtonText)
+        catch (Exception)
         {
-            _dialogService.ShowDialog(result =>
-            {
-                _dialogResponse = result;
-            },
-            new Dictionary<Expression<Func<NotificationViewModel, object>>, object>
-            {
-                { vm => vm.Title, title },
-                { vm => vm.Message,  message},
-                { vm => vm.CancelButtonText, cancelButtonText },
-                { vm => vm.Icon,icon },
-                { vm => vm.OkButtonText, okButtonText },
-                { vm => vm.IsOkVisible, okButtonVisibility}
-            });
+            throw;
         }
+    }
+
+    [RelayCommand]
+    private void UpdateOrderItem()
+    {
+        if (OrderItems is null) return;
+        var itemToUpdate = OrderItems.Where(o => o.IsSelected == true).FirstOrDefault();
+        Navigation.NavigateTo<UpdateOrderItemViewModel>(itemToUpdate);
+    }
+
+    public async Task ReceiveParameter(object parameter)
+    {
+        if (parameter != null)
+        {
+            ObservableCollection<OrderItem> oi = new ObservableCollection<OrderItem>((List<OrderItem>)parameter);
+            if (oi != null)
+            {
+                OrderItems = oi;
+            }
+        }
+    }
+
+    private void ShowNotificationDialog(string title,
+        string message,
+        string cancelButtonText,
+        string icon,
+        Visibility okButtonVisibility, string okButtonText)
+    {
+        _dialogService.ShowDialog(result =>
+        {
+            _dialogResponse = result;
+        },
+        new Dictionary<Expression<Func<NotificationViewModel, object>>, object>
+        {
+            { vm => vm.Title, title },
+            { vm => vm.Message,  message},
+            { vm => vm.CancelButtonText, cancelButtonText },
+            { vm => vm.Icon,icon },
+            { vm => vm.OkButtonText, okButtonText },
+            { vm => vm.IsOkVisible, okButtonVisibility}
+        });
     }
 }

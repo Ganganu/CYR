@@ -21,7 +21,6 @@
     </Grid.RowDefinitions>
     <Grid Grid.Row="0">
       <Border
-        Grid.Column="0"
         HorizontalAlignment="Left"
         BorderBrush="LightGray"
         BorderThickness="1"

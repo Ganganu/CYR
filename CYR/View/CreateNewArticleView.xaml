@@ -22,10 +22,27 @@
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-          <RowDefinition Height="0.5*" />
+          <RowDefinition Height="auto" />
           <RowDefinition Height="5*" />
-          <RowDefinition Height="0.5*" />
+          <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+          <Border
+            Margin="10"
+            HorizontalAlignment="Left"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            CornerRadius="5">
+            <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+              <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                  <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
+                  <TextBlock HorizontalAlignment="Center" Text="Zurück" />
+                </StackPanel>
+              </Button.Content>
+            </Button>
+          </Border>
+        </Grid>
         <Border
           Grid.Row="1"
           Grid.Column="1"
@@ -108,11 +125,6 @@
                   <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <!--<Button
-                  Grid.Column="0"
-                  Margin="0,0,5,0"
-                  Content="Abbrechen"
-                  Style="{StaticResource MaterialDesignFlatButton}" />-->
                 <Button
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
@@ -123,6 +135,11 @@
             </Grid>
           </Grid>
         </Border>
+        <Grid Grid.Row="2" Grid.Column="0">
+          <Border Margin="10">
+            <Button Visibility="Hidden" />
+          </Border>
+        </Grid>
       </Grid>
     </Border>
   </Grid>
