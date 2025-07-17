@@ -4,13 +4,18 @@ using CYR.Invoice;
 using System.Collections.ObjectModel;
 
 namespace CYR.Dialog;
+public enum CommentType
+{
+    Top,
+    Bottom
+}
 
 public partial class SaveCommentsDialogViewModel : ObservableRecipient
 {
     private readonly IXMLService _xMLService;
     public SaveCommentsDialogViewModel(IXMLService xMLService)
     {
-        CommentsType = ["Kommentaren Oben", "Kommentaren Unten"];
+        CommentsType = [CommentType.Top, CommentType.Bottom];
         _xMLService = xMLService;
     }
     [ObservableProperty]
@@ -22,18 +27,17 @@ public partial class SaveCommentsDialogViewModel : ObservableRecipient
     [ObservableProperty]
     private string? _textToSerialize;
     [ObservableProperty]
-    public ObservableCollection<string>? _commentsType;
+    public ObservableCollection<CommentType>? _commentsType;
     [ObservableProperty]
-    private string? _selectedItem; 
+    private CommentType _selectedItem; 
     
 
     [RelayCommand]
     private void SaveTemplate()
     {
-        if (SelectedItem is null) return;
         if (TextToSerialize is null) return;
         if (FileName is null) return;
-        if (SelectedItem.Contains("oben", StringComparison.CurrentCultureIgnoreCase))
+        if (SelectedItem == CommentType.Top)
         {
             _xMLService.SaveAsync(TextToSerialize,"Top",FileName);
         }
@@ -41,15 +45,6 @@ public partial class SaveCommentsDialogViewModel : ObservableRecipient
         {
             _xMLService.SaveAsync(TextToSerialize, "Bottom", FileName);
         }
-    }
-
-
-
-
-    private enum CommentType
-    {
-        Top,
-        Bottom
     }
 }
 
