@@ -85,6 +85,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
     private ImageSource _logo;
     [ObservableProperty]
     private decimal? _totalPrice = 0.0m;
+    [ObservableProperty]
+    private ObservableCollection<FileModel> _xmlFiles;
     public INavigationService NavigationService { get; }
 
     partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)
@@ -229,7 +231,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         string folderPath = @"\Comments\Top";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
         XmlFiles = [.. files];
-        ShowListDialog("Boilerplate Notizen", XmlFiles, "File", folderPath, CommentType.Top);
+        ShowListDialog("Rechnungskopftext Vorlagen", XmlFiles, "File", folderPath, CommentType.Top);
     }
     [RelayCommand]
     private void LoadXmlBottom()
@@ -238,11 +240,10 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         string folderPath = @"\Comments\Bottom";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
         XmlFiles = [.. files];
-        ShowListDialog("Boilerplate Notizen", XmlFiles, "File", folderPath, CommentType.Bottom);
+        ShowListDialog("Rechnungsfußtext Vorlagen", XmlFiles, "File", folderPath, CommentType.Bottom);
     }
 
-    [ObservableProperty]
-    private ObservableCollection<FileModel> _xmlFiles;
+    
     private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon, string folderPath, CommentType type)
     {
         _dialogService.ShowDialog(result =>
@@ -255,7 +256,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             { vm => vm.Files,  files},
             { vm => vm.Icon,  icon},
             {vm => vm.FolderPath, folderPath},
-            {vm => vm.Caller, type},
+            {vm => vm.CommentType, type},
         });
     }
     private void ShowCommentsDialog(string title, string icon, string text)
@@ -274,7 +275,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
 
     public void Receive(ItemsListDialogViewModel message)
     {
-        switch (message.Caller)
+        switch (message.CommentType)
         {
             case CommentType.Top:
                 InvoiceModel.CommentsTop = message.XmlString;

@@ -20,7 +20,7 @@ public partial class ItemsListDialogViewModel : ObservableRecipient
     [ObservableProperty]
     private ObservableCollection<FileModel>? _files;
     [ObservableProperty]
-    private CommentType _caller;
+    private CommentType _commentType;
     [ObservableProperty]
     private string? _icon;
 
