@@ -203,7 +203,7 @@
               FontSize="20" />
             <Button
               VerticalAlignment="Bottom"
-              Command="{Binding SaveXmlCommand}"
+              Command="{Binding SaveXmlTopCommand}"
               CommandParameter="{Binding}"
               Content="{materialDesign:PackIcon Kind=Add}"
               Style="{StaticResource MaterialDesignToolButton}" />
@@ -295,7 +295,7 @@
                   FontSize="20" />
                 <Button
                   VerticalAlignment="Bottom"
-                  Command="{Binding SaveXmlCommand}"
+                  Command="{Binding SaveXmlBottomCommand}"
                   CommandParameter="{Binding}"
                   Content="{materialDesign:PackIcon Kind=Add}"
                   Style="{StaticResource MaterialDesignToolButton}" />

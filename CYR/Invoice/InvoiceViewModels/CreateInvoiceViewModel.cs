@@ -217,10 +217,18 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         }
     }
     [RelayCommand]
-    private void SaveXml(object parameter)
+    private void SaveXmlTop(object parameter)
     {
         var dataContext = (CreateInvoiceViewModel)parameter;
         var xml = dataContext.InvoiceModel.CommentsTop;
+        if (xml is null) return;
+        ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus", xml);
+    }
+    [RelayCommand]
+    private void SaveXmlBottom(object parameter)
+    {
+        var dataContext = (CreateInvoiceViewModel)parameter;
+        var xml = dataContext.InvoiceModel.CommentsBottom;
         if (xml is null) return;
         ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus", xml);
     }

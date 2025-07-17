@@ -144,6 +144,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     private ImageSource _logo;
     [ObservableProperty]
     private decimal? _totalPrice = 0.0m;
+    [ObservableProperty]
+    private ObservableCollection<FileModel> _xmlFiles;
     public INavigationService NavigationService { get; }
 
     partial void OnSelectedClientChanged(Client? oldValue, Client? newValue)
@@ -265,24 +267,41 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         NavigationService.NavigateTo<InvoiceListViewModel>();
     }
     [RelayCommand]
-    private void SaveXml(object parameter)
+    private void SaveXmlTop(object parameter)
     {
-        var dataContext = (CreateInvoiceViewModel)parameter;
+        var dataContext = (ShowInvoiceViewModel)parameter;
         var xml = dataContext.InvoiceModel.CommentsTop;
-        //_xmlService.SaveAsync(xml);
+        if (xml is null) return;
+        ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus", xml);
     }
     [RelayCommand]
-    private void LoadXml()
+    private void SaveXmlBottom(object parameter)
     {
-        string commentsPath = $@"{_directoryPath}\Comments";
+        var dataContext = (ShowInvoiceViewModel)parameter;
+        var xml = dataContext.InvoiceModel.CommentsBottom;
+        if (xml is null) return;
+        ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus", xml);
+    }
+    [RelayCommand]
+    private void LoadXmlTop()
+    {
+        string commentsPath = $@"{_directoryPath}\Comments\Top";
+        string folderPath = @"\Comments\Top";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
         XmlFiles = [.. files];
-        ShowListDialog("Boilerplate Notizen", XmlFiles, "File");
+        ShowListDialog("Rechnungskopftext Vorlagen", XmlFiles, "File", folderPath, CommentType.Top);
+    }
+    [RelayCommand]
+    private void LoadXmlBottom()
+    {
+        string commentsPath = $@"{_directoryPath}\Comments\Bottom";
+        string folderPath = @"\Comments\Bottom";
+        List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
+        XmlFiles = [.. files];
+        ShowListDialog("Rechnungsfußtext Vorlagen", XmlFiles, "File", folderPath, CommentType.Bottom);
     }
 
-    [ObservableProperty]
-    private ObservableCollection<FileModel> _xmlFiles;
-    private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon)
+    private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon, string folderPath, CommentType type)
     {
         _dialogService.ShowDialog(result =>
         {
@@ -292,12 +311,36 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         {
             { vm => vm.Title, title },
             { vm => vm.Files,  files},
-            { vm => vm.Icon,  icon}
+            { vm => vm.Icon,  icon},
+            {vm => vm.FolderPath, folderPath},
+            {vm => vm.CommentType, type},
         });
     }
-
+    private void ShowCommentsDialog(string title, string icon, string text)
+    {
+        _dialogService.ShowDialog(result =>
+        {
+            _dialogResponse = result;
+        },
+        new Dictionary<Expression<Func<SaveCommentsDialogViewModel, object>>, object>
+        {
+            { vm => vm.Title, title },
+            { vm => vm.Icon,  icon},
+            {vm => vm.TextToSerialize, text }
+        });
+    }
     public void Receive(ItemsListDialogViewModel message)
     {
-        InvoiceModel.CommentsTop = message.XmlString;
+        switch (message.CommentType)
+        {
+            case CommentType.Top:
+                InvoiceModel.CommentsTop = message.XmlString;
+                break;
+            case CommentType.Bottom:
+                InvoiceModel.CommentsBottom = message.XmlString;
+                break;
+            default:
+                break;
+        }
     }
 }
