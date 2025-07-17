@@ -269,7 +269,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     {
         var dataContext = (CreateInvoiceViewModel)parameter;
         var xml = dataContext.InvoiceModel.CommentsTop;
-        _xmlService.SaveAsync(xml);
+        //_xmlService.SaveAsync(xml);
     }
     [RelayCommand]
     private void LoadXml()

@@ -18,6 +18,8 @@ public partial class SaveCommentsDialogViewModel : ObservableRecipient
     [ObservableProperty]
     private string? _icon;
     [ObservableProperty]
+    private string? _fileName;
+    [ObservableProperty]
     private string? _textToSerialize;
     [ObservableProperty]
     public ObservableCollection<string>? _commentsType;
@@ -30,13 +32,14 @@ public partial class SaveCommentsDialogViewModel : ObservableRecipient
     {
         if (SelectedItem is null) return;
         if (TextToSerialize is null) return;
+        if (FileName is null) return;
         if (SelectedItem.Contains("oben", StringComparison.CurrentCultureIgnoreCase))
         {
-            _xMLService.SaveAsync(TextToSerialize);
+            _xMLService.SaveAsync(TextToSerialize,"Top",FileName);
         }
         else
         {
-            
+            _xMLService.SaveAsync(TextToSerialize, "Bottom", FileName);
         }
     }
 

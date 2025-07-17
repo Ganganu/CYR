@@ -54,7 +54,8 @@
           BorderBrush="LightGray"
           BorderThickness="1"
           FontSize="14"
-          Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+          Style="{StaticResource MaterialDesignOutlinedTextBox}"
+          Text="{Binding FileName}" />
         <TextBlock
           Margin="0,10,0,0"
           FontSize="16"

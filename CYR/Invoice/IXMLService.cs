@@ -5,6 +5,6 @@ namespace CYR.Invoice
     public interface IXMLService
     {
         Task<string> LoadAsync(string path);
-        Task<bool> SaveAsync(string text);
+        Task<bool> SaveAsync(string text, string childFodler, string fileName);
     }
 }

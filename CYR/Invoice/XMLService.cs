@@ -8,16 +8,16 @@ namespace CYR.Invoice;
 public class XMLService : IXMLService
 {
     private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
-    public async Task<bool> SaveAsync(string text)
+    public async Task<bool> SaveAsync(string text, string childFolder, string fileName)
     {
-        string commentsPath = $@"{_directoryPath}\Comments";
+        string commentsPath = $@"{_directoryPath}\Comments\{childFolder}";
         if (!Directory.Exists(commentsPath))
         {
             Directory.CreateDirectory(commentsPath);                
         }
         if (Directory.Exists(commentsPath))
         {
-            await File.WriteAllTextAsync($@"{commentsPath}\test.xml", text);
+            await File.WriteAllTextAsync($@"{commentsPath}\{fileName}.xml", text);
             return true;
         }
         return false;

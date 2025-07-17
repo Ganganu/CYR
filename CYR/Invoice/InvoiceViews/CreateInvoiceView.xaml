@@ -7,7 +7,8 @@
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:vm="clr-namespace:CYR.Invoice.InvoiceViewModels"
-  d:DataContext="{d:DesignInstance Type=vm:CreateInvoiceViewModel, IsDesignTimeCreatable=False}"
+  d:DataContext="{d:DesignInstance Type=vm:CreateInvoiceViewModel,
+                                   IsDesignTimeCreatable=False}"
   d:DesignHeight="850"
   d:DesignWidth="1500"
   mc:Ignorable="d">
@@ -104,7 +105,7 @@
                 Kind="FileFind" />
             </Button.Content>
           </Button>
-          <Button Command="{Binding UpdateInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+          <Button Command="{Binding SaveInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
               <materialDesign:PackIcon
                 Width="30"
