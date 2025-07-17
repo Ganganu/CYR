@@ -24,7 +24,6 @@ public class XMLService : IXMLService
     }
     public async Task<string> LoadAsync(string filePath, string folderPath)
     {
-        string commentsPath = $@"{_directoryPath}\Comments";
         string xmlText = await File.ReadAllTextAsync($@"{_directoryPath}\{folderPath}\{filePath}");
         string convertedXml = ConvertSectionToFlowDocument(xmlText);
         return convertedXml;

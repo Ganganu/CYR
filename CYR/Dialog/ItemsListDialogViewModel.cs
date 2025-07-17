@@ -19,7 +19,8 @@ public partial class ItemsListDialogViewModel : ObservableRecipient
     private string? _title;
     [ObservableProperty]
     private ObservableCollection<FileModel>? _files;
-
+    [ObservableProperty]
+    private CommentType _caller;
     [ObservableProperty]
     private string? _icon;
 

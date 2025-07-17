@@ -301,7 +301,7 @@
                   Style="{StaticResource MaterialDesignToolButton}" />
                 <Button
                   VerticalAlignment="Bottom"
-                  Command="{Binding LoadXmlCommand}"
+                  Command="{Binding LoadXmlBottomCommand}"
                   Content="{materialDesign:PackIcon Kind=FileFind}"
                   Style="{StaticResource MaterialDesignToolButton}" />
               </StackPanel>

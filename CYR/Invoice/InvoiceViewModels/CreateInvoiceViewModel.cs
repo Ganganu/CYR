@@ -12,6 +12,7 @@ using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels;
@@ -228,12 +229,21 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         string folderPath = @"\Comments\Top";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
         XmlFiles = [.. files];
-        ShowListDialog("Boilerplate Notizen", XmlFiles, "File", folderPath);
+        ShowListDialog("Boilerplate Notizen", XmlFiles, "File", folderPath, CommentType.Top);
+    }
+    [RelayCommand]
+    private void LoadXmlBottom()
+    {
+        string commentsPath = $@"{_directoryPath}\Comments\Bottom";
+        string folderPath = @"\Comments\Bottom";
+        List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
+        XmlFiles = [.. files];
+        ShowListDialog("Boilerplate Notizen", XmlFiles, "File", folderPath, CommentType.Bottom);
     }
 
     [ObservableProperty]
     private ObservableCollection<FileModel> _xmlFiles;
-    private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon, string folderPath)
+    private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon, string folderPath, CommentType type)
     {
         _dialogService.ShowDialog(result =>
         {
@@ -244,7 +254,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             { vm => vm.Title, title },
             { vm => vm.Files,  files},
             { vm => vm.Icon,  icon},
-            {vm => vm.FolderPath, folderPath}
+            {vm => vm.FolderPath, folderPath},
+            {vm => vm.Caller, type},
         });
     }
     private void ShowCommentsDialog(string title, string icon, string text)
@@ -263,6 +274,16 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
 
     public void Receive(ItemsListDialogViewModel message)
     {
-        InvoiceModel.CommentsTop = message.XmlString;
+        switch (message.Caller)
+        {
+            case CommentType.Top:
+                InvoiceModel.CommentsTop = message.XmlString;
+                break;
+            case CommentType.Bottom:
+                InvoiceModel.CommentsBottom = message.XmlString;
+                break;
+            default:
+                break;
+        }
     }
 }
