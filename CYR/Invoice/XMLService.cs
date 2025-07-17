@@ -3,43 +3,42 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Xml;
 
-namespace CYR.Invoice
+namespace CYR.Invoice;
+
+public class XMLService : IXMLService
 {
-    public class XMLService : IXMLService
+    private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
+    public async Task<bool> SaveAsync(string text)
     {
-        private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
-        public bool SaveAsync(string text)
+        string commentsPath = $@"{_directoryPath}\Comments";
+        if (!Directory.Exists(commentsPath))
         {
-            string commentsPath = $@"{_directoryPath}\Comments";
-            if (!Directory.Exists(commentsPath))
-            {
-                Directory.CreateDirectory(commentsPath);                
-            }
-            if (Directory.Exists(commentsPath))
-            {
-                File.WriteAllText($@"{commentsPath}\test.xml", text);
-                return true;
-            }
-            return false;
+            Directory.CreateDirectory(commentsPath);                
         }
-        public string LoadAsync(string path)
+        if (Directory.Exists(commentsPath))
         {
-            string commentsPath = $@"{_directoryPath}\Comments";
-            string xmlText = File.ReadAllText($@"{commentsPath}\{path}");
-            string convertedXml = ConvertSectionToFlowDocument(xmlText);
-            return convertedXml;
+            await File.WriteAllTextAsync($@"{commentsPath}\test.xml", text);
+            return true;
         }
-        private static string ConvertSectionToFlowDocument(string xmlContent)
-        {
-            var stringReader = new StringReader(xmlContent);
-            var xmlReader = XmlReader.Create(stringReader);
-            Section section = (Section)XamlReader.Load(xmlReader);
+        return false;
+    }
+    public async Task<string> LoadAsync(string path)
+    {
+        string commentsPath = $@"{_directoryPath}\Comments";
+        string xmlText = await File.ReadAllTextAsync($@"{commentsPath}\{path}");
+        string convertedXml = ConvertSectionToFlowDocument(xmlText);
+        return convertedXml;
+    }
+    private static string ConvertSectionToFlowDocument(string xmlContent)
+    {
+        var stringReader = new StringReader(xmlContent);
+        var xmlReader = XmlReader.Create(stringReader);
+        Section section = (Section)XamlReader.Load(xmlReader);
 
-            FlowDocument flowDoc = new();
-            flowDoc.Blocks.Add(section);
+        FlowDocument flowDoc = new();
+        flowDoc.Blocks.Add(section);
 
-            string xamlString = XamlWriter.Save(flowDoc);
-            return xamlString;
-        }
+        string xamlString = XamlWriter.Save(flowDoc);
+        return xamlString;
     }
 }

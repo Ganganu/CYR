@@ -96,6 +96,7 @@ public partial class App : Application
         DialogService.RegisterDialog<Notification,NotificationViewModel>();
         DialogService.RegisterDialog<ErrorDialogView, ErrorDialogViewModel>();
         DialogService.RegisterDialog<ItemsListView, ItemsListDialogViewModel>(() => [new XMLService()]);
+        DialogService.RegisterDialog<SaveCommentsDialogView, SaveCommentsDialogViewModel>();
     }
     protected override void OnStartup(StartupEventArgs e)
     {

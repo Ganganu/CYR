@@ -36,13 +36,13 @@ public partial class ItemsListDialogViewModel : ObservableRecipient
     }
 
     [RelayCommand(CanExecute =nameof(CanSendFile))]
-    private void SendSelectedFile()
+    private async Task SendSelectedFile()
     {
         if (SelectedFile == null)
         {
             return;
         }
-        XmlString = _xmlService.LoadAsync(SelectedFile.FileName);
+        XmlString = await _xmlService.LoadAsync(SelectedFile.FileName);
 
 
         Messenger.Send(this);
