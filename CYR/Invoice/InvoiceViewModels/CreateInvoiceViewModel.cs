@@ -219,9 +219,14 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
     [RelayCommand]
     private void SaveXml(object parameter)
     {
-        ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus");
-        //var dataContext = (CreateInvoiceViewModel)parameter;
-        //var xml = dataContext.InvoiceModel.CommentsTop;
+        var dataContext = (CreateInvoiceViewModel)parameter;
+        var xml = dataContext.InvoiceModel.CommentsTop;
+        if (xml is null) return;
+        ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus", xml);
+
+
+
+        
         //_xmlService.SaveAsync(xml);
     }
     [RelayCommand]
@@ -248,7 +253,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             { vm => vm.Icon,  icon}
         });
     }
-    private void ShowCommentsDialog(string title, string icon)
+    private void ShowCommentsDialog(string title, string icon, string text)
     {
         _dialogService.ShowDialog(result =>
         {
@@ -257,7 +262,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         new Dictionary<Expression<Func<SaveCommentsDialogViewModel, object>>, object>
         {
             { vm => vm.Title, title },
-            { vm => vm.Icon,  icon}
+            { vm => vm.Icon,  icon},
+            {vm => vm.TextToSerialize, text }
         });
     }
 
