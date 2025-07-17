@@ -64,7 +64,8 @@
             </Button>
             <Button
               BorderBrush="LightGray"
-              BorderThickness="1" Command="{Binding PrintOrderItemsCommand}"
+              BorderThickness="1"
+              Command="{Binding PrintOrderItemsCommand}"
               Style="{StaticResource MaterialDesignFlatButton}">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Printer" />
