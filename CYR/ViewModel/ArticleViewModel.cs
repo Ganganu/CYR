@@ -58,6 +58,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     {
         if (OrderItems is null) return;
         var itemsToDelete = OrderItems.Where(o => o.IsSelected == true).ToList();
+        if (itemsToDelete.Count < 1) return;
         try
         {
             ShowNotificationDialog("Artikel/Dienstleistungen löschen.", $"Möchten Sie wirklich die ausgewählten Artikel/Dienstaleistungen löschen?",
@@ -90,6 +91,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     {
         if (OrderItems is null) return;
         var itemToUpdate = OrderItems.Where(o => o.IsSelected == true).FirstOrDefault();
+        if (itemToUpdate is null) return;
         Navigation.NavigateTo<UpdateOrderItemViewModel>(itemToUpdate);
     }
 

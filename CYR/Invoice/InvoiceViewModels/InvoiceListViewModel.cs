@@ -92,6 +92,7 @@ public partial class InvoiceListViewModel : ObservableRecipient
 
         var selectedInvoices = Invoices?.Where(i => i.IsSelected == true).ToList();
         if (selectedInvoices is null) return;
+        if (selectedInvoices.Count < 1) return;
         try
         {
             foreach (var invoice in selectedInvoices)

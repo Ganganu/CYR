@@ -75,6 +75,7 @@ public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
             return;
 
         var clientsToDelete = Clients.Where(c => c.IsSelected).ToList();
+        if (clientsToDelete.Count == 0) return;
         try
         {
             foreach (var client in clientsToDelete)
@@ -107,7 +108,7 @@ public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
         if (Clients is null || !Clients.Any())
             return;
 
-        var clientToUpdate = Clients.First(c => c.IsSelected);
+        var clientToUpdate = Clients.FirstOrDefault(c => c.IsSelected);
         if (clientToUpdate is null) return;
         Navigation.NavigateTo<UpdateClientViewModel>(clientToUpdate);
     }
