@@ -22,10 +22,10 @@ public class XMLService : IXMLService
         }
         return false;
     }
-    public async Task<string> LoadAsync(string path)
+    public async Task<string> LoadAsync(string filePath, string folderPath)
     {
         string commentsPath = $@"{_directoryPath}\Comments";
-        string xmlText = await File.ReadAllTextAsync($@"{commentsPath}\{path}");
+        string xmlText = await File.ReadAllTextAsync($@"{_directoryPath}\{folderPath}\{filePath}");
         string convertedXml = ConvertSectionToFlowDocument(xmlText);
         return convertedXml;
     }

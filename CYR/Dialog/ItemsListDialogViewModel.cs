@@ -26,6 +26,8 @@ public partial class ItemsListDialogViewModel : ObservableRecipient
     [NotifyCanExecuteChangedFor(nameof(SendSelectedFileCommand))]
     [ObservableProperty]
     private FileModel? _selectedFile;
+    [ObservableProperty]
+    private string? _folderPath;
 
     [ObservableProperty]
     private string _xmlString;
@@ -42,7 +44,7 @@ public partial class ItemsListDialogViewModel : ObservableRecipient
         {
             return;
         }
-        XmlString = await _xmlService.LoadAsync(SelectedFile.FileName);
+        XmlString = await _xmlService.LoadAsync(SelectedFile.FileName, FolderPath);
 
 
         Messenger.Send(this);

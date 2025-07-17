@@ -28,7 +28,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
     private readonly IOpenImageService _openImageService;
     private readonly UserSettings _userSettings;
     private readonly ISelectImageService _selectImageService;
-    private readonly IXMLService _xmlService;
     private readonly IFileService _fileService;
     private readonly IDialogService _dialogService;
 
@@ -47,7 +46,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         IConfigurationService configurationService,
         IOpenImageService openImageService,
         ISelectImageService selectImageService,
-        IXMLService xmlService,
         IDialogService dialogService,
         IFileService fileService)
     {
@@ -64,7 +62,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         Initialize();
         Messenger.RegisterAll(this);
         _selectImageService = selectImageService;
-        _xmlService = xmlService;
         _dialogService = dialogService;
         _fileService = fileService;
     }
@@ -223,24 +220,20 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         var xml = dataContext.InvoiceModel.CommentsTop;
         if (xml is null) return;
         ShowCommentsDialog("Vorlage speichern", "FileDocumentPlus", xml);
-
-
-
-        
-        //_xmlService.SaveAsync(xml);
     }
     [RelayCommand]
-    private void LoadXml()
+    private void LoadXmlTop()
     {
-        string commentsPath = $@"{_directoryPath}\Comments";
+        string commentsPath = $@"{_directoryPath}\Comments\Top";
+        string folderPath = @"\Comments\Top";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
         XmlFiles = [.. files];
-        ShowListDialog("Boilerplate Notizen", XmlFiles, "File");
+        ShowListDialog("Boilerplate Notizen", XmlFiles, "File", folderPath);
     }
 
     [ObservableProperty]
     private ObservableCollection<FileModel> _xmlFiles;
-    private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon)
+    private void ShowListDialog(string title, ObservableCollection<FileModel> files, string icon, string folderPath)
     {
         _dialogService.ShowDialog(result =>
         {
@@ -250,7 +243,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         {
             { vm => vm.Title, title },
             { vm => vm.Files,  files},
-            { vm => vm.Icon,  icon}
+            { vm => vm.Icon,  icon},
+            {vm => vm.FolderPath, folderPath}
         });
     }
     private void ShowCommentsDialog(string title, string icon, string text)
