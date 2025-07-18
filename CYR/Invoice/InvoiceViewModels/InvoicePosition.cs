@@ -62,21 +62,21 @@ public partial class InvoicePosition : ObservableRecipient
             if (OrderItem != null)
             {
                 Price = OrderItem.Price;
-                TotalPrice = Quantity * Price;
+                TotalPrice = Convert.ToDecimal(Quantity) * Price;
             }
         }
     }
 
     [ObservableProperty]
-    private decimal? _quantity;
-    partial void OnQuantityChanged(decimal? oldValue, decimal? newValue)
+    private string? _quantity;
+    partial void OnQuantityChanged(string? oldValue, string? newValue)
     {
         if (oldValue != newValue)
         {
             if (OrderItem != null)
             {
                 Price = OrderItem.Price;
-                TotalPrice = Quantity * Price;
+                TotalPrice = Convert.ToDecimal(Quantity) * Price;
             }
         }
     }
@@ -90,7 +90,7 @@ public partial class InvoicePosition : ObservableRecipient
     {
         if (oldValue != newValue)
         {
-            TotalPrice = Quantity * Price;
+            TotalPrice = Convert.ToDecimal(Quantity) * Price;
             if (OrderItem is not null)
             {
                 OrderItem.Price = Price;                    

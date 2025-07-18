@@ -54,7 +54,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                             Visibility.Collapsed, "", createInvoiceModel);
             return;
         }            
-        bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || p.Quantity <= 0 || p.OrderItem.Name == null);
+        bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || Convert.ToDecimal(p.Quantity)<= 0 || p.OrderItem.Name == null);
         if (checkPositionNull)
         {
             ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",
@@ -85,7 +85,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                     invoiceModel.Customer = client;
                     invoiceModel.IssueDate = createInvoiceModel.InvoiceDate;
                     invoiceModel.DueDate = DateTime.Now;
-                    invoiceModel.NetAmount = createInvoiceModel?.Positions.Sum(x => x.Price * x.Quantity);
+                    invoiceModel.NetAmount = createInvoiceModel?.Positions.Sum(x => x.Price * Convert.ToDecimal(x.Quantity));
                     invoiceModel.State = InvoiceState.Open;
                     invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
                     invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;

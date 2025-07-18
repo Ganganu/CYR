@@ -38,7 +38,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {
                     invoicePosition = new InvoicePositionModel();
                     string test = reader["Menge"].ToString();
-                    invoicePosition.Quantity = Convert.ToDecimal(reader["Menge"], CultureInfo.InvariantCulture);
+                    invoicePosition.Quantity = reader["Menge"].ToString();
                     invoicePosition.UnitOfMeasure = reader["Einheit"].ToString();
                     invoicePosition.Description = reader["Beschreibung"].ToString();
                     invoicePosition.UnitPrice = Convert.ToDecimal(reader["Einheitspreis"]);
