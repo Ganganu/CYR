@@ -29,7 +29,6 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     private readonly IOpenImageService _openImageService;
     private readonly UserSettings _userSettings;
     private readonly ISelectImageService _selectImageService;
-    private readonly IXMLService _xmlService;
     private readonly IFileService _fileService;
     private readonly IDialogService _dialogService;
     private readonly IInvoiceRepository _invoiceRepository;
@@ -50,7 +49,6 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         IConfigurationService configurationService,
         IOpenImageService openImageService,
         ISelectImageService selectImageService,
-        IXMLService xmlService,
         IDialogService dialogService,
         IFileService fileService,
         IInvoiceRepository invoiceRepository,
@@ -69,7 +67,6 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         Initialize();
         Messenger.RegisterAll(this);
         _selectImageService = selectImageService;
-        _xmlService = xmlService;
         _dialogService = dialogService;
         _fileService = fileService;
         _invoiceRepository = invoiceRepository;

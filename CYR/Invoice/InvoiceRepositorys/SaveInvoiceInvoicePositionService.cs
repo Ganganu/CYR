@@ -19,19 +19,17 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
     private readonly IDatabaseConnection _databaseConnection;
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IInvoicePositionRepository _invoicePositionRepository;
-    private readonly IDialogService _dialogService;
     private readonly IConfigurationService _configurationService;
     private readonly IInvoiceDocument _invoiceDocument;
     private InvoiceModel _invoiceModel;
     private string? _dialogResponse;
     public SaveInvoiceInvoicePositionService(IDatabaseConnection databaseConnection, IInvoiceRepository invoiceRepository,
-        IInvoicePositionRepository invoicePositionRepository, IDialogService dialogService, IConfigurationService configurationService, 
+        IInvoicePositionRepository invoicePositionRepository, IConfigurationService configurationService, 
         IInvoiceDocument invoiceDocument)
     {
         _databaseConnection = databaseConnection;
         _invoiceRepository = invoiceRepository;
         _invoicePositionRepository = invoicePositionRepository;
-        _dialogService = dialogService;
         _configurationService = configurationService;
         _invoiceDocument = invoiceDocument;
     }

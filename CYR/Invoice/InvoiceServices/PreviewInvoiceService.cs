@@ -15,15 +15,12 @@ namespace CYR.Invoice.InvoiceServices;
 public class PreviewInvoiceService : IPreviewInvoiceService
 {
     private readonly IInvoiceDocument _invoiceDocument;
-    private readonly IDialogService _dialogService;
     private readonly IConfigurationService _configurationService;
     private InvoiceModel? _invoiceModel;
     private string? _dialogResponse;
-    public PreviewInvoiceService(IInvoiceDocument invoiceDocument,
-        IDialogService dialogService, IConfigurationService configurationService)
+    public PreviewInvoiceService(IInvoiceDocument invoiceDocument,IConfigurationService configurationService)
     {
         _invoiceDocument = invoiceDocument;
-        _dialogService = dialogService;
         _configurationService = configurationService;
     }
     public async Task<SnackbarMessage> PreviewInvoice(CreateInvoiceModel createInvoiceModel)
