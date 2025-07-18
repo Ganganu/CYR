@@ -13,20 +13,21 @@ public partial class InvoicePosition : ValidationViewModelBase
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
 
-    public InvoicePosition(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository) 
+    public InvoicePosition(IOrderItemRepository orderItemRepository, IUnitOfMeasureRepository unitOfMeasureRepository)
     {
         _orderItemRepository = orderItemRepository;
         _unitOfMeasureRepository = unitOfMeasureRepository;
-        WeakReferenceMessenger.Default.Register<OrderItemMessageCollectionChanged>(this, (r,m) =>
+        WeakReferenceMessenger.Default.Register<OrderItemMessageCollectionChanged>(this, (r, m) =>
         {
             ItemColectionChanged(m);
         });
         Initialize();
     }
     public InvoicePosition()
-    {            
+    {
     }
 
+    private bool IsManuallyInserted;
     private async void Initialize()
     {
         Items = [.. await GetAllItems()];
@@ -60,11 +61,11 @@ public partial class InvoicePosition : ValidationViewModelBase
     {
         if (oldValue != newValue)
         {
-            if (OrderItem != null)
-            {
-                Price = OrderItem.Price;
-                TotalPrice = Convert.ToDecimal(Quantity) * Price;
-            }
+            if (OrderItem is null) return;
+            if (OrderItem.Description is null) return;
+            if (string.IsNullOrEmpty(OrderItem.Description)) return;
+            Price = OrderItem.Price;
+            TotalPrice = Convert.ToDecimal(Quantity) * Price;
         }
     }
 
@@ -72,7 +73,7 @@ public partial class InvoicePosition : ValidationViewModelBase
     private string? _quantity;
     partial void OnQuantityChanged(string? oldValue, string? newValue)
     {
-        if(!ValidateQuantity(newValue)) return;
+        if (!ValidateQuantity(newValue)) return;
         if (oldValue != newValue)
         {
             if (OrderItem != null)
@@ -82,7 +83,7 @@ public partial class InvoicePosition : ValidationViewModelBase
             }
         }
     }
-    
+
     [ObservableProperty]
     private UnitOfMeasureModel? _unitOfMeasure;
 
@@ -95,7 +96,7 @@ public partial class InvoicePosition : ValidationViewModelBase
             TotalPrice = Convert.ToDecimal(Quantity) * Price;
             if (OrderItem is not null)
             {
-                OrderItem.Price = Price;                    
+                OrderItem.Price = Price;
             }
         }
     }
@@ -124,7 +125,7 @@ public partial class InvoicePosition : ValidationViewModelBase
     private async Task<IEnumerable<UnitOfMeasureModel>> GetAllUnitOfMeasures()
     {
         return await _unitOfMeasureRepository.GetAllAsync();
-    }        
+    }
 
     /// <summary>
     /// Gesendet von CreateNewArticleViewModel, damit die Items geupdated werden
@@ -145,7 +146,7 @@ public partial class InvoicePosition : ValidationViewModelBase
         ClearErrors(nameof(Quantity));
         if (string.IsNullOrEmpty(value)) return succes;
         if (string.IsNullOrWhiteSpace(value)) return succes;
-        if (!decimal.TryParse(value, out _))         
+        if (!decimal.TryParse(value, out _))
             AddError(nameof(Quantity), "Menge muss eine Zahl sein");
         else
             succes = true;
