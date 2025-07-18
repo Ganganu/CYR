@@ -24,10 +24,9 @@ public partial class InvoicePosition : ValidationViewModelBase
         Initialize();
     }
     public InvoicePosition()
-    {
+    {        
     }
 
-    private bool IsManuallyInserted;
     private async void Initialize()
     {
         Items = [.. await GetAllItems()];
