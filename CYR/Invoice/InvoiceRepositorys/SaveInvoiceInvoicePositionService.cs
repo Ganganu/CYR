@@ -11,7 +11,6 @@ using QuestPDF.Fluent;
 using System.Data.SQLite;
 using System.Linq.Expressions;
 using System.Windows;
-using static QuestPDF.Helpers.Colors;
 
 namespace CYR.Invoice.InvoiceRepositorys;
 

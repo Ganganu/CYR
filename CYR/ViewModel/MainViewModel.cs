@@ -6,6 +6,7 @@ using CYR.Dashboard.DashboardViewModels;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Messages;
 using CYR.Services;
+using EasyControls.Controls;
 using System.Windows;
 
 namespace CYR.ViewModel
@@ -24,6 +25,8 @@ namespace CYR.ViewModel
         private Visibility _showSnackbar;
         [ObservableProperty]
         private string? _snackbarMessage;
+        [ObservableProperty]
+        private string? _snackbarIcon;
 
         [ObservableProperty]
         private INavigationService _navigation;
@@ -67,6 +70,7 @@ namespace CYR.ViewModel
         {
             SnackbarMessage = message.message;
             ShowSnackbar = Visibility.Visible;
+            SnackbarIcon = message.icon;
         }
     }
 }

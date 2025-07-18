@@ -2,6 +2,7 @@
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceViewModels;
+using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
@@ -25,50 +26,27 @@ namespace CYR.Invoice.InvoiceServices
             _dialogService = dialogService;
             _configurationService = configurationService;
         }
-        public async Task SaveInvoice(CreateInvoiceModel createInvoiceModel)
+        public async Task<SnackbarMessage> SaveInvoice(CreateInvoiceModel createInvoiceModel)
         {
-            if (createInvoiceModel.Positions is null)
-            {
-                return;
-            }
-            if (createInvoiceModel.Positions.Count <= 0)
-            {
-                return;
-            }
-            if (createInvoiceModel.Positions.Any(p => p.Price < 0))
-            {
-                ShowErrorDialog("Fehler", "Der Preis eines ausgewählten Artikels ist kleiner 0.",
-                                "Abbrechen",
-                                "Warning",
-                                Visibility.Collapsed, "", createInvoiceModel);
-                return;
-            }
-            
-            bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || Convert.ToDecimal(p.Quantity) <= 0);
-            if (checkPositionNull)
-            {
-                ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",
-                "Abbrechen",
-                "Warning",
-                Visibility.Collapsed, "", createInvoiceModel);
-                return;
-            }
+            if (createInvoiceModel.InvoiceNumber is null) return new SnackbarMessage("Rechnungsnummer fehlt!", "Warning");
+            if (createInvoiceModel.InvoiceDate is null) return new SnackbarMessage("Rechnungsdatum fehlt!", "Warning");
+            if (createInvoiceModel.Client is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Warning");
+            if (createInvoiceModel.Positions is null) return new SnackbarMessage("Fehler aufgetreten!", "Warning");
+            if (createInvoiceModel.Positions.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Warning");
+            if (createInvoiceModel.Positions.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Warning");
 
-            if (createInvoiceModel.Client == null)
+            var invalidPositions = createInvoiceModel.Positions
+            .Select((p, index) => new { Position = p, Index = index + 1 })
+            .Where(p =>
+                p.Position.OrderItem == null ||
+                !decimal.TryParse(p.Position.Quantity?.ToString(), out decimal qty) || qty < 0 ||
+                string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name)
+            )
+            .ToList();
+            if (invalidPositions.Count != 0)
             {
-                ShowErrorDialog("Warnung", "Wählen Sie einen Kunden bevor Sie eine Rechnung schreiben.",
-                    "Ok",
-                    "Warning",
-                    Visibility.Collapsed, "", null);     
-                return;
-            }
-            if (createInvoiceModel.InvoiceDate is null)
-            {
-                ShowErrorDialog("Warnung", "Das Rechnungsdatum fehlt.",
-                      "Ok",
-                      "Warning",
-                      Visibility.Collapsed, "", null);
-                return;
+                string problemDetails = string.Join(", ", invalidPositions.Select(p => $"#{p.Index}"));
+                return new SnackbarMessage($"Die Position(en) {problemDetails} enthalten Fehler!", "Warning");
             }
 
             Client client = new Client
@@ -115,6 +93,7 @@ namespace CYR.Invoice.InvoiceServices
             }
 
             await CreateInvoice(createInvoiceModel);
+            return new SnackbarMessage("Preview erfolgreich erstellt.", "Check");
         }
 
         private async Task CreateInvoice(CreateInvoiceModel createInvoiceModel)
