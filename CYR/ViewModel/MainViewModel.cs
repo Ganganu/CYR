@@ -4,18 +4,26 @@ using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dashboard.DashboardViewModels;
 using CYR.Invoice.InvoiceViewModels;
+using CYR.Messages;
 using CYR.Services;
+using System.Windows;
 
 namespace CYR.ViewModel
 {
-    public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBackSource>
+    public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBackSource>, IRecipient<SnackbarMessage>
     {
         public MainViewModel(INavigationService navigationService) 
         {
             Navigation = navigationService;
             Navigation.NavigateTo<DashboardViewModel>();
             Messenger.RegisterAll(this);
+            ShowSnackbar = Visibility.Collapsed;
         }
+
+        [ObservableProperty]
+        private Visibility _showSnackbar;
+        [ObservableProperty]
+        private string? _snackbarMessage;
 
         [ObservableProperty]
         private INavigationService _navigation;
@@ -53,6 +61,12 @@ namespace CYR.ViewModel
         public void Receive(NavigateBackSource message)
         {
             Navigation.NavigateTo<DashboardViewModel>();
+        }
+
+        public void Receive(SnackbarMessage message)
+        {
+            SnackbarMessage = message.message;
+            ShowSnackbar = Visibility.Visible;
         }
     }
 }

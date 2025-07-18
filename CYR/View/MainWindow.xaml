@@ -3,6 +3,7 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:cc="clr-namespace:CYR.CustomControls"
+  xmlns:controls="clr-namespace:EasyControls.Controls;assembly=EasyControls"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:CYR"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -20,7 +21,57 @@
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="4*" />
     </Grid.ColumnDefinitions>
-    <ContentPresenter Grid.Column="1" Content="{Binding Navigation.CurrentView}" />
+    <Grid Grid.Column="1">
+      <ContentPresenter Content="{Binding Navigation.CurrentView}" />
+      <controls:Snackbar
+        x:Name="snackbarButton"
+        MinWidth="300"
+        MinHeight="25"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Bottom"
+        AutoHide="True"
+        AutoHideDelay="3000"
+        Background="Black"
+        BorderBrush="Orange"
+        BorderThickness="1"
+        FontSize="16"
+        Foreground="White"
+        Icon="FormatBold"
+        IsVisible="{Binding ShowSnackbar, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+        Message="{Binding SnackbarMessage}">
+        <Grid VerticalAlignment="Center">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+          </Grid.ColumnDefinitions>
+          <materialDesign:PackIcon
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Foreground="Orange"
+            Kind="Warning" />
+          <TextBlock
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:Snackbar}}, Path=Message}"
+            TextWrapping="Wrap" />
+          <Button
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Click="snackbarButton_Click"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+              <materialDesign:PackIcon
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Kind="Close" />
+            </Button.Content>
+          </Button>
+        </Grid>
+      </controls:Snackbar>
+    </Grid>
     <Grid Grid.Column="0" Background="#1D212D">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" />
@@ -69,6 +120,7 @@
             GroupName="NavigationButtons"
             IconKind="Settings" />
           <cc:LinkButton ButtonText="Hilfe" IconKind="QuestionMark" />
+
         </StackPanel>
       </Grid>
     </Grid>

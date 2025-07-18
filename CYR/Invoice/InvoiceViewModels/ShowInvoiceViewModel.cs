@@ -6,6 +6,7 @@ using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
+using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
@@ -202,8 +203,9 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     {
         InvoiceModel invoiceModel = new();
         invoiceModel = InvoiceModel;
-        invoiceModel.Items = Positions.ToList();
-        var result = _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
+        invoiceModel.Items = [.. Positions];
+        bool result = await _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
+        if (!result) Messenger.Send(new SnackbarMessage("Something went wrong"));
     }
     [RelayCommand]
     private void DeleteInvoicePosition()

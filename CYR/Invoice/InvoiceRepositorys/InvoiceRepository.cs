@@ -170,7 +170,10 @@ namespace CYR.Invoice.InvoiceRepositorys
             decimal? nettAmount = 0;
             decimal? grossAmount = 0;
             bool succes = false;
-            if (invoice.Items.Any(i => i.HasErrors)) return succes;
+            if (invoice.Items.Any(i => i.HasErrors))
+            {                
+                return succes;
+            }
             await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
             {
                 string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer";

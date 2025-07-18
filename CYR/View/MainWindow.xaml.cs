@@ -34,4 +34,9 @@ public partial class MainWindow : Window, IRecipient<NavigateBackSource>
     {
         btnDashboard.IsChecked = true;
     }
+
+    private void snackbarButton_Click(object sender, RoutedEventArgs e)
+    {
+        snackbarButton.Hide();
+    }
 }
