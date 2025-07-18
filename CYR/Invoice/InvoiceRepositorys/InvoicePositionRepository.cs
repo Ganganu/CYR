@@ -36,7 +36,6 @@ namespace CYR.Invoice.InvoiceRepositorys
                 while (await reader.ReadAsync())
                 {
                     invoicePosition = new InvoicePositionModel();
-                    string test = reader["Menge"].ToString();
                     invoicePosition.Quantity = reader["Menge"].ToString();
                     invoicePosition.UnitOfMeasure = reader["Einheit"].ToString();
                     invoicePosition.Description = reader["Beschreibung"].ToString();
