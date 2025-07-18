@@ -2,7 +2,6 @@
 using CYR.Invoice.InvoiceModels;
 using System.Data.Common;
 using System.Data.SQLite;
-using System.Globalization;
 
 namespace CYR.Invoice.InvoiceRepositorys
 {
@@ -27,7 +26,7 @@ namespace CYR.Invoice.InvoiceRepositorys
 
         public async Task<IEnumerable<InvoicePositionModel>> GetAllPositionsByInvoiceIdAsync(int? invoiceId)
         {
-            List<InvoicePositionModel> invoicePositions = new List<InvoicePositionModel>();
+            List<InvoicePositionModel> invoicePositions = new();
             InvoicePositionModel invoicePosition;
             string query = "SELECT * FROM Rechnungspositionen INNER JOIN Rechnungen " +
                 $"ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE {invoiceId}";

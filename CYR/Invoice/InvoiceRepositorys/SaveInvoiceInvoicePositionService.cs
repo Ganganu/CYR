@@ -1,6 +1,5 @@
 ﻿using CYR.Clients;
 using CYR.Core;
-using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Messages;
@@ -9,8 +8,6 @@ using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;
 using System.Data.SQLite;
-using System.Linq.Expressions;
-using System.Windows;
 
 namespace CYR.Invoice.InvoiceRepositorys;
 

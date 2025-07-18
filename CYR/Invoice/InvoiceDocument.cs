@@ -53,10 +53,7 @@ namespace CYR.Invoice
                         .Underline(true);
                 });
                 if ( Model.Logo is not null ) row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
-
             });
-
-
         }
         void ComposeContent(IContainer container)
         {

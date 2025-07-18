@@ -211,8 +211,8 @@ namespace CYR.Invoice.InvoiceRepositorys
                         { "@Rechnungsnummer", invoice.InvoiceNumber },
                         { "@Beschreibung", pos.OrderItem.Description },
                         { "@Menge", pos.Quantity },
-                        { "@Einheit", pos.UnitOfMeasure },
-                        { "@Einheitspreis", pos.TotalPrice }
+                        { "@Einheit", pos.UnitOfMeasure.Name },
+                        { "@Einheitspreis", pos.Price }
                     };
                     nettAmount += pos.TotalPrice;
                     await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, insertNewPositions, insertNewPositionsParams);
