@@ -205,7 +205,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         invoiceModel = InvoiceModel;
         invoiceModel.Items = [.. Positions];
         bool result = await _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
-        if (!result) Messenger.Send(new SnackbarMessage("Something went wrong"));
+        if (!result) Messenger.Send(new SnackbarMessage("Something went wrong",""));
     }
     [RelayCommand]
     private void DeleteInvoicePosition()

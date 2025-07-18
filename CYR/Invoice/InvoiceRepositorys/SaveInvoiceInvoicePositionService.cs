@@ -1,16 +1,17 @@
 ﻿using CYR.Clients;
-using System.Data.SQLite;
-using System.Windows;
 using CYR.Core;
-using CYR.ViewModel;
 using CYR.Dialog;
-using System.Linq.Expressions;
+using CYR.Invoice.InvoiceModels;
+using CYR.Invoice.InvoiceViewModels;
+using CYR.Messages;
+using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;
-using CYR.Invoice.InvoiceViewModels;
-using CYR.Invoice.InvoiceModels;
-using CYR.OrderItems;
+using System.Data.SQLite;
+using System.Linq.Expressions;
+using System.Windows;
+using static QuestPDF.Helpers.Colors;
 
 namespace CYR.Invoice.InvoiceRepositorys;
 
@@ -36,32 +37,27 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
         _invoiceDocument = invoiceDocument;
     }
 
-    public async Task SaveInvoice(CreateInvoiceModel createInvoiceModel)
+    public async Task<SnackbarMessage> SaveInvoice(CreateInvoiceModel createInvoiceModel)
     {
-        if (createInvoiceModel.Positions is null)
+        if (createInvoiceModel.InvoiceNumber is null) return new SnackbarMessage("Rechnungsnummer fehlt!", "Warning");
+        if (createInvoiceModel.InvoiceDate is null) return new SnackbarMessage("Rechnungsdatum fehlt!", "Warning");
+        if (createInvoiceModel.Client is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Warning");
+        if (createInvoiceModel.Positions is null) return new SnackbarMessage("Fehler aufgetreten!", "Warning");
+        if (createInvoiceModel.Positions.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Warning");
+        if (createInvoiceModel.Positions.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Warning");
+
+        var invalidPositions = createInvoiceModel.Positions
+        .Select((p, index) => new { Position = p, Index = index + 1 })
+        .Where(p =>
+            p.Position.OrderItem == null ||
+            !decimal.TryParse(p.Position.Quantity?.ToString(), out decimal qty) || qty < 0 ||
+            string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name)
+        )
+        .ToList();
+        if (invalidPositions.Count != 0)
         {
-            return;
-        }
-        if (createInvoiceModel.Positions.Count <= 0)
-        {
-            return;
-        }
-        if (createInvoiceModel.Positions.Any(p => p.Price < 0))
-        {
-            ShowErrorDialog("Fehler", "Der Preis eines ausgewählten Artikels ist kleiner 0.",
-                            "Abbrechen",
-                            "Warning",
-                            Visibility.Collapsed, "", createInvoiceModel);
-            return;
-        }            
-        bool checkPositionNull = createInvoiceModel.Positions.Any(p => p.OrderItem == null || Convert.ToDecimal(p.Quantity)<= 0 || p.OrderItem.Name == null);
-        if (checkPositionNull)
-        {
-            ShowErrorDialog("Fehler", "Die ausgewählten Artikel enthalten Problemen!",
-                            "Abbrechen",
-                            "Warning",
-                            Visibility.Collapsed, "", createInvoiceModel);
-            return;
+            string problemDetails = string.Join(", ", invalidPositions.Select(p => $"#{p.Index}"));
+            return new SnackbarMessage($"Die Position(en) {problemDetails} enthalten Fehler!", "Warning");
         }
         using (var connection = new SQLiteConnection(_databaseConnection.ConnectionString))
         {
@@ -70,12 +66,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
             {
                 try
                 {
-                    if (createInvoiceModel.Client == null)
-                    {
-                        return;
-                    }
-                    // Create and populate invoice
-                    Client client = new Client
+                    Client client = new()
                     {
                         ClientNumber = createInvoiceModel.Client.ClientNumber
                     };
@@ -127,10 +118,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                 catch (SQLiteException ex)
                 {
                     transaction.Rollback();
-                    ShowErrorDialog("Fehler", $"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} existiert bereits!" +
-                    $"Ändern Sie die Rechnungsnummer und versuchen Sie es erneut.", "Abbrechen", "Error", Visibility.Collapsed,
-                    "", createInvoiceModel);
-                    return;
+                    return new SnackbarMessage($"Fehler beim Speichern aufgetretten!", "Error");
                 }
                 catch (Exception)
                 {
@@ -138,6 +126,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                 }
             }
             CreateInvoice(createInvoiceModel);
+            return new SnackbarMessage($"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} wurder erfolgreich gespeichert!", "Check");
         }
     }
 

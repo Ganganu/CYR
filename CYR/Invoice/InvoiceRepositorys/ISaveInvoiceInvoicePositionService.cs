@@ -1,10 +1,9 @@
 ﻿using CYR.Invoice.InvoiceModels;
-using CYR.Services;
+using CYR.Messages;
 
-namespace CYR.Invoice.InvoiceRepositorys
+namespace CYR.Invoice.InvoiceRepositorys;
+
+public interface ISaveInvoiceInvoicePositionService
 {
-    public interface ISaveInvoiceInvoicePositionService
-    {
-        Task SaveInvoice(CreateInvoiceModel createInvoiceModel);
-    }
+    Task<SnackbarMessage> SaveInvoice(CreateInvoiceModel createInvoiceModel);
 }

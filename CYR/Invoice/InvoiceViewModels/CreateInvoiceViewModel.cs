@@ -12,7 +12,6 @@ using CYR.Settings;
 using CYR.UnitOfMeasure;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels;
@@ -158,7 +157,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             Logo = InvoiceModel.Logo
 
         };
-        await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
+        var message = await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
+        Messenger.Send(message);
     }
     [RelayCommand]
     private void DeleteInvoicePosition()
