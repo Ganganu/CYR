@@ -130,26 +130,5 @@ public class PreviewInvoiceService : IPreviewInvoiceService
         item.Price = invoicePosition.Price;
         item.Description = invoicePosition.ManuallyInsertedArticle;
         return item;
-    }
-
-    private void ShowErrorDialog(string title,
-        string message,
-        string cancelButtonText,
-        string icon,
-        Visibility okButtonVisibility, string okButtonText, CreateInvoiceModel? createInvoiceModel)
-    {
-        _dialogService.ShowDialog(result =>
-        {
-            _dialogResponse = result;
-        },
-        new Dictionary<Expression<Func<ErrorDialogViewModel, object>>, object>
-        {
-            { vm => vm.Title, title },
-            { vm => vm.Message,  message},
-            { vm => vm.CancelButtonText, cancelButtonText },
-            { vm => vm.Icon,icon },
-            { vm => vm.OkButtonText, okButtonText },
-            { vm => vm.IsOkVisible, okButtonVisibility}
-        });
-    }
+    }    
 }
