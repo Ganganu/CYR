@@ -38,12 +38,12 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
 
     public async Task<SnackbarMessage> SaveInvoice(CreateInvoiceModel createInvoiceModel)
     {
-        if (createInvoiceModel.InvoiceNumber is null) return new SnackbarMessage("Rechnungsnummer fehlt!", "Warning");
-        if (createInvoiceModel.InvoiceDate is null) return new SnackbarMessage("Rechnungsdatum fehlt!", "Warning");
-        if (createInvoiceModel.Client is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Warning");
-        if (createInvoiceModel.Positions is null) return new SnackbarMessage("Fehler aufgetreten!", "Warning");
-        if (createInvoiceModel.Positions.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Warning");
-        if (createInvoiceModel.Positions.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Warning");
+        if (createInvoiceModel.InvoiceNumber is null) return new SnackbarMessage("Rechnungsnummer fehlt!", "Error");
+        if (createInvoiceModel.InvoiceDate is null) return new SnackbarMessage("Rechnungsdatum fehlt!", "Error");
+        if (createInvoiceModel.Client is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Error");
+        if (createInvoiceModel.Positions is null) return new SnackbarMessage("Fehler aufgetreten!", "Error");
+        if (createInvoiceModel.Positions.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Error");
+        if (createInvoiceModel.Positions.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
 
         var invalidPositions = createInvoiceModel.Positions
         .Select((p, index) => new { Position = p, Index = index + 1 })
@@ -56,7 +56,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
         if (invalidPositions.Count != 0)
         {
             string problemDetails = string.Join(", ", invalidPositions.Select(p => $"#{p.Index}"));
-            return new SnackbarMessage($"Die Position(en) {problemDetails} enthalten Fehler!", "Warning");
+            return new SnackbarMessage($"Die Position(en) {problemDetails} enthalten Fehler!", "Error");
         }
         using (var connection = new SQLiteConnection(_databaseConnection.ConnectionString))
         {

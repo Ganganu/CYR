@@ -140,7 +140,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             CommentsTop = InvoiceModel.CommentsTop,
             Logo = InvoiceModel.Logo
         };
-        var message = await _previewInvoiceService.SaveInvoice(createInvoiceModel);
+        var message = await _previewInvoiceService.PreviewInvoice(createInvoiceModel);
         Messenger.Send(message);
     }
     [RelayCommand]

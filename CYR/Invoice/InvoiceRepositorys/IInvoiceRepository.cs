@@ -1,5 +1,6 @@
 ﻿using System.Data.SQLite;
 using CYR.Invoice.InvoiceModels;
+using CYR.Messages;
 
 namespace CYR.Invoice.InvoiceRepositorys
 {
@@ -10,6 +11,6 @@ namespace CYR.Invoice.InvoiceRepositorys
         Task<InvoiceModel> GetByIdAsync(int id);
         Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null);
         Task UpdateAsync(InvoiceModel invoice);
-        Task<bool> UpdateInvoiceAndPositions(InvoiceModel invoice);
+        Task<SnackbarMessage> UpdateInvoiceAndPositions(InvoiceModel invoice);
     }
 }

@@ -2,4 +2,4 @@
 
 namespace CYR.Messages;
 
-public record SnackbarMessage(string message, string icon);
+public record SnackbarMessage(string Message, string Icon);

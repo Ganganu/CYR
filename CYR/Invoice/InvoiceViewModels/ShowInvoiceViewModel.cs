@@ -196,7 +196,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
             CommentsTop = InvoiceModel.CommentsTop,
             Logo = InvoiceModel.Logo
         };
-        await _previewInvoiceService.SaveInvoice(createInvoiceModel);
+        var message = await _previewInvoiceService.PreviewInvoice(createInvoiceModel);
+        Messenger.Send(message);
     }
     [RelayCommand]
     private async Task UpdateInvoice()
@@ -204,8 +205,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         InvoiceModel invoiceModel = new();
         invoiceModel = InvoiceModel;
         invoiceModel.Items = [.. Positions];
-        bool result = await _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
-        if (!result) Messenger.Send(new SnackbarMessage("Something went wrong",""));
+        var message = await _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
+        Messenger.Send(message);
     }
     [RelayCommand]
     private void DeleteInvoicePosition()

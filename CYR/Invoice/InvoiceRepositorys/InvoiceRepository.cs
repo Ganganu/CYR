@@ -1,6 +1,7 @@
 ﻿using CYR.Clients;
 using CYR.Core;
 using CYR.Invoice.InvoiceModels;
+using CYR.Messages;
 using System.Data.Common;
 using System.Data.SQLite;
 
@@ -165,15 +166,33 @@ namespace CYR.Invoice.InvoiceRepositorys
             await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
-        public async Task<bool> UpdateInvoiceAndPositions(InvoiceModel invoice)
+        public async Task<SnackbarMessage> UpdateInvoiceAndPositions(InvoiceModel invoice)
         {
+            if (invoice.InvoiceNumber is null) return new SnackbarMessage("Rechnungsnummer fehlt!", "Error");
+            if (invoice.IssueDate is null) return new SnackbarMessage("Rechnungsdatum fehlt!", "Error");
+            if (invoice.Customer is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Error");
+            if (invoice.Items is null) return new SnackbarMessage("Fehler aufgetreten!", "Error");
+            if (invoice.Items.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Error");
+            if (invoice.Items.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
+
+            var invalidPositions = invoice.Items
+            .Select((p, index) => new { Position = p, Index = index + 1 })
+            .Where(p =>
+                p.Position.OrderItem == null ||
+                !decimal.TryParse(p.Position.Quantity?.ToString(), out decimal qty) || qty < 0 ||
+                string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name)
+            )
+            .ToList();
+            if (invalidPositions.Count != 0)
+            {
+                string problemDetails = string.Join(", ", invalidPositions.Select(p => $"#{p.Index}"));
+                return new SnackbarMessage($"Die Position(en) {problemDetails} enthalten Fehler!", "Error");
+            }
+
             decimal? nettAmount = 0;
             decimal? grossAmount = 0;
             bool succes = false;
-            if (invoice.Items.Any(i => i.HasErrors))
-            {                
-                return succes;
-            }
+
             await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
             {
                 string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer";
@@ -224,7 +243,7 @@ namespace CYR.Invoice.InvoiceRepositorys
                 int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateInvoice, updateInvoiceQueryParameters);
                 succes = clientAffectedRows > 0;
             });
-            return succes;
+            return new SnackbarMessage("Die Rechnung wurde erfolgreich aktualisiert!", "Check");
         }
     }
 }

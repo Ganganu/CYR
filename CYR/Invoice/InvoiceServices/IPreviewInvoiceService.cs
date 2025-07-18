@@ -5,6 +5,6 @@ namespace CYR.Invoice.InvoiceServices
 {
     public interface IPreviewInvoiceService
     {
-        Task<SnackbarMessage> SaveInvoice(CreateInvoiceModel createInvoiceModel);
+        Task<SnackbarMessage> PreviewInvoice(CreateInvoiceModel createInvoiceModel);
     }
 }

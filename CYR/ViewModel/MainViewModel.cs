@@ -68,9 +68,9 @@ namespace CYR.ViewModel
 
         public void Receive(SnackbarMessage message)
         {
-            SnackbarMessage = message.message;
+            SnackbarMessage = message.Message;
             ShowSnackbar = Visibility.Visible;
-            SnackbarIcon = message.icon;
+            SnackbarIcon = message.Icon;
         }
     }
 }
