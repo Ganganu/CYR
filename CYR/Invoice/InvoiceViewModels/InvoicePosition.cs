@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using CYR.Core;
 using CYR.Invoice.InvoiceModels;
 using CYR.OrderItems;
 using CYR.UnitOfMeasure;
@@ -7,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
-public partial class InvoicePosition : ObservableRecipient
+public partial class InvoicePosition : ValidationViewModelBase
 {
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
@@ -71,6 +72,7 @@ public partial class InvoicePosition : ObservableRecipient
     private string? _quantity;
     partial void OnQuantityChanged(string? oldValue, string? newValue)
     {
+        if(!ValidateQuantity(newValue)) return;
         if (oldValue != newValue)
         {
             if (OrderItem != null)
@@ -136,4 +138,19 @@ public partial class InvoicePosition : ObservableRecipient
             Items = [.. latestItems];
         }
     }
+    #region Validations
+    private bool ValidateQuantity(string? value)
+    {
+        bool succes = false;
+        ClearErrors(nameof(Quantity));
+        if (string.IsNullOrEmpty(value)) return succes;
+        if (string.IsNullOrWhiteSpace(value)) return succes;
+        if (!decimal.TryParse(value, out _))         
+            AddError(nameof(Quantity), "Menge muss eine Zahl sein");
+        else
+            succes = true;
+        return succes;
+    }
+    #endregion
+
 }
