@@ -1,5 +1,4 @@
 ﻿using CYR.Clients;
-using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Messages;
@@ -7,8 +6,6 @@ using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
 using QuestPDF.Fluent;
-using System.Linq.Expressions;
-using System.Windows;
 
 namespace CYR.Invoice.InvoiceServices;
 
@@ -37,7 +34,7 @@ public class PreviewInvoiceService : IPreviewInvoiceService
         .Where(p =>
             p.Position.OrderItem == null ||
             !decimal.TryParse(p.Position.Quantity?.ToString(), out decimal qty) || qty < 0 ||
-            string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name)
+            (string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name) && string.IsNullOrWhiteSpace(p.Position.OrderItem?.Description))
         )
         .ToList();
         if (invalidPositions.Count != 0)

@@ -1,7 +1,5 @@
 ﻿using CYR.Invoice.InvoiceModels;
 using CYR.PDF;
-using CYR.Services;
-using CYR.Settings;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -54,7 +52,8 @@ namespace CYR.Invoice
                         .FontColor(Colors.Blue.Medium)
                         .Underline(true);
                 });
-                row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
+                if ( Model.Logo is not null ) row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
+
             });
 
 
