@@ -110,7 +110,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
 
         foreach (var item in items)
         {
-            InvoicePosition invoicePosition = new InvoicePosition();
+            InvoicePosition invoicePosition = new();
             invoicePosition.Id = item.Id;
             invoicePosition.Quantity = item.Quantity;
             UnitOfMeasureModel? foundUnitOfMeasure = availableUnitsOfMeasure.FirstOrDefault(u => u.Name == item.UnitOfMeasure);

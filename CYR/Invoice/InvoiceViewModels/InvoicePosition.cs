@@ -24,7 +24,9 @@ public partial class InvoicePosition : ValidationViewModelBase
         Initialize();
     }
     public InvoicePosition()
-    {        
+    {
+        isInDatabaseButManuallyChanged = false;
+        isInDatabaseButManuallyChangedValueAlreadySet = false;
     }
 
     private async void Initialize()
@@ -56,8 +58,19 @@ public partial class InvoicePosition : ValidationViewModelBase
             }
         }
     }
+    private bool isInDatabaseButManuallyChanged;
+    private bool isInDatabaseButManuallyChangedValueAlreadySet;
     partial void OnOrderItemChanged(OrderItem? oldValue, OrderItem? newValue)
     {
+        if (isInDatabaseButManuallyChangedValueAlreadySet) return;
+        if (newValue?.Description is not null && newValue.Id == 0) isInDatabaseButManuallyChanged = true;
+        if (isInDatabaseButManuallyChanged)
+        {
+            Price = newValue?.Price;
+            TotalPrice = Convert.ToDecimal(Quantity) * Price;
+            isInDatabaseButManuallyChangedValueAlreadySet = true;
+            return;
+        }
         if (oldValue != newValue)
         {
             if (OrderItem is null) return;
