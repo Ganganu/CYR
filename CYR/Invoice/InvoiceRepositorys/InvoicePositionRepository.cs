@@ -57,12 +57,13 @@ namespace CYR.Invoice.InvoiceRepositorys
             string query = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge," +
                 "Einheit, Einheitspreis) VALUES (@Rechnungsnummer,@Beschreibung,@Menge," +
                 "@Einheit, @Einheitspreis)";
+            var convertedQuantity = Convert.ToDecimal(invoicePosition.Quantity);
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
             {
                 {"Position_ID",invoicePosition.InvoiceNumber},
                 {"Rechnungsnummer",invoicePosition.InvoiceNumber},
                 {"Beschreibung",invoicePosition.Description},
-                {"Menge",invoicePosition.Quantity},
+                {"Menge",convertedQuantity},
                 {"Einheit",invoicePosition.UnitOfMeasure},
                 {"Einheitspreis",invoicePosition.UnitPrice}
             };
