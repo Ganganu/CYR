@@ -58,8 +58,18 @@ public partial class InvoicePosition : ValidationViewModelBase
             }
         }
     }
+
     private bool isInDatabaseButManuallyChanged;
     private bool isInDatabaseButManuallyChangedValueAlreadySet;
+    /// <summary>
+    /// Der User kann der Preis für ein OrderItem ändern. Wenn die Eigenschaft aktualisiert wird, wird diese Methode aufgerufen.
+    /// Ich aktualisiere den Preis, wenn der User einen OrderItem ausgewählt hat. Wenn er aber den Preis ändert und die Rechnung speichert und 
+    /// dann abruft, wird diese Method 3 Mal aufgerufen. 1 - wenn die TextBox erzeugt wird (leer). 2 - Die Daten aus der Datenbank (die gespeicherte in Rechnung)
+    /// 3 - weil der OrderItem in der Datenbank ist, wird der Preis mit der Daten von der Datenbank überschrieben (die Daten für OrderItem - Tabelle Produkte_Dienstleistungen).
+    /// Ich versuche in dieser Methode den 3. Abruf zu verhindern, wenn der Preis geändert wurde.
+    /// </summary>
+    /// <param name="oldValue"></param>
+    /// <param name="newValue"></param>
     partial void OnOrderItemChanged(OrderItem? oldValue, OrderItem? newValue)
     {
         if (isInDatabaseButManuallyChangedValueAlreadySet) return;

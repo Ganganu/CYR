@@ -206,11 +206,12 @@ namespace CYR.Invoice.InvoiceRepositorys
                 {
                     string insertNewPositions = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge,Einheit,Einheitspreis)" +
                      " VALUES (@Rechnungsnummer,@Beschreibung,@Menge,@Einheit,@Einheitspreis)";
+                    var convertedQuantity = Convert.ToDecimal(pos.Quantity);
                     var insertNewPositionsParams = new Dictionary<string, object>
                     {
                         { "@Rechnungsnummer", invoice.InvoiceNumber },
                         { "@Beschreibung", pos.OrderItem.Description },
-                        { "@Menge", pos.Quantity },
+                        { "@Menge", convertedQuantity },
                         { "@Einheit", pos.UnitOfMeasure.Name },
                         { "@Einheitspreis", pos.Price }
                     };
