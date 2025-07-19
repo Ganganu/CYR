@@ -57,7 +57,8 @@
               Margin="5,0,5,0"
               BorderBrush="LightGray"
               BorderThickness="1"
-              Style="{StaticResource MaterialDesignFlatButton}">
+              Style="{StaticResource MaterialDesignFlatButton}"
+              ToolTip="Import von CSV Datei">
               <Button.Content>
                 <materialDesign:PackIcon Kind="TableImport" />
               </Button.Content>
@@ -66,7 +67,8 @@
               BorderBrush="LightGray"
               BorderThickness="1"
               Command="{Binding PrintOrderItemsCommand}"
-              Style="{StaticResource MaterialDesignFlatButton}">
+              Style="{StaticResource MaterialDesignFlatButton}"
+              ToolTip="Tabelle ausdrucken">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Printer" />
               </Button.Content>
@@ -76,7 +78,8 @@
               BorderBrush="LightGray"
               BorderThickness="1"
               Command="{Binding UpdateOrderItemCommand}"
-              Style="{StaticResource MaterialDesignFlatButton}">
+              Style="{StaticResource MaterialDesignFlatButton}"
+              ToolTip="Ausgewählte Zeile editieren">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Edit" />
               </Button.Content>
@@ -86,12 +89,16 @@
               BorderThickness="1"
               Command="{Binding DeleteArticleCommand}"
               Foreground="Red"
-              Style="{StaticResource MaterialDesignFlatButton}">
+              Style="{StaticResource MaterialDesignFlatButton}"
+              ToolTip="Ausgewählten Zeilen löschen">
               <Button.Content>
                 <materialDesign:PackIcon Kind="Delete" />
               </Button.Content>
             </Button>
-            <Button Margin="5,0,0,0" Command="{Binding NavigateToCreateNewArticleCommand}">
+            <Button
+              Margin="5,0,0,0"
+              Command="{Binding NavigateToCreateNewArticleCommand}"
+              ToolTip="Neue Zeile erstellen">
               <Button.Content>
                 <StackPanel Orientation="Horizontal">
                   <materialDesign:PackIcon

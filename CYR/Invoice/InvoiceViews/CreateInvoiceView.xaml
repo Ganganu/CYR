@@ -52,7 +52,8 @@
             Foreground="Orange"
             PlacementMode="TopAndAlignCentres"
             PopupUniformCornerRadius="10"
-            StaysOpen="True">
+            StaysOpen="True"
+            ToolTip="Mehr">
             <Grid Width="300" Height="200">
               <Grid Margin="10">
                 <Grid.RowDefinitions>
@@ -96,7 +97,10 @@
               </Grid>
             </Grid>
           </materialDesign:PopupBox>
-          <Button Command="{Binding PreviewInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+          <Button
+            Command="{Binding PreviewInvoiceCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}"
+            ToolTip="Rechnungsvorschau">
             <Button.Content>
               <materialDesign:PackIcon
                 Width="30"
@@ -105,7 +109,10 @@
                 Kind="FileFind" />
             </Button.Content>
           </Button>
-          <Button Command="{Binding SaveInvoiceCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+          <Button
+            Command="{Binding SaveInvoiceCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}"
+            ToolTip="Rechnung speichern">
             <Button.Content>
               <materialDesign:PackIcon
                 Width="30"
@@ -206,12 +213,14 @@
               Command="{Binding SaveXmlTopCommand}"
               CommandParameter="{Binding}"
               Content="{materialDesign:PackIcon Kind=Add}"
-              Style="{StaticResource MaterialDesignToolButton}" />
+              Style="{StaticResource MaterialDesignToolButton}"
+              ToolTip="Vorlage speichern" />
             <Button
               VerticalAlignment="Bottom"
               Command="{Binding LoadXmlTopCommand}"
               Content="{materialDesign:PackIcon Kind=FileFind}"
-              Style="{StaticResource MaterialDesignToolButton}" />
+              Style="{StaticResource MaterialDesignToolButton}"
+              ToolTip="Vorlage laden" />
           </StackPanel>
           <Grid
             Grid.Row="3"
@@ -298,12 +307,14 @@
                   Command="{Binding SaveXmlBottomCommand}"
                   CommandParameter="{Binding}"
                   Content="{materialDesign:PackIcon Kind=Add}"
-                  Style="{StaticResource MaterialDesignToolButton}" />
+                  Style="{StaticResource MaterialDesignToolButton}"
+                  ToolTip="Vorlage speichern" />
                 <Button
                   VerticalAlignment="Bottom"
                   Command="{Binding LoadXmlBottomCommand}"
                   Content="{materialDesign:PackIcon Kind=FileFind}"
-                  Style="{StaticResource MaterialDesignToolButton}" />
+                  Style="{StaticResource MaterialDesignToolButton}"
+                  ToolTip="Vorlage laden" />
               </StackPanel>
               <Grid
                 Grid.Row="3"
@@ -368,7 +379,8 @@
             BorderBrush="LightGray"
             BorderThickness="1"
             Command="{Binding DeleteInvoicePositionCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}">
+            Style="{StaticResource MaterialDesignFlatButton}"
+            ToolTip="Ausgewählten Zeilen löschen">
             <Button.Content>
               <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
             </Button.Content>
@@ -380,7 +392,8 @@
             BorderBrush="LightGray"
             BorderThickness="1"
             Command="{Binding SaveArticleCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}">
+            Style="{StaticResource MaterialDesignFlatButton}"
+            ToolTip="Ausgewählten Zeilen in die Datenbank speichern">
             <Button.Content>
               <materialDesign:PackIcon Kind="AddBold" />
             </Button.Content>

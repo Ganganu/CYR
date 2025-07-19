@@ -42,7 +42,8 @@
           BorderBrush="LightGray"
           BorderThickness="1"
           Command="{Binding UpdateClientCommand}"
-          Style="{StaticResource MaterialDesignFlatButton}">
+          Style="{StaticResource MaterialDesignFlatButton}"
+          ToolTip="Ausgewählte Zeile editieren">
           <Button.Content>
             <materialDesign:PackIcon Kind="Edit" />
           </Button.Content>
@@ -52,12 +53,13 @@
           BorderBrush="LightGray"
           BorderThickness="1"
           Command="{Binding DeleteClientCommand}"
-          Style="{StaticResource MaterialDesignFlatButton}">
+          Style="{StaticResource MaterialDesignFlatButton}"
+          ToolTip="Ausgewählten Zeilen löschen">
           <Button.Content>
             <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
           </Button.Content>
         </Button>
-        <Button Command="{Binding CreateNewClientCommand}">
+        <Button Command="{Binding CreateNewClientCommand}" ToolTip="Neue Zeile erstellen">
           <Button.Content>
             <StackPanel Orientation="Horizontal">
               <materialDesign:PackIcon

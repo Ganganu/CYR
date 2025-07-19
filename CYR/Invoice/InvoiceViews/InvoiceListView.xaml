@@ -177,7 +177,8 @@
             BorderBrush="LightGray"
             BorderThickness="1"
             Command="{Binding UpdateInvoiceCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}">
+            Style="{StaticResource MaterialDesignFlatButton}"
+            ToolTip="Ausgewählte Zeile editieren">
             <Button.Content>
               <materialDesign:PackIcon Kind="Edit" />
             </Button.Content>
@@ -187,7 +188,8 @@
             BorderBrush="LightGray"
             BorderThickness="1"
             Command="{Binding DeleteInvoiceCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}">
+            Style="{StaticResource MaterialDesignFlatButton}"
+            ToolTip="Ausgewählte Zeilen löschen">
             <Button.Content>
               <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
             </Button.Content>
@@ -199,7 +201,8 @@
                   <materialDesign:PackIcon
                     Margin="0,0,5,0"
                     VerticalAlignment="Center"
-                    Kind="PlusCircleOutline" />
+                    Kind="PlusCircleOutline"
+                    ToolTip="Neue Rechnung erstellen" />
                   <TextBlock VerticalAlignment="Top" Text="Rechnung" />
                 </StackPanel>
               </Button.Content>
