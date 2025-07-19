@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using CYR.Messages;
+using Microsoft.Win32;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -11,7 +12,7 @@ public class SelectImageService : ISelectImageService
 
     }
 
-    public ImageSource SelectImage()
+    public SnackbarMessage SelectImage()
     {
         string path = string.Empty;
         OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -19,16 +20,23 @@ public class SelectImageService : ISelectImageService
         {
             path = openFileDialog.FileName;
         }
-        ImageSource logo = PathToImageSource(path);
+        SnackbarMessage logo = PathToImageSource(path);
         return logo;
     }
 
-    private ImageSource PathToImageSource(string path)
+    private SnackbarMessage PathToImageSource(string path)
     {
         BitmapImage logo = new BitmapImage();
-        logo.BeginInit();
-        logo.UriSource = new Uri(path);
-        logo.EndInit();
-        return logo;
+        try
+        {            
+            logo.BeginInit();
+            logo.UriSource = new Uri(path);
+            logo.EndInit();            
+        }
+        catch (Exception)
+        {
+            return new SnackbarMessage("Fehler. Versuchen sie es erneut ein Bild auszuwählen!", "Warning");
+        }
+        return new SnackbarMessage("Logo erfolgreich aktualisiert.","Check", logo);
     }
 }

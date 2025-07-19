@@ -231,7 +231,9 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     [RelayCommand]
     private void SelectLogo()
     {
-        Logo = _selectImageService.SelectImage();
+        var message = _selectImageService.SelectImage();
+        Logo = message.ImageSource;
+        Messenger.Send(message.Message, message.Icon);
     }
 
     public void Receive(LogoEvent message)

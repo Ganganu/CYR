@@ -1,8 +1,9 @@
 ﻿using System.Windows.Media;
+using CYR.Messages;
 
 namespace CYR.Settings;
 
 public interface ISelectImageService
 {
-    ImageSource SelectImage();
+    SnackbarMessage SelectImage();
 }

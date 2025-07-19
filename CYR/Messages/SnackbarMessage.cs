@@ -1,3 +1,5 @@
-﻿namespace CYR.Messages;
+﻿using System.Windows.Media;
 
-public record SnackbarMessage(string Message, string Icon);
+namespace CYR.Messages;
+
+public record SnackbarMessage(string Message, string Icon, ImageSource? ImageSource = null);

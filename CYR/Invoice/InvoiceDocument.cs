@@ -52,7 +52,11 @@ public class InvoiceDocument : IInvoiceDocument
                     .FontColor(Colors.Blue.Medium)
                     .Underline(true);
             });
-            if ( Model.Logo is not null ) row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
+            if (Model.Logo is not null)
+            {
+                
+                row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
+            }
         });
     }
     void ComposeContent(IContainer container)

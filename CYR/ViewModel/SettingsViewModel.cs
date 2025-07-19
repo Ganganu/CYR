@@ -103,6 +103,8 @@ public partial class SettingsViewModel : ObservableRecipient
     [RelayCommand]
     private void SelectImage()
     {
-        Logo = _selectImageService.SelectImage();
+        var message = _selectImageService.SelectImage();
+        Logo = message.ImageSource;
+        Messenger.Send(message.Message, message.Icon);
     }
 }
