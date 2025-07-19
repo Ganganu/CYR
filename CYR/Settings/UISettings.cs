@@ -1,9 +1,9 @@
 ﻿using System.Configuration;
 
-namespace CYR.Settings
+namespace CYR.Settings;
+
+public class UISettings : ConfigurationSection
 {
-    public class UISettings : ConfigurationSection
-    {
 		[ConfigurationProperty("ButtonColor", DefaultValue = "Gray")]
 		public string ButtonColor
 		{
@@ -12,4 +12,3 @@ namespace CYR.Settings
 		}
 
 	}
-}

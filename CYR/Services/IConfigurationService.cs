@@ -1,10 +1,9 @@
 ﻿using CYR.Settings;
 
-namespace CYR.Services
+namespace CYR.Services;
+
+public interface IConfigurationService
 {
-    public interface IConfigurationService
-    {
-        UserSettings GetUserSettings();
-        void SaveSettings();
-    }
+    UserSettings GetUserSettings();
+    void SaveSettings();
 }

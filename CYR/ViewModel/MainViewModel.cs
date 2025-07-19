@@ -6,7 +6,6 @@ using CYR.Dashboard.DashboardViewModels;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Messages;
 using CYR.Services;
-using EasyControls.Controls;
 using System.Windows;
 
 namespace CYR.ViewModel

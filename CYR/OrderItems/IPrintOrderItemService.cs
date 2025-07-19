@@ -1,8 +1,7 @@
 ﻿
-namespace CYR.OrderItems
+namespace CYR.OrderItems;
+
+public interface IPrintOrderItemService
 {
-    public interface IPrintOrderItemService
-    {
-        void Print(IEnumerable<OrderItem> orderItems);
-    }
+    void Print(IEnumerable<OrderItem> orderItems);
 }

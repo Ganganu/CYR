@@ -1,79 +1,77 @@
 ﻿using CYR.Core;
 using System.Data.Common;
 
-namespace CYR.OrderItems
+namespace CYR.OrderItems;
+
+public class OrderItemRepository : IOrderItemRepository
 {
-    public class OrderItemRepository : IOrderItemRepository
+    private readonly IDatabaseConnection _databaseConnection;
+    public OrderItemRepository(IDatabaseConnection databaseConnection)
     {
-        private readonly IDatabaseConnection _databaseConnection;
-        public OrderItemRepository(IDatabaseConnection databaseConnection)
+        _databaseConnection = databaseConnection;            
+    }
+    public async Task<bool> DeleteAsync(OrderItem orderItem)
+    {
+        bool succes = false;
+        string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
-            _databaseConnection = databaseConnection;            
-        }
-        public async Task<bool> DeleteAsync(OrderItem orderItem)
-        {
-            bool succes = false;
-            string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
-            Dictionary<string, object> queryParameters = new Dictionary<string, object>
-            {
-                { "Produktnummer", orderItem.Id}
-            };
-            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
-            succes = affectedRows >0;
-            return succes;
-        }
+            { "Produktnummer", orderItem.Id}
+        };
+        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        succes = affectedRows >0;
+        return succes;
+    }
 
-        public async Task<IEnumerable<OrderItem>> GetAllAsync()
-        {
-            List<OrderItem> orderItems = new List<OrderItem>();
-            OrderItem orderItem;
-            string query = "SELECT * FROM Produkte_Dienstleistungen";
+    public async Task<IEnumerable<OrderItem>> GetAllAsync()
+    {
+        List<OrderItem> orderItems = new List<OrderItem>();
+        OrderItem orderItem;
+        string query = "SELECT * FROM Produkte_Dienstleistungen";
 
-            using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
+        using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
+        {
+            while (await reader.ReadAsync())
             {
-                while (await reader.ReadAsync())
-                {
-                    orderItem = new OrderItem();
-                    orderItem.Id = Convert.ToInt32(reader["Produktnummer"]);
-                    orderItem.Description = reader["Beschreibung"].ToString();
-                    orderItem.Name = reader["Name"].ToString();
-                    orderItem.Price = Convert.ToDecimal(reader["Preis"]);
-                    orderItems.Add(orderItem);
-                }
-                return orderItems;
+                orderItem = new OrderItem();
+                orderItem.Id = Convert.ToInt32(reader["Produktnummer"]);
+                orderItem.Description = reader["Beschreibung"].ToString();
+                orderItem.Name = reader["Name"].ToString();
+                orderItem.Price = Convert.ToDecimal(reader["Preis"]);
+                orderItems.Add(orderItem);
             }
-        }
-
-        public Task<IEnumerable<OrderItem>> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task InsertAsync(OrderItem orderItem)
-        {
-            string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis) VALUES (@Name,@Beschreibung,@Preis)";
-            Dictionary<string, object> queryParameters = new Dictionary<string, object>
-            {
-                { "Name", orderItem.Name },
-                { "Beschreibung", orderItem.Description },
-                { "Preis", orderItem.Price }
-            };
-            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
-        }
-
-        public async Task<bool> UpdateAsync(OrderItem orderItem)
-        {
-            string query = "update Produkte_Dienstleistungen  set Name = @Name, Beschreibung = @Beschreibung, Preis = @Preis where Produktnummer = @Produktnummer";
-            Dictionary<string, object> queryParameters = new Dictionary<string, object>
-            {
-                { "Produktnummer", orderItem.Id },
-                { "Name", orderItem.Name },
-                { "Beschreibung", orderItem.Description },
-                { "Preis", orderItem.Price }
-            };
-            int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
-            return affectedRows > 0;
+            return orderItems;
         }
     }
+
+    public Task<IEnumerable<OrderItem>> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task InsertAsync(OrderItem orderItem)
+    {
+        string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis) VALUES (@Name,@Beschreibung,@Preis)";
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        {
+            { "Name", orderItem.Name },
+            { "Beschreibung", orderItem.Description },
+            { "Preis", orderItem.Price }
+        };
+        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+    }
+
+    public async Task<bool> UpdateAsync(OrderItem orderItem)
+    {
+        string query = "update Produkte_Dienstleistungen  set Name = @Name, Beschreibung = @Beschreibung, Preis = @Preis where Produktnummer = @Produktnummer";
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        {
+            { "Produktnummer", orderItem.Id },
+            { "Name", orderItem.Name },
+            { "Beschreibung", orderItem.Description },
+            { "Preis", orderItem.Price }
+        };
+        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        return affectedRows > 0;
+    }
 }
- 

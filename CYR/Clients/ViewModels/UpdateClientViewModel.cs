@@ -3,9 +3,11 @@ using System.Linq.Expressions;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Extensions;
+using CYR.Messages;
 using CYR.Services;
 using CYR.ViewModel;
 
@@ -93,8 +95,7 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
             ErrorMessage = errorCode.GetDescription();
             return;
         }
-        ShowNotificationDialog("Kunde erfolgreich aktualisiert", $"Der Kunde {ClientName} wurde erfolgreich aktualisiert.",
-            "Ok", "User", Visibility.Collapsed, "");
+        Messenger.Send(new SnackbarMessage($"Der Kunde {ClientName} wurde erfolgreich aktualisiert.", "Check"));
     }
     private bool ValidateProperties()
     {

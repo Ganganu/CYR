@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace CYR.OrderItems
+namespace CYR.OrderItems;
+
+public class OrderItemMessageCollectionChanged : ValueChangedMessage<bool>
 {
-    public class OrderItemMessageCollectionChanged : ValueChangedMessage<bool>
+    public OrderItemMessageCollectionChanged(bool value) :base(value)
     {
-        public OrderItemMessageCollectionChanged(bool value) :base(value)
-        {
-            
-        }        
-    }
+        
+    }        
 }

@@ -1,7 +1,6 @@
-﻿namespace CYR.Invoice.InvoiceServices
+﻿namespace CYR.Invoice.InvoiceServices;
+
+public interface IOpenImageService
 {
-    public interface IOpenImageService
-    {
-        void OpenImage(string url);
-    }
+    void OpenImage(string url);
 }

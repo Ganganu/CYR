@@ -1,10 +1,9 @@
 ﻿using CYR.Invoice.InvoiceModels;
 using QuestPDF.Infrastructure;
 
-namespace CYR.Invoice
+namespace CYR.Invoice;
+
+public interface IInvoiceDocument : IDocument
 {
-    public interface IInvoiceDocument : IDocument
-    {
-        public InvoiceModel Model { get; set; }
-    }
+    public InvoiceModel Model { get; set; }
 }

@@ -1,11 +1,10 @@
-﻿namespace CYR.UnitOfMeasure
+﻿namespace CYR.UnitOfMeasure;
+
+public interface IUnitOfMeasureRepository
 {
-    public interface IUnitOfMeasureRepository
-    {
-        Task DeleteAsync(UnitOfMeasureModel unitOfMeasure);
-        Task<IEnumerable<UnitOfMeasureModel>> GetAllAsync();
-        Task<IEnumerable<UnitOfMeasureModel>> GetByIdAsync(int id);
-        Task InsertAsync(UnitOfMeasureModel unitOfMeasure);
-        Task UpdateAsync(UnitOfMeasureModel unitOfMeasure);
-    }
+    Task DeleteAsync(UnitOfMeasureModel unitOfMeasure);
+    Task<IEnumerable<UnitOfMeasureModel>> GetAllAsync();
+    Task<IEnumerable<UnitOfMeasureModel>> GetByIdAsync(int id);
+    Task InsertAsync(UnitOfMeasureModel unitOfMeasure);
+    Task UpdateAsync(UnitOfMeasureModel unitOfMeasure);
 }

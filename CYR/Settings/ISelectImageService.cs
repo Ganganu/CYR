@@ -1,9 +1,8 @@
 ﻿using System.Windows.Media;
 
-namespace CYR.Settings
+namespace CYR.Settings;
+
+public interface ISelectImageService
 {
-    public interface ISelectImageService
-    {
-        ImageSource SelectImage();
-    }
+    ImageSource SelectImage();
 }

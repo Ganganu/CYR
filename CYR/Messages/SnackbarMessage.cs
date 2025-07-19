@@ -1,5 +1,3 @@
-﻿using EasyControls.Controls;
-
-namespace CYR.Messages;
+﻿namespace CYR.Messages;
 
 public record SnackbarMessage(string Message, string Icon);

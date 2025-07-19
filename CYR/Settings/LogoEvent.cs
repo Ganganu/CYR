@@ -1,6 +1,5 @@
 ﻿using System.Windows.Media;
 
-namespace CYR.Settings
-{
-    public record class LogoEvent(ImageSource Logo);
-}
+namespace CYR.Settings;
+
+public record class LogoEvent(ImageSource Logo);

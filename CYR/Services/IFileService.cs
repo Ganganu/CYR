@@ -1,7 +1,6 @@
-﻿namespace CYR.Services
+﻿namespace CYR.Services;
+
+public interface IFileService
 {
-    public interface IFileService
-    {
-        List<FileModel> LoadFileNamesFromPath(string path);
-    }
+    List<FileModel> LoadFileNamesFromPath(string path);
 }

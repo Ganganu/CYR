@@ -1,53 +1,52 @@
 ﻿using System.Configuration;
 using CYR.Settings;
 
-namespace CYR.Services
+namespace CYR.Services;
+
+public class ConfigurationService : IConfigurationService
 {
-    public class ConfigurationService : IConfigurationService
+    private readonly Configuration _configuration;
+    private readonly UserSettings _userSettings;
+
+    public ConfigurationService()
     {
-        private readonly Configuration _configuration;
-        private readonly UserSettings _userSettings;
-
-        public ConfigurationService()
+        try
         {
-            try
-            {
-                _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-                _userSettings = (UserSettings)_configuration.Sections["UserSettings"];
-                if (_userSettings == null)
-                {
-                    _userSettings = new UserSettings();
-                    _configuration.Sections.Add("UserSettings", _userSettings);
-                }
-            }
-            catch (Exception ex)
+            _userSettings = (UserSettings)_configuration.Sections["UserSettings"];
+            if (_userSettings == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Configuration Error: {ex.Message}");
-                throw;
+                _userSettings = new UserSettings();
+                _configuration.Sections.Add("UserSettings", _userSettings);
             }
         }
-
-        public UserSettings GetUserSettings()
+        catch (Exception ex)
         {
-            return _userSettings;
+            System.Diagnostics.Debug.WriteLine($"Configuration Error: {ex.Message}");
+            throw;
         }
+    }
 
-        public void SaveSettings()
+    public UserSettings GetUserSettings()
+    {
+        return _userSettings;
+    }
+
+    public void SaveSettings()
+    {
+        try
         {
-            try
-            {
-                _configuration.Sections["UserSettings"].SectionInformation.ForceSave = true;
+            _configuration.Sections["UserSettings"].SectionInformation.ForceSave = true;
 
-                _configuration.Save(ConfigurationSaveMode.Modified);
+            _configuration.Save(ConfigurationSaveMode.Modified);
 
-                ConfigurationManager.RefreshSection("UserSettings");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error saving settings: {ex.Message}");
-                throw;
-            }
+            ConfigurationManager.RefreshSection("UserSettings");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error saving settings: {ex.Message}");
+            throw;
         }
     }
 }
