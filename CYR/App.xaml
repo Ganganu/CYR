@@ -60,6 +60,9 @@
       <DataTemplate DataType="{x:Type dvm:StatisticOverviewViewModel}">
         <dv:StatisticOverviewView />
       </DataTemplate>
+      <DataTemplate DataType="{x:Type dvm:StatisticChartViewModel}">
+        <dv:StatisticChartView />
+      </DataTemplate>
 
 
       <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
