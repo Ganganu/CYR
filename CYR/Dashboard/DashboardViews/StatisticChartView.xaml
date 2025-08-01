@@ -17,6 +17,6 @@
     Padding="10"
     Background="White"
     CornerRadius="8">
-    <oxy:PlotView Background="Transparent" Model="{Binding MyModel}" />
+    <oxy:PlotView Background="Transparent" Model="{Binding SalesPerMonth}" />
   </Border>
 </UserControl>

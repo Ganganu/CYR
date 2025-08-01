@@ -74,7 +74,9 @@ public partial class App : Application
         services.AddSingleton<IAddressRepository, AddressRepository>();
         services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
         services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
+
         services.AddSingleton<StatisticOverviewRepository>();
+        services.AddSingleton<StatisticChartRepository>();
 
         services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
         services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();

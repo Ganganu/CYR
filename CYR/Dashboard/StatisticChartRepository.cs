@@ -10,15 +10,24 @@ public class StatisticChartRepository
         _databaseConnection = databaseConnection;
     }
 
-    //public async Task<SalesPerMonth> GetSalesPerMonth()
-    //{
-    //    string query = @$"select k.Name, sum(r.Bruttobetrag) as amount from Kunden k inner join Rechnungen r
-    //                      on k.Kundennummer = r.Kundennummer
-    //                      group by r.Kundennummer
-    //                      order by sum(r.Bruttobetrag) desc 
-    //                      limit 1";
+    public async Task<List<SalesPerMonth>> GetSalesPerMonth()
+    {
+        List<SalesPerMonth> spm = new List<SalesPerMonth>();
+        string query = @$"SELECT 
+                        CAST(strftime('%m', Rechnungsdatum) AS INTEGER) AS Monat,
+                        SUM(Bruttobetrag) AS Gesamtbetrag
+                        FROM Rechnungen
+                        GROUP BY Monat
+                        ORDER BY Monat;";
 
-    //    using var reader = await _databaseConnection.ExecuteReaderAsync(query, null);
-    //}
+        using var reader = await _databaseConnection.ExecuteReaderAsync(query, null);
+        while (reader.Read())
+        {            
+            var month = reader.GetInt32(0);
+            var amount = reader.GetDecimal(1);
+            spm.Add(new SalesPerMonth(month, amount));   
+        }
+        return spm;
+    }
 }
-public record SalesPerMonth(string Month, decimal Amount);
+public record SalesPerMonth(int Month, decimal Amount);
