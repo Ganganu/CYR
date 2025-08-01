@@ -12,6 +12,7 @@
   Title="CYR"
   Width="1500"
   Height="850"
+  WindowState="Maximized"
   d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
                                    IsDesignTimeCreatable=False}"
   Loaded="Window_Loaded"
