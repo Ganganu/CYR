@@ -16,6 +16,9 @@ public partial class StatisticOverviewViewModel : ObservableRecipient
         PaidInvoices = await _repository.GetNumberOfPaidInvoices();
         UnpaidInvoices = await _repository.GetNumberOfUnpaidInvoices();
         SalesYear = await _repository.GetSales("2025");
+        SalesActualMonth = await _repository.GetSalesActualMonth();
+        ClientAndSales = await _repository.GetClientsAndSales();
+        InvoicesActualMonth = await _repository.GetInvoicesActualMonth();
     }
 
     [ObservableProperty]
@@ -24,4 +27,10 @@ public partial class StatisticOverviewViewModel : ObservableRecipient
     private int? _unpaidInvoices;
     [ObservableProperty]
     private decimal? _salesYear;
+    [ObservableProperty]
+    private decimal? _salesActualMonth;
+    [ObservableProperty]
+    private ClientAndSales _clientAndSales;
+    [ObservableProperty]
+    private int? _invoicesActualMonth;
 }

@@ -61,6 +61,13 @@ public class SQLiteConnectionManager : IDisposable, IDatabaseConnection
         }
     }
 
+    /// <summary>
+    /// Returns 1 value from the database.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="query"></param>
+    /// <param name="parameters"></param>
+    /// <returns></returns>
     public async Task<T?> ExecuteScalarAsync<T>(string query, Dictionary<string, object>? parameters = null)
     {
         using var command = await CreateCommandWithParametersAsync(query, parameters);
@@ -91,11 +98,15 @@ public class SQLiteConnectionManager : IDisposable, IDatabaseConnection
             {
                 command.Parameters.AddWithValue(parameter.Key, parameter.Value);
             }
-            // CommandBehavior.SingleResult is a good option here, as we expect one result set.
-            // DO NOT use CommandBehavior.CloseConnection here, as it would close the transaction's connection.
             return await command.ExecuteReaderAsync(CommandBehavior.SingleResult);
         }
     }
+    public async Task<IDataReader> ExecuteReaderAsync(string query, Dictionary<string, object>? parameters = null)
+    {
+        var command = await CreateCommandWithParametersAsync(query, parameters);
+        return await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+    }
+
 
     public async Task ExecuteTransactionAsync(Func<SQLiteTransaction, Task> transactionOperations)
     {

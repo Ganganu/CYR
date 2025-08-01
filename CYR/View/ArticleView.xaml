@@ -133,7 +133,7 @@
               </DataGridTemplateColumn>
               <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
               <DataGridTextColumn Binding="{Binding Description}" Header="Beschreibung" />
-              <DataGridTextColumn Binding="{Binding Price}" Header="Preis" />
+              <DataGridTextColumn Binding="{Binding Price, StringFormat={}{0:F2}}" Header="Preis" />
             </DataGrid.Columns>
           </DataGrid>
         </Border>

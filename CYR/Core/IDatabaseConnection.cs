@@ -13,5 +13,6 @@ public interface IDatabaseConnection
     Task<IDataReader> ExecuteReaderInTransactionAsync(SQLiteTransaction transaction, string query, Dictionary<string, object> parameters);
     Task<T?> ExecuteScalarAsync<T>(string query, Dictionary<string, object>? parameters = null);
     Task<IDataReader> ExecuteSelectQueryAsync(string query, Dictionary<string, object>? parameters = null);
+    Task<IDataReader> ExecuteReaderAsync(string query, Dictionary<string, object>? parameters = null);
     Task ExecuteTransactionAsync(Func<SQLiteTransaction, Task> transactionOperations);
 }

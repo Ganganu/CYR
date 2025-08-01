@@ -71,7 +71,7 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="{Binding SalesYear}" />
+              Text="{Binding SalesYear, StringFormat={}{0:F2} €}" />
           </StackPanel>
         </Border>
         <Border
@@ -96,12 +96,12 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="ASS GmbH" />
+              Text="{Binding ClientAndSales.Client}" />
             <TextBlock
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="25,000.00 €" />
+              Text="{Binding ClientAndSales.Amount, StringFormat={}{0:F2} €}" />
           </StackPanel>
         </Border>
       </Grid>
@@ -158,7 +158,7 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="132,840.00 €" />
+              Text="{Binding SalesActualMonth, StringFormat={}{0:F2} €}" />
           </StackPanel>
         </Border>
         <Border
@@ -183,7 +183,7 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="5" />
+              Text="{Binding InvoicesActualMonth}" />
           </StackPanel>
         </Border>
       </Grid>

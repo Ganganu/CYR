@@ -254,8 +254,8 @@
             <DataGridTextColumn Binding="{Binding InvoiceNumber}" Header="Rechnung" />
             <DataGridTextColumn Binding="{Binding Customer.ClientNumber}" Header="Kundenummer" />
             <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
-            <DataGridTextColumn Binding="{Binding NetAmount}" Header="Netto" />
-            <DataGridTextColumn Binding="{Binding GrossAmount}" Header="Brutto" />
+            <DataGridTextColumn Binding="{Binding NetAmount, StringFormat={}{0:F2}}" Header="Netto" />
+            <DataGridTextColumn Binding="{Binding GrossAmount, StringFormat={}{0:F2}}" Header="Brutto" />
             <DataGridTemplateColumn Header="Status">
               <DataGridTemplateColumn.CellTemplateSelector>
                 <StaticResource ResourceKey="StateTemplateSelector" />
