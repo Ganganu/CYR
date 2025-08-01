@@ -4,6 +4,7 @@ using CYR.Clients;
 using CYR.Clients.ViewModels;
 using CYR.Clients.Views;
 using CYR.Core;
+using CYR.Dashboard;
 using CYR.Dashboard.DashboardViewModels;
 using CYR.Dashboard.DashboardViews;
 using CYR.Dialog;
@@ -58,10 +59,12 @@ public partial class App : Application
         services.AddSingleton<SettingsView>();
         services.AddTransient<UpdateClientViewModel>();
         services.AddTransient<UpdateClientView>();
-        services.AddSingleton<DashboardViewModel>();
-        services.AddSingleton<DashboardView>();
+        services.AddTransient<DashboardViewModel>();
+        services.AddTransient<DashboardView>();
         services.AddTransient<UpdateOrderItemViewModel>();
         services.AddTransient<UpdateOrderItemView>();
+        services.AddTransient<StatisticOverviewViewModel>();
+        services.AddTransient<StatisticOverviewView>();
         services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IDialogService, DialogService>();
@@ -69,6 +72,8 @@ public partial class App : Application
         services.AddSingleton<IAddressRepository, AddressRepository>();
         services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
         services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
+        services.AddSingleton<StatisticOverviewRepository>();
+
         services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
         services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();
         services.AddSingleton<IPreviewInvoiceService, PreviewInvoiceService>();

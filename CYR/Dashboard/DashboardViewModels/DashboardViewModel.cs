@@ -4,8 +4,13 @@ namespace CYR.Dashboard.DashboardViewModels;
 
 public partial class DashboardViewModel : ObservableRecipient
 {
-    public DashboardViewModel()
+    private readonly StatisticOverviewViewModel _statisticOverviewViewModel;
+
+    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel)
     {
-        
+        _statisticOverviewViewModel = statisticOverviewViewModel;
     }
+
+    public StatisticOverviewViewModel StatisticOverviewVM => _statisticOverviewViewModel;
+
 }

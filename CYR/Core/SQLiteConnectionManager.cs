@@ -3,12 +3,10 @@ using System.Data.SQLite;
 
 namespace CYR.Core;
 
-// A better approach is to make the connection class disposable itself.
-// This allows the consumer to use a 'using' block for the entire lifecycle.
 public class SQLiteConnectionManager : IDisposable, IDatabaseConnection
 {
     private readonly string _connectionString;
-    private SQLiteConnection? _connection; // A single, managed connection instance.
+    private SQLiteConnection? _connection;
 
     public SQLiteConnectionManager(string connectionString)
     {
@@ -47,8 +45,7 @@ public class SQLiteConnectionManager : IDisposable, IDatabaseConnection
         var command = await CreateCommandWithParametersAsync(query, parameters);
         return await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
     }
-
-    // Improved ExecuteNonQueryAsync
+      
     public async Task<int> ExecuteNonQueryAsync(string query, Dictionary<string, object> parameters)
     {
         using var command = await CreateCommandWithParametersAsync(query, parameters);
