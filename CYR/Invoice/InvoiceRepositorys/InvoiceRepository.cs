@@ -49,7 +49,7 @@ public class InvoiceRepository : IInvoiceRepository
         InvoiceModel invoice;
         string query = @"SELECT * FROM Rechnungen
             INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer
-            INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE user_id = @user_id";
+            INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE Kunden.user_id = @user_id";
         Dictionary<string, object> queryParameters = new()
         {
             {"user_id",_userContext.CurrentUser.Id }

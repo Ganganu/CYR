@@ -41,10 +41,10 @@ public partial class App : Application
         QuestPDF.Settings.License = LicenseType.Community;
         IServiceCollection services = new ServiceCollection();
         services.AddSingleton<MainWindow>(provider => new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
-        services.AddSingleton<ClientView>();
+        services.AddTransient<ClientView>();
         services.AddTransient<CreateNewArticleView>();
         services.AddSingleton<MainViewModel>();
-        services.AddSingleton<ClientViewModel>();
+        services.AddTransient<ClientViewModel>();
         services.AddTransient<CreateInvoiceViewModel>();
         services.AddTransient<InvoiceListViewModel>();
         services.AddTransient<ShowInvoiceViewModel>();
