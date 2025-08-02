@@ -32,7 +32,7 @@ public class InvoicePositionRepository : IInvoicePositionRepository
         List<InvoicePositionModel> invoicePositions = new();
         InvoicePositionModel invoicePosition;
         string query = "SELECT * FROM Rechnungspositionen INNER JOIN Rechnungen " +
-            $"ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE {invoiceId}";
+            $"ON Rechnungspositionen.Rechnungsnummer = Rechnungen.Rechnungsnummer WHERE Rechnungen.Rechnungsnummer LIKE {invoiceId} and Rechnungen.user_id = {_userContext.CurrentUser.Id}";
 
         using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
         {

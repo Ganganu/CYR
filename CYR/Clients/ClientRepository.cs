@@ -1,17 +1,19 @@
 ﻿using System.Data.Common;
 using System.Data.SQLite;
-using System.Transactions;
 using CYR.Core;
+using CYR.User;
 
 namespace CYR.Clients;
 
 public class ClientRepository : IClientRepository
 {
     private readonly IDatabaseConnection _connection;
+    private readonly UserContext _userContext;
 
-    public ClientRepository(IDatabaseConnection connection)
+    public ClientRepository(IDatabaseConnection connection, UserContext userContext)
     {
         _connection = connection;
+        _userContext = userContext;
     }
 
     public async Task<bool> DeleteAsync(Client client)
@@ -21,19 +23,21 @@ public class ClientRepository : IClientRepository
 
         await _connection.ExecuteTransactionAsync(async (transaction) =>
         {
-            string addressQuery = "delete from Adresse where Kundennummer = @Kundennummer";
+            string addressQuery = "delete from Adresse where Kundennummer = @Kundennummer and user_id = @user_id";
             var addressParams = new Dictionary<string, object>
             {
-                { "@Kundennummer", client.ClientNumber }
+                { "@Kundennummer", client.ClientNumber },
+                { "@user_id", _userContext.CurrentUser.Id }
             };
             await _connection.ExecuteNonQueryInTransactionAsync(transaction, addressQuery, addressParams);
 
             //get Rechnungsnummer für Rechnungsposition
             string selectInvoiceNumber = "SELECT r.Rechnungsnummer from Rechnungen as r inner join Kunden as k on r.Kundennummer = k.Kundennummer" +
-            " where k.Kundennummer = @Kundennummer";
+            " where k.Kundennummer = @Kundennummer and k.user_id = @user_id";
             var selectInvoiceParams = new Dictionary<string, object>
             {
-                { "@Kundennummer", client.ClientNumber }
+                { "@Kundennummer", client.ClientNumber },
+                { "@user_id", _userContext.CurrentUser.Id}
             };
             using (var reader = (SQLiteDataReader)await _connection.ExecuteReaderInTransactionAsync(transaction, selectInvoiceNumber, selectInvoiceParams))
             {
@@ -47,8 +51,11 @@ public class ClientRepository : IClientRepository
             {
                 var parameterNames = invoiceNumbers.Select((_, index) => $"@Rechnungsnummer{index}").ToList();
                 string inClause = string.Join(",", parameterNames);
-                string orderPositionQuery = $"DELETE FROM Rechnungspositionen WHERE Rechnungsnummer IN ({inClause})";
-                var orderPositionParams = new Dictionary<string, object>();
+                string orderPositionQuery = $"DELETE FROM Rechnungspositionen WHERE Rechnungsnummer IN ({inClause}) and user_id = @user_id";
+                var orderPositionParams = new Dictionary<string, object>
+                {
+                    { "@user_id", _userContext.CurrentUser.Id }
+                };
                 for (int i = 0; i < invoiceNumbers.Count; i++)
                 {
                     orderPositionParams.Add(parameterNames[i], invoiceNumbers[i]);
@@ -59,17 +66,19 @@ public class ClientRepository : IClientRepository
 
 
             //delete Rechnung nachdem Rechnungsposition
-            string orderQuery = "DELETE FROM Rechnungen WHERE Kundennummer = @Kundennummer";
+            string orderQuery = "DELETE FROM Rechnungen WHERE Kundennummer = @Kundennummer and user_id = @user_id";
             var orderParams = new Dictionary<string, object>
             {
-                { "@Kundennummer", client.ClientNumber }
+                { "@Kundennummer", client.ClientNumber },
+                { "@user_id", _userContext.CurrentUser.Id}
             };
             await _connection.ExecuteNonQueryInTransactionAsync(transaction, orderQuery, orderParams);
 
-            string clientQuery = "DELETE FROM Kunden WHERE Kundennummer = @Kundennummer";
+            string clientQuery = "DELETE FROM Kunden WHERE Kundennummer = @Kundennummer and user_id = @user_id";
             var clientParams = new Dictionary<string, object>
             {
-                { "@Kundennummer", client.ClientNumber }
+                { "@Kundennummer", client.ClientNumber },
+                { "@user_id", _userContext.CurrentUser.Id}
             };
             int clientAffectedRows = await _connection.ExecuteNonQueryInTransactionAsync(transaction, clientQuery, clientParams);
             succes = clientAffectedRows > 0;
@@ -82,8 +91,14 @@ public class ClientRepository : IClientRepository
     {
         List<Client> clientList = new List<Client>();
         Client client;
-        string query = "select Kunden.Kundennummer, Kunden.Name, Adresse.Strasse, Adresse.PLZ, Adresse.Ort, Kunden.Telefonnummer, Kunden.Email, Kunden.Erstellungsdatum\r\nfrom Kunden inner join Adresse on Kunden.Kundennummer = Adresse.Kundennummer";
-        using (DbDataReader reader = (DbDataReader)await _connection.ExecuteSelectQueryAsync(query))
+        string query = @"select Kunden.Kundennummer, Kunden.Name, Adresse.Strasse, Adresse.PLZ, Adresse.Ort, 
+                        Kunden.Telefonnummer, Kunden.Email, Kunden.Erstellungsdatum
+                        from Kunden inner join Adresse on Kunden.Kundennummer = Adresse.Kundennummer where Kunden.user_id = @user_id";
+        var queryParameters = new Dictionary<string, object>
+            {
+                { "@user_id", _userContext.CurrentUser.Id}
+            };
+        using (DbDataReader reader = (DbDataReader)await _connection.ExecuteSelectQueryAsync(query, queryParameters))
         {
             while (await reader.ReadAsync())
             {
@@ -109,14 +124,15 @@ public class ClientRepository : IClientRepository
 
     public async Task<Client> InsertAsync(Client client)
     {
-        string query = "INSERT INTO Kunden (Kundennummer,Name,Telefonnummer,Email,Erstellungsdatum) VALUES (@Kundennummer,@Name,@Telefonnummer,@Email,@Erstellungsdatum)";
+        string query = "INSERT INTO Kunden (Kundennummer,Name,Telefonnummer,Email,Erstellungsdatum,user_id) VALUES (@Kundennummer,@Name,@Telefonnummer,@Email,@Erstellungsdatum,@user_id)";
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
             { "Kundennummer", client.ClientNumber },
             { "Name", client.Name },
             { "Telefonnummer", client.Telefonnumber },
             { "Email", client.EmailAddress },
-            { "Erstellungsdatum", client.CreationDate }
+            { "Erstellungsdatum", client.CreationDate },
+            { "@user_id", _userContext.CurrentUser.Id}
         };
         var newClient = await _connection.ExecuteScalarAsync<Client>(query, queryParameters);
         return newClient;
@@ -128,25 +144,27 @@ public class ClientRepository : IClientRepository
 
         await _connection.ExecuteTransactionAsync(async (transaction) =>
         {
-            string updateAddress = "update Adresse set Strasse = @Strasse, PLZ = @PLZ, Ort = @Ort where Kundennummer = @Kundennummer ";
+            string updateAddress = "update Adresse set Strasse = @Strasse, PLZ = @PLZ, Ort = @Ort where Kundennummer = @Kundennummer and user_id = @user_id";
             var addressParams = new Dictionary<string, object>
             {
                 { "@Kundennummer", client.ClientNumber },
                 { "@Strasse", client.Street },
                 { "@PLZ", client.PLZ },
-                { "@Ort", client.City }
+                { "@Ort", client.City },
+                { "@user_id", _userContext.CurrentUser.Id}
             };
             await _connection.ExecuteNonQueryInTransactionAsync(transaction, updateAddress, addressParams);
 
             string updateClient = "update Kunden set Name = @Name, Telefonnummer = @Telefonnummer," +
-            "Email = @Email, Erstellungsdatum = @Erstellungsdatum where Kundennummer = @Kundennummer ";
+            "Email = @Email, Erstellungsdatum = @Erstellungsdatum where Kundennummer = @Kundennummer and user_id = @user_id";
             var updateParams = new Dictionary<string, object>
-            {   
+            {
                 { "@Kundennummer", client.ClientNumber },
                 { "@Name", client.Name },
                 { "@Telefonnummer", client.Telefonnumber },
                 { "@Email", client.EmailAddress },
-                { "@Erstellungsdatum", client.CreationDate }
+                { "@Erstellungsdatum", client.CreationDate },
+                { "@user_id", _userContext.CurrentUser.Id}
             };
             int clientAffectedRows = await _connection.ExecuteNonQueryInTransactionAsync(transaction, updateClient, updateParams);
             succes = clientAffectedRows > 0;

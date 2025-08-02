@@ -1,14 +1,17 @@
 ﻿using CYR.Core;
+using CYR.User;
 
 namespace CYR.Address
 {
     internal class AddressRepository : IAddressRepository
     {
         private readonly IDatabaseConnection _databaseConnection;
+        private readonly UserContext _userContext;
 
-        public AddressRepository(IDatabaseConnection databaseConnection)
+        public AddressRepository(IDatabaseConnection databaseConnection, UserContext userContext)
         {
-            this._databaseConnection = databaseConnection;
+            _databaseConnection = databaseConnection;
+            _userContext = userContext;
         }
         public Task DeleteAsync(AddressModel address)
         {
@@ -28,14 +31,15 @@ namespace CYR.Address
         public async Task InsertAsync(AddressModel address)
         {
             if (await CheckAddressExists(address)) return;
-            string query = @"INSERT INTO Adresse (Kundennummer, Strasse, PLZ, Ort) 
-                                VALUES (@Kundennummer, @Strasse, @PLZ, @Ort)";
+            string query = @"INSERT INTO Adresse (Kundennummer, Strasse, PLZ, Ort, user_id) 
+                                VALUES (@Kundennummer, @Strasse, @PLZ, @Ort, @user_id)";
 
             Dictionary<string, object> queryParameters = new Dictionary<string, object>();
             queryParameters["Kundennummer"] = address.CompanyName;
             queryParameters["Strasse"] = address.Street;
             queryParameters["PLZ"] = address.PLZ;
             queryParameters["Ort"] = address.City;
+            queryParameters["user_id"] = _userContext.CurrentUser.Id;
             int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         }
 
@@ -51,14 +55,16 @@ namespace CYR.Address
         WHERE Kundennummer = @Kundennummer 
           AND Strasse = @Strasse 
           AND PLZ = @PLZ 
-          AND Ort = @Ort";
+          AND Ort = @Ort
+          AND user_id = @user_id";
 
             Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
             { "@Kundennummer", address.CompanyName },
             { "@Strasse", address.Street },
             { "@PLZ", address.PLZ },
-            { "@Ort", address.City }
+            { "@Ort", address.City },
+            { "@user_id", _userContext.CurrentUser.Id }
         };
 
             int count = await _databaseConnection.ExecuteScalarAsync<int>(query, queryParameters);
