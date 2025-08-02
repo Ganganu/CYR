@@ -17,6 +17,26 @@
     Padding="10"
     Background="White"
     CornerRadius="8">
-    <oxy:PlotView Background="Transparent" Model="{Binding SalesPerMonth}" />
+    <Grid Background="#f8f8f8">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <ComboBox
+        Grid.Row="0"
+        HorizontalAlignment="Right"
+        Background="White"
+        FontSize="13"
+        BorderBrush="Orange" BorderThickness="0 0 0 2"
+        Margin="0 10 10 0"
+        ItemsSource="{Binding Years}"
+        SelectedIndex="0"
+        SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
+        Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+      <oxy:PlotView
+        Grid.Row="1"
+        Background="Transparent"
+        Model="{Binding SalesPerMonth}" />
+    </Grid>
   </Border>
 </UserControl>

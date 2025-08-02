@@ -10,13 +10,14 @@ public class StatisticChartRepository
         _databaseConnection = databaseConnection;
     }
 
-    public async Task<List<SalesPerMonth>> GetSalesPerMonth()
+    public async Task<List<SalesPerMonth>> GetSalesPerMonth(int year)
     {
         List<SalesPerMonth> spm = new List<SalesPerMonth>();
         string query = @$"SELECT 
                         CAST(strftime('%m', Rechnungsdatum) AS INTEGER) AS Monat,
                         SUM(Bruttobetrag) AS Gesamtbetrag
                         FROM Rechnungen
+                        WHERE Rechnungsdatum LIKE '{year}%'
                         GROUP BY Monat
                         ORDER BY Monat;";
 

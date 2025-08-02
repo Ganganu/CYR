@@ -71,7 +71,7 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="{Binding SalesYear, StringFormat={}{0:F2} €}" />
+              Text="{Binding SalesYear, StringFormat={}{0:N2} €}" />
           </StackPanel>
         </Border>
         <Border
@@ -101,7 +101,7 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="{Binding ClientAndSales.Amount, StringFormat={}{0:F2} €}" />
+              Text="{Binding ClientAndSales.Amount, StringFormat={}{0:N2} €}" />
           </StackPanel>
         </Border>
       </Grid>
@@ -158,7 +158,7 @@
               HorizontalAlignment="Center"
               FontSize="25"
               FontWeight="Bold"
-              Text="{Binding SalesActualMonth, StringFormat={}{0:F2} €}" />
+              Text="{Binding SalesActualMonth, StringFormat={}{0:N2} €}" />
           </StackPanel>
         </Border>
         <Border
