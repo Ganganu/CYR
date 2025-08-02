@@ -14,6 +14,7 @@ using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Invoice.InvoiceViews;
+using CYR.Login;
 using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.OrderItems.OrderItemViews;
@@ -58,6 +59,9 @@ public partial class App : Application
         services.AddSingleton<CreateClientViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<SettingsView>();
+        services.AddTransient<LoginView>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<LoginRepository>();
         services.AddTransient<UpdateClientViewModel>();
         services.AddTransient<UpdateClientView>();
         services.AddTransient<DashboardViewModel>();

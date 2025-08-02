@@ -9,6 +9,7 @@
   xmlns:iv="clr-namespace:CYR.Invoice.InvoiceViews"
   xmlns:ivm="clr-namespace:CYR.Invoice.InvoiceViewModels"
   xmlns:local="clr-namespace:CYR"
+  xmlns:lv="clr-namespace:CYR.Login"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:oiv="clr-namespace:CYR.OrderItems.OrderItemViews"
   xmlns:oivm="clr-namespace:CYR.OrderItems.OrderItemViewModels"
@@ -62,6 +63,9 @@
       </DataTemplate>
       <DataTemplate DataType="{x:Type dvm:StatisticChartViewModel}">
         <dv:StatisticChartView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type lv:LoginViewModel}">
+        <lv:LoginView />
       </DataTemplate>
 
 
