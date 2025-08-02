@@ -1,13 +1,16 @@
 ﻿using CYR.Core;
+using CYR.User;
 
 namespace CYR.Dashboard;
 
 public class StatisticChartRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
-    public StatisticChartRepository(IDatabaseConnection databaseConnection)
+    private readonly UserContext _userContext;
+    public StatisticChartRepository(IDatabaseConnection databaseConnection, UserContext userContext)
     {
         _databaseConnection = databaseConnection;
+        _userContext = userContext;
     }
 
     public async Task<List<SalesPerMonth>> GetSalesPerMonth(int year)
@@ -17,7 +20,7 @@ public class StatisticChartRepository
                         CAST(strftime('%m', Rechnungsdatum) AS INTEGER) AS Monat,
                         SUM(Bruttobetrag) AS Gesamtbetrag
                         FROM Rechnungen
-                        WHERE Rechnungsdatum LIKE '{year}%'
+                        WHERE Rechnungsdatum LIKE '{year}%' AND user_id = {_userContext.CurrentUser.Id}
                         GROUP BY Monat
                         ORDER BY Monat;";
 

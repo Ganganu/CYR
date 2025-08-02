@@ -18,13 +18,13 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
     public MainViewModel(INavigationService navigationService, UserRepository userRepository, UserContext userContext)
     {
         Navigation = navigationService;
-        Navigation.NavigateTo<DashboardViewModel>();
         Messenger.RegisterAll(this);
         ShowSnackbar = Visibility.Collapsed;
         _userRepository = userRepository;
         _userContext = userContext;
 
         GetUser();
+        Navigation.NavigateTo<DashboardViewModel>();
     }
 
     [ObservableProperty]

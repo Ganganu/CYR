@@ -1,30 +1,33 @@
 ﻿using CYR.Core;
+using CYR.User;
 
 namespace CYR.Dashboard;
 
 public class StatisticOverviewRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
-    public StatisticOverviewRepository(IDatabaseConnection databaseConnection)
+    private readonly UserContext _userContext;
+    public StatisticOverviewRepository(IDatabaseConnection databaseConnection, UserContext userContext)
     {
         _databaseConnection = databaseConnection;
+        _userContext = userContext;
     }
 
     public async Task<int> GetNumberOfPaidInvoices()
     {
-        string query = "select count(*) from Rechnungen where status = 1";
+        string query = @$"select count(*) from Rechnungen where status = 1 and user_id = {_userContext.CurrentUser.Id}";
         int numberOfPaidInvoices = await _databaseConnection.ExecuteScalarAsync<int>(query);
         return numberOfPaidInvoices;
     }
     public async Task<int> GetNumberOfUnpaidInvoices()
     {
-        string query = "select count(*) from Rechnungen where status = 0";
+        string query = @$"select count(*) from Rechnungen where status = 0 and user_id = {_userContext.CurrentUser.Id}";
         int numberOfPaidInvoices = await _databaseConnection.ExecuteScalarAsync<int>(query);
         return numberOfPaidInvoices;
     }
     public async Task<decimal> GetSales(string year)
     {
-        string query = @$"select sum(Bruttobetrag) from Rechnungen where strftime('%Y', Rechnungsdatum) = '{year}'";
+        string query = @$"select sum(Bruttobetrag) from Rechnungen where strftime('%Y', Rechnungsdatum) = '{year}' and user_id = {_userContext.CurrentUser.Id}";
         decimal sales = await _databaseConnection.ExecuteScalarAsync<decimal>(query);
         return sales;
     }
@@ -35,7 +38,8 @@ public class StatisticOverviewRepository
         string query = $@"select sum(Bruttobetrag) 
                       from Rechnungen 
                       where strftime('%Y', Rechnungsdatum) = '{currentYear}' 
-                      and strftime('%m', Rechnungsdatum) = '{currentMonth}'";
+                      and strftime('%m', Rechnungsdatum) = '{currentMonth}'
+                      and user_id = {_userContext.CurrentUser.Id}";
         decimal sales = await _databaseConnection.ExecuteScalarAsync<decimal>(query);
         return sales;
     }
@@ -46,14 +50,15 @@ public class StatisticOverviewRepository
         string query = $@"select count(*) 
                       from Rechnungen 
                       where strftime('%Y', Rechnungsdatum) = '{currentYear}' 
-                      and strftime('%m', Rechnungsdatum) = '{currentMonth}'";
+                      and strftime('%m', Rechnungsdatum) = '{currentMonth}'
+                      and user_id = {_userContext.CurrentUser.Id}";
         int invoices = await _databaseConnection.ExecuteScalarAsync<int>(query);
         return invoices;
     }
     public async Task<ClientAndSales> GetClientsAndSales()
     {
         string query = @$"select k.Name, sum(r.Bruttobetrag) as amount from Kunden k inner join Rechnungen r
-                          on k.Kundennummer = r.Kundennummer
+                          on k.Kundennummer = r.Kundennummer where k.user_id = {_userContext.CurrentUser.Id}
                           group by r.Kundennummer
                           order by sum(r.Bruttobetrag) desc 
                           limit 1";
