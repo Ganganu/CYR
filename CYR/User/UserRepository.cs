@@ -14,15 +14,7 @@ public class UserRepository
 
     public async Task<bool> DeleteAsync(OrderItem orderItem)
     {
-        bool succes = false;
-        //string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
-        //Dictionary<string, object> queryParameters = new Dictionary<string, object>
-        //{
-        //    { "Produktnummer", orderItem.Id}
-        //};
-        //int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
-        //succes = affectedRows > 0;
-        return succes;
+        return true;
     }
 
     public async Task<User> GetUserAsync(string username, string password)
@@ -46,19 +38,12 @@ public class UserRepository
         return u;
     }
 
-    public async Task InsertAsync(OrderItem orderItem)
+    public async Task InsertAsync()
     {
-        string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis) VALUES (@Name,@Beschreibung,@Preis)";
-        //Dictionary<string, object> queryParameters = new Dictionary<string, object>
-        //{
-        //    { "Name", orderItem.Name },
-        //    { "Beschreibung", orderItem.Description },
-        //    { "Preis", orderItem.Price }
-        //};
-        //int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        
     }
 
-    public async Task<bool> UpdateAsync(OrderItem orderItem)
+    public async Task<bool> UpdateAsync()
     {
         return true;
     }

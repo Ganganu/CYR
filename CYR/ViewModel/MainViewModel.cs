@@ -84,7 +84,7 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
 
     private async Task GetUser()
     {
-        var user = await _userRepository.GetUserAsync("123", "123");
+        var user = await _userRepository.GetUserAsync("admin", "admin");
         User = user;
         _userContext.CurrentUser = user;
     }

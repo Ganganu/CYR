@@ -1,4 +1,5 @@
 ﻿using CYR.Core;
+using CYR.User;
 using System.Data.Common;
 
 namespace CYR.UnitOfMeasure;
@@ -6,10 +7,12 @@ namespace CYR.UnitOfMeasure;
 public class UnitOfMeasureRepository : IUnitOfMeasureRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
+    private readonly UserContext _userContext;
 
-    public UnitOfMeasureRepository(IDatabaseConnection databaseConnection)
+    public UnitOfMeasureRepository(IDatabaseConnection databaseConnection, UserContext userContext)
     {
         _databaseConnection = databaseConnection;
+        _userContext = userContext;
     }
     public Task DeleteAsync(UnitOfMeasureModel unitOfMeasure)
     {
@@ -20,7 +23,7 @@ public class UnitOfMeasureRepository : IUnitOfMeasureRepository
     {
         List<UnitOfMeasureModel> orderItems = new List<UnitOfMeasureModel>();
         UnitOfMeasureModel unitOfMeasure;
-        string query = "SELECT * FROM uom";
+        string query = $"SELECT * FROM uom where user_id = {_userContext.CurrentUser.Id}";
 
         using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
         {

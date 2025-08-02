@@ -88,7 +88,7 @@ public class InvoiceRepository : IInvoiceRepository
         InvoiceModel invoiceModel = new();
         string query = "SELECT * FROM Rechnungen " +
             "INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer " +
-            "INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE Rechnungsnummer = @Rechnungsnummer AND user_id = @user_id";
+            "INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE Rechnungsnummer = @Rechnungsnummer AND Kunden.user_id = @user_id";
         Dictionary<string, object> queryParameters = new()
         {
             {"Rechnungsnummer",id },

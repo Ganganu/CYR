@@ -1,4 +1,5 @@
 ﻿using CYR.Core;
+using CYR.User;
 using System.Data.Common;
 
 namespace CYR.OrderItems;
@@ -6,17 +7,20 @@ namespace CYR.OrderItems;
 public class OrderItemRepository : IOrderItemRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
-    public OrderItemRepository(IDatabaseConnection databaseConnection)
+    private readonly UserContext _userContext;
+    public OrderItemRepository(IDatabaseConnection databaseConnection, UserContext userContext)
     {
-        _databaseConnection = databaseConnection;            
+        _databaseConnection = databaseConnection;
+        _userContext = userContext;
     }
     public async Task<bool> DeleteAsync(OrderItem orderItem)
     {
         bool succes = false;
-        string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer";
+        string query = "DELETE FROM Produkte_Dienstleistungen WHERE Produktnummer = @Produktnummer and user_id = @user_id";
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
-            { "Produktnummer", orderItem.Id}
+            { "Produktnummer", orderItem.Id},
+            { "user_id", _userContext.CurrentUser.Id}
         };
         int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         succes = affectedRows >0;
@@ -27,7 +31,7 @@ public class OrderItemRepository : IOrderItemRepository
     {
         List<OrderItem> orderItems = new List<OrderItem>();
         OrderItem orderItem;
-        string query = "SELECT * FROM Produkte_Dienstleistungen";
+        string query = $"SELECT * FROM Produkte_Dienstleistungen where user_id = {_userContext.CurrentUser.Id}";
 
         using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
         {
@@ -51,25 +55,27 @@ public class OrderItemRepository : IOrderItemRepository
 
     public async Task InsertAsync(OrderItem orderItem)
     {
-        string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis) VALUES (@Name,@Beschreibung,@Preis)";
+        string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis,user_id) VALUES (@Name,@Beschreibung,@Preis,@user_id)";
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
             { "Name", orderItem.Name },
             { "Beschreibung", orderItem.Description },
-            { "Preis", orderItem.Price }
+            { "Preis", orderItem.Price },
+            { "user_id", _userContext.CurrentUser.Id }
         };
         int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
     }
 
     public async Task<bool> UpdateAsync(OrderItem orderItem)
     {
-        string query = "update Produkte_Dienstleistungen  set Name = @Name, Beschreibung = @Beschreibung, Preis = @Preis where Produktnummer = @Produktnummer";
+        string query = "update Produkte_Dienstleistungen  set Name = @Name, Beschreibung = @Beschreibung, Preis = @Preis where Produktnummer = @Produktnummer and user_id = @user_id";
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
             { "Produktnummer", orderItem.Id },
             { "Name", orderItem.Name },
             { "Beschreibung", orderItem.Description },
-            { "Preis", orderItem.Price }
+            { "Preis", orderItem.Price },
+            { "user_id", _userContext.CurrentUser.Id }
         };
         int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         return affectedRows > 0;
