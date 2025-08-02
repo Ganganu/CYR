@@ -1,17 +1,20 @@
-﻿using CYR.Core;
-using CYR.Invoice.InvoiceModels;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.SQLite;
+using CYR.Core;
+using CYR.Invoice.InvoiceModels;
+using CYR.User;
 
 namespace CYR.Invoice.InvoiceRepositorys;
 
 public class InvoicePositionRepository : IInvoicePositionRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
+    private readonly UserContext _userContext;
 
-    public InvoicePositionRepository(IDatabaseConnection databaseConnection) 
+    public InvoicePositionRepository(IDatabaseConnection databaseConnection, UserContext userContext)
     {
         _databaseConnection = databaseConnection;
+        _userContext = userContext;
     }
 
     public Task DeleteAsync(InvoicePositionModel invoicePosition)
@@ -55,8 +58,8 @@ public class InvoicePositionRepository : IInvoicePositionRepository
     public async Task InsertAsync(InvoicePositionModel invoicePosition, SQLiteTransaction? transaction = null)
     {
         string query = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge," +
-            "Einheit, Einheitspreis) VALUES (@Rechnungsnummer,@Beschreibung,@Menge," +
-            "@Einheit, @Einheitspreis)";
+            "Einheit, Einheitspreis, user_id) VALUES (@Rechnungsnummer,@Beschreibung,@Menge," +
+            "@Einheit, @Einheitspreis, @user_id)";
         var convertedQuantity = Convert.ToDecimal(invoicePosition.Quantity);
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
@@ -65,7 +68,8 @@ public class InvoicePositionRepository : IInvoicePositionRepository
             {"Beschreibung",invoicePosition.Description},
             {"Menge",convertedQuantity},
             {"Einheit",invoicePosition.UnitOfMeasure},
-            {"Einheitspreis",invoicePosition.UnitPrice}
+            {"Einheitspreis",invoicePosition.UnitPrice},
+            {"user_id",_userContext.CurrentUser.Id}
         };
         if (transaction != null)
         {

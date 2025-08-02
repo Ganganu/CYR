@@ -12,10 +12,10 @@
   Title="CYR"
   Width="1500"
   Height="850"
-  WindowState="Maximized"
   d:DataContext="{d:DesignInstance Type=vm:MainViewModel,
                                    IsDesignTimeCreatable=False}"
   Loaded="Window_Loaded"
+  WindowState="Maximized"
   mc:Ignorable="d">
   <Grid>
     <Grid.ColumnDefinitions>
@@ -114,15 +114,27 @@
         </StackPanel>
       </Grid>
       <Grid Grid.Row="2">
-        <StackPanel Orientation="Vertical">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
           <cc:IconButton
+            Grid.Row="0"
+            ButtonText="{Binding User.Username}"
+            IconKind="User" GroupName="NavigationButtons"/>
+          <cc:IconButton
+            Grid.Row="1"
             ButtonText="Einstellungen"
             Command="{Binding NavigateToSettingsViewCommand}"
             GroupName="NavigationButtons"
             IconKind="Settings" />
-          <cc:LinkButton ButtonText="Hilfe" IconKind="QuestionMark" />
-
-        </StackPanel>
+          <cc:LinkButton
+            Grid.Row="2"
+            ButtonText="Hilfe"
+            IconKind="QuestionMark" />
+        </Grid>
       </Grid>
     </Grid>
   </Grid>

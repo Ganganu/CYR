@@ -2,6 +2,7 @@
 using CYR.Core;
 using CYR.Invoice.InvoiceModels;
 using CYR.Messages;
+using CYR.User;
 using System.Data.Common;
 using System.Data.SQLite;
 
@@ -10,10 +11,11 @@ namespace CYR.Invoice.InvoiceRepositorys;
 public class InvoiceRepository : IInvoiceRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
-
-    public InvoiceRepository(IDatabaseConnection databaseConnection)
+    private readonly UserContext _userContext;
+    public InvoiceRepository(IDatabaseConnection databaseConnection, UserContext userContext)
     {
         _databaseConnection = databaseConnection;
+        _userContext = userContext;
     }
 
     public async Task<bool> DeleteAsync(InvoiceModel invoice)
@@ -21,17 +23,19 @@ public class InvoiceRepository : IInvoiceRepository
         bool succes = false;
         await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
         {
-            string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer";
+            string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer and user_id = @user_id";
             var deletePositionsParams = new Dictionary<string, object>
             {
-                { "@Rechnungsnummer", invoice.InvoiceNumber }
+                { "@Rechnungsnummer", invoice.InvoiceNumber },
+                { "@user_id", _userContext.CurrentUser.Id }
             };
             await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deletePositionsQuery, deletePositionsParams);
 
-            string deleteInvoiceQuery = "delete from Rechnungen where Rechnungsnummer = @Rechnungsnummer";
+            string deleteInvoiceQuery = "delete from Rechnungen where Rechnungsnummer = @Rechnungsnummer and user_id = @user_id";
             var deleteInvoiceParams = new Dictionary<string, object>
             {
-                { "@Rechnungsnummer", invoice.InvoiceNumber }
+                { "@Rechnungsnummer", invoice.InvoiceNumber },
+                { "@user_id", _userContext.CurrentUser.Id }
             };
             int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deleteInvoiceQuery, deleteInvoiceParams);
             succes = clientAffectedRows > 0;
@@ -43,10 +47,14 @@ public class InvoiceRepository : IInvoiceRepository
     {
         List<InvoiceModel> invoiceList = new List<InvoiceModel>();
         InvoiceModel invoice;
-        string query = "SELECT * FROM Rechnungen " +
-            "INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer " +
-            "INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer";
-        using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
+        string query = @"SELECT * FROM Rechnungen
+            INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer
+            INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE user_id = @user_id";
+        Dictionary<string, object> queryParameters = new()
+        {
+            {"user_id",_userContext.CurrentUser.Id }
+        };
+        using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query,queryParameters))
         {
             while (await reader.ReadAsync())
             {
@@ -80,10 +88,11 @@ public class InvoiceRepository : IInvoiceRepository
         InvoiceModel invoiceModel = new();
         string query = "SELECT * FROM Rechnungen " +
             "INNER JOIN Kunden ON Rechnungen.Kundennummer = Kunden.Kundennummer " +
-            "INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE Rechnungsnummer = @Rechnungsnummer";
+            "INNER JOIN Adresse ON Adresse.Kundennummer = Kunden.Kundennummer WHERE Rechnungsnummer = @Rechnungsnummer AND user_id = @user_id";
         Dictionary<string, object> queryParameters = new()
         {
-            {"Rechnungsnummer",id }
+            {"Rechnungsnummer",id },
+            {"user_id",_userContext.CurrentUser.Id }
         };
         using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query, queryParameters))
         {
@@ -114,9 +123,9 @@ public class InvoiceRepository : IInvoiceRepository
     public async Task InsertAsync(InvoiceModel invoice, SQLiteTransaction? transaction = null)
     {
         string query = "INSERT INTO Rechnungen (Rechnungsnummer,Kundennummer,Rechnungsdatum,Fälligkeitsdatum," +
-            "Nettobetrag, Bruttobetrag,Status, commentstop, commentsbottom) " +
+            "Nettobetrag, Bruttobetrag,Status, commentstop, commentsbottom, user_id) " +
             "VALUES (@Rechnungsnummer,@Kundennummer,@Rechnungsdatum,@Fälligkeitsdatum," +
-            "@Nettobetrag, @Bruttobetrag,@Status,@commentstop, @commentsbottom)";
+            "@Nettobetrag, @Bruttobetrag,@Status,@commentstop, @commentsbottom, @user_id)";
 
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
@@ -128,7 +137,8 @@ public class InvoiceRepository : IInvoiceRepository
             {"Bruttobetrag",invoice.GrossAmount },
             {"Status",invoice.State },
             {"commentstop", invoice.CommentsTop},
-            {"commentsbottom", invoice.CommentsBottom}
+            {"commentsbottom", invoice.CommentsBottom},
+            {"user_id", _userContext.CurrentUser.Id }
         };
         if (transaction != null)
         {
@@ -142,11 +152,10 @@ public class InvoiceRepository : IInvoiceRepository
 
     public async Task UpdateAsync(InvoiceModel invoice)
     {
-        string query = @"
-                                UPDATE Rechnungen 
-                                SET Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum, 
+        string query = @"UPDATE Rechnungen 
+                        SET Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum, 
                                     Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,  
-                                    commentstop = @commentstop, commentsbottom = @commentsbottom
+                                    commentstop = @commentstop, commentsbottom = @commentsbottom, user_id = @user_id
                                 WHERE Rechnungsnummer = @Rechnungsnummer";
 
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
@@ -159,7 +168,8 @@ public class InvoiceRepository : IInvoiceRepository
             {"Bruttobetrag",invoice.GrossAmount },
             {"Status", (int)invoice.State },
             {"commentstop", invoice.CommentsTop},
-            {"commentsbottom", invoice.CommentsBottom}
+            {"commentsbottom", invoice.CommentsBottom},
+            {"user_id", _userContext.CurrentUser.Id}
 
         };
 
@@ -195,17 +205,19 @@ public class InvoiceRepository : IInvoiceRepository
 
         await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
         {
-            string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer";
+            string deletePositionsQuery = "delete from Rechnungspositionen where Rechnungsnummer = @Rechnungsnummer and user_id = @user_id";
             var deletePositionsParams = new Dictionary<string, object>
             {
-                { "@Rechnungsnummer", invoice.InvoiceNumber }
+                { "@Rechnungsnummer", invoice.InvoiceNumber },
+                { "@user_id", _userContext.CurrentUser.Id }
+
             };
             await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deletePositionsQuery, deletePositionsParams);
 
             foreach (var pos in invoice.Items)
             {
-                string insertNewPositions = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge,Einheit,Einheitspreis)" +
-                 " VALUES (@Rechnungsnummer,@Beschreibung,@Menge,@Einheit,@Einheitspreis)";
+                string insertNewPositions = "INSERT INTO Rechnungspositionen (Rechnungsnummer,Beschreibung,Menge,Einheit,Einheitspreis,user_id)" +
+                 " VALUES (@Rechnungsnummer,@Beschreibung,@Menge,@Einheit,@Einheitspreis, @user_id)";
                 var convertedQuantity = Convert.ToDecimal(pos.Quantity);
                 var insertNewPositionsParams = new Dictionary<string, object>
                 {
@@ -213,7 +225,8 @@ public class InvoiceRepository : IInvoiceRepository
                     { "@Beschreibung", pos.OrderItem.Description },
                     { "@Menge", convertedQuantity },
                     { "@Einheit", pos.UnitOfMeasure.Name },
-                    { "@Einheitspreis", pos.Price }
+                    { "@Einheitspreis", pos.Price },
+                    { "@user_id", _userContext.CurrentUser.Id }
                 };
                 nettAmount += pos.TotalPrice;
                 await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, insertNewPositions, insertNewPositionsParams);
@@ -227,8 +240,8 @@ public class InvoiceRepository : IInvoiceRepository
                 grossAmount = nettAmount;
             }
             string updateInvoice = "update Rechnungen set Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum," +
-            "Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,commentstop = @commentstop, commentsbottom = @commentsbottom  " +
-            " where Rechnungsnummer = @Rechnungsnummer";
+            "Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,commentstop = @commentstop, commentsbottom = @commentsbottom" +
+            " where Rechnungsnummer = @Rechnungsnummer and user_id = @user_id";
             var updateInvoiceQueryParameters = new Dictionary<string, object>
             {
                 {"Rechnungsnummer",invoice.InvoiceNumber },
@@ -239,7 +252,8 @@ public class InvoiceRepository : IInvoiceRepository
                 {"Bruttobetrag",grossAmount },
                 {"Status", (int)invoice.State },
                 {"commentstop", invoice.CommentsTop},
-                {"commentsbottom", invoice.CommentsBottom}
+                {"commentsbottom", invoice.CommentsBottom},
+                {"user_id", _userContext.CurrentUser.Id}
             };
             int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateInvoice, updateInvoiceQueryParameters);
             succes = clientAffectedRows > 0;

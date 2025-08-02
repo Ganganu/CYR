@@ -20,6 +20,7 @@ using CYR.OrderItems.OrderItemViews;
 using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
+using CYR.User;
 using CYR.View;
 using CYR.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,6 +78,8 @@ public partial class App : Application
 
         services.AddSingleton<StatisticOverviewRepository>();
         services.AddSingleton<StatisticChartRepository>();
+        services.AddSingleton<UserRepository>();
+        services.AddSingleton<UserContext>();
 
         services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
         services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();
