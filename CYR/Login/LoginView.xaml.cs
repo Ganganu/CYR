@@ -27,9 +27,4 @@ public partial class LoginView : Window
     {
         txtusername.Focus();
     }
-
-    private void Window_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-
-    }
 }
