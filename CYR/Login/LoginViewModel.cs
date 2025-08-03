@@ -1,16 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Threading.Tasks;
 
 namespace CYR.Login;
 
 public partial class LoginViewModel : ObservableRecipient
 {
     private readonly LoginRepository _loginRepository;
-
-    // Event to notify when login is successful
-    public event EventHandler LoginSuccessful;
 
     public LoginViewModel(LoginRepository loginRepository)
     {
@@ -48,8 +43,6 @@ public partial class LoginViewModel : ObservableRecipient
             if (loginResult)
             {
                 IsViewVisible = false;
-                // Fire the login successful event
-                LoginSuccessful?.Invoke(this, EventArgs.Empty);
             }
             else
             {

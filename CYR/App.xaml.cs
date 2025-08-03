@@ -59,7 +59,7 @@ public partial class App : Application
         services.AddSingleton<CreateClientViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<SettingsView>();
-        services.AddTransient<LoginView>();
+        services.AddTransient<LoginView>(provider => new LoginView { DataContext = provider.GetRequiredService<LoginViewModel>() });
         services.AddTransient<LoginViewModel>();
         services.AddTransient<LoginRepository>();
         services.AddTransient<UpdateClientViewModel>();
@@ -117,7 +117,20 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-        mainWindow.Show();
+        LoginView loginView = _serviceProvider.GetRequiredService<LoginView>();
+        loginView.Show();
+
+        DependencyPropertyChangedEventHandler handler = null;
+        handler = (s, ev) =>
+        {
+            if (!loginView.IsVisible && loginView.IsLoaded)
+            {
+                loginView.IsVisibleChanged -= handler; // Unsubscribe the actual handler
+                MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+                mainWindow.Show();
+                loginView.Dispatcher.InvokeAsync(() => loginView.Close());
+            }
+        };
+        loginView.IsVisibleChanged += handler;
     }
 }

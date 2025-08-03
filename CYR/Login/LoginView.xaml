@@ -18,7 +18,9 @@
   DataContextChanged="Window_DataContextChanged"
   WindowStartupLocation="CenterScreen"
   WindowStyle="None"
-  mc:Ignorable="d">
+  mc:Ignorable="d"
+  d:DataContext="{d:DesignInstance Type=local:LoginViewModel,
+                                 IsDesignTimeCreatable=False}">
   <Window.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     
