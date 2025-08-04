@@ -161,59 +161,153 @@
           <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Margin="20,0,20,0">
-          <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="auto" />
-              <RowDefinition Height="auto" />
-              <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <TextBlock
-              Grid.Row="0"
-              Margin="0,20,0,0"
-              HorizontalAlignment="Center"
-              Foreground="#aeadb2"
-              Text="Jetzt anmelden, um zu starten." />
-            <StackPanel Grid.Row="1" Margin="20,100,20,0">
-              <TextBox
-                x:Name="txtusername"
-                Grid.Column="1"
-                Margin="0,0,0,10"
-                materialDesign:HintAssist.Foreground="Black"
-                materialDesign:HintAssist.Hint="Benutzername"
-                materialDesign:HintAssist.IsFloating="False"
-                Background="#f3f6fb"
-                BorderThickness="0.5"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
-              <PasswordBox
-                Grid.Column="1"
-                Margin="0,0,0,10"
-                materialDesign:HintAssist.Foreground="Black"
-                materialDesign:HintAssist.Hint="Passwort"
-                materialDesign:HintAssist.IsFloating="False"
-                materialDesign:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Background="#f3f6fb"
-                BorderThickness="0.5"
-                Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
-              <CheckBox
-                Content="Angemeldet bleiben"
-                FontSize="15"
-                Foreground="#aeadb2"
-                IsChecked="{Binding IsStayLoggedInChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+          <Grid x:Name="LoginGrid">
+            <Grid.Style>
+              <Style TargetType="Grid">
+                <Setter Property="Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsRegistering}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Grid.Style>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+              </Grid.RowDefinitions>
               <TextBlock
-                Margin="0,10,0,0"
-                FontSize="13"
-                Foreground="Red"
-                Text="{Binding LoginError}" />
-            </StackPanel>
-            <Grid Grid.Row="2">
-              <Button
-                Height="40"
-                Margin="20,100,20,0"
-                Command="{Binding LoginCommand}"
-                CommandParameter="{Binding}"
-                Content="Anmelden" />
+                Grid.Row="0"
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center"
+                Foreground="#aeadb2"
+                Text="Jetzt anmelden, um zu starten." />
+              <StackPanel Grid.Row="1" Margin="20,100,20,0">
+                <TextBox
+                  x:Name="txtusername"
+                  Grid.Column="1"
+                  Margin="0,0,0,10"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Benutzername"
+                  materialDesign:HintAssist.IsFloating="False"
+                  Background="#f3f6fb"
+                  BorderThickness="0.5"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+                <PasswordBox
+                  Grid.Column="1"
+                  Margin="0,0,0,10"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Passwort"
+                  materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Background="#f3f6fb"
+                  BorderThickness="0.5"
+                  Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
+                <Grid>
+                  <CheckBox
+                    Content="Angemeldet bleiben"
+                    FontSize="15"
+                    Foreground="#aeadb2"
+                    IsChecked="{Binding IsStayLoggedInChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                  <Button
+                    HorizontalAlignment="Right"
+                    Command="{Binding CreateUserCommand}"
+                    Content="Konto erstellen"
+                    Style="{StaticResource MaterialDesignFlatButton}" />
+                </Grid>
+
+                <TextBlock
+                  Margin="0,10,0,0"
+                  FontSize="13"
+                  Foreground="Red"
+                  Text="{Binding LoginError}" />
+              </StackPanel>
+              <Grid Grid.Row="2">
+                <Button
+                  Height="40"
+                  Margin="20,100,20,0"
+                  Command="{Binding LoginCommand}"
+                  CommandParameter="{Binding}"
+                  Content="Anmelden" />
+              </Grid>
             </Grid>
+          </Grid>
+          <Grid x:Name="RegisterGrid">
+            <Grid.Style>
+              <Style TargetType="Grid">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsRegistering}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Grid.Style>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+              </Grid.RowDefinitions>
+              <TextBlock
+                Grid.Row="0"
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center"
+                Foreground="#aeadb2"
+                Text="Neues Konto erstellen" />
+              <StackPanel Grid.Row="1" Margin="20,100,20,0">
+                <TextBox
+                  Grid.Column="1"
+                  Margin="0,0,0,10"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Benutzername"
+                  materialDesign:HintAssist.IsFloating="False"
+                  Background="#f3f6fb"
+                  BorderThickness="0.5"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+                <PasswordBox
+                  Grid.Column="1"
+                  Margin="0,0,0,10"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Passwort"
+                  materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:PasswordBoxAssist.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Background="#f3f6fb"
+                  BorderThickness="0.5"
+                  Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
+                <Grid>
+                  <CheckBox
+                    Content="Angemeldet bleiben"
+                    FontSize="15"
+                    Foreground="#aeadb2"
+                    IsChecked="{Binding IsStayLoggedInChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                  <Button
+                    HorizontalAlignment="Right"
+                    Command="{Binding CreateUserCommand}"
+                    Content="Konto erstellen"
+                    Style="{StaticResource MaterialDesignFlatButton}" />
+                </Grid>
+
+                <TextBlock
+                  Margin="0,10,0,0"
+                  FontSize="13"
+                  Foreground="Red"
+                  Text="{Binding LoginError}" />
+              </StackPanel>
+              <Grid Grid.Row="2">
+                <Button
+                  Height="40"
+                  Margin="20,100,20,0"
+                  Command="{Binding LoginCommand}"
+                  CommandParameter="{Binding}"
+                  Content="Konto erstellen" />
+              </Grid>
+            </Grid>
+
           </Grid>
         </Grid>
       </Grid>

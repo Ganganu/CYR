@@ -33,6 +33,8 @@ public partial class LoginViewModel : ObservableRecipient
     private string _loginError;
     [ObservableProperty]
     private bool _isStayLoggedInChecked;
+    [ObservableProperty]
+    private bool _isRegistering;
 
 
     public async void TryAutoLogin()
@@ -93,4 +95,9 @@ public partial class LoginViewModel : ObservableRecipient
         }
     }
 
+    [RelayCommand]
+    private void CreateUser()
+    {
+        IsRegistering = true;
+    }
 }
