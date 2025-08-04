@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dashboard.DashboardViewModels;
 using CYR.Invoice.InvoiceViewModels;
+using CYR.Login;
 using CYR.Messages;
 using CYR.Services;
 using CYR.User;
@@ -15,7 +16,10 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
 {
     private readonly UserRepository _userRepository;
     private readonly UserContext _userContext;
-    public MainViewModel(INavigationService navigationService, UserRepository userRepository, UserContext userContext)
+    private readonly LoginRepository _loginRepository;
+    private readonly ILoginTokenService _loginTokenService;
+
+    public MainViewModel(INavigationService navigationService, UserRepository userRepository, UserContext userContext, LoginRepository loginRepository, ILoginTokenService loginTokenService)
     {
         Navigation = navigationService;
         Messenger.RegisterAll(this);
@@ -25,6 +29,8 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
 
         GetUser();
         Navigation.NavigateTo<DashboardViewModel>();
+        _loginRepository = loginRepository;
+        _loginTokenService = loginTokenService;
     }
 
     [ObservableProperty]
@@ -88,4 +94,24 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
         User = user;
         _userContext.CurrentUser = user;
     }
+
+    [RelayCommand]
+    private async Task Logout()
+    {
+        if (_userContext.CurrentUser is null)
+            return;
+
+        await _loginRepository.LogoutAsync(_userContext.CurrentUser.Username);
+
+        _loginTokenService.DeleteToken();
+
+        _userContext.CurrentUser = null;
+        var exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+        if (!string.IsNullOrEmpty(exePath))
+        {
+            System.Diagnostics.Process.Start(exePath);
+        }
+        Application.Current.Shutdown();
+    }
+
 }

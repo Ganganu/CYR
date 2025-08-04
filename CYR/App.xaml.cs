@@ -101,6 +101,8 @@ public partial class App : Application
         services.AddSingleton<InvoiceDocument>();
         services.AddSingleton<IRetrieveClients, RetrieveClients>();
         services.AddSingleton<IConfigurationService, ConfigurationService>();
+        services.AddTransient<IPasswordHasherService, PasswordHasherService>();
+        services.AddTransient<ILoginTokenService, LoginTokenService>();
         services.AddSingleton<IDatabaseConnection, SQLiteConnectionManager>((provider) => new SQLiteConnectionManager(connectionString));
         services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
         _serviceProvider = services.BuildServiceProvider();
@@ -114,23 +116,45 @@ public partial class App : Application
         DialogService.RegisterDialog<ItemsListView, ItemsListDialogViewModel>(() => [new XMLService()]);
         DialogService.RegisterDialog<SaveCommentsDialogView, SaveCommentsDialogViewModel>(() => [new XMLService()]);
     }
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        LoginView loginView = _serviceProvider.GetRequiredService<LoginView>();
+        var loginTokenService = _serviceProvider.GetRequiredService<ILoginTokenService>();
+        var loginRepository = _serviceProvider.GetRequiredService<LoginRepository>();
+
+        var tokenData = loginTokenService.LoadToken();
+        if (tokenData != null)
+        {
+            bool success = await loginRepository.LoginWithToken(tokenData.Value.Username, tokenData.Value.Token);
+            if (success)
+            {
+                var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+                mainWindow.Show();
+                return;
+            }
+            else
+            {
+                loginTokenService.DeleteToken(); // bad token
+            }
+        }
+
+        // Show login if auto-login failed or no token
+        var loginView = _serviceProvider.GetRequiredService<LoginView>();
         loginView.Show();
 
+        // Listen to IsVisibleChanged to transition after manual login
         DependencyPropertyChangedEventHandler handler = null;
         handler = (s, ev) =>
         {
             if (!loginView.IsVisible && loginView.IsLoaded)
             {
-                loginView.IsVisibleChanged -= handler; // Unsubscribe the actual handler
-                MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+                loginView.IsVisibleChanged -= handler;
+                var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
                 mainWindow.Show();
                 loginView.Dispatcher.InvokeAsync(() => loginView.Close());
             }
         };
         loginView.IsVisibleChanged += handler;
     }
+
 }
