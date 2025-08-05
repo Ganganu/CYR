@@ -126,7 +126,7 @@
           </Grid.RowDefinitions>
           <cc:IconButton
             Grid.Row="0"
-            ButtonText="{Binding User.Username}"
+            ButtonText="{Binding UserContext.CurrentUser.Username}"
             GroupName="NavigationButtons"
             IconKind="User" />
           <cc:IconButton

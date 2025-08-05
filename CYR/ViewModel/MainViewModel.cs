@@ -14,24 +14,23 @@ namespace CYR.ViewModel;
 
 public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBackSource>, IRecipient<SnackbarMessage>
 {
-    private readonly UserRepository _userRepository;
-    private readonly UserContext _userContext;
+    //private readonly UserContext _userContext;
     private readonly LoginRepository _loginRepository;
     private readonly ILoginTokenService _loginTokenService;
 
-    public MainViewModel(INavigationService navigationService, UserRepository userRepository, UserContext userContext, LoginRepository loginRepository, ILoginTokenService loginTokenService)
+    public MainViewModel(INavigationService navigationService, UserContext userContext, LoginRepository loginRepository, ILoginTokenService loginTokenService)
     {
         Navigation = navigationService;
         Messenger.RegisterAll(this);
         ShowSnackbar = Visibility.Collapsed;
-        _userRepository = userRepository;
         _userContext = userContext;
 
-        GetUser();
         Navigation.NavigateTo<DashboardViewModel>();
         _loginRepository = loginRepository;
         _loginTokenService = loginTokenService;
     }
+    [ObservableProperty]
+    private UserContext _userContext;
 
     [ObservableProperty]
     private Visibility _showSnackbar;
@@ -86,13 +85,6 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
         SnackbarMessage = message.Message;
         ShowSnackbar = Visibility.Visible;
         SnackbarIcon = message.Icon;
-    }
-
-    private async Task GetUser()
-    {
-        var user = await _userRepository.GetUserAsync("admin", "admin");
-        User = user;
-        _userContext.CurrentUser = user;
     }
 
     [RelayCommand]

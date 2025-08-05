@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CYR.Dashboard.DashboardViewModels;
-using CYR.Services;
+using CYR.User;
 
 namespace CYR.Login;
 
@@ -10,10 +9,12 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
 {
     private readonly LoginRepository _loginRepository;
     private readonly ILoginTokenService _loginTokenService;
+    private readonly UserContext _userContext;
     private readonly RegisterViewModel _registerViewModel;
+    private readonly UserRepository _userRepository;
 
 
-    public LoginViewModel(LoginRepository loginRepository, ILoginTokenService loginTokenService, RegisterViewModel registerViewModel)
+    public LoginViewModel(LoginRepository loginRepository, ILoginTokenService loginTokenService, RegisterViewModel registerViewModel, UserContext userContext, UserRepository userRepository)
     {
         _loginRepository = loginRepository;
         IsViewVisible = true;
@@ -21,6 +22,8 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
         TryAutoLogin();
         _registerViewModel = registerViewModel;
         Messenger.RegisterAll(this);
+        _userContext = userContext;
+        _userRepository = userRepository;
     }
 
     public RegisterViewModel RegisterViewModel => _registerViewModel;
@@ -74,9 +77,10 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
         try
         {
             bool loginResult = await _loginRepository.Login(Username, Password);
-
             if (loginResult)
             {
+                var user = await _userRepository.GetUserAsync(Username);
+                _userContext.CurrentUser = user;
                 if (IsStayLoggedInChecked)
                 {
                     string token = Guid.NewGuid().ToString();
@@ -84,8 +88,7 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
 
                     await _loginRepository.RememberTokenAsync(Username, token);
                 }
-
-                IsViewVisible = false;
+                IsViewVisible = false;   
             }
             else
             {

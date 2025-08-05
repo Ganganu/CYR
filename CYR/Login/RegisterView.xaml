@@ -16,7 +16,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
       </Grid.RowDefinitions>
       <TextBlock
         Grid.Row="0"
@@ -24,7 +24,7 @@
         HorizontalAlignment="Center"
         Foreground="#aeadb2"
         Text="Neues Konto erstellen" />
-      <StackPanel Grid.Row="1" Margin="20,100,20,0">
+      <StackPanel Grid.Row="1" Margin="20,50,20,0">
         <TextBox
           Grid.Column="1"
           Margin="0,0,0,10"
@@ -55,11 +55,21 @@
           Background="#f3f6fb"
           BorderThickness="0.5"
           Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
+        <ComboBox
+          ItemsSource="{Binding Roles}"
+          materialDesign:HintAssist.Foreground="Black"
+          materialDesign:HintAssist.Hint="Role"
+          materialDesign:HintAssist.IsFloating="False"
+          Background="#f3f6fb"
+          BorderThickness="0.5"
+          SelectedItem="{Binding SelectedRole}"
+          Style="{StaticResource MaterialDesignOutlinedComboBox}" />
         <TextBlock
           Margin="0,10,0,0"
           FontSize="13"
           Foreground="Red"
-          Text="{Binding LoginError}" />
+          Text="{Binding ErrorText}"
+          TextWrapping="Wrap" />
       </StackPanel>
       <Grid Grid.Row="2">
         <Grid.ColumnDefinitions>
@@ -69,13 +79,13 @@
         <Button
           Grid.Column="0"
           Height="40"
-          Margin="20,100,0,0"
+          Margin="20,20,0,0"
           Command="{Binding CreateUserCommand}"
           Content="Konto erstellen" />
         <Button
           Grid.Column="1"
           Height="40"
-          Margin="5,100,20,0"
+          Margin="5,20,20,0"
           Command="{Binding NavigateBackCommand}"
           Content="Abbrechen"
           Style="{StaticResource MaterialDesignFlatButton}" />
