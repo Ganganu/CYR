@@ -1,24 +1,29 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CYR.Dashboard.DashboardViewModels;
 using CYR.Services;
 
 namespace CYR.Login;
 
-public partial class LoginViewModel : ObservableRecipient
+public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateToLoginMessage>
 {
     private readonly LoginRepository _loginRepository;
-    private readonly IPasswordHasherService _passwordHasherService;
     private readonly ILoginTokenService _loginTokenService;
+    private readonly RegisterViewModel _registerViewModel;
 
 
-    public LoginViewModel(LoginRepository loginRepository, IPasswordHasherService passwordHasherService, ILoginTokenService loginTokenService)
+    public LoginViewModel(LoginRepository loginRepository, ILoginTokenService loginTokenService, RegisterViewModel registerViewModel)
     {
         _loginRepository = loginRepository;
         IsViewVisible = true;
-        _passwordHasherService = passwordHasherService;
         _loginTokenService = loginTokenService;
         TryAutoLogin();
+        _registerViewModel = registerViewModel;
+        Messenger.RegisterAll(this);
     }
+
+    public RegisterViewModel RegisterViewModel => _registerViewModel;
 
     [ObservableProperty]
     private string _username;
@@ -74,11 +79,9 @@ public partial class LoginViewModel : ObservableRecipient
             {
                 if (IsStayLoggedInChecked)
                 {
-                    // Generate a token (you can use Guid or server-generated token)
                     string token = Guid.NewGuid().ToString();
                     _loginTokenService.SaveToken(Username, token);
 
-                    // Optionally tell server to associate token with user
                     await _loginRepository.RememberTokenAsync(Username, token);
                 }
 
@@ -99,5 +102,10 @@ public partial class LoginViewModel : ObservableRecipient
     private void CreateUser()
     {
         IsRegistering = true;
+    }
+
+    public void Receive(NavigateToLoginMessage message)
+    {
+        IsRegistering = false;
     }
 }
