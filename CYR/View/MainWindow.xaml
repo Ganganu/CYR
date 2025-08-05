@@ -142,8 +142,8 @@
           <Button
             Grid.Row="3"
             HorizontalAlignment="Left"
-            Style="{StaticResource MaterialDesignFlatButton}"
-            Command="{Binding LogoutCommand}">
+            Command="{Binding LogoutCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
               <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon

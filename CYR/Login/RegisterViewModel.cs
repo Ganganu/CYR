@@ -12,7 +12,7 @@ public partial class RegisterViewModel : ObservableRecipient
     public RegisterViewModel(UserRepository userRepository)
     {
         Roles = ["Admin", "User"];
-        ErrorTexts = new List<string>();
+        ErrorTexts = [];
         _userRepository = userRepository;
     }
 

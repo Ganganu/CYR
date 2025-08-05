@@ -57,7 +57,7 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
             }
             else
             {
-                _loginTokenService.DeleteToken(); // invalid token
+                _loginTokenService.DeleteToken();
             }
         }
     }
@@ -106,7 +106,10 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
     {
         IsRegistering = true;
     }
-
+    /// <summary>
+    /// Gesendet von RegisterViewModel
+    /// </summary>
+    /// <param name="message"></param>
     public void Receive(NavigateToLoginMessage message)
     {
         IsRegistering = false;

@@ -37,6 +37,7 @@ public partial class App : Application
 {
     private readonly ServiceProvider _serviceProvider;
     private string connectionString = "Data Source=.\\cyr.db;Version=3;foreign_keys=on";
+    private UserContext _userContext;
     public App()
     {
         QuestPDF.Settings.License = LicenseType.Community;
@@ -130,6 +131,10 @@ public partial class App : Application
             bool success = await loginRepository.LoginWithToken(tokenData.Value.Username, tokenData.Value.Token);
             if (success)
             {
+                var userRepository = _serviceProvider.GetRequiredService<UserRepository>();
+                var user = await userRepository.GetUserAsync(tokenData.Value.Username);
+                _userContext = _serviceProvider.GetRequiredService<UserContext>();
+                _userContext.CurrentUser = user;
                 var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
                 mainWindow.Show();
                 return;
