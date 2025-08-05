@@ -279,19 +279,6 @@
                   Background="#f3f6fb"
                   BorderThickness="0.5"
                   Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
-                <Grid>
-                  <CheckBox
-                    Content="Angemeldet bleiben"
-                    FontSize="15"
-                    Foreground="#aeadb2"
-                    IsChecked="{Binding IsStayLoggedInChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                  <Button
-                    HorizontalAlignment="Right"
-                    Command="{Binding CreateUserCommand}"
-                    Content="Konto erstellen"
-                    Style="{StaticResource MaterialDesignFlatButton}" />
-                </Grid>
-
                 <TextBlock
                   Margin="0,10,0,0"
                   FontSize="13"
@@ -299,12 +286,24 @@
                   Text="{Binding LoginError}" />
               </StackPanel>
               <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="2*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Button
+                  Grid.Column="0"
                   Height="40"
-                  Margin="20,100,20,0"
+                  Margin="20,100,0,0"
                   Command="{Binding LoginCommand}"
                   CommandParameter="{Binding}"
                   Content="Konto erstellen" />
+                <Button
+                  Grid.Column="1"
+                  Height="40"
+                  Margin="5,100,20,0" Style="{StaticResource MaterialDesignFlatButton}"
+                  Command="{Binding LoginCommand}"
+                  CommandParameter="{Binding}"
+                  Content="Abbrechen" />
               </Grid>
             </Grid>
 

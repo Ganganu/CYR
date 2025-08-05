@@ -59,6 +59,8 @@ public partial class App : Application
         services.AddSingleton<CreateClientViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<SettingsView>();
+        services.AddSingleton<RegisterView>();
+        services.AddSingleton<RegisterViewModel>();
         services.AddTransient<LoginView>(provider => new LoginView { DataContext = provider.GetRequiredService<LoginViewModel>() });
         services.AddTransient<LoginViewModel>();
         services.AddTransient<LoginRepository>();
