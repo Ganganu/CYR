@@ -1,25 +1,35 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Settings;
+using CYR.User;
 
 namespace CYR.Dashboard.DashboardViewModels;
 
 public partial class DashboardUserViewModel : ObservableRecipient
 {
     private readonly ISelectImageService _selectImageService;
-    public DashboardUserViewModel(ISelectImageService selectImageService)
+    private readonly UserRepository _userRepository;
+    private readonly UserContext _userContext;
+    public DashboardUserViewModel(ISelectImageService selectImageService, UserRepository userRepository, UserContext userContext)
     {
         _selectImageService = selectImageService;
+        _userRepository = userRepository;
+        _userContext = userContext;
     }
 
+    [ObservableProperty]
+    private User.User? _user;
+    [ObservableProperty]
+    private Company _company;
     [ObservableProperty]
     private string? _userLogo;
 
     [RelayCommand]
-    private void ChangeAvatorFoto()
+    private async Task ChangeAvatorFoto()
     {
         var image = _selectImageService.SelectStringImage();
         UserLogo = image;
+        //var succes = _userRepository.UpdateAsync();
     }
 
 }

@@ -56,7 +56,7 @@ public class UserRepository
         return affectedRows;
     }
 
-    public async Task<bool> UpdateAsync(User userModel, Company companyModel)
+    public async Task<bool> UpdateUserAndCompanyInTransactionAsync(User userModel, Company companyModel)
     {
         if (userModel is null) return false;
         if (companyModel is null) return false;
