@@ -11,7 +11,7 @@
   <ItemGroup>
     <None Remove="cyr.db" />
     <None Remove="Ressources\IGF.png" />
-    <None Remove="Ressources\logo.svg" />
+    <None Remove="Ressources\user.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,9 +21,6 @@
     <Content Include="Ressources\IGF.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Ressources\logo.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +37,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\EasyControls\EasyControls\EasyControls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Ressources\user.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
