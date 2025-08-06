@@ -40,6 +40,7 @@ public partial class StatisticChartViewModel : ObservableRecipient
 
     private List<SalesPerMonth> FillMissingMonths(List<SalesPerMonth> salesData)
     {
+        if (salesData is null) return null;
         var completeData = new List<SalesPerMonth>();
 
         var salesLookup = salesData.ToDictionary(s => s.Month, s => s.Amount);
@@ -55,6 +56,7 @@ public partial class StatisticChartViewModel : ObservableRecipient
 
     private void CreateSalesPerMonthChart(List<SalesPerMonth> salesData)
     {
+        if(salesData is null) return;
         var plotModel = new PlotModel
         {
             Title = "Umsatz Monatlich",

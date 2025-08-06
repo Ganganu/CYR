@@ -15,24 +15,28 @@ public class StatisticOverviewRepository
 
     public async Task<int> GetNumberOfPaidInvoices()
     {
+        if (_userContext.CurrentUser is null) return 0;
         string query = @$"select count(*) from Rechnungen where status = 1 and user_id = {_userContext.CurrentUser.Id}";
         int numberOfPaidInvoices = await _databaseConnection.ExecuteScalarAsync<int>(query);
         return numberOfPaidInvoices;
     }
     public async Task<int> GetNumberOfUnpaidInvoices()
     {
+        if (_userContext.CurrentUser is null) return 0;
         string query = @$"select count(*) from Rechnungen where status = 0 and user_id = {_userContext.CurrentUser.Id}";
         int numberOfPaidInvoices = await _databaseConnection.ExecuteScalarAsync<int>(query);
         return numberOfPaidInvoices;
     }
     public async Task<decimal> GetSales(string year)
     {
+        if (_userContext.CurrentUser is null) return 0;
         string query = @$"select sum(Bruttobetrag) from Rechnungen where strftime('%Y', Rechnungsdatum) = '{year}' and user_id = {_userContext.CurrentUser.Id}";
         decimal sales = await _databaseConnection.ExecuteScalarAsync<decimal>(query);
         return sales;
     }
     public async Task<decimal> GetSalesActualMonth()
     {
+        if (_userContext.CurrentUser is null) return 0;
         string currentYear = DateTime.Now.ToString("yyyy");
         string currentMonth = DateTime.Now.ToString("MM");
         string query = $@"select sum(Bruttobetrag) 
@@ -45,6 +49,7 @@ public class StatisticOverviewRepository
     }
     public async Task<int> GetInvoicesActualMonth()
     {
+        if (_userContext.CurrentUser is null) return 0;
         string currentYear = DateTime.Now.ToString("yyyy");
         string currentMonth = DateTime.Now.ToString("MM");
         string query = $@"select count(*) 
@@ -57,6 +62,7 @@ public class StatisticOverviewRepository
     }
     public async Task<ClientAndSales> GetClientsAndSales()
     {
+        if (_userContext.CurrentUser is null) return null;
         string query = @$"select k.Name, sum(r.Bruttobetrag) as amount from Kunden k inner join Rechnungen r
                           on k.Kundennummer = r.Kundennummer where k.user_id = {_userContext.CurrentUser.Id}
                           group by r.Kundennummer

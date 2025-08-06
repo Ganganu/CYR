@@ -15,6 +15,7 @@ public class StatisticChartRepository
 
     public async Task<List<SalesPerMonth>> GetSalesPerMonth(int year)
     {
+        if (_userContext.CurrentUser is null) return null;
         List<SalesPerMonth> spm = new List<SalesPerMonth>();
         string query = @$"SELECT 
                         CAST(strftime('%m', Rechnungsdatum) AS INTEGER) AS Monat,

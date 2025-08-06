@@ -70,6 +70,9 @@
       <DataTemplate DataType="{x:Type lv:RegisterViewModel}">
         <lv:RegisterView />
       </DataTemplate>
+      <DataTemplate DataType="{x:Type dvm:DashboardUserViewModel}">
+        <dv:DashboardUserView />
+      </DataTemplate>
 
 
       <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
