@@ -6,4 +6,5 @@ namespace CYR.Settings;
 public interface ISelectImageService
 {
     SnackbarMessage SelectImage();
+    public string? SelectStringImage();
 }

@@ -12,6 +12,18 @@ public class SelectImageService : ISelectImageService
 
     }
 
+    public string? SelectStringImage()
+    {
+        string path = string.Empty;
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog() == true)
+        {
+            path = openFileDialog.FileName;
+        }
+        string logo = path;
+        return logo;
+    }
+
     public SnackbarMessage SelectImage()
     {
         string path = string.Empty;
