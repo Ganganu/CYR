@@ -8,14 +8,10 @@ namespace CYR.Dashboard.DashboardViewModels;
 
 public partial class DashboardUserViewModel : ObservableRecipient
 {
-    private readonly ISelectImageService _selectImageService;
-    private readonly UserRepository _userRepository;
     private readonly UserContext _userContext;
     private readonly UserCompanyRepository _userCompanyRepository;
-    public DashboardUserViewModel(ISelectImageService selectImageService, UserRepository userRepository, UserContext userContext, INavigationService navigation, UserCompanyRepository userCompanyRepository)
+    public DashboardUserViewModel(UserContext userContext, INavigationService navigation, UserCompanyRepository userCompanyRepository)
     {
-        _selectImageService = selectImageService;
-        _userRepository = userRepository;
         _userContext = userContext;
         _navigation = navigation;
         _userCompanyRepository = userCompanyRepository;

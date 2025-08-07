@@ -6,8 +6,269 @@
   xmlns:local="clr-namespace:CYR.User"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  d:DataContext="{d:DesignInstance Type=local:UserViewModel,
+                                   IsDesignTimeCreatable=False}"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
-  <Grid />
+  <Grid Background="White">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="4*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="7*" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+    <Border
+      Grid.Column="0"
+      Margin="10"
+      HorizontalAlignment="Left"
+      BorderBrush="LightGray"
+      BorderThickness="1"
+      CornerRadius="5">
+      <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+        <Button.Content>
+          <StackPanel Orientation="Horizontal">
+            <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
+            <TextBlock HorizontalAlignment="Center" Text="Zurück" />
+          </StackPanel>
+        </Button.Content>
+      </Button>
+    </Border>
+    <Border
+      Grid.Row="1"
+      Grid.Column="1"
+      Background="Transparent"
+      BorderBrush="Orange"
+      BorderThickness="1"
+      CornerRadius="10">
+      <Border.Effect>
+        <DropShadowEffect
+          BlurRadius="10"
+          Direction="250"
+          Opacity="1"
+          ShadowDepth="5"
+          Color="Black" />
+      </Border.Effect>
+    </Border>
+    <Border
+      Grid.Row="1"
+      Grid.Column="1"
+      Background="white"
+      BorderBrush="Orange"
+      BorderThickness="1"
+      CornerRadius="10">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <StackPanel
+          Grid.Row="0"
+          HorizontalAlignment="Center"
+          Orientation="Horizontal">
+          <TextBlock FontSize="25" Text="{Binding UserCompany.Username}" />
+        </StackPanel>
+        <Border
+          Grid.Row="1"
+          Margin="5,20,5,20"
+          BorderBrush="Orange"
+          BorderThickness="2" />
+        <ScrollViewer Grid.Row="2">
+          <StackPanel Grid.Row="2">
+            <Expander Background="#dedede" Header="Benutzerdaten">
+
+              <StackPanel Margin="0,0,0,10" Orientation="Vertical">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                  <Image Width="250" Source="{Binding UserCompany.UserLogo}" />
+                  <Button
+                    Margin="5,10,0,0"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding SelectNewUserLogoCommand}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button.Content>
+                      <materialDesign:PackIcon Kind="Edit" />
+                    </Button.Content>
+                  </Button>
+                </StackPanel>
+                <Label Content="Role" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Role"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  IsReadOnly="True"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.Role, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+            </Expander>
+            <Expander
+              Background="#e9e9e9"
+              Header="Firmendaten"
+              IsExpanded="True">
+              <StackPanel>
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                  <Image Width="250" Source="{Binding UserCompany.CompanyLogo}" />
+                  <Button
+                    Margin="5,10,0,0"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding SelectNewCompanyLogoCommand}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <Button.Content>
+                      <materialDesign:PackIcon Kind="Edit" />
+                    </Button.Content>
+                  </Button>
+                </StackPanel>
+                <Label Content="Firmenname" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Firmenname"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyName, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Straße" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Straße"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyStreet, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Straßennummer" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Straßennummer"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyHouseNumber, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="PLZ" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="PLZ"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyPlz, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Ort" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Ort"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyCity, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Telefonnumer" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Telefonnumer"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyTelefonNumber, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Email-Adresse" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Email-Adresse"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyEmailAddress, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Bankname" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="Bankname"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyBankName, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="IBAN" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="IBAN"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyIban, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="BIC" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="IBAN"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyBic, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="USTIDNR" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="USTIDNR"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyUstidnr, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="STNR" FontSize="16" />
+                <TextBox
+                  Margin="5,5,5,0"
+                  materialDesign:HintAssist.Foreground="Black"
+                  materialDesign:HintAssist.Hint="STNR"
+                  materialDesign:HintAssist.IsFloating="False"
+                  FontSize="15"
+                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                  Text="{Binding UserCompany.CompanyStnr, UpdateSourceTrigger=PropertyChanged}" />
+              </StackPanel>
+            </Expander>
+          </StackPanel>
+        </ScrollViewer>
+      </Grid>
+    </Border>
+    <Grid
+      Grid.Row="2"
+      Grid.Column="1"
+      Margin="0,25,0,25">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+      </Grid.RowDefinitions>
+      <Label
+        Grid.Row="0"
+        Content="{Binding ErrorMessage}"
+        FontSize="15"
+        Foreground="Red" />
+      <Button
+        Grid.Row="1"
+        Grid.Column="0"
+        Margin="0,0,5,0"
+        Command="{Binding DataContext.NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Border}}"
+        Content="Abbrechen" />
+      <Button
+        Grid.Row="1"
+        Grid.Column="1"
+        Margin="5,0,0,0"
+        Command="{Binding UpdateClientCommand}"
+        Content="Aktualisieren" />
+    </Grid>
+  </Grid>
 </UserControl>

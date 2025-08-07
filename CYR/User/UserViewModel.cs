@@ -1,11 +1,43 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CYR.Settings;
 
 namespace CYR.User;
 
 public partial class UserViewModel : ObservableRecipient
 {
-    public UserViewModel()
+    private readonly UserContext _userContext;
+    private readonly UserCompanyRepository _userCompanyRepository;
+    private readonly ISelectImageService _selectImageService;
+    public UserViewModel(UserContext userContext, UserCompanyRepository userCompanyRepository, ISelectImageService selectImageService)
     {
-        
+        _userContext = userContext;
+        _userCompanyRepository = userCompanyRepository;
+        Initialize();
+        _selectImageService = selectImageService;
+    }
+
+    private async Task Initialize()
+    {
+        if (_userContext.CurrentUser is null) return;
+        int id = Convert.ToInt32(_userContext.CurrentUser.Id);
+        UserCompany = await _userCompanyRepository.GetAsync(id);
+    }
+
+
+    [ObservableProperty]
+    private UserCompany? _userCompany;
+
+    [RelayCommand]
+    private void SelectNewUserLogo()
+    {
+        var newLogo = _selectImageService.SelectStringImage();
+        UserCompany = UserCompany with { UserLogo = newLogo};
+    }
+    [RelayCommand]
+    private void SelectNewCompanyLogo()
+    {
+        var newLogo = _selectImageService.SelectStringImage();
+        UserCompany = UserCompany with { CompanyLogo = newLogo };
     }
 }
