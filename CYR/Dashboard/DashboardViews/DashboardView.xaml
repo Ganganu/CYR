@@ -55,7 +55,7 @@
       BorderBrush="Orange"
       BorderThickness="1"
       CornerRadius="5">
-      <Grid />
+      <ContentControl Content="{Binding DashboardInvoiceVM}" />
     </Border>
   </Grid>
 </UserControl>

@@ -78,6 +78,8 @@ public partial class App : Application
         services.AddTransient<DashboardUserView>();
         services.AddTransient<UserView>();
         services.AddTransient<UserViewModel>();
+        services.AddTransient<DashboardInvoiceView>();
+        services.AddTransient<DashboardInvoiceViewModel>();
         services.AddTransient<DashboardUserViewModel>();
         services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
         services.AddSingleton<INavigationService, NavigationService>();

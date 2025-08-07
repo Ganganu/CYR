@@ -151,27 +151,6 @@
                 Style="{StaticResource MaterialDesignFlatButton}" />
             </ComboBoxItem>
           </ComboBox>
-          <!--<Border x:Name="bDDM" CornerRadius="5">
-    <controls:DropDownMenu DropDownTextPart="Status auswählen" FontSize="12">
-      <controls:DropDownMenu.Content>
-        <Border BorderBrush="LightGray" BorderThickness="1">
-          <StackPanel Background="White">
-            <Button
-              Width="{Binding Width, ElementName=bDDM}"
-              Command="{Binding SetInvoiceStateOpenCommand}"
-              Content="Unbezahlt"
-              Style="{StaticResource MaterialDesignFlatButton}" />
-            <Separator Background="LightGray" />
-            <Button
-              Width="{Binding Width, ElementName=bDDM}"
-              Command="{Binding SetInvoiceStateClosedCommand}"
-              Content="Bezahlt"
-              Style="{StaticResource MaterialDesignFlatButton}" />
-          </StackPanel>
-        </Border>
-      </controls:DropDownMenu.Content>
-    </controls:DropDownMenu>
-  </Border>-->
           <Button
             Margin="5,0,0,0"
             BorderBrush="LightGray"
@@ -254,8 +233,8 @@
             <DataGridTextColumn Binding="{Binding InvoiceNumber}" Header="Rechnung" />
             <DataGridTextColumn Binding="{Binding Customer.ClientNumber}" Header="Kundenummer" />
             <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
-            <DataGridTextColumn Binding="{Binding NetAmount, StringFormat={}{0:F2}}" Header="Netto" />
-            <DataGridTextColumn Binding="{Binding GrossAmount, StringFormat={}{0:F2}}" Header="Brutto" />
+            <DataGridTextColumn Binding="{Binding NetAmount, StringFormat={}{0:N2}}" Header="Netto" />
+            <DataGridTextColumn Binding="{Binding GrossAmount, StringFormat={}{0:N2}}" Header="Brutto" />
             <DataGridTemplateColumn Header="Status">
               <DataGridTemplateColumn.CellTemplateSelector>
                 <StaticResource ResourceKey="StateTemplateSelector" />

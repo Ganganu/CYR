@@ -74,6 +74,9 @@
       <DataTemplate DataType="{x:Type dvm:DashboardUserViewModel}">
         <dv:DashboardUserView />
       </DataTemplate>
+      <DataTemplate DataType="{x:Type dvm:DashboardInvoiceViewModel}">
+        <dv:DashboardInvoiceView />
+      </DataTemplate>
       <DataTemplate DataType="{x:Type user:UserViewModel}">
         <user:UserView />
       </DataTemplate>
