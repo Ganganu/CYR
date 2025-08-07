@@ -107,7 +107,6 @@ public partial class App : Application
         services.AddSingleton<Client>();
         services.AddSingleton<InvoiceModel>();
         services.AddSingleton<User.User>();
-        services.AddSingleton<UserSettings>();
         services.AddSingleton<InvoiceDocument>();
         services.AddSingleton<IRetrieveClients, RetrieveClients>();
         services.AddTransient<IPasswordHasherService, PasswordHasherService>();
@@ -144,15 +143,13 @@ public partial class App : Application
             }
             else
             {
-                loginTokenService.DeleteToken(); // bad token
+                loginTokenService.DeleteToken();
             }
         }
 
-        // Show login if auto-login failed or no token
         var loginView = _serviceProvider.GetRequiredService<LoginView>();
         loginView.Show();
 
-        // Listen to IsVisibleChanged to transition after manual login
         DependencyPropertyChangedEventHandler handler = null;
         handler = (s, ev) =>
         {

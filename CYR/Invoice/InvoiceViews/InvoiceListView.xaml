@@ -221,9 +221,6 @@
           ItemsSource="{Binding Invoices}">
           <DataGrid.Columns>
             <DataGridTemplateColumn>
-              <!--<DataGridTemplateColumn.Header>
-                <CheckBox IsChecked="{Binding IsSelectAllInvoicesChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-              </DataGridTemplateColumn.Header>-->
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                   <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
@@ -240,6 +237,7 @@
                 <StaticResource ResourceKey="StateTemplateSelector" />
               </DataGridTemplateColumn.CellTemplateSelector>
             </DataGridTemplateColumn>
+            <DataGridTextColumn Binding="{Binding IssueDate, StringFormat={}{0:d}}" Header="Datum" />
           </DataGrid.Columns>
           <DataGrid.InputBindings>
             <MouseBinding

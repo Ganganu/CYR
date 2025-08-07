@@ -25,7 +25,7 @@
         <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kunde" />
         <DataGridTextColumn Binding="{Binding GrossAmount, StringFormat={}{0:N2}}" Header="Brutto" />
         <DataGridTextColumn Binding="{Binding State}" Header="Status" />
-        <DataGridTextColumn Binding="{Binding IssueDate}" Header="Datum" />
+        <DataGridTextColumn Binding="{Binding IssueDate,StringFormat={}{0:d}}" Header="Datum" />
       </DataGrid.Columns>
     </DataGrid>
   </Grid>

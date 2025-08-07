@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
-public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>,
+public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<InvoiceTotalPriceEvent>,
                                             IRecipient<InvoiceMwstEvent>, IRecipient<ItemsListDialogViewModel>
 {
     private readonly IOrderItemRepository _orderItemRepository;
@@ -182,11 +182,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         var message = _selectImageService.SelectImage();
         Logo = message.ImageSource;
         Messenger.Send(message);    
-    }
-
-    public void Receive(LogoEvent message)
-    {
-        Logo = message.Logo;
     }
 
     public void Receive(InvoiceTotalPriceEvent message)

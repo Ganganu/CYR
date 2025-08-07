@@ -16,16 +16,14 @@ using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
-public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<LogoEvent>, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver,
+public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver,
                                             IRecipient<InvoiceMwstEvent>, IRecipient<ItemsListDialogViewModel>
 {
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IUnitOfMeasureRepository _unitOfMeasureRepository;
-    private readonly ISaveInvoiceInvoicePositionService _saveInvoiceInvoicePositionService;
     private readonly IPreviewInvoiceService _previewInvoiceService;
     private readonly IRetrieveClients _retrieveClients;
     private readonly IOpenImageService _openImageService;
-    private readonly UserSettings _userSettings;
     private readonly ISelectImageService _selectImageService;
     private readonly IFileService _fileService;
     private readonly IDialogService _dialogService;
@@ -41,7 +39,6 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
     public ShowInvoiceViewModel(IOrderItemRepository orderItemRepository,
         IUnitOfMeasureRepository unitOfMeasureRepository,
         INavigationService navigationService,
-        ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
         IPreviewInvoiceService previewInvoiceService,
         IRetrieveClients retrieveClients,
         IOpenImageService openImageService,
@@ -54,7 +51,6 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         _orderItemRepository = orderItemRepository;
         _unitOfMeasureRepository = unitOfMeasureRepository;
         NavigationService = navigationService;
-        _saveInvoiceInvoicePositionService = saveInvoiceInvoicePositionService;
         _previewInvoiceService = previewInvoiceService;
         _retrieveClients = retrieveClients;
         _openImageService = openImageService;
@@ -226,11 +222,6 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Logo
         var message = _selectImageService.SelectImage();
         Logo = message.ImageSource;
         Messenger.Send(message.Message, message.Icon);
-    }
-
-    public void Receive(LogoEvent message)
-    {
-        Logo = message.Logo;
     }
 
     public void Receive(InvoiceTotalPriceEvent message)
