@@ -21,10 +21,15 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
-      <Image Margin="0 5 0 5"
-        MaxHeight="150"
-        Source="{Binding UserLogo, UpdateSourceTrigger=PropertyChanged}"
-        Stretch="Uniform" />
+      <Ellipse
+        Width="150"
+        Height="150"
+        Stroke="LightGray"
+        StrokeThickness="3">
+        <Ellipse.Fill>
+          <ImageBrush ImageSource="{Binding UserLogo, UpdateSourceTrigger=PropertyChanged}" Stretch="Uniform" />
+        </Ellipse.Fill>
+      </Ellipse>
     </Grid>
     <Grid
       Grid.Row="1"
@@ -103,7 +108,7 @@
         <Button
           Grid.Column="0"
           Command="{Binding NavigateToUserViewCommand}"
-          Content="Aktualisieren" />
+          Content="Konto Aktualisieren" />
       </Grid>
     </Grid>
   </Grid>
