@@ -6,10 +6,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Ressources\Bild1.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="cyr.db" />
+    <None Remove="Ressources\Bild1.ico" />
     <None Remove="Ressources\IGF.png" />
     <None Remove="Ressources\user.png" />
   </ItemGroup>
@@ -18,6 +20,7 @@
     <Content Include="cyr.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Ressources\Bild1.ico" />
     <Content Include="Ressources\IGF.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -40,6 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Ressources\Bild1.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Ressources\user.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
