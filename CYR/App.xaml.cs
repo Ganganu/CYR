@@ -91,6 +91,7 @@ public partial class App : Application
         services.AddSingleton<StatisticChartRepository>();
         services.AddSingleton<UserRepository>();
         services.AddSingleton<UserContext>();
+        services.AddSingleton<UserCompanyRepository>();
 
         services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();
         services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();

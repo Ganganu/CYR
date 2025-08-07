@@ -11,16 +11,30 @@ public partial class DashboardUserViewModel : ObservableRecipient
     private readonly ISelectImageService _selectImageService;
     private readonly UserRepository _userRepository;
     private readonly UserContext _userContext;
-    public DashboardUserViewModel(ISelectImageService selectImageService, UserRepository userRepository, UserContext userContext, INavigationService navigation)
+    private readonly UserCompanyRepository _userCompanyRepository;
+    public DashboardUserViewModel(ISelectImageService selectImageService, UserRepository userRepository, UserContext userContext, INavigationService navigation, UserCompanyRepository userCompanyRepository)
     {
         _selectImageService = selectImageService;
         _userRepository = userRepository;
         _userContext = userContext;
         _navigation = navigation;
+        _userCompanyRepository = userCompanyRepository;
+
+        Initialize();
+    }
+
+    private async Task Initialize()
+    {
+        if (_userContext.CurrentUser is null) return;
+        int id = Convert.ToInt32(_userContext.CurrentUser.Id);
+        UserCompany = await _userCompanyRepository.GetAsync(id);
     }
 
     [ObservableProperty]
     private INavigationService _navigation;
+
+    [ObservableProperty]
+    private UserCompany? _userCompany;
 
     [ObservableProperty]
     private User.User? _user;

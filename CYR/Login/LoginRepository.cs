@@ -49,7 +49,6 @@ public class LoginRepository
         return result > 0;
     }
 
-    // New: Store token after login
     public async Task RememberTokenAsync(string username, string token)
     {
         string query = @"
@@ -66,7 +65,6 @@ public class LoginRepository
         await _databaseConnection.ExecuteNonQueryAsync(query, parameters);
     }
 
-    // Optional: Clear token on logout
     public async Task LogoutAsync(string username)
     {
         string query = @"
