@@ -21,8 +21,8 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
-      <Image
-        MaxHeight="200"
+      <Image Margin="0 5 0 5"
+        MaxHeight="150"
         Source="{Binding UserLogo, UpdateSourceTrigger=PropertyChanged}"
         Stretch="Uniform" />
     </Grid>
