@@ -108,16 +108,12 @@ public partial class App : Application
         services.AddSingleton<UserSettings>();
         services.AddSingleton<InvoiceDocument>();
         services.AddSingleton<IRetrieveClients, RetrieveClients>();
-        services.AddSingleton<IConfigurationService, ConfigurationService>();
         services.AddTransient<IPasswordHasherService, PasswordHasherService>();
         services.AddTransient<ILoginTokenService, LoginTokenService>();
         services.AddSingleton<IDatabaseConnection, SQLiteConnectionManager>((provider) => new SQLiteConnectionManager(connectionString));
         services.AddSingleton<Func<Type, ObservableObject>>(serviceProvider => viewModelType => (ObservableObject)serviceProvider.GetRequiredService(viewModelType));
         _serviceProvider = services.BuildServiceProvider();
-
-        IConfigurationService configService = _serviceProvider.GetRequiredService<IConfigurationService>();
-        UserSettings settings = configService.GetUserSettings();
-
+                
         //Dialog Registrations
         DialogService.RegisterDialog<Notification,NotificationViewModel>();
         DialogService.RegisterDialog<ErrorDialogView, ErrorDialogViewModel>();

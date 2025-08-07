@@ -4,7 +4,7 @@ using CYR.Invoice.InvoiceViewModels;
 using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
-using CYR.Settings;
+using CYR.User;
 using QuestPDF.Fluent;
 
 namespace CYR.Invoice.InvoiceServices;
@@ -12,13 +12,15 @@ namespace CYR.Invoice.InvoiceServices;
 public class PreviewInvoiceService : IPreviewInvoiceService
 {
     private readonly IInvoiceDocument _invoiceDocument;
-    private readonly IConfigurationService _configurationService;
     private InvoiceModel? _invoiceModel;
+    private readonly UserCompanyRepository _userCompanyRepository;
+    private readonly UserContext _userContext;
     private string? _dialogResponse;
-    public PreviewInvoiceService(IInvoiceDocument invoiceDocument,IConfigurationService configurationService)
+    public PreviewInvoiceService(IInvoiceDocument invoiceDocument, UserCompanyRepository userCompanyRepository, UserContext userContext)
     {
         _invoiceDocument = invoiceDocument;
-        _configurationService = configurationService;
+        _userCompanyRepository = userCompanyRepository;
+        _userContext = userContext;
     }
     public async Task<SnackbarMessage> PreviewInvoice(CreateInvoiceModel createInvoiceModel)
     {
@@ -57,8 +59,7 @@ public class PreviewInvoiceService : IPreviewInvoiceService
         invoiceModel.State = InvoiceState.Open;
         invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
         invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
-        invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
-        invoiceModel.Logo = createInvoiceModel.Logo;            
+        invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;           
 
         if (createInvoiceModel.IsMwstApplicable)
         {
@@ -93,12 +94,12 @@ public class PreviewInvoiceService : IPreviewInvoiceService
     private async Task CreateInvoice(CreateInvoiceModel createInvoiceModel)
     {
         IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
-        UserSettings userSettings = _configurationService.GetUserSettings();
+        int id = Convert.ToInt32(_userContext.CurrentUser.Id);
+        UserCompany userSettings = await _userCompanyRepository.GetAsync(id);
         var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
         model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
         model.CommentsTop = createInvoiceModel.CommentsTop;
         model.CommentsBottom = createInvoiceModel.CommentsBottom;
-        model.Logo = createInvoiceModel.Logo;
         _invoiceDocument.Model = model;
         _invoiceDocument.GeneratePdfAndShow();
     }

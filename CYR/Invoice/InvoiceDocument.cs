@@ -43,19 +43,19 @@ public class InvoiceDocument : IInvoiceDocument
         {
             row.RelativeItem().AlignBottom().Column(column =>
             {
-                column.Item().Text($"{Model.Seller.Name}, " +
-                    $"{Model.Seller.Street} " +
-                    $"{Model.Seller.HouseNumber}," +
-                    $"{Model.Seller.PLZ} " +
-                    $"{Model.Seller.City}")
+                column.Item().Text($"{Model.Seller.CompanyName}, " +
+                    $"{Model.Seller.CompanyStreet} " +
+                    $"{Model.Seller.CompanyHouseNumber}," +
+                    $"{Model.Seller.CompanyPlz} " +
+                    $"{Model.Seller.CompanyCity}")
                     .FontSize(9)
                     .FontColor(Colors.Blue.Medium)
                     .Underline(true);
             });
-            if (Model.Logo is not null)
+            if (Model.Seller.CompanyLogo is not null)
             {
                 
-                row.ConstantItem(200).Image(new Uri(Model.Logo.ToString()).LocalPath);
+                row.ConstantItem(200).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
             }
         });
     }
@@ -215,32 +215,32 @@ public class InvoiceDocument : IInvoiceDocument
         {
             row.RelativeItem().Column(column =>
             {
-                column.Item().Text($"{Model.Seller.Name}")
+                column.Item().Text($"{Model.Seller.CompanyName}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.Street} {Model.Seller.HouseNumber}")
+                column.Item().Text($"{Model.Seller.CompanyStreet} {Model.Seller.CompanyHouseNumber}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.PLZ} {Model.Seller.City}")
+                column.Item().Text($"{Model.Seller.CompanyPlz} {Model.Seller.CompanyCity}")
                     .FontSize(10);
 
             });
             row.RelativeItem().Column(column =>
             {
-                column.Item().Text($"{Model.Seller.Telefonnumber}")
+                column.Item().Text($"{Model.Seller.CompanyTelefonNumber}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.EmailAddress}")
+                column.Item().Text($"{Model.Seller.CompanyEmailAddress}")
                     .FontSize(10);
             });
             row.RelativeItem().Column(column =>
             {
-                column.Item().Text($"{Model.Seller.BankName}")
+                column.Item().Text($"{Model.Seller.CompanyBankName}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.IBAN}")
+                column.Item().Text($"{Model.Seller.CompanyIban}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.BIC}")
+                column.Item().Text($"{Model.Seller.CompanyBic}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.USTIDNR}")
+                column.Item().Text($"{Model.Seller.CompanyUstidnr}")
                     .FontSize(10);
-                column.Item().Text($"{Model.Seller.STNR}")
+                column.Item().Text($"{Model.Seller.CompanyStnr}")
                     .FontSize(10);
             });
         });

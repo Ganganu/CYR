@@ -24,9 +24,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
     private readonly ISaveInvoiceInvoicePositionService _saveInvoiceInvoicePositionService;
     private readonly IPreviewInvoiceService _previewInvoiceService;
     private readonly IRetrieveClients _retrieveClients;
-    private readonly IConfigurationService _configurationService;
     private readonly IOpenImageService _openImageService;
-    private readonly UserSettings _userSettings;
     private readonly ISelectImageService _selectImageService;
     private readonly IFileService _fileService;
     private readonly IDialogService _dialogService;
@@ -43,7 +41,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         ISaveInvoiceInvoicePositionService saveInvoiceInvoicePositionService,
         IPreviewInvoiceService previewInvoiceService,
         IRetrieveClients retrieveClients,
-        IConfigurationService configurationService,
         IOpenImageService openImageService,
         ISelectImageService selectImageService,
         IDialogService dialogService,
@@ -55,9 +52,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         _saveInvoiceInvoicePositionService = saveInvoiceInvoicePositionService;
         _previewInvoiceService = previewInvoiceService;
         _retrieveClients = retrieveClients;
-        _configurationService = configurationService;
         _openImageService = openImageService;
-        _userSettings = _configurationService.GetUserSettings();
         InvoiceModel = new InvoiceModel();
         Initialize();
         Messenger.RegisterAll(this);
@@ -70,8 +65,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
         Positions = new ObservableCollection<InvoicePosition> { new(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
         IEnumerable<Client> cl = await _retrieveClients.Handle();
         Clients = [.. cl];
-        Logo = _userSettings.Logo;
-        InvoiceModel.Logo = Logo;
     }
 
     [ObservableProperty]
@@ -137,8 +130,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             IsMwstApplicable = InvoiceModel.IsMwstApplicable,
             Positions = Positions,
             CommentsBottom = InvoiceModel.CommentsBottom,
-            CommentsTop = InvoiceModel.CommentsTop,
-            Logo = InvoiceModel.Logo
+            CommentsTop = InvoiceModel.CommentsTop
         };
         var message = await _previewInvoiceService.PreviewInvoice(createInvoiceModel);
         Messenger.Send(message);
@@ -154,8 +146,7 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
             IsMwstApplicable = InvoiceModel.IsMwstApplicable,
             Positions = Positions,
             CommentsBottom = InvoiceModel.CommentsBottom,
-            CommentsTop = InvoiceModel.CommentsTop,
-            Logo = InvoiceModel.Logo
+            CommentsTop = InvoiceModel.CommentsTop
 
         };
         var message = await _saveInvoiceInvoicePositionService.SaveInvoice(createInvoiceModel);
@@ -211,13 +202,6 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<Lo
     {
         if (message.isMwstApplicable == true) TotalPrice *= 1.19m;
         else TotalPrice /= 1.19m;
-    }
-    partial void OnLogoChanged(ImageSource? oldValue, ImageSource newValue)
-    {
-        if (oldValue != newValue)
-        {
-            InvoiceModel.Logo = Logo;
-        }
     }
     [RelayCommand]
     private void SaveXmlTop(object parameter)

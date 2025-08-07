@@ -6,6 +6,7 @@ using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
+using CYR.User;
 using QuestPDF.Fluent;
 using System.Data.SQLite;
 
@@ -16,19 +17,21 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
     private readonly IDatabaseConnection _databaseConnection;
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IInvoicePositionRepository _invoicePositionRepository;
-    private readonly IConfigurationService _configurationService;
     private readonly IInvoiceDocument _invoiceDocument;
     private InvoiceModel _invoiceModel;
+    private readonly UserCompanyRepository _userCompanyRepository;
+    private readonly UserContext _userContext;
     private string? _dialogResponse;
     public SaveInvoiceInvoicePositionService(IDatabaseConnection databaseConnection, IInvoiceRepository invoiceRepository,
-        IInvoicePositionRepository invoicePositionRepository, IConfigurationService configurationService, 
-        IInvoiceDocument invoiceDocument)
+        IInvoicePositionRepository invoicePositionRepository, IInvoiceDocument invoiceDocument,
+        UserCompanyRepository userCompanyRepository, UserContext userContext)
     {
         _databaseConnection = databaseConnection;
         _invoiceRepository = invoiceRepository;
         _invoicePositionRepository = invoicePositionRepository;
-        _configurationService = configurationService;
         _invoiceDocument = invoiceDocument;
+        _userCompanyRepository = userCompanyRepository;
+        _userContext = userContext;
     }
 
     public async Task<SnackbarMessage> SaveInvoice(CreateInvoiceModel createInvoiceModel)
@@ -74,8 +77,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                     invoiceModel.State = InvoiceState.Open;
                     invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
                     invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
-                    invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
-                    invoiceModel.Logo = createInvoiceModel.Logo;                       
+                    invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;             
                     if (createInvoiceModel.IsMwstApplicable)
                     {
                         invoiceModel.GrossAmount = Math.Round((decimal)invoiceModel.NetAmount * 1.19m, 2);
@@ -124,15 +126,15 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
         }
     }
 
-    private void CreateInvoice(CreateInvoiceModel createInvoiceModel)
+    private async Task CreateInvoice(CreateInvoiceModel createInvoiceModel)
     {
         IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
-        UserSettings userSettings = _configurationService.GetUserSettings();
+        int id = Convert.ToInt32(_userContext.CurrentUser.Id);
+        UserCompany userSettings = await _userCompanyRepository.GetAsync(id);
         var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
         model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
         model.CommentsTop = createInvoiceModel.CommentsTop;
         model.CommentsBottom = createInvoiceModel.CommentsBottom;
-        model.Logo = createInvoiceModel.Logo;
         _invoiceDocument.Model = model;
         _invoiceDocument.GeneratePdfAndShow();
     }

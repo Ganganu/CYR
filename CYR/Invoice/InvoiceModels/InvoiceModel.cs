@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Settings;
+using CYR.User;
 
 namespace CYR.Invoice.InvoiceModels
 {
@@ -17,7 +18,7 @@ namespace CYR.Invoice.InvoiceModels
         public DateTime? IssueDate { get; set; } 
         public DateTime? DueDate { get; set; } 
 
-        public UserSettings Seller { get; set; }
+        public UserCompany Seller { get; set; }
         public Client Customer { get; set; }
         public decimal? NetAmount { get; set; }
         public decimal? GrossAmount { get; set; }
@@ -32,7 +33,6 @@ namespace CYR.Invoice.InvoiceModels
         private string? _commentsTop;
         [ObservableProperty]
         private string? _commentsBottom;
-        public ImageSource Logo { get; set; }
 
         [ObservableProperty]
         private bool? _isSelected;
