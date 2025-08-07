@@ -22,14 +22,8 @@ public partial class DashboardUserViewModel : ObservableRecipient
     [ObservableProperty]
     private Company _company;
     [ObservableProperty]
-    private string? _userLogo;
+    private string? _userLogoSource;
+    public string? UserLogo => string.IsNullOrEmpty(_userLogoSource) ? @"/Ressources/user.png" : UserLogoSource;
 
-    [RelayCommand]
-    private async Task ChangeAvatorFoto()
-    {
-        var image = _selectImageService.SelectStringImage();
-        UserLogo = image;
-        //var succes = _userRepository.UpdateAsync();
-    }
 
 }

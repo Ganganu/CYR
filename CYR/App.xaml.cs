@@ -76,6 +76,8 @@ public partial class App : Application
         services.AddTransient<StatisticChartView>();
         services.AddTransient<StatisticChartViewModel>();
         services.AddTransient<DashboardUserView>();
+        services.AddTransient<UserView>();
+        services.AddTransient<UserViewModel>();
         services.AddTransient<DashboardUserViewModel>();
         services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
         services.AddSingleton<INavigationService, NavigationService>();
