@@ -51,12 +51,54 @@ public class UserCompanyRepository
                 DateTime? createdAt = DateTime.TryParse(createdAtText, out var parsedCreatedAt) ? parsedCreatedAt : null;
 
                 userCompany = new UserCompany(
-                    username, role, createdAt, userLogo, companyId, companyName, companyStreet, companyCity,
+                    id,username, role, createdAt, userLogo, companyId, companyName, companyStreet, companyCity,
                     companyPlz, companyHouseNumber, companyTelefonNumber, companyEmailAddress,
                     companyBankName, companyIban, companyBic, companyUstidnr, companyStnr, companyLogo
                 );
             }
         }
         return userCompany;
+    }
+
+    public async Task<bool> UpdateUserAndCompanyInTransactionAsync(UserCompany model)
+    {
+        if (model is null) return false;
+        bool succes = false;
+        await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
+        {
+            string updateUser = "update user  set username = @username, role = @role, user_logo = @user_logo where username = @username";
+            var updateuserParams = new Dictionary<string, object>
+            {
+                    { "username", model.Username },
+                    { "role", model.Role },
+                    { "user_logo", model.UserLogo }
+            };
+            await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateUser, updateuserParams);
+
+            string updateCompany = @"UPDATE company SET name = @name,street = @street,city = @city,plz = @plz,house_number = @house_number,
+                    telefon_number = @telefon_number,email_address = @email_address,bank_name = @bank_name,iban = @iban,
+                    bic = @bic,ustidnr = @ustidnr,stnr = @stnr,logo = @logo
+                    WHERE user_id = @user_id"; ;
+            var updateCompanyParams = new Dictionary<string, object>
+            {
+                { "name", model.CompanyName },
+                { "street", model.CompanyStreet },
+                { "city", model.CompanyCity },
+                { "plz", model.CompanyPlz },
+                { "house_number", model.CompanyHouseNumber },
+                { "telefon_number", model.CompanyTelefonNumber },
+                { "email_address", model.CompanyEmailAddress },
+                { "bank_name", model.CompanyBankName },
+                { "iban", model.CompanyIban },
+                { "bic", model.CompanyBic },
+                { "ustidnr", model.CompanyUstidnr },
+                { "stnr", model.CompanyStnr },
+                { "logo", model.CompanyLogo },
+                { "user_id", model.UserId }
+            };
+            int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateCompany, updateCompanyParams);
+            succes = clientAffectedRows > 0;
+        });
+        return succes;
     }
 }

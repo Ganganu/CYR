@@ -40,4 +40,12 @@ public partial class UserViewModel : ObservableRecipient
         var newLogo = _selectImageService.SelectStringImage();
         UserCompany = UserCompany with { CompanyLogo = newLogo };
     }
+
+    [RelayCommand]
+    private void UpdateUser()
+    {
+        if (_userContext.CurrentUser is null) return;
+        if (UserCompany is null) return; 
+        _ = _userCompanyRepository.UpdateUserAndCompanyInTransactionAsync(UserCompany);
+    }
 }

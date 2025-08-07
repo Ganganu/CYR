@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CYR.Services;
-using CYR.Settings;
 using CYR.User;
 
 namespace CYR.Dashboard.DashboardViewModels;
@@ -31,14 +30,7 @@ public partial class DashboardUserViewModel : ObservableRecipient
 
     [ObservableProperty]
     private UserCompany? _userCompany;
-
-    [ObservableProperty]
-    private User.User? _user;
-    [ObservableProperty]
-    private Company _company;
-    [ObservableProperty]
-    private string? _userLogoSource;
-    public string? UserLogo => string.IsNullOrEmpty(_userLogoSource) ? @"/Ressources/user.png" : UserLogoSource;
+    public string? UserLogo => string.IsNullOrEmpty(UserCompany.UserLogo) ? @"/Ressources/user.png" : UserCompany.UserLogo;
 
     [RelayCommand]
     private void NavigateToUserView()
