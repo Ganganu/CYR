@@ -1,12 +1,16 @@
-﻿using CYR.Settings;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CYR.User;
 
-public class User
+public partial class User : ObservableRecipient
 {   
     public string? Id { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
-    public string Role { get; set; }
-    public string Image { get; set; }
+    [ObservableProperty]
+    private string? _username;
+    [ObservableProperty]
+    private string? _password;
+    [ObservableProperty]
+    private string? _role;
+    [ObservableProperty]
+    private string? _logo;
 }

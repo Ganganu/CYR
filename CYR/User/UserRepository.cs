@@ -35,6 +35,7 @@ public class UserRepository
             u.Username = reader.GetString(1);
             u.Password = reader.GetString(2);
             u.Role = reader.GetString(3);
+            u.Logo = reader.IsDBNull(6) ? null : reader.GetString(6);
         }
         return u;
     }
@@ -43,60 +44,31 @@ public class UserRepository
     {
         if (model is null) return 0;
         string? hashedPassword = _passwordHasherService.HashPassword(model.Password);
-
-        string query = @"INSERT INTO user (username,password,role,user_logo) VALUES (@username,@password,@role,@user_logo)";
-        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        int affectedRows = 0;
+        if (model.Id is null)
         {
-            { "username", model.Username},
-            { "password", hashedPassword },
-            { "role", model.Role },
-            { "user_logo", model.Image }
-        };
-        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
-        return affectedRows;
-    }
-
-    public async Task<bool> UpdateUserAndCompanyInTransactionAsync(User userModel, Company companyModel)
-    {
-        if (userModel is null) return false;
-        if (companyModel is null) return false;
-        bool succes = false;
-        await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
+            string query = @"INSERT INTO user (username,password,role,user_logo) VALUES (@username,@password,@role,@user_logo)";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                { "username", model.Username},
+                { "password", hashedPassword },
+                { "role", model.Role },
+                { "user_logo", model.Logo }
+            };
+            affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        }
+        else
         {
             string updateUser = "update user  set username = @username, password = @password, role = @role, user_logo = @user_logo where username = @username";
             var updateuserParams = new Dictionary<string, object>
             {
-                    { "username", userModel.Username },
-                    { "password", userModel.Password },
-                    { "role", userModel.Role },
-                    { "user_logo", userModel.Image }
+                    { "username", model.Username },
+                    { "password", model.Password },
+                    { "role", model.Role },
+                    { "user_logo", model.Logo }
             };
-            await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateUser, updateuserParams);
-
-            string updateCompany = @"UPDATE company SET name = @name,street = @street,city = @city,plz = @plz,house_number = @house_number,
-                    telefon_number = @telefon_number,email_address = @email_address,bank_name = @bank_name,iban = @iban,
-                    bic = @bic,ustidnr = @ustidnr,stnr = @stnr,logo = @logo
-                    WHERE user_id = @user_id"; ;
-            var updateCompanyParams = new Dictionary<string, object>
-            {
-                { "name", companyModel.Name },
-                { "street", companyModel.Street },
-                { "city", companyModel.City },
-                { "plz", companyModel.PLZ },
-                { "house_number", companyModel.HouseNumber },
-                { "telefon_number", companyModel.TelefonNumber },
-                { "email_address", companyModel.EmailAddress },
-                { "bank_name", companyModel.BankName },
-                { "iban", companyModel.IBAN },
-                { "bic", companyModel.BIC },
-                { "ustidnr", companyModel.USTIDNR },
-                { "stnr", companyModel.STNR },
-                { "logo", companyModel.Logo },
-                { "user_id", userModel.Id }
-            };
-            int clientAffectedRows = await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, updateCompany, updateCompanyParams);
-            succes = clientAffectedRows > 0;
-        });
-        return succes;
+            affectedRows = await _databaseConnection.ExecuteNonQueryAsync(updateUser, updateuserParams);
+        }
+        return affectedRows;
     }    
 }

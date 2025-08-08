@@ -92,6 +92,7 @@ public partial class App : Application
         services.AddSingleton<StatisticOverviewRepository>();
         services.AddSingleton<StatisticChartRepository>();
         services.AddSingleton<UserRepository>();
+        services.AddSingleton<CompanyRepository>();
         services.AddSingleton<UserContext>();
         services.AddSingleton<UserCompanyRepository>();
 

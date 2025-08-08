@@ -53,7 +53,7 @@
             FontSize="15"
             IsReadOnly="True"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding UserCompany.Username}" />
+            Text="{Binding User.Username}" />
           <TextBlock
             Margin="10,0,10,0"
             FontSize="15"
@@ -63,7 +63,7 @@
             FontSize="15"
             IsReadOnly="True"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding UserCompany.Role}" />
+            Text="{Binding User.Role}" />
           <TextBlock
             Margin="10,0,10,0"
             FontSize="15"
@@ -73,7 +73,7 @@
             FontSize="15"
             IsReadOnly="True"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding UserCompany.CompanyName}" />
+            Text="{Binding Company.Name}" />
           <TextBlock
             Margin="10,0,10,0"
             FontSize="15"
@@ -83,7 +83,7 @@
             FontSize="15"
             IsReadOnly="True"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding UserCompany.CompanyEmailAddress}" />
+            Text="{Binding Company.EmailAddress}" />
           <TextBlock
             Margin="10,0,10,0"
             FontSize="15"
@@ -93,7 +93,7 @@
             FontSize="15"
             IsReadOnly="True"
             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding UserCompany.CompanyTelefonNumber}" />
+            Text="{Binding Company.TelefonNumber}" />
         </StackPanel>
       </ScrollViewer>
       <Grid

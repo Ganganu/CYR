@@ -1,19 +1,34 @@
-﻿namespace CYR.User;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-public class Company
+namespace CYR.User;
+
+public partial class Company : ObservableRecipient
 {
     public string? Id { get; set; }
-    public string? Name { get; set; }
-    public string? Street { get; set; }
-    public string? City { get; set; }
-    public string? PLZ { get; set; }
-    public string? HouseNumber { get; set; }
-    public string? TelefonNumber { get; set; }
-    public string? EmailAddress { get; set; }
-    public string? BankName { get; set; }
-    public string? IBAN { get; set; }
-    public string? BIC { get; set; }
-    public string? USTIDNR { get; set; }
-    public string? STNR { get; set; }
-    public string? Logo { get; set; }
+    [ObservableProperty]
+    private string? _name;
+    [ObservableProperty]
+    private string? _street;
+    [ObservableProperty]
+    private string? _city;
+    [ObservableProperty]
+    private string? _plz;
+    [ObservableProperty]
+    private string? _houseNumber;
+    [ObservableProperty]
+    private string? _telefonNumber;
+    [ObservableProperty]
+    private string? _emailAddress;
+    [ObservableProperty]
+    private string? _bankName;
+    [ObservableProperty]
+    private string? _iban;
+    [ObservableProperty]
+    private string? _bic;
+    [ObservableProperty]
+    private string? _ustidnr;
+    [ObservableProperty]
+    private string? _stnr;
+    [ObservableProperty]
+    private string? _logo;
 }

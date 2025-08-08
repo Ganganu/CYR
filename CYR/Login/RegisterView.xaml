@@ -56,12 +56,12 @@
           BorderThickness="0.5"
           Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
         <ComboBox
-          ItemsSource="{Binding Roles}"
           materialDesign:HintAssist.Foreground="Black"
           materialDesign:HintAssist.Hint="Role"
           materialDesign:HintAssist.IsFloating="False"
           Background="#f3f6fb"
           BorderThickness="0.5"
+          ItemsSource="{Binding Roles}"
           SelectedItem="{Binding SelectedRole}"
           Style="{StaticResource MaterialDesignOutlinedComboBox}" />
         <TextBlock
