@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CYR.Dashboard.DashboardViewModels;
+using CYR.Messages;
 using CYR.Services;
 using CYR.Settings;
 
@@ -48,11 +50,13 @@ public partial class UserViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    private void UpdateUser()
+    private async Task UpdateUser()
     {
         if (_userContext.CurrentUser is null) return;
         if (UserCompany is null) return; 
-        _ = _userCompanyRepository.UpdateUserAndCompanyInTransactionAsync(UserCompany);
+        var result = await _userCompanyRepository.UpdateUserAndCompanyInTransactionAsync(UserCompany);
+        if (result) Messenger.Send(new SnackbarMessage(@$"Der Benutzer {UserCompany.Username} wurde erfolgreich aktualisiert!", "Check"));
+        if (!result) Messenger.Send(new SnackbarMessage(@"Problem beim Aktulisieren der Benutzerdaten", "Error"));
     }
     [RelayCommand]
     private void NavigateBack()
