@@ -491,7 +491,7 @@
               <DataGridTemplateColumn Header="G-Preis">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2} €}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
