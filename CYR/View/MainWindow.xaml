@@ -98,6 +98,7 @@
             IconKind="MonitorDashboard" />
           <Border BorderBrush="LightGray" BorderThickness="1" />
           <cc:IconButton
+            x:Name="invoiceIconButton"
             ButtonText="Rechnungen"
             Command="{Binding NavigateToGetInvoicesCommand}"
             GroupName="NavigationButtons"

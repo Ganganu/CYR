@@ -11,12 +11,12 @@ namespace CYR;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window, IRecipient<NavigateBackSource>
+public partial class MainWindow : Window, IRecipient<NavigateBackSource>, IRecipient<NavigateToInvoiceEvent>
 {
     public MainWindow()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register(this);
+        WeakReferenceMessenger.Default.RegisterAll(this);
         Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
 
@@ -38,5 +38,15 @@ public partial class MainWindow : Window, IRecipient<NavigateBackSource>
     private void snackbarButton_Click(object sender, RoutedEventArgs e)
     {
         snackbarButton.Hide();
+    }
+
+    /// <summary>
+    /// Gesendet wenn zu Invoice navigiert wird
+    /// </summary>
+    /// <param name="message"></param>
+    public void Receive(NavigateToInvoiceEvent message)
+    {
+        invoiceIconButton.IsChecked = false;
+        invoiceIconButton.IsChecked = true;
     }
 }

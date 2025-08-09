@@ -21,13 +21,20 @@
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid Grid.Row="0" Margin="0 5 0 5">
+    <Grid Grid.Row="0" Margin="0,5,0,5">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Rechnungsvollübersicht" />
-      <Button Command="{Binding CreateNewInvoiceCommand}" Grid.Column="1" Margin="5 0 0 0" Cursor="Hand">
+      <Button
+        Grid.Column="0"
+        Command="{Binding NavigateToInvoiceListCommand}"
+        Content="Rechnungsvollübersicht" />
+      <Button
+        Grid.Column="1"
+        Margin="5,0,0,0"
+        Command="{Binding NavigateToCreateInvoiceCommand}"
+        Cursor="Hand">
         <Button.Content>
           <StackPanel Orientation="Horizontal">
             <materialDesign:PackIcon
