@@ -3,7 +3,7 @@ using CYR.Core;
 
 namespace CYR.User;
 
-public class CompanyRepository 
+public class CompanyRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
     private readonly UserContext _userContext;
@@ -46,27 +46,71 @@ public class CompanyRepository
     {
         if (model is null) return 0;
 
-        string query = @"INSERT INTO company (name,street,city,plz,house_number,telefon_number,email_address,bank_name,
+        int affectedRows = 0;
+        if (model.Id is null)
+        {
+            string query = @"INSERT INTO company (name,street,city,plz,house_number,telefon_number,email_address,bank_name,
                         iban,bic,ustidnr,stnr,logo,user_id) VALUES (@name,@street,@city,@plz,@house_number,@telefon_number,@email_address,@bank_name,
                         @iban,@bic,@ustidnr,@stnr,@logo,@user_id)";
-        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                    { "name", model.Name },
+                    { "street", model.Street },
+                    { "city", model.City },
+                    { "plz", model.Plz },
+                    { "house_number", model.HouseNumber },
+                    { "telefon_number", model.TelefonNumber },
+                    { "email_address", model.EmailAddress },
+                    { "bank_name", model.BankName },
+                    { "iban", model.Iban },
+                    { "bic", model.Bic },
+                    { "ustidnr", model.Ustidnr },
+                    { "stnr", model.Stnr },
+                    { "logo", model.Logo },
+                    { "user_id", _userContext.CurrentUser.Id}
+            };
+            try
+            {
+                affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+        else
         {
-                { "name", model.Name },
-                { "street", model.Street },
-                { "city", model.City },
-                { "plz", model.Plz },
-                { "house_number", model.HouseNumber },
-                { "telefon_number", model.TelefonNumber },
-                { "email_address", model.EmailAddress },
-                { "bank_name", model.BankName },
-                { "iban", model.Iban },
-                { "bic", model.Bic },
-                { "ustidnr", model.Ustidnr },
-                { "stnr", model.Stnr },
-                { "logo", model.Logo },
-                { "user_id", _userContext.CurrentUser.Id}
-        };
-        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            string query = @"UPDATE company SET name = @name, street = @street, city = @city, plz = @plz, house_number = @house_number,
+                            telefon_number = @telefon_number, email_address = @email_address,bank_name = @bank_name, iban = @iban,
+                            bic = @bic, ustidnr = @ustidnr, stnr = @stnr, logo = @logo, user_id = @user_id where id = @id";
+            Dictionary<string, object> queryParameters = new Dictionary<string, object>
+            {
+                    { "name", model.Name },
+                    { "street", model.Street },
+                    { "city", model.City },
+                    { "plz", model.Plz },
+                    { "house_number", model.HouseNumber },
+                    { "telefon_number", model.TelefonNumber },
+                    { "email_address", model.EmailAddress },
+                    { "bank_name", model.BankName },
+                    { "iban", model.Iban },
+                    { "bic", model.Bic },
+                    { "ustidnr", model.Ustidnr },
+                    { "stnr", model.Stnr },
+                    { "logo", model.Logo },
+                    { "user_id", _userContext.CurrentUser.Id},
+                    { "id", model.Id},
+            };
+            try
+            {
+                affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
         return affectedRows;
     }
 }
