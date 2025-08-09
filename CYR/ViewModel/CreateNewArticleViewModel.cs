@@ -23,7 +23,7 @@ namespace CYR.ViewModel
         [ObservableProperty]
         private string _description;
         [ObservableProperty]
-        private decimal _price;
+        private decimal? _price;
         [ObservableProperty]
         private INavigationService _navigation;
 

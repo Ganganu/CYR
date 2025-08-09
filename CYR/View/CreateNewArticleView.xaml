@@ -113,10 +113,10 @@
                 <Label Content="Preis" />
                 <TextBox
                   materialDesign:HintAssist.Foreground="Black"
-                  materialDesign:HintAssist.Hint="Preis"
+                  materialDesign:HintAssist.Hint="z.B. 15,25 €"
                   materialDesign:HintAssist.IsFloating="False"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding Price, StringFormat={}{0:N2} €, UpdateSourceTrigger=LostFocus}" />
                 <TextBlock
                   Margin="0,10,0,0"
                   VerticalAlignment="Top"
