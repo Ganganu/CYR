@@ -4,6 +4,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:converters="clr-namespace:CYR.Invoice.Resources.DataTemplates.Converters"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:irdt="clr-namespace:CYR.Invoice.Resources.DataTemplates"
   xmlns:local="clr-namespace:CYR.Dashboard.DashboardViews"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,16 +16,21 @@
   mc:Ignorable="d">
   <UserControl.Resources>
     <converters:StateToBorderBrushConverter x:Key="StateToBorderBrushConverter" />
+    <irdt:InvoiceListViewInvoiceStateTemplateSelector
+      x:Key="StateTemplateSelector"
+      ClosedTemplate="{StaticResource ClosedTemplate}"
+      OpenTemplate="{StaticResource OpenTemplate}" />
   </UserControl.Resources>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid Grid.Row="0" Margin="0,5,0,5">
+    <Grid Grid.Row="0" Margin="5,5,5,5">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="150" />
       </Grid.ColumnDefinitions>
       <Button
         Grid.Column="0"
@@ -47,7 +53,106 @@
         </Button.Content>
       </Button>
     </Grid>
-    <DataGrid
+
+
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+      <ItemsControl ItemsSource="{Binding InvoiceModels}">
+        <ItemsControl.Resources>
+          <Style TargetType="ContentPresenter">
+            <Setter Property="RenderTransform">
+              <Setter.Value>
+                <TranslateTransform Y="0" />
+              </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Style.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                        To="-5"
+                        Duration="0:0:0.1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation
+                        Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                        To="0"
+                        Duration="0:0:0.1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </Trigger.ExitActions>
+              </Trigger>
+            </Style.Triggers>
+          </Style>
+        </ItemsControl.Resources>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border
+              Margin="5"
+              BorderBrush="Orange"
+              BorderThickness="1"
+              CornerRadius="10">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                  <Label
+                    Margin="5,0,0,3"
+                    Content="{Binding InvoiceNumber}"
+                    FontSize="18"
+                    Foreground="Black" />
+                </Grid>
+                <Grid Grid.Row="1">
+                  <Label
+                    Margin="5,0,0,0"
+                    Content="{Binding Customer.Name}"
+                    FontSize="16"
+                    Foreground="Gray" />
+                </Grid>
+                <Grid Grid.Row="2">
+                  <TextBlock
+                    Margin="5,0,0,0"
+                    FontSize="24"
+                    FontWeight="Black"
+                    Foreground="Orange"
+                    Text="{Binding GrossAmount, StringFormat={}{0:N2}€}" />
+                </Grid>
+                <Grid Grid.Row="3" Margin="5,7,0,10">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <ContentControl
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Content="{Binding}"
+                    ContentTemplateSelector="{StaticResource StateTemplateSelector}" />
+                  <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    FontSize="13"
+                    Foreground="Gray"
+                    Text="{Binding IssueDate, StringFormat={}{0:d}}" />
+                </Grid>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+
+      </ItemsControl>
+    </ScrollViewer>
+
+    <!--<DataGrid
       Grid.Row="1"
       AutoGenerateColumns="False"
       Background="Transparent"
@@ -71,6 +176,6 @@
         </DataGridTemplateColumn>
         <DataGridTextColumn Binding="{Binding IssueDate, StringFormat={}{0:d}}" Header="Datum" />
       </DataGrid.Columns>
-    </DataGrid>
+    </DataGrid>-->
   </Grid>
 </UserControl>

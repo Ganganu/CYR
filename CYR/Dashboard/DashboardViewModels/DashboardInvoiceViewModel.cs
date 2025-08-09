@@ -28,7 +28,7 @@ public partial class DashboardInvoiceViewModel : ObservableRecipient
     {
         var invoices = await _invoiceRepository.GetAllAsync();
         if (invoices is null) return;
-        InvoiceModels = [.. invoices.OrderByDescending(i => i.IssueDate ?? DateTime.MinValue).Take(5)];        
+        InvoiceModels = [.. invoices.OrderByDescending(i => i.IssueDate ?? DateTime.MinValue).Take(3)];        
     }
 
     [RelayCommand]
