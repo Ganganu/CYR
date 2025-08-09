@@ -56,7 +56,8 @@ public partial class StatisticChartViewModel : ObservableRecipient
 
     private void CreateSalesPerMonthChart(List<SalesPerMonth> salesData)
     {
-        if(salesData is null) return;
+        if (salesData is null) return;
+
         var plotModel = new PlotModel
         {
             Title = "Umsatz Monatlich",
@@ -74,9 +75,11 @@ public partial class StatisticChartViewModel : ObservableRecipient
             ClipTitle = false
         };
 
+        // Category (months) on the bottom — give it a Key
         var categoryAxis = new CategoryAxis
         {
             Position = AxisPosition.Bottom,
+            Key = "MonthAxis",
             Title = "Monat",
             TitleFont = "Segoe UI",
             TitleFontSize = 14,
@@ -89,24 +92,18 @@ public partial class StatisticChartViewModel : ObservableRecipient
             AxislineColor = OxyColor.FromRgb(200, 200, 200),
             AxislineThickness = 1,
             MajorGridlineStyle = LineStyle.None,
-            MinorGridlineStyle = LineStyle.None,
-            //IsPanEnabled = false,
-            //IsZoomEnabled = false
+            MinorGridlineStyle = LineStyle.None
         };
 
         var monthNames = new[] { "Jan", "Feb", "Mär", "Apr", "Mai", "Jun",
-                                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                             "Jul", "Aug", "Sep", "Okt", "Nov", "Dez" };
+        foreach (var m in monthNames) categoryAxis.Labels.Add(m);
 
-        foreach (var monthName in monthNames)
-        {
-            categoryAxis.Labels.Add(monthName);
-        }
-
-        plotModel.Axes.Add(categoryAxis);
-
+        // Value axis on the left — give it a Key
         var valueAxis = new LinearAxis
         {
             Position = AxisPosition.Left,
+            Key = "ValueAxis",
             Title = "Umsatz (€)",
             TitleFont = "Segoe UI",
             TitleFontSize = 14,
@@ -130,60 +127,31 @@ public partial class StatisticChartViewModel : ObservableRecipient
             IsPanEnabled = false,
             IsZoomEnabled = false
         };
+
+        plotModel.Axes.Add(categoryAxis);
         plotModel.Axes.Add(valueAxis);
 
-        var lineSeries = new LineSeries
+        var barSeries = new BarSeries
         {
             Title = "Umsatz",
-            Color = OxyColor.FromRgb(37, 116, 174), // Modern blue color
-            StrokeThickness = 3,
-            LineStyle = LineStyle.Solid,
-            MarkerType = MarkerType.Circle,
-            MarkerSize = 8,
-            MarkerFill = OxyColor.FromRgb(37, 116, 174),
-            MarkerStroke = OxyColors.White,
-            MarkerStrokeThickness = 2
+            XAxisKey = "ValueAxis",
+            YAxisKey = "MonthAxis",
+            FillColor = OxyColor.FromRgb(37, 116, 174),
+            StrokeColor = OxyColors.White,
+            StrokeThickness = 1,
+            BarWidth = 0.6,
+            LabelPlacement = LabelPlacement.Outside,
+            LabelFormatString = "€{0:N2}"
         };
 
-        for (int i = 0; i < salesData.Count; i++)
+        var maxItems = Math.Min(salesData.Count, monthNames.Length);
+        for (int i = 0; i < maxItems; i++)
         {
-            var dataPoint = new DataPoint(i, (double)salesData[i].Amount);
-            lineSeries.Points.Add(dataPoint);
-
-            if (salesData[i].Amount > 0)
-            {
-                var annotation = new TextAnnotation
-                {
-                    Text = $"€{salesData[i].Amount:N2}",
-                    TextPosition = new DataPoint(i, (double)salesData[i].Amount),
-                    TextVerticalAlignment = VerticalAlignment.Bottom,
-                    TextHorizontalAlignment = HorizontalAlignment.Center,
-                    Stroke = OxyColors.Transparent,
-                    FontSize = 11,
-                    FontWeight = FontWeights.Bold,
-                    TextColor = OxyColor.FromRgb(51, 51, 51),
-                    Offset = new ScreenVector(0, -10)
-                };
-                plotModel.Annotations.Add(annotation);
-            }
+            barSeries.Items.Add(new BarItem { Value = (double)salesData[i].Amount });
         }
 
-        //var legend = new Legend
-        //{
-        //    LegendTitle = "Legende",
-        //    LegendPlacement = LegendPlacement.Outside,
-        //    LegendPosition = LegendPosition.BottomRight,
-        //    LegendOrientation = LegendOrientation.Vertical,
-        //    LegendFont = "Segoe UI",
-        //    LegendFontSize = 12,
-        //    LegendTitleFontSize = 14,
-        //    LegendPadding = 25,
-        //    LegendTextColor = OxyColor.FromRgb(102, 102, 102),
-        //    LegendBorderThickness = 0,
-        //};
-
-        //plotModel.Legends.Add(legend);
-        plotModel.Series.Add(lineSeries);
-        SalesPerMonth = plotModel; // This will automatically trigger PropertyChanged
+        plotModel.Series.Add(barSeries);
+        SalesPerMonth = plotModel;
     }
+
 }
