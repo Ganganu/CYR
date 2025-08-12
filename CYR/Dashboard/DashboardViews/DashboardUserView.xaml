@@ -24,6 +24,7 @@
       <Ellipse
         Width="150"
         Height="150"
+        Margin="5"
         Stroke="LightGray"
         StrokeThickness="3">
         <Ellipse.Fill>
@@ -31,6 +32,7 @@
         </Ellipse.Fill>
       </Ellipse>
     </Grid>
+
     <Grid
       Grid.Row="1"
       Margin="0,0,0,0"
@@ -39,73 +41,79 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
-      <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel
-          Grid.Row="0"
-          Margin="0,0,0,0"
-          Background="#f5f5f5">
-          <TextBlock
-            Margin="10,0,10,0"
-            FontSize="15"
-            Text="Benutzername" />
-          <TextBox
-            Margin="10,0,10,0"
-            FontSize="15"
-            IsReadOnly="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding User.Username}" />
-          <TextBlock
-            Margin="10,0,10,0"
-            FontSize="15"
-            Text="Role" />
-          <TextBox
-            Margin="10,0,10,0"
-            FontSize="15"
-            IsReadOnly="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding User.Role}" />
-          <TextBlock
-            Margin="10,0,10,0"
-            FontSize="15"
-            Text="Firmenname" />
-          <TextBox
-            Margin="10,0,10,0"
-            FontSize="15"
-            IsReadOnly="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding Company.Name}" />
-          <TextBlock
-            Margin="10,0,10,0"
-            FontSize="15"
-            Text="Email-Adresse" />
-          <TextBox
-            Margin="10,0,10,0"
-            FontSize="15"
-            IsReadOnly="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding Company.EmailAddress}" />
-          <TextBlock
-            Margin="10,0,10,0"
-            FontSize="15"
-            Text="Telefonnummer" />
-          <TextBox
-            Margin="10,0,10,0"
-            FontSize="15"
-            IsReadOnly="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            Text="{Binding Company.TelefonNumber}" />
-        </StackPanel>
-      </ScrollViewer>
+      <Border
+        Grid.Row="0"
+        Margin="5"
+        BorderBrush="Orange"
+        BorderThickness="1"
+        CornerRadius="5">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <StackPanel
+            Grid.Row="0"
+            Margin="3"
+            Background="#fefefe">
+            <TextBlock
+              Margin="10,0,10,0"
+              FontSize="15"
+              Text="Benutzername" />
+            <TextBox
+              Margin="10,0,10,0"
+              FontSize="15"
+              IsReadOnly="True"
+              Style="{StaticResource MaterialDesignOutlinedTextBox}"
+              Text="{Binding User.Username}" />
+            <TextBlock
+              Margin="10,0,10,0"
+              FontSize="15"
+              Text="Role" />
+            <TextBox
+              Margin="10,0,10,0"
+              FontSize="15"
+              IsReadOnly="True"
+              Style="{StaticResource MaterialDesignOutlinedTextBox}"
+              Text="{Binding User.Role}" />
+            <TextBlock
+              Margin="10,0,10,0"
+              FontSize="15"
+              Text="Firmenname" />
+            <TextBox
+              Margin="10,0,10,0"
+              FontSize="15"
+              IsReadOnly="True"
+              Style="{StaticResource MaterialDesignOutlinedTextBox}"
+              Text="{Binding Company.Name}" />
+            <TextBlock
+              Margin="10,0,10,0"
+              FontSize="15"
+              Text="Email-Adresse" />
+            <TextBox
+              Margin="10,0,10,0"
+              FontSize="15"
+              IsReadOnly="True"
+              Style="{StaticResource MaterialDesignOutlinedTextBox}"
+              Text="{Binding Company.EmailAddress}" />
+            <TextBlock
+              Margin="10,0,10,0"
+              FontSize="15"
+              Text="Telefonnummer" />
+            <TextBox
+              Margin="10,0,10,0"
+              FontSize="15"
+              IsReadOnly="True"
+              Style="{StaticResource MaterialDesignOutlinedTextBox}"
+              Text="{Binding Company.TelefonNumber}" />
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
       <Grid
         Grid.Row="1"
         Margin="10"
         VerticalAlignment="Bottom"
-        Background="#f5f5f5"
         Cursor="">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button
+        <Button Style="{StaticResource MaterialDesignPaperButton}"
           Grid.Column="0"
           Command="{Binding NavigateToUserViewCommand}"
           Content="Konto Aktualisieren" />

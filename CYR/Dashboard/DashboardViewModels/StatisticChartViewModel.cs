@@ -23,6 +23,9 @@ public partial class StatisticChartViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
+    private IPlotController _plotController;
+
+    [ObservableProperty]
     private List<int> _years;
 
     [ObservableProperty]
@@ -143,6 +146,7 @@ public partial class StatisticChartViewModel : ObservableRecipient
             FillColor = OxyColor.FromRgb(59, 130, 246),
             StrokeColor = OxyColors.Transparent,
             StrokeThickness = 0,
+            TrackerFormatString = "📅 {1}\n💰 Umsatz: €{2:N0}",
 
             BarWidth = 0.2,
         };
@@ -158,11 +162,11 @@ public partial class StatisticChartViewModel : ObservableRecipient
 
             if (i == currentMonthIndex || salesData[i].Amount == salesData.Max(s => s.Amount))
             {
-                item.Color = OxyColor.FromRgb(245, 158, 11); // Modern amber
+                item.Color = OxyColor.FromRgb(245, 158, 11);
             }
             else if (value == 0)
             {
-                item.Color = OxyColor.FromRgb(226, 232, 240); // Light gray
+                item.Color = OxyColor.FromRgb(226, 232, 240);
             }
             else
             {
@@ -177,7 +181,7 @@ public partial class StatisticChartViewModel : ObservableRecipient
         if (currentMonthIndex < maxItems && salesData[currentMonthIndex].Amount > 0)
         {
             var currentValue = (double)salesData[currentMonthIndex].Amount;
-            var maxValueDouble = (double)salesData.Max(s => s.Amount); // Convert decimal to double
+            var maxValueDouble = (double)salesData.Max(s => s.Amount);
             var annotation = new TextAnnotation
             {
                 Text = $"€{currentValue:N0}",
@@ -193,6 +197,10 @@ public partial class StatisticChartViewModel : ObservableRecipient
             };
             plotModel.Annotations.Add(annotation);
         }
+
+        var controller = new PlotController();
+        controller.BindMouseEnter(PlotCommands.HoverPointsOnlyTrack);
+        PlotController = controller;
 
         SalesPerMonth = plotModel;
     }
