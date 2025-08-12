@@ -17,18 +17,19 @@
     Padding="10"
     Background="White"
     CornerRadius="8">
-    <Grid Background="#f8f8f8">
+    <Grid Background="White">
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
       <ComboBox
         Grid.Row="0"
+        Margin="0,10,10,0"
         HorizontalAlignment="Right"
         Background="White"
+        BorderBrush="Orange"
+        BorderThickness="1.3"
         FontSize="13"
-        BorderBrush="Orange" BorderThickness="0 0 0 2"
-        Margin="0 10 10 0"
         ItemsSource="{Binding Years}"
         SelectedIndex="0"
         SelectedItem="{Binding SelectedYear, Mode=TwoWay}"

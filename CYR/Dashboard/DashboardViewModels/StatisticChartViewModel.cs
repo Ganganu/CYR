@@ -60,69 +60,73 @@ public partial class StatisticChartViewModel : ObservableRecipient
 
         var plotModel = new PlotModel
         {
-            Title = "Umsatz Monatlich",
+            Title = "Monatlicher Umsatz",
             TitleFont = "Segoe UI",
-            TitleFontSize = 18,
-            TitleFontWeight = FontWeights.Bold,
-            TitleColor = OxyColor.FromRgb(51, 51, 51),
-            Background = OxyColor.FromRgb(248, 249, 250),
+            TitleFontSize = 20,
+            TitleFontWeight = FontWeights.Normal,
+            TitleColor = OxyColor.FromRgb(30, 41, 59), 
+
+            Background = OxyColors.White,
             PlotAreaBackground = OxyColors.White,
-            PlotAreaBorderColor = OxyColor.FromRgb(200, 200, 200),
-            PlotAreaBorderThickness = new OxyThickness(1),
-            Padding = new OxyThickness(80, 0, 20, 60),
-            IsLegendVisible = true,
+            PlotAreaBorderColor = OxyColors.Transparent, 
+            PlotAreaBorderThickness = new OxyThickness(0),
+
+            Padding = new OxyThickness(60, 40, 40, 60),
             PlotMargins = new OxyThickness(0),
+
+            IsLegendVisible = false,
             ClipTitle = false
         };
 
-        // Category (months) on the bottom — give it a Key
         var categoryAxis = new CategoryAxis
         {
             Position = AxisPosition.Bottom,
             Key = "MonthAxis",
-            Title = "Monat",
+
+            // Clean axis styling
             TitleFont = "Segoe UI",
-            TitleFontSize = 14,
-            TitleFontWeight = FontWeights.Bold,
-            TitleColor = OxyColor.FromRgb(102, 102, 102),
-            FontSize = 12,
-            TextColor = OxyColor.FromRgb(102, 102, 102),
-            TickStyle = TickStyle.Outside,
-            AxislineStyle = LineStyle.Solid,
-            AxislineColor = OxyColor.FromRgb(200, 200, 200),
-            AxislineThickness = 1,
+            TitleFontSize = 0,
+            FontSize = 11,
+            TextColor = OxyColor.FromRgb(100, 116, 139),
+
+            TickStyle = TickStyle.None,
+            AxislineStyle = LineStyle.None,
+            AxislineThickness = 0,
+
             MajorGridlineStyle = LineStyle.None,
-            MinorGridlineStyle = LineStyle.None
+            MinorGridlineStyle = LineStyle.None,
+
+            MajorTickSize = 0,
+            MinorTickSize = 0
         };
 
         var monthNames = new[] { "Jan", "Feb", "Mär", "Apr", "Mai", "Jun",
                              "Jul", "Aug", "Sep", "Okt", "Nov", "Dez" };
         foreach (var m in monthNames) categoryAxis.Labels.Add(m);
 
-        // Value axis on the left — give it a Key
         var valueAxis = new LinearAxis
         {
             Position = AxisPosition.Left,
             Key = "ValueAxis",
-            Title = "Umsatz (€)",
+
             TitleFont = "Segoe UI",
-            TitleFontSize = 14,
-            TitleFontWeight = FontWeights.Bold,
-            TitleColor = OxyColor.FromRgb(102, 102, 102),
-            FontSize = 12,
-            TextColor = OxyColor.FromRgb(102, 102, 102),
-            MinimumPadding = 0,
-            MaximumPadding = 0.1,
+            TitleFontSize = 0,
+            FontSize = 11,
+            TextColor = OxyColor.FromRgb(100, 116, 139),
+
+            MinimumPadding = 0.05,
+            MaximumPadding = 0.15,
             AbsoluteMinimum = 0,
+
             MajorGridlineStyle = LineStyle.Solid,
-            MajorGridlineColor = OxyColor.FromRgb(230, 230, 230),
+            MajorGridlineColor = OxyColor.FromRgb(241, 245, 249),
             MajorGridlineThickness = 1,
-            MinorGridlineStyle = LineStyle.Dot,
-            MinorGridlineColor = OxyColor.FromRgb(245, 245, 245),
-            TickStyle = TickStyle.Outside,
-            AxislineStyle = LineStyle.Solid,
-            AxislineColor = OxyColor.FromRgb(200, 200, 200),
-            AxislineThickness = 1,
+            MinorGridlineStyle = LineStyle.None,
+
+            TickStyle = TickStyle.None,
+            AxislineStyle = LineStyle.None,
+            AxislineThickness = 0,
+
             StringFormat = "€#,##0",
             IsPanEnabled = false,
             IsZoomEnabled = false
@@ -133,25 +137,63 @@ public partial class StatisticChartViewModel : ObservableRecipient
 
         var barSeries = new BarSeries
         {
-            Title = "Umsatz",
             XAxisKey = "ValueAxis",
             YAxisKey = "MonthAxis",
-            FillColor = OxyColor.FromRgb(37, 116, 174),
-            StrokeColor = OxyColors.White,
-            StrokeThickness = 1,
-            BarWidth = 0.6,
-            LabelPlacement = LabelPlacement.Outside,
-            LabelFormatString = "€{0:N2}"
+
+            FillColor = OxyColor.FromRgb(59, 130, 246),
+            StrokeColor = OxyColors.Transparent,
+            StrokeThickness = 0,
+
+            BarWidth = 0.2,
         };
+
+        var maxValue = (double)salesData.Max(s => s.Amount); // Convert to double
+        var currentMonthIndex = DateTime.Now.Month - 1;
 
         var maxItems = Math.Min(salesData.Count, monthNames.Length);
         for (int i = 0; i < maxItems; i++)
         {
-            barSeries.Items.Add(new BarItem { Value = (double)salesData[i].Amount });
+            var value = (double)salesData[i].Amount;
+            var item = new BarItem { Value = value };
+
+            if (i == currentMonthIndex || salesData[i].Amount == salesData.Max(s => s.Amount))
+            {
+                item.Color = OxyColor.FromRgb(245, 158, 11); // Modern amber
+            }
+            else if (value == 0)
+            {
+                item.Color = OxyColor.FromRgb(226, 232, 240); // Light gray
+            }
+            else
+            {
+                item.Color = OxyColor.FromRgb(59, 130, 246);
+            }
+
+            barSeries.Items.Add(item);
         }
 
         plotModel.Series.Add(barSeries);
+
+        if (currentMonthIndex < maxItems && salesData[currentMonthIndex].Amount > 0)
+        {
+            var currentValue = (double)salesData[currentMonthIndex].Amount;
+            var maxValueDouble = (double)salesData.Max(s => s.Amount); // Convert decimal to double
+            var annotation = new TextAnnotation
+            {
+                Text = $"€{currentValue:N0}",
+                TextPosition = new DataPoint(currentValue + (maxValueDouble * 0.02), currentMonthIndex),
+                TextColor = OxyColor.FromRgb(100, 116, 139),
+                Font = "Segoe UI",
+                FontSize = 10,
+                FontWeight = FontWeights.Normal,
+                TextHorizontalAlignment = HorizontalAlignment.Left,
+                TextVerticalAlignment = VerticalAlignment.Middle,
+                Background = OxyColors.Transparent,
+                Stroke = OxyColors.Transparent
+            };
+            plotModel.Annotations.Add(annotation);
+        }
+
         SalesPerMonth = plotModel;
     }
-
 }
