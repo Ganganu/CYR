@@ -53,8 +53,7 @@ public class InvoiceDocument : IInvoiceDocument
                     .Underline(true);
             });
             if (Model.Seller.CompanyLogo is not null)
-            {
-                
+            {                
                 row.ConstantItem(200).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
             }
         });

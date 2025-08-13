@@ -1,14 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dialog;
+using CYR.Logging;
 using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.Services;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Windows;
+using CYR.User;
 
 namespace CYR.ViewModel;
 
@@ -17,15 +19,19 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IDialogService _dialogService;
     private readonly IPrintOrderItemService _printOrderItemService;
+    private readonly LoggingRepository _loggingRepository; 
+    private readonly UserContext _userContext;
 
     private string? _dialogResponse;
-    public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, IDialogService dialogService, IPrintOrderItemService printOrderItemService)
+    public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, IDialogService dialogService, IPrintOrderItemService printOrderItemService, LoggingRepository loggingRepository, UserContext userContext)
     {
         _orderItemRepository = orderItemRepository;
         Navigation = navigationService;
         Initialize();
         _dialogService = dialogService;
         _printOrderItemService = printOrderItemService;
+        _loggingRepository = loggingRepository;
+        _userContext = userContext;
     }
 
     private async void Initialize()
@@ -73,6 +79,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
                 {
                     var c = await _orderItemRepository.DeleteAsync(item);
                     OrderItems.Remove(item);
+                    await _loggingRepository.InsertAsync(CreateHisModel(item));
                 }
                 catch (Exception)
                 {
@@ -84,6 +91,16 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
         {
             throw;
         }
+    }
+
+    private HisModel CreateHisModel(OrderItem item)
+    {
+        HisModel model = new HisModel();
+        model.LoggingType = LoggingType.OrderItemDeleted;
+        model.OrderItemId = item.Id.ToString();
+        model.UserId = _userContext.CurrentUser.Id;
+        model.Message = $@"Artikel: {item.Description} wurder vom User: {_userContext.CurrentUser.Id} gelöscht.";
+        return model;
     }
 
     [RelayCommand]

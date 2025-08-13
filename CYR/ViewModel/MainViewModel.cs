@@ -14,16 +14,14 @@ namespace CYR.ViewModel;
 
 public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBackSource>, IRecipient<SnackbarMessage>
 {
-    //private readonly UserContext _userContext;
     private readonly LoginRepository _loginRepository;
     private readonly ILoginTokenService _loginTokenService;
 
-    public MainViewModel(INavigationService navigationService, UserContext userContext, LoginRepository loginRepository, ILoginTokenService loginTokenService)
+    public MainViewModel(INavigationService navigationService, LoginRepository loginRepository, ILoginTokenService loginTokenService)
     {
         Navigation = navigationService;
         Messenger.RegisterAll(this);
         ShowSnackbar = Visibility.Collapsed;
-        _userContext = userContext;
 
         Navigation.NavigateTo<DashboardViewModel>();
         _loginRepository = loginRepository;
@@ -86,24 +84,4 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
         ShowSnackbar = Visibility.Visible;
         SnackbarIcon = message.Icon;
     }
-
-    [RelayCommand]
-    private async Task Logout()
-    {
-        if (_userContext.CurrentUser is null)
-            return;
-
-        await _loginRepository.LogoutAsync(_userContext.CurrentUser.Username);
-
-        _loginTokenService.DeleteToken();
-
-        _userContext.CurrentUser = null;
-        var exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
-        if (!string.IsNullOrEmpty(exePath))
-        {
-            System.Diagnostics.Process.Start(exePath);
-        }
-        Application.Current.Shutdown();
-    }
-
 }

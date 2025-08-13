@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CYR.Logging;
 using CYR.User;
 
 namespace CYR.Login;
@@ -12,9 +13,10 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
     private readonly UserContext _userContext;
     private readonly RegisterViewModel _registerViewModel;
     private readonly UserRepository _userRepository;
+    private readonly LoggingRepository _loggingRepository;
 
 
-    public LoginViewModel(LoginRepository loginRepository, ILoginTokenService loginTokenService, RegisterViewModel registerViewModel, UserContext userContext, UserRepository userRepository)
+    public LoginViewModel(LoginRepository loginRepository, ILoginTokenService loginTokenService, RegisterViewModel registerViewModel, UserContext userContext, UserRepository userRepository, LoggingRepository loggingRepository)
     {
         _loginRepository = loginRepository;
         IsViewVisible = true;
@@ -24,6 +26,7 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
         Messenger.RegisterAll(this);
         _userContext = userContext;
         _userRepository = userRepository;
+        _loggingRepository = loggingRepository;
     }
 
     public RegisterViewModel RegisterViewModel => _registerViewModel;
@@ -81,6 +84,7 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
             {
                 var user = await _userRepository.GetUserAsync(Username);
                 _userContext.CurrentUser = user;
+                await _loggingRepository.InsertAsync(CreateHisModel(user));
                 if (IsStayLoggedInChecked)
                 {
                     string token = Guid.NewGuid().ToString();
@@ -113,5 +117,13 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
     public void Receive(NavigateToLoginMessage message)
     {
         IsRegistering = false;
+    }
+    private HisModel CreateHisModel(User.User user)
+    {
+        HisModel hisModel = new();
+        hisModel.LoggingType = LoggingType.UserLogin;
+        hisModel.UserId = user.Id;
+        hisModel.Message = @$"User:{hisModel.UserId} erflogreich login.";
+        return hisModel;
     }
 }

@@ -139,15 +139,7 @@
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientCity, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Erstellungsdatum" FontSize="16" />
-            <TextBox
-              Margin="5,5,5,0"
-              materialDesign:HintAssist.Foreground="Black"
-              materialDesign:HintAssist.Hint="z.B. 16.07.2025"
-              materialDesign:HintAssist.IsFloating="False"
-              FontSize="15"
-              Style="{StaticResource MaterialDesignOutlinedTextBox}"
-              Text="{Binding ClientCreationDate, UpdateSourceTrigger=PropertyChanged}" />
+
           </StackPanel>
         </ScrollViewer>
       </Grid>

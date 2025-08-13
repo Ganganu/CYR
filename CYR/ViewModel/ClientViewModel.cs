@@ -6,7 +6,9 @@ using CYR.Clients.ViewModels;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceViewModels;
+using CYR.Logging;
 using CYR.Services;
+using CYR.User;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Windows;
@@ -18,16 +20,20 @@ public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
     private readonly IRetrieveClients _retrieveClients;
     private readonly IClientRepository _clientRepository;
     private readonly IDialogService _dialogService;
+    private readonly LoggingRepository _loggingRepository;
+    private readonly UserContext _userContext;
 
     private string? _dialogResponse;
 
-    public ClientViewModel(IRetrieveClients retrieveClients, INavigationService navigationService, IClientRepository clientRepository, IDialogService dialogService)
+    public ClientViewModel(IRetrieveClients retrieveClients, INavigationService navigationService, IClientRepository clientRepository, IDialogService dialogService, LoggingRepository loggingRepository, UserContext userContext)
     {
         _retrieveClients = retrieveClients;
         Navigation = navigationService;
         Initialize();
         _clientRepository = clientRepository;
         _dialogService = dialogService;
+        _loggingRepository = loggingRepository;
+        _userContext = userContext;
     }
 
     private async void Initialize()
@@ -90,6 +96,7 @@ public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
                     }
                     var c = await _clientRepository.DeleteAsync(client);
                     Clients.Remove(client);
+                    await _loggingRepository.InsertAsync(CreateHisModel(client));
                 }
                 catch (Exception)
                 {
@@ -131,5 +138,15 @@ public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
                 { vm => vm.OkButtonText, okButtonText },
                 { vm => vm.IsOkVisible, okButtonVisibility}
         });
+    }
+
+    private HisModel CreateHisModel(Client client)
+    {
+        HisModel hisModel = new();
+        hisModel.LoggingType = LoggingType.UserDeleted;
+        hisModel.ClientId = client.ClientNumber;
+        hisModel.UserId = _userContext.CurrentUser.Id;
+        hisModel.Message = @$"Client:{hisModel.ClientId} wurde gelöscht vom User:{hisModel.UserId}";
+        return hisModel;
     }
 }

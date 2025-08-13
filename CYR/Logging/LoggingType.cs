@@ -7,6 +7,7 @@ public enum LoggingType
     UserUpdated = 1002,
     UserLogin = 1003,
     UserLogout = 1004,
+    NewUserRegistered = 1005,
 
     AddressCreated = 2000,
     AddressDeleted = 2001,

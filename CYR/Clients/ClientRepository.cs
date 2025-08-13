@@ -124,14 +124,13 @@ public class ClientRepository : IClientRepository
 
     public async Task<Client> InsertAsync(Client client)
     {
-        string query = "INSERT INTO Kunden (Kundennummer,Name,Telefonnummer,Email,Erstellungsdatum,user_id) VALUES (@Kundennummer,@Name,@Telefonnummer,@Email,@Erstellungsdatum,@user_id)";
+        string query = "INSERT INTO Kunden (Kundennummer,Name,Telefonnummer,Email,user_id) VALUES (@Kundennummer,@Name,@Telefonnummer,@Email,@user_id)";
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {
             { "Kundennummer", client.ClientNumber },
             { "Name", client.Name },
             { "Telefonnummer", client.Telefonnumber },
             { "Email", client.EmailAddress },
-            { "Erstellungsdatum", client.CreationDate },
             { "@user_id", _userContext.CurrentUser.Id}
         };
         var newClient = await _connection.ExecuteScalarAsync<Client>(query, queryParameters);
@@ -156,14 +155,13 @@ public class ClientRepository : IClientRepository
             await _connection.ExecuteNonQueryInTransactionAsync(transaction, updateAddress, addressParams);
 
             string updateClient = "update Kunden set Name = @Name, Telefonnummer = @Telefonnummer," +
-            "Email = @Email, Erstellungsdatum = @Erstellungsdatum where Kundennummer = @Kundennummer and user_id = @user_id";
+            "Email = @Email where Kundennummer = @Kundennummer and user_id = @user_id";
             var updateParams = new Dictionary<string, object>
             {
                 { "@Kundennummer", client.ClientNumber },
                 { "@Name", client.Name },
                 { "@Telefonnummer", client.Telefonnumber },
                 { "@Email", client.EmailAddress },
-                { "@Erstellungsdatum", client.CreationDate },
                 { "@user_id", _userContext.CurrentUser.Id}
             };
             int clientAffectedRows = await _connection.ExecuteNonQueryInTransactionAsync(transaction, updateClient, updateParams);

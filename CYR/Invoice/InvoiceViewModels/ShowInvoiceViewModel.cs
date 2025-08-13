@@ -1,4 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
@@ -6,13 +9,12 @@ using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
+using CYR.Logging;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Windows.Media;
+using CYR.User;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
@@ -29,6 +31,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
     private readonly IDialogService _dialogService;
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IInvoicePositionRepository _invoicePositionRepository;
+    private readonly LoggingRepository _loggingRepository;
+    private readonly UserContext _userContext;
 
     private string? _dialogResponse;
     private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -46,7 +50,9 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
         IDialogService dialogService,
         IFileService fileService,
         IInvoiceRepository invoiceRepository,
-        IInvoicePositionRepository invoicePositionRepository)
+        IInvoicePositionRepository invoicePositionRepository,
+        LoggingRepository loggingRepository,
+        UserContext userContext)
     {
         _orderItemRepository = orderItemRepository;
         _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -62,6 +68,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
         _fileService = fileService;
         _invoiceRepository = invoiceRepository;
         _invoicePositionRepository = invoicePositionRepository;
+        _loggingRepository = loggingRepository;
+        _userContext = userContext;
     }
 
     private async void Initialize()
@@ -164,7 +172,18 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
             orderItem.Description = position.ManuallyInsertedArticle;
             orderItem.Price = position.Price;
             await _orderItemRepository.InsertAsync(orderItem);
+            await _loggingRepository.InsertAsync(CreateHisModel(position));
         }
+    }
+
+    private HisModel CreateHisModel(InvoicePosition position)
+    {
+        HisModel hisModel = new HisModel();
+        hisModel.LoggingType = LoggingType.OrderItemCreated;
+        hisModel.OrderItemId = position.Id;
+        hisModel.UserId = _userContext.CurrentUser.Id;
+        hisModel.Message = $@"Artikel {hisModel.OrderItemId} erfolgreich erstellt.";
+        return hisModel;
     }
 
     [RelayCommand]
@@ -191,7 +210,19 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
         invoiceModel.Items = [.. Positions];
         var message = await _invoiceRepository.UpdateInvoiceAndPositions(invoiceModel);
         Messenger.Send(message);
+        await _loggingRepository.InsertAsync(CreateHisModel(invoiceModel));
     }
+
+    private HisModel CreateHisModel(InvoiceModel invoiceModel)
+    {
+        HisModel hisModel = new();
+        hisModel.LoggingType = LoggingType.InvoiceUpdated;
+        hisModel.InvoiceId = invoiceModel.InvoiceNumber;
+        hisModel.UserId = _userContext.CurrentUser.Id;
+        hisModel.Message = $@"Rechnung {invoiceModel.InvoiceNumber} erfolgreich geupdatet.";
+        return hisModel;
+    }
+
     [RelayCommand]
     private void DeleteInvoicePosition()
     {

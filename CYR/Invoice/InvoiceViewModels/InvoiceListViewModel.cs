@@ -5,7 +5,9 @@ using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
+using CYR.Logging;
 using CYR.Services;
+using CYR.User;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Windows;
@@ -16,17 +18,23 @@ public partial class InvoiceListViewModel : ObservableRecipient
 {
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IDialogService _dialogService;
+    private readonly LoggingRepository _loggingRepository;
+    private readonly UserContext _userContext;
 
     private string? _dialogResponse;
 
     public InvoiceListViewModel(IInvoiceRepository invoiceRepository,
         INavigationService navigationService,
-        IDialogService dialogService)
+        IDialogService dialogService,
+        LoggingRepository loggingRepository,
+        UserContext userContext)
     {
         _invoiceRepository = invoiceRepository;
         NavigationService = navigationService;
         Initialize();
         _dialogService = dialogService;
+        _loggingRepository = loggingRepository;
+        _userContext = userContext;
     }
     private async void Initialize()
     {
@@ -105,6 +113,7 @@ public partial class InvoiceListViewModel : ObservableRecipient
                 }
                 bool result = await _invoiceRepository.DeleteAsync(invoice);
                 Invoices?.Remove(invoice);
+                await _loggingRepository.InsertAsync(CreateHisModel(invoice));
             }
         }
         catch (Exception)
@@ -112,6 +121,17 @@ public partial class InvoiceListViewModel : ObservableRecipient
             throw;
         }
     }
+
+    private HisModel CreateHisModel(InvoiceModel invoice)
+    {
+        HisModel hisModel = new();
+        hisModel.LoggingType = LoggingType.InvoiceDeleted;
+        hisModel.InvoiceId = invoice.InvoiceNumber;
+        hisModel.UserId = _userContext.CurrentUser.Id;
+        hisModel.Message = $@"Invoice: {invoice.InvoiceNumber} wurde gelöscht vom User: {_userContext.CurrentUser.Id}";
+        return hisModel;
+    }
+
     [RelayCommand]
     private void UpdateInvoice()
     {

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Data.SQLite;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Address;
@@ -6,11 +7,10 @@ using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Extensions;
+using CYR.Logging;
 using CYR.Messages;
 using CYR.Services;
-using System.Data.SQLite;
-using System.Linq.Expressions;
-using System.Windows;
+using CYR.User;
 
 namespace CYR.ViewModel;
 
@@ -19,15 +19,19 @@ public partial class CreateClientViewModel : ObservableRecipient
     private readonly IClientRepository _clientRepository;
     private readonly IAddressRepository _addressRepository;
     private readonly IDialogService _dialogService;
+    private readonly LoggingRepository _loggingRepository;
+    private readonly UserContext _userContext;
 
     private string? _dialogResponse;
     private IEnumerable<Client> _clients;
-    public CreateClientViewModel(INavigationService navigationService, IClientRepository clientRepository, IAddressRepository addressRepository, IDialogService dialogService)
+    public CreateClientViewModel(INavigationService navigationService, IClientRepository clientRepository, IAddressRepository addressRepository, IDialogService dialogService, LoggingRepository loggingRepository, UserContext userContext)
     {
         Navigation = navigationService;
         _clientRepository = clientRepository;
         _addressRepository = addressRepository;
         _dialogService = dialogService;
+        _loggingRepository = loggingRepository;
+        _userContext = userContext;
     }
 
     [ObservableProperty]
@@ -40,8 +44,6 @@ public partial class CreateClientViewModel : ObservableRecipient
     private string _clientTelefonnumber;
     [ObservableProperty]
     private string _clientEmail;
-    [ObservableProperty]
-    private string _clientCreationDate;
     [ObservableProperty]
     private string _clientStreet;
     [ObservableProperty]
@@ -70,7 +72,6 @@ public partial class CreateClientViewModel : ObservableRecipient
         client.Name = ClientName;
         client.Telefonnumber = ClientTelefonnumber;
         client.EmailAddress = ClientEmail;
-        client.CreationDate = ClientCreationDate;
         address.CompanyName = ClientNumber;
         address.Street = ClientStreet;
         address.City = ClientCity;
@@ -86,8 +87,19 @@ public partial class CreateClientViewModel : ObservableRecipient
             ErrorMessage = errorCode.GetDescription();
             return;
         }
+        await _loggingRepository.InsertAsync(CreateHisModel(client));
         await _addressRepository.InsertAsync(address);
         Messenger.Send(new SnackbarMessage($"Der Kunde {ClientNumber}-{ClientName} wurde erfolgreich gespeichert.", "Check"));
+    }
+
+    private HisModel CreateHisModel(Client client)
+    {
+        HisModel model = new HisModel();
+        model.LoggingType = LoggingType.ClientCreated;
+        model.ClientId = client.ClientNumber;
+        model.UserId = _userContext.CurrentUser.Id;
+        model.Message = $@"Client: {client.ClientNumber} wurder vom User: {_userContext.CurrentUser.Id} erstellt.";
+        return model;
     }
 
     private bool ValidateProperties()
@@ -102,7 +114,7 @@ public partial class CreateClientViewModel : ObservableRecipient
     private string MessageIsNullOrEmpty()
     {
         bool valid = !string.IsNullOrEmpty(ClientNumber) && !string.IsNullOrEmpty(ClientName) && !string.IsNullOrEmpty(ClientTelefonnumber) &&
-            !string.IsNullOrEmpty(ClientCreationDate) && !string.IsNullOrEmpty(ClientStreet) && !string.IsNullOrEmpty(ClientPLZ) &&
+            !string.IsNullOrEmpty(ClientStreet) && !string.IsNullOrEmpty(ClientPLZ) &&
             !string.IsNullOrEmpty(ClientCity);
         if (!valid)
             return "Unvolständige Daten!";

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dialog;
+using CYR.Logging;
 using CYR.User;
 
 namespace CYR.Login;
@@ -15,13 +16,15 @@ public partial class RegisterViewModel : ObservableRecipient
 {
     private readonly UserRepository _userRepository;
     private readonly IDialogService _dialogService;
+    private readonly LoggingRepository _loggingRepository;
     private string? _dialogResponse;
-    public RegisterViewModel(UserRepository userRepository, IDialogService dialogService)
+    public RegisterViewModel(UserRepository userRepository, IDialogService dialogService, LoggingRepository loggingRepository)
     {
         Roles = ["Admin", "User"];
         ErrorTexts = [];
         _userRepository = userRepository;
         _dialogService = dialogService;
+        _loggingRepository = loggingRepository;
     }
 
     [ObservableProperty]
@@ -47,16 +50,17 @@ public partial class RegisterViewModel : ObservableRecipient
         var succes = false;
         ErrorTexts?.Clear();
         if (Password != ConfirmPassword) ErrorTexts?.Add(@"Die Passwörter stimmen nicht überein. Bitte wiederholen Sie Ihre Eingabe.");
-        if (SelectedRole is null || string.IsNullOrEmpty(SelectedRole)) ErrorTexts?.Add("Wählen sie eine Role."); 
+        if (SelectedRole is null || string.IsNullOrEmpty(SelectedRole)) ErrorTexts?.Add("Wählen sie eine Role.");
         ErrorText = ErrorTexts?.Count > 0 ? string.Join(Environment.NewLine, ErrorTexts) : string.Empty;
 
+        User.User registerModel = new();
         if (ErrorTexts?.Count == 0)
         {
             int result;
-            User.User registerModel = new User.User();
+            registerModel = new User.User();
             registerModel.Username = Username;
             registerModel.Password = Password;
-            registerModel.Role= SelectedRole;
+            registerModel.Role = SelectedRole;
             try
             {
                 result = await _userRepository.InsertAsync(registerModel);
@@ -71,7 +75,8 @@ public partial class RegisterViewModel : ObservableRecipient
         }
         if (succes)
         {
-            ShowNotificationDialog("Konto erstellen", "Konto erfolgreich erstellt.", "Ok", "Check", Visibility.Collapsed,"");
+            ShowNotificationDialog("Konto erstellen", "Konto erfolgreich erstellt.", "Ok", "Check", Visibility.Collapsed, "");
+            await _loggingRepository.InsertAsync(CreateHisModel(registerModel));
         }
     }
 
@@ -122,6 +127,14 @@ public partial class RegisterViewModel : ObservableRecipient
             { vm => vm.OkButtonText, okButtonText },
             { vm => vm.IsOkVisible, okButtonVisibility}
         });
+    }
+    private HisModel CreateHisModel(User.User user)
+    {
+        HisModel hisModel = new();
+        hisModel.LoggingType = LoggingType.NewUserRegistered;
+        hisModel.UserId = user.Id;
+        hisModel.Message = @$"User:{hisModel.UserId} erflogreich registriert.";
+        return hisModel;
     }
 }
 

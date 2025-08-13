@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CYR.Logging;
 using CYR.OrderItems;
 using CYR.Services;
-using CommunityToolkit.Mvvm.Messaging;
+using CYR.User;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace CYR.ViewModel
 {
@@ -10,10 +13,14 @@ namespace CYR.ViewModel
     {
         private IEnumerable<OrderItem> _articles;
         private readonly IOrderItemRepository _orderItemRepository;
-        public CreateNewArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository) 
+        private readonly LoggingRepository _loggingRepository;
+        private readonly UserContext _userContext;
+        public CreateNewArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, LoggingRepository loggingRepository, UserContext userContext)
         {
             _orderItemRepository = orderItemRepository;
             Navigation = navigationService;
+            _loggingRepository = loggingRepository;
+            _userContext = userContext;
         }
 
         [ObservableProperty]
@@ -54,6 +61,17 @@ namespace CYR.ViewModel
                 WeakReferenceMessenger.Default.Send(new OrderItemMessageCollectionChanged(true));
             }
             SaveMessage = $"Artikel/Dienstleistung {orderItem.Name} erfolgreich gespeichert.";
+            await _loggingRepository.InsertAsync(CreateHisModel(orderItem));
+        }
+
+        private HisModel CreateHisModel(OrderItem orderItem)
+        {
+            HisModel model = new HisModel();
+            model.LoggingType = LoggingType.OrderItemCreated;
+            model.UserId = _userContext.CurrentUser.Id;
+            model.OrderItemId = orderItem.Id.ToString();
+            model.Message = $@"Artikel: {orderItem.Description} wurder vom User: {_userContext.CurrentUser.Id} erstellt.";
+            return model;
         }
     }
 }

@@ -7,8 +7,10 @@ using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dialog;
 using CYR.Extensions;
+using CYR.Logging;
 using CYR.Messages;
 using CYR.Services;
+using CYR.User;
 using CYR.ViewModel;
 
 namespace CYR.Clients.ViewModels;
@@ -17,14 +19,18 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
 {
     private readonly IClientRepository _clientRepository;
     private readonly IDialogService _dialogService;
+    private readonly LoggingRepository _loggingRepository;
+    private readonly UserContext _userContext;
 
     private string? _dialogResponse;
     private IEnumerable<Client> _clients;
-    public UpdateClientViewModel(INavigationService navigationService, IClientRepository clientRepository, IDialogService dialogService)
+    public UpdateClientViewModel(INavigationService navigationService, IClientRepository clientRepository, IDialogService dialogService, LoggingRepository loggingRepository, UserContext userContext)
     {
         Navigation = navigationService;
         _clientRepository = clientRepository;
         _dialogService = dialogService;
+        _loggingRepository = loggingRepository;
+        _userContext = userContext;
     }
 
     [ObservableProperty]
@@ -40,8 +46,6 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
     [ObservableProperty]
     private string _clientEmail;
     [ObservableProperty]
-    private string _clientCreationDate;
-    [ObservableProperty]
     private string _clientStreet;
     [ObservableProperty]
     private string _clientPLZ;
@@ -56,7 +60,6 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
         ClientName = Client.Name;
         ClientTelefonnumber = Client.Telefonnumber;
         ClientEmail = Client.EmailAddress;
-        ClientCreationDate = Client.CreationDate;
         ClientStreet = Client.Street;
         ClientCity = Client.City;
         ClientPLZ = Client.PLZ;
@@ -96,6 +99,7 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
             return;
         }
         Messenger.Send(new SnackbarMessage($"Der Kunde {ClientName} wurde erfolgreich aktualisiert.", "Check"));
+        await _loggingRepository.InsertAsync(CreateHisModel());
     }
     private bool ValidateProperties()
     {
@@ -109,7 +113,7 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
     private string MessageIsNullOrEmpty()
     {
         bool valid = !string.IsNullOrEmpty(ClientName) && !string.IsNullOrEmpty(ClientTelefonnumber) &&
-            !string.IsNullOrEmpty(ClientCreationDate) && !string.IsNullOrEmpty(ClientStreet) && !string.IsNullOrEmpty(ClientPLZ) &&
+            !string.IsNullOrEmpty(ClientStreet) && !string.IsNullOrEmpty(ClientPLZ) &&
             !string.IsNullOrEmpty(ClientCity);
         if (!valid)
             return "Unvolständige Daten!";
@@ -144,10 +148,18 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
         c.Street = ClientStreet;
         c.City = ClientCity;
         c.Street = ClientStreet;
-        c.CreationDate = ClientCreationDate;
         c.EmailAddress = ClientEmail;
         c.Telefonnumber = ClientTelefonnumber;
         c.PLZ = ClientPLZ;
         return c;
+    }
+    private HisModel CreateHisModel()
+    {
+        HisModel hisModel = new();
+        hisModel.LoggingType = LoggingType.UserUpdated;
+        hisModel.ClientId = ClientNumber;
+        hisModel.UserId = _userContext.CurrentUser.Id;
+        hisModel.Message = @$"Client:{hisModel.ClientId} wurde geupdated vom User:{hisModel.UserId}";
+        return hisModel;
     }
 }

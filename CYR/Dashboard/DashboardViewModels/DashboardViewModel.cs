@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CYR.Logging;
 using CYR.Login;
 using CYR.Services;
 using CYR.User;
@@ -17,10 +18,10 @@ public partial class DashboardViewModel : ObservableRecipient
     private readonly UserRepository _userRepository;
     private readonly LoginRepository _loginRepository;
     private readonly ILoginTokenService _loginTokenService;
+    private readonly LoggingRepository _loggingRepository;
 
 
-
-    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel, StatisticChartViewModel statisticChartViewModel, DashboardUserViewModel dashboardUserViewModel, DashboardInvoiceViewModel dashboardInvoiceViewModel, INavigationService navigation, UserContext userContext, UserRepository userRepository, LoginRepository loginRepository, ILoginTokenService loginTokenService)
+    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel, StatisticChartViewModel statisticChartViewModel, DashboardUserViewModel dashboardUserViewModel, DashboardInvoiceViewModel dashboardInvoiceViewModel, INavigationService navigation, UserContext userContext, UserRepository userRepository, LoginRepository loginRepository, ILoginTokenService loginTokenService, LoggingRepository loggingRepository)
     {
         _statisticOverviewViewModel = statisticOverviewViewModel;
         _statisticChartViewModel = statisticChartViewModel;
@@ -32,6 +33,7 @@ public partial class DashboardViewModel : ObservableRecipient
         Initialize();
         _loginRepository = loginRepository;
         _loginTokenService = loginTokenService;
+        _loggingRepository = loggingRepository;
     }
 
 
@@ -66,7 +68,7 @@ public partial class DashboardViewModel : ObservableRecipient
             return;
 
         await _loginRepository.LogoutAsync(_userContext.CurrentUser.Username);
-
+        await _loggingRepository.InsertAsync(CreateHisModel(_userContext));
         _loginTokenService.DeleteToken();
 
         _userContext.CurrentUser = null;
@@ -76,5 +78,14 @@ public partial class DashboardViewModel : ObservableRecipient
             System.Diagnostics.Process.Start(exePath);
         }
         Application.Current.Shutdown();
+    }
+
+    private HisModel CreateHisModel(UserContext userContext)
+    {
+        HisModel model = new HisModel();
+        model.LoggingType = LoggingType.UserLogout;
+        model.UserId = _userContext.CurrentUser.Id;
+        model.Message = $@"User: {model.UserId} abgemeldet.";
+        return model;
     }
 }
