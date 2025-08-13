@@ -122,7 +122,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                 }
             }
             CreateInvoice(createInvoiceModel);
-            return new SnackbarMessage($"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} wurder erfolgreich gespeichert!", "Check");
+            return new SnackbarMessage($"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} wurde erfolgreich gespeichert!", "Check");
         }
     }
 

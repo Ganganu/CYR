@@ -1,6 +1,7 @@
 ﻿using CYR.Clients;
 using CYR.Core;
 using CYR.Invoice.InvoiceModels;
+using CYR.Logging;
 using CYR.Messages;
 using CYR.User;
 using System.Data.Common;
@@ -12,10 +13,12 @@ public class InvoiceRepository : IInvoiceRepository
 {
     private readonly IDatabaseConnection _databaseConnection;
     private readonly UserContext _userContext;
-    public InvoiceRepository(IDatabaseConnection databaseConnection, UserContext userContext)
+    private readonly LoggingRepository _loggingRepository;
+    public InvoiceRepository(IDatabaseConnection databaseConnection, UserContext userContext, LoggingRepository loggingRepository)
     {
         _databaseConnection = databaseConnection;
         _userContext = userContext;
+        _loggingRepository = loggingRepository;
     }
 
     public async Task<bool> DeleteAsync(InvoiceModel invoice)
@@ -30,6 +33,8 @@ public class InvoiceRepository : IInvoiceRepository
                 { "@user_id", _userContext.CurrentUser.Id }
             };
             await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, deletePositionsQuery, deletePositionsParams);
+
+            await _loggingRepository.InsertInTransactionAsync(new HisModel { InvoiceId = (int)invoice.InvoiceNumber, UserId = Convert.ToInt32(_userContext.CurrentUser.Id),Message=@$"Rechnungspositionen für {invoice.InvoiceNumber} gelöscht." },transaction);
 
             string deleteInvoiceQuery = "delete from Rechnungen where Rechnungsnummer = @Rechnungsnummer and user_id = @user_id";
             var deleteInvoiceParams = new Dictionary<string, object>

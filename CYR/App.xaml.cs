@@ -14,6 +14,7 @@ using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Invoice.InvoiceViews;
+using CYR.Logging;
 using CYR.Login;
 using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
@@ -88,6 +89,7 @@ public partial class App : Application
         services.AddSingleton<IAddressRepository, AddressRepository>();
         services.AddSingleton<IUnitOfMeasureRepository, UnitOfMeasureRepository>();
         services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
+        services.AddSingleton<LoggingRepository>();
 
         services.AddSingleton<StatisticOverviewRepository>();
         services.AddSingleton<StatisticChartRepository>();
