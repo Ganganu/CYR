@@ -483,6 +483,7 @@
                     <TextBox
                       materialDesign:HintAssist.Hint="Einheitspreis"
                       materialDesign:HintAssist.IsFloating="False"
+                      materialDesign:ValidationAssist.Background="Transparent"
                       Style="{StaticResource MaterialDesignTextBoxBase}"
                       Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                   </DataTemplate>
