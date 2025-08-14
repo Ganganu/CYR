@@ -72,6 +72,7 @@ public partial class InvoicePosition : ValidationViewModelBase
     /// <param name="newValue"></param>
     partial void OnOrderItemChanged(OrderItem? oldValue, OrderItem? newValue)
     {
+        if (!ValidateOrderItem(newValue)) return;
         if (isInDatabaseButManuallyChangedValueAlreadySet) return;
         if (newValue?.Description is not null && newValue.Id == 0) isInDatabaseButManuallyChanged = true;
         if (isInDatabaseButManuallyChanged)
@@ -90,6 +91,7 @@ public partial class InvoicePosition : ValidationViewModelBase
             TotalPrice = Convert.ToDecimal(Quantity) * Price;
         }
     }
+
 
     [ObservableProperty]
     private string? _quantity;
@@ -113,8 +115,10 @@ public partial class InvoicePosition : ValidationViewModelBase
     private decimal? _price;
     partial void OnPriceChanged(decimal? oldValue, decimal? newValue)
     {
+        bool isValid = ValidatePrice(newValue);
+        if (!isValid) return;
         if (oldValue != newValue)
-        {
+        {            
             TotalPrice = Convert.ToDecimal(Quantity) * Price;
             if (OrderItem is not null)
             {
@@ -164,15 +168,50 @@ public partial class InvoicePosition : ValidationViewModelBase
     #region Validations
     private bool ValidateQuantity(string? value)
     {
-        bool succes = false;
+        bool isDecimal = decimal.TryParse(value, out _);
+        decimal d = -1;
+        if (isDecimal) d = Convert.ToDecimal(value);
         ClearErrors(nameof(Quantity));
-        if (string.IsNullOrEmpty(value)) return succes;
-        if (string.IsNullOrWhiteSpace(value)) return succes;
+        if (string.IsNullOrEmpty(value)) return false;
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        if (isDecimal && d <= 0)
+        {
+            AddError(nameof(Quantity), "Menge muss muss größer 0 sein.");
+            return false;
+        }
         if (!decimal.TryParse(value, out _))
+        {
             AddError(nameof(Quantity), "Menge muss eine Zahl sein");
-        else
-            succes = true;
-        return succes;
+            return false;
+        }
+        return true;
+    }
+    private bool ValidatePrice(decimal? value)
+    {
+        ClearErrors(nameof(Price));
+        if (string.IsNullOrEmpty(value.ToString())) return false;
+        if (string.IsNullOrWhiteSpace(value.ToString())) return false;
+        if (Convert.ToDecimal(value) <= 0)
+        {
+            AddError(nameof(Price), @"Der Preis muss größer 0 sein.");
+            return false;
+        }
+        if (!decimal.TryParse(value.ToString(), out _))
+        {
+            AddError(nameof(Price), "Preis muss eine Zahl sein");
+            return false;
+        }
+        return true;
+    }
+
+
+    private bool ValidateOrderItem(OrderItem? newValue)
+    {        
+        ClearErrors(nameof(OrderItem));
+        if (newValue is null) return false;
+        if (string.IsNullOrEmpty(newValue.Name)) return false;
+        if (string.IsNullOrWhiteSpace(newValue.Name)) return false;
+        return true;
     }
     #endregion
 

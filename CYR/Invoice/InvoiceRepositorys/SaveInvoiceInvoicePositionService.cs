@@ -48,7 +48,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
         .Where(p =>
             p.Position.OrderItem == null ||
             !decimal.TryParse(p.Position.Quantity?.ToString(), out decimal qty) || qty < 0 ||
-            string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name)
+            string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name) || p.Position.UnitOfMeasure is null
         )
         .ToList();
         if (invalidPositions.Count != 0)
