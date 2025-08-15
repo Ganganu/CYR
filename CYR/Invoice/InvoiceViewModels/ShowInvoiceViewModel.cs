@@ -5,11 +5,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
+using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.Logging;
+using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
@@ -18,7 +20,7 @@ using CYR.User;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
-public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver,
+public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, IRecipient<InvoiceTotalPriceEvent>, IParameterReceiver,
                                             IRecipient<InvoiceMwstEvent>, IRecipient<ItemsListDialogViewModel>
 {
     private readonly IOrderItemRepository _orderItemRepository;
@@ -119,7 +121,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
             invoicePosition.OrderItem = new OrderItem
             {
                 Description = item.Description,
-                Price = item.UnitPrice,                
+                Price = item.UnitPrice.ToString(),                
             };
             result.Add(invoicePosition);
         }
@@ -162,9 +164,14 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
     }
     [RelayCommand]
     private async Task SaveArticle(object parameters)
-    {
+    {        
         var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();
         if (selectedPositions is null) return;
+        if (selectedPositions.Any(p => p.HasErrors))
+        {
+            Messenger.Send(new SnackbarMessage($"Die eingaben enthalten Fehler!", "Error"));
+            return;
+        }
         foreach (var position in selectedPositions)
         {
             OrderItem orderItem = new();
@@ -205,6 +212,12 @@ public partial class ShowInvoiceViewModel : ObservableRecipient, IRecipient<Invo
     [RelayCommand]
     private async Task UpdateInvoice()
     {
+        if (Positions.Any(p => p.HasErrors))
+        {
+            Messenger.Send(new SnackbarMessage($"Die eingaben enthalten Fehler!", "Error"));
+            return;
+        }
+        
         InvoiceModel invoiceModel = new();
         invoiceModel = InvoiceModel;
         invoiceModel.Items = [.. Positions];

@@ -13,5 +13,5 @@ public partial class OrderItem :ObservableObject
     [ObservableProperty]
     private string? _name;
     [ObservableProperty]
-    private decimal? _price;
+    private string? _price;
 }

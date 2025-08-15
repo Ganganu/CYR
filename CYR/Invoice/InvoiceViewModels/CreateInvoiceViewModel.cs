@@ -2,11 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
+using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.Logging;
+using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.Settings;
@@ -18,7 +20,7 @@ using System.Windows.Media;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
-public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<InvoiceTotalPriceEvent>,
+public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation, IRecipient<InvoiceTotalPriceEvent>,
                                             IRecipient<InvoiceMwstEvent>, IRecipient<ItemsListDialogViewModel>
 {
     private readonly IOrderItemRepository _orderItemRepository;
@@ -108,9 +110,14 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<In
     }
     [RelayCommand]
     private async Task SaveArticle(object parameters)
-    {
+    {        
         var selectedPositions = Positions?.Where(p => p.IsInvoicePositionSelected).ToList();
         if (selectedPositions is null) return;
+        if (selectedPositions.Any(p => p.HasErrors))
+        {
+            Messenger.Send(new SnackbarMessage($"Die eingaben enthalten Fehler!", "Error"));
+            return;
+        }
         foreach (var position in selectedPositions)
         {
             OrderItem orderItem = new();
@@ -147,6 +154,12 @@ public partial class CreateInvoiceViewModel : ObservableRecipient, IRecipient<In
     [RelayCommand]
     private async Task SaveInvoice()
     {
+        if (Positions.Any(p => p.HasErrors))
+        {
+            Messenger.Send(new SnackbarMessage($"Die eingaben enthalten Fehler!", "Error"));
+            return;
+        }
+
         CreateInvoiceModel createInvoiceModel = new()
         {
             Client = _client,

@@ -66,7 +66,7 @@ namespace CYR.ViewModel
             OrderItem orderItem = new OrderItem();
             orderItem.Name = Name;
             orderItem.Description = Description;
-            orderItem.Price = Convert.ToDecimal(Price);
+            orderItem.Price = Price;
             await _orderItemRepository.InsertAsync(orderItem);
             _articles = await _orderItemRepository.GetAllAsync();
             if (_articles != null)

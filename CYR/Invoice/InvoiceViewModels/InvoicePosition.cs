@@ -55,7 +55,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
                 OrderItem = new OrderItem();
                 OrderItem.Name = newValue;
                 OrderItem.Description = newValue;
-                OrderItem.Price = 0;
+                OrderItem.Price = "0";
             }
         }
     }
@@ -78,7 +78,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
         if (isInDatabaseButManuallyChanged)
         {
             Price = newValue?.Price;
-            TotalPrice = Convert.ToDecimal(Quantity) * Price;
+            TotalPrice = Convert.ToDecimal(Quantity) * Convert.ToDecimal(Price);
             isInDatabaseButManuallyChangedValueAlreadySet = true;
             return;
         }
@@ -88,7 +88,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
             if (OrderItem.Description is null) return;
             if (string.IsNullOrEmpty(OrderItem.Description)) return;
             Price = OrderItem.Price;
-            TotalPrice = Convert.ToDecimal(Quantity) * Price;
+            TotalPrice = Convert.ToDecimal(Quantity) * Convert.ToDecimal(Price);
         }
     }
 
@@ -96,7 +96,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
-    [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
+    [RegularExpression("^(?:\\d{1,9})(?:,\\d{1,2})?$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
     private string? _quantity;
     partial void OnQuantityChanged(string? oldValue, string? newValue)
     {
@@ -105,7 +105,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
             if (OrderItem != null)
             {
                 Price = OrderItem.Price;
-                TotalPrice = Convert.ToDecimal(Quantity) * Price;
+                TotalPrice = Convert.ToDecimal(Quantity) * Convert.ToDecimal(Price);
             }
         }
     }
@@ -116,13 +116,13 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
-    [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
-    private decimal? _price;
-    partial void OnPriceChanged(decimal? oldValue, decimal? newValue)
+    [RegularExpression("^(?:\\d{1,9})(?:,\\d{1,2})?$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
+    private string? _price;
+    partial void OnPriceChanged(string? oldValue, string? newValue)
     {
         if (oldValue != newValue)
-        {            
-            TotalPrice = Convert.ToDecimal(Quantity) * Price;
+        {
+            TotalPrice = Convert.ToDecimal(Quantity) * Convert.ToDecimal(Price);
             if (OrderItem is not null)
             {
                 OrderItem.Price = Price;

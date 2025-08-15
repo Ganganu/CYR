@@ -184,7 +184,7 @@ public class InvoiceRepository : IInvoiceRepository
         if (invoice.Customer is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Error");
         if (invoice.Items is null) return new SnackbarMessage("Fehler aufgetreten!", "Error");
         if (invoice.Items.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Error");
-        if (invoice.Items.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
+        if (invoice.Items.Any(p => Convert.ToDecimal(p.Price) < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
 
         var invalidPositions = invoice.Items
         .Select((p, index) => new { Position = p, Index = index + 1 })

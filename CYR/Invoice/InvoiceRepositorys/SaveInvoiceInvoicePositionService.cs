@@ -41,7 +41,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
         if (createInvoiceModel.Client is null) return new SnackbarMessage("Wählen Sie bitte einen Kunden aus.", "Error");
         if (createInvoiceModel.Positions is null) return new SnackbarMessage("Fehler aufgetreten!", "Error");
         if (createInvoiceModel.Positions.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Error");
-        if (createInvoiceModel.Positions.Any(p => p.Price < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
+        if (createInvoiceModel.Positions.Any(p => Convert.ToDecimal(p.Price) < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
 
         var invalidPositions = createInvoiceModel.Positions
         .Select((p, index) => new { Position = p, Index = index + 1 })
@@ -73,7 +73,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                     invoiceModel.Customer = client;
                     invoiceModel.IssueDate = createInvoiceModel.InvoiceDate;
                     invoiceModel.DueDate = DateTime.Now;
-                    invoiceModel.NetAmount = createInvoiceModel?.Positions.Sum(x => x.Price * Convert.ToDecimal(x.Quantity));
+                    invoiceModel.NetAmount = createInvoiceModel?.Positions.Sum(x => Convert.ToDecimal(x.Price) * Convert.ToDecimal(x.Quantity));
                     invoiceModel.State = InvoiceState.Open;
                     invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
                     invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
@@ -147,7 +147,7 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
             Description = orderItem.Description,
             Quantity = position.Quantity,
             UnitOfMeasure = position.UnitOfMeasure != null ? position.UnitOfMeasure.Name : "",
-            UnitPrice = orderItem.Price,
+            UnitPrice = Convert.ToDecimal(orderItem.Price),
             TotalPrice = position.TotalPrice
         };
         return invoicePositionModel;

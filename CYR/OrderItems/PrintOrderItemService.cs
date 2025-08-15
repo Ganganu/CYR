@@ -109,14 +109,7 @@ public class PrintOrderItemService : IPrintOrderItemService
                 priceCell.BorderThickness = new Thickness(0, 0, 0, 1);
 
                 string priceText = "";
-                if (item.Price is decimal decimalPrice)
-                {
-                    priceText = decimalPrice.ToString("C2");
-                }
-                else
-                {
-                    priceText = item.Price?.ToString() ?? "0,00 €";
-                }
+                priceText = item.Price?.ToString() ?? "0,00 €";
 
                 priceCell.Blocks.Add(new Paragraph(new Run(priceText))
                 {

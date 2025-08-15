@@ -68,7 +68,7 @@ public partial class UpdateOrderItemViewModel : ObservableRecipientWithValidatio
         orderItemToUpdate.Id = Id.Value;
         orderItemToUpdate.Name = Name;
         orderItemToUpdate.Description = Description;
-        orderItemToUpdate.Price = Convert.ToDecimal(Price);
+        orderItemToUpdate.Price = Price;
 
         try
         {

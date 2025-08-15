@@ -69,7 +69,7 @@ public class InvoiceDocument : IInvoiceDocument
                 column.Item().Element(ComposeCommentsTop);
 
                 column.Item().Element(ComposeTable);
-                decimal? totalPrice = Model.Items.Sum(x => x.Price * Convert.ToDecimal(x.Quantity));
+                decimal? totalPrice = Model.Items.Sum(x => Convert.ToDecimal(x.Price) * Convert.ToDecimal(x.Quantity));
                 string formattedTotalPrice = string.Format(CultureInfo.CreateSpecificCulture("de-DE"), "{0:N2}", totalPrice);
                 column.Item().AlignRight().Text($"Netto-Summe: {formattedTotalPrice}€").FontSize(14);
                 if (Model.IsMwstApplicable)
@@ -175,8 +175,8 @@ public class InvoiceDocument : IInvoiceDocument
                 table.Cell().Element(CellStyle).Text(item.Quantity);
                 table.Cell().Element(CellStyle).Text(item.UnitOfMeasure?.Name);
                 table.Cell().Element(CellStyle).Text(item.OrderItem.Name);
-                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price?.ToString("N2", new CultureInfo("de-DE"))}€");
-                table.Cell().Element(CellStyle).AlignRight().Text($"{(item.Price * Convert.ToDecimal(item.Quantity))?.ToString("N2", new CultureInfo("de-DE"))}€");
+                table.Cell().Element(CellStyle).AlignRight().Text($"{Convert.ToDecimal(item.Price).ToString("N2", new CultureInfo("de-DE"))}€");
+                table.Cell().Element(CellStyle).AlignRight().Text($"{(Convert.ToDecimal(item.Price) * Convert.ToDecimal(item.Quantity)).ToString("N2", new CultureInfo("de-DE"))}€");
 
                 static IContainer CellStyle(IContainer container)
                 {

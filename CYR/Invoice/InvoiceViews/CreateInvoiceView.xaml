@@ -453,6 +453,8 @@
                     <TextBox
                       materialDesign:HintAssist.Hint="z.B. 10.0"
                       materialDesign:HintAssist.IsFloating="False"
+                      materialDesign:ValidationAssist.Background="Transparent"
+                      materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                       Style="{StaticResource MaterialDesignTextBoxBase}"
                       Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                   </DataTemplate>
@@ -484,6 +486,7 @@
                       materialDesign:HintAssist.Hint="Einheitspreis"
                       materialDesign:HintAssist.IsFloating="False"
                       materialDesign:ValidationAssist.Background="Transparent"
+                      materialDesign:ValidationAssist.OnlyShowOnFocus="True"
                       Style="{StaticResource MaterialDesignTextBoxBase}"
                       Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" />
                   </DataTemplate>
@@ -535,7 +538,7 @@
             VerticalAlignment="Center"
             FontSize="16"
             FontWeight="Bold"
-            Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+            Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" />
           <Label
             VerticalAlignment="Center"
             Content="€"
