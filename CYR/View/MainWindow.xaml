@@ -115,12 +115,17 @@
             Command="{Binding NavigateToArticleViewCommand}"
             GroupName="NavigationButtons"
             IconKind="PackageVariantClosed" />
+          <Border BorderBrush="LightGray" BorderThickness="1" />
+          <cc:IconButton
+            ButtonText="Einheiten"
+            Command="{Binding NavigateToUnitOfMeasureCommand}"
+            GroupName="NavigationButtons"
+            IconKind="Ruler" />
         </StackPanel>
       </Grid>
       <Grid Grid.Row="2">
         <Grid>
           <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -130,35 +135,12 @@
             ButtonText="Einstellungen"
             Command="{Binding NavigateToSettingsViewCommand}"
             GroupName="NavigationButtons"
-            IconKind="Settings" />
+            IconKind="Settings"
+            Visibility="Collapsed" />
           <cc:LinkButton
             Grid.Row="2"
             ButtonText="Hilfe"
             IconKind="QuestionMark" />
-          <Button
-            Grid.Row="3"
-            HorizontalAlignment="Left"
-            Command="{Binding LogoutCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}">
-            <Button.Content>
-              <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon
-                  Width="25"
-                  Height="25"
-                  Margin="0,0,5,0"
-                  Foreground="White"
-                  Kind="Logout">
-                  <materialDesign:PackIcon.LayoutTransform>
-                    <RotateTransform Angle="180" />
-                  </materialDesign:PackIcon.LayoutTransform>
-                </materialDesign:PackIcon>
-                <TextBlock
-                  FontSize="16"
-                  Foreground="White"
-                  Text="Abmelden" />
-              </StackPanel>
-            </Button.Content>
-          </Button>
         </Grid>
       </Grid>
     </Grid>

@@ -16,15 +16,13 @@ public partial class RegisterViewModel : ObservableRecipient
 {
     private readonly UserRepository _userRepository;
     private readonly IDialogService _dialogService;
-    private readonly LoggingRepository _loggingRepository;
     private string? _dialogResponse;
-    public RegisterViewModel(UserRepository userRepository, IDialogService dialogService, LoggingRepository loggingRepository)
+    public RegisterViewModel(UserRepository userRepository, IDialogService dialogService)
     {
         Roles = ["Admin", "User"];
         ErrorTexts = [];
         _userRepository = userRepository;
         _dialogService = dialogService;
-        _loggingRepository = loggingRepository;
     }
 
     [ObservableProperty]
@@ -76,7 +74,9 @@ public partial class RegisterViewModel : ObservableRecipient
         if (succes)
         {
             ShowNotificationDialog("Konto erstellen", "Konto erfolgreich erstellt.", "Ok", "Check", Visibility.Collapsed, "");
-            await _loggingRepository.InsertAsync(CreateHisModel(registerModel));
+            Username = "";
+            Password = "";
+            ConfirmPassword = "";
         }
     }
 

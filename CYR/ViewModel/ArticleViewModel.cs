@@ -49,7 +49,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     [RelayCommand]
     private void NavigateBack()
     {
-        Messenger.Send(new NavigateBackSource(typeof(ClientViewModel)));
+        Messenger.Send(new NavigateBackSource(typeof(ArticleViewModel)));
     }
 
     [RelayCommand]

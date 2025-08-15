@@ -13,6 +13,7 @@
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:oiv="clr-namespace:CYR.OrderItems.OrderItemViews"
   xmlns:oivm="clr-namespace:CYR.OrderItems.OrderItemViewModels"
+  xmlns:uom="clr-namespace:CYR.UnitOfMeasure"
   xmlns:user="clr-namespace:CYR.User"
   xmlns:v="clr-namespace:CYR.View"
   xmlns:vm="clr-namespace:CYR.ViewModel">
@@ -79,6 +80,15 @@
       </DataTemplate>
       <DataTemplate DataType="{x:Type user:UserViewModel}">
         <user:UserView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type uom:UnitOfMeasureViewModel}">
+        <uom:UnitOfMeasureView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type uom:UpdateUnitOfMeasureViewModel}">
+        <uom:UpdateUnitOfMeasureView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type uom:CreateUnitOfMeasureViewModel}">
+        <uom:CreateUnitOfMeasureView />
       </DataTemplate>
 
 

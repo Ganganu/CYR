@@ -7,6 +7,7 @@ using CYR.Invoice.InvoiceViewModels;
 using CYR.Login;
 using CYR.Messages;
 using CYR.Services;
+using CYR.UnitOfMeasure;
 using CYR.User;
 using System.Windows;
 
@@ -67,6 +68,11 @@ public partial class MainViewModel : ObservableRecipient, IRecipient<NavigateBac
     private void NavigateToDashboard()
     {
         Navigation.NavigateTo<DashboardViewModel>();
+    }
+    [RelayCommand]
+    private void NavigateToUnitOfMeasure()
+    {
+        Navigation.NavigateTo<UnitOfMeasureViewModel>();
     }
 
     /// <summary>
