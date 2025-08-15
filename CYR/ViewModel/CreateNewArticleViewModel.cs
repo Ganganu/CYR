@@ -1,17 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Logging;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.User;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace CYR.ViewModel
 {
-    public partial class CreateNewArticleViewModel : ObservableObject
+    public partial class CreateNewArticleViewModel : ObservableValidator
     {
-        private IEnumerable<OrderItem> _articles;
+        private IEnumerable<OrderItem>? _articles;
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly LoggingRepository _loggingRepository;
         private readonly UserContext _userContext;
@@ -25,12 +25,22 @@ namespace CYR.ViewModel
 
         [ObservableProperty]
         private string? _saveMessage;
+
         [ObservableProperty]
-        private string _name;
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+        private string _name = string.Empty;
+
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessage = "Feld darf nicht leer sein.")]
         [ObservableProperty]
-        private string _description;
+        private string? _description;
+
         [ObservableProperty]
-        private decimal? _price;
+        [NotifyDataErrorInfo]
+        [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+        [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage ="Nur Zahlen dürfen eingegeben werden.")]
+        private string? _price;
         [ObservableProperty]
         private INavigationService _navigation;
 
@@ -50,10 +60,12 @@ namespace CYR.ViewModel
         [RelayCommand]
         private async Task SaveArticle()
         {
+            ValidateAllProperties();
+            if (HasErrors) return;
             OrderItem orderItem = new OrderItem();
             orderItem.Name = Name;
             orderItem.Description = Description;
-            orderItem.Price = Price;
+            orderItem.Price = Convert.ToDecimal(Price);
             await _orderItemRepository.InsertAsync(orderItem);
             _articles = await _orderItemRepository.GetAllAsync();
             if (_articles != null)

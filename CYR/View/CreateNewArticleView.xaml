@@ -99,24 +99,30 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Beispiel: Gips"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="14"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Beschreibung" FontSize="16" />
                 <TextBox
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Artikel beschreiben"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="14"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Preis" />
+                <Label Content="Preis" FontSize="16" />
                 <TextBox
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="z.B. 15,25 €"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Price, StringFormat={}{0:N2} €, UpdateSourceTrigger=LostFocus}" />
+                  Text="{Binding Price, StringFormat={}{0:N2}, UpdateSourceTrigger=LostFocus}" />
                 <TextBlock
                   Margin="0,10,0,0"
                   VerticalAlignment="Top"

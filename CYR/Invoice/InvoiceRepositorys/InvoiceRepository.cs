@@ -191,7 +191,8 @@ public class InvoiceRepository : IInvoiceRepository
         .Where(p =>
             p.Position.OrderItem == null ||
             !decimal.TryParse(p.Position.Quantity?.ToString(), out decimal qty) || qty < 0 ||
-            (string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name) && string.IsNullOrWhiteSpace(p.Position.OrderItem?.Description))
+            (string.IsNullOrWhiteSpace(p.Position.OrderItem?.Name) && string.IsNullOrWhiteSpace(p.Position.OrderItem?.Description)
+            || p.Position.UnitOfMeasure is null)
         )
         .ToList();
         if (invalidPositions.Count != 0)
