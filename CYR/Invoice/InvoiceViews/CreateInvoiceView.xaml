@@ -485,7 +485,7 @@
                       materialDesign:HintAssist.IsFloating="False"
                       materialDesign:ValidationAssist.Background="Transparent"
                       Style="{StaticResource MaterialDesignTextBoxBase}"
-                      Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
+                      Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>

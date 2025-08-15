@@ -1,10 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Invoice.InvoiceModels;
 using CYR.OrderItems;
 using CYR.UnitOfMeasure;
-using System.Collections.ObjectModel;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
@@ -93,6 +94,9 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
 
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
     private string? _quantity;
     partial void OnQuantityChanged(string? oldValue, string? newValue)
     {
@@ -110,6 +114,9 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
     private UnitOfMeasureModel? _unitOfMeasure;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
     private decimal? _price;
     partial void OnPriceChanged(decimal? oldValue, decimal? newValue)
     {
