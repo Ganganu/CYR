@@ -85,7 +85,7 @@
 
               <StackPanel Margin="0,0,0,10" Orientation="Vertical">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                  <Image Width="250" Source="{Binding User.Logo}" />
+                  <Image Width="250" Source="{Binding UserLogo}" />
                   <Button
                     Margin="5,10,0,0"
                     VerticalAlignment="Bottom"
@@ -105,7 +105,7 @@
                   FontSize="15"
                   IsReadOnly="True"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding User.Role, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding Role, UpdateSourceTrigger=PropertyChanged}" />
               </StackPanel>
             </Expander>
             <Expander
@@ -115,7 +115,7 @@
               <StackPanel>
 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                  <Image Width="250" Source="{Binding Company.Logo}" />
+                  <Image Width="250" Source="{Binding CompanyLogo}" />
                   <Button
                     Margin="5,10,0,0"
                     VerticalAlignment="Bottom"
@@ -134,7 +134,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                  Text="{Binding CompanyName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 <Label Content="Straße" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -143,7 +143,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Street, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyStreet, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Straßennummer" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -152,7 +152,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.HouseNumber, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyHouseNumber, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="PLZ" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -161,7 +161,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Plz, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyPlz, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Ort" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -170,7 +170,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.City, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyCity, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Telefonnumer" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -179,7 +179,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.TelefonNumber, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyTelefonNumber, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Email-Adresse" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -188,7 +188,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.EmailAddress, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyEmailAddress, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Bankname" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -197,7 +197,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.BankName, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyBankName, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="IBAN" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -206,7 +206,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Iban, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyIban, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="BIC" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -215,7 +215,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Bic, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyBic, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="USTIDNR" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -224,7 +224,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Ustidnr, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyUstidnr, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="STNR" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -233,7 +233,7 @@
                   materialDesign:HintAssist.IsFloating="False"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                  Text="{Binding Company.Stnr, UpdateSourceTrigger=PropertyChanged}" />
+                  Text="{Binding CompanyStnr, UpdateSourceTrigger=PropertyChanged}" />
               </StackPanel>
             </Expander>
           </StackPanel>
