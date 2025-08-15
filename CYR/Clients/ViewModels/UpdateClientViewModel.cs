@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data.SQLite;
 using System.Linq.Expressions;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,7 +16,7 @@ using CYR.ViewModel;
 
 namespace CYR.Clients.ViewModels;
 
-public partial class UpdateClientViewModel : ObservableRecipient, IParameterReceiver
+public partial class UpdateClientViewModel : ObservableRecipientWithValidation, IParameterReceiver
 {
     private readonly IClientRepository _clientRepository;
     private readonly IDialogService _dialogService;
@@ -38,18 +39,42 @@ public partial class UpdateClientViewModel : ObservableRecipient, IParameterRece
     [ObservableProperty]
     private Client? _client;
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientNumber;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientName;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression(@"^\s*(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{1,4}\)?[\s.-]?){2,5}(?:\s*(?:ext\.?|x)\s*\d{1,5})?\s*$",
+        ErrorMessage = "Ungültiges Format.")]
     private string _clientTelefonnumber;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+                   ErrorMessage = "Ungültiges Format.")]
     private string _clientEmail;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientStreet;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientPLZ;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientCity;
     [ObservableProperty]
     private string _errorMessage;
