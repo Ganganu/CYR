@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CYR.Core;
 using CYR.Logging;
 using CYR.Services;
 using CYR.User;
@@ -7,23 +9,39 @@ using CYR.ViewModel;
 
 namespace CYR.OrderItems.OrderItemViewModels;
 
-public partial class UpdateOrderItemViewModel : ObservableRecipient, IParameterReceiver
+public partial class UpdateOrderItemViewModel : ObservableRecipientWithValidation, IParameterReceiver
 {
-    private IEnumerable<OrderItem> _articles;
+    private IEnumerable<OrderItem>? _articles;
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly LoggingRepository _loggingRepository;    
     private readonly UserContext _userContext;
 
-    public UpdateOrderItemViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, UserContext userContext)
+    public UpdateOrderItemViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, UserContext userContext, LoggingRepository loggingRepository)
     {
         _orderItemRepository = orderItemRepository;
         Navigation = navigationService;
         _userContext = userContext;
+        _loggingRepository = loggingRepository;
     }
     [ObservableProperty]
     private string? _updateMessage;
     [ObservableProperty]
-    private OrderItem _orderItem;
+    private int? _id;
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    private string _name = string.Empty;
+
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [ObservableProperty]
+    private string? _description;
+
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
+    private string? _price;
     [ObservableProperty]
     private INavigationService _navigation;
 
@@ -43,8 +61,14 @@ public partial class UpdateOrderItemViewModel : ObservableRecipient, IParameterR
     [RelayCommand]
     private async Task UpdateOrderItem()
     {
-        if (OrderItem is null) return;
-        OrderItem orderItemToUpdate = CreateNewOrderItem(OrderItem);
+        ValidateAllProperties();
+        if (HasErrors) return;
+
+        OrderItem orderItemToUpdate = new OrderItem();
+        orderItemToUpdate.Id = Id.Value;
+        orderItemToUpdate.Name = Name;
+        orderItemToUpdate.Description = Description;
+        orderItemToUpdate.Price = Convert.ToDecimal(Price);
 
         try
         {
@@ -69,16 +93,6 @@ public partial class UpdateOrderItemViewModel : ObservableRecipient, IParameterR
         return model;
     }
 
-    private OrderItem CreateNewOrderItem(OrderItem orderItem)
-    {
-        OrderItem oi = new OrderItem();
-        oi.Id = orderItem.Id;
-        oi.Name = orderItem.Name;
-        oi.Description = orderItem.Description;
-        oi.Price = orderItem.Price;
-        return oi;
-    }
-
     /// <summary>
     /// Wenn von ArticleView navigiert wird.
     /// </summary>
@@ -87,7 +101,10 @@ public partial class UpdateOrderItemViewModel : ObservableRecipient, IParameterR
     public async Task ReceiveParameter(object parameter)
     {
         if (parameter is null) return;
-        OrderItem item = (OrderItem)parameter;
-        OrderItem = item;
+        OrderItem item = (OrderItem)parameter;   
+        Id = item.Id;
+        Name = item.Name;
+        Description = item.Description;
+        Price = item.Price.ToString();
     }
 }
