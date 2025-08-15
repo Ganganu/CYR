@@ -112,8 +112,9 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
             InvoicePosition invoicePosition = new();
             invoicePosition.Id = item.Id;
             invoicePosition.Quantity = item.Quantity;
-            UnitOfMeasureModel? foundUnitOfMeasure = availableUnitsOfMeasure.FirstOrDefault(u => u.Name == item.UnitOfMeasure);
+            UnitOfMeasureModel? foundUnitOfMeasure = availableUnitsOfMeasure.FirstOrDefault(u => u.Name == item.UnitOfMeasure);            
             invoicePosition.UnitOfMeasure = foundUnitOfMeasure;
+
 
             invoicePosition.UnitsOfMeasure = availableUnitsOfMeasure;
             invoicePosition.Items = pos[0].Items;
@@ -121,7 +122,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
             invoicePosition.OrderItem = new OrderItem
             {
                 Description = item.Description,
-                Price = item.UnitPrice.ToString(),                
+                Price = item.UnitPrice.ToString(),                      
             };
             result.Add(invoicePosition);
         }

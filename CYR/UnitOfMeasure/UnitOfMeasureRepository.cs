@@ -1,6 +1,7 @@
-﻿using CYR.Core;
+﻿using System.Data.Common;
+using CYR.Core;
+using CYR.OrderItems;
 using CYR.User;
-using System.Data.Common;
 
 namespace CYR.UnitOfMeasure;
 
@@ -14,9 +15,18 @@ public class UnitOfMeasureRepository : IUnitOfMeasureRepository
         _databaseConnection = databaseConnection;
         _userContext = userContext;
     }
-    public Task DeleteAsync(UnitOfMeasureModel unitOfMeasure)
+    public async Task<bool> DeleteAsync(UnitOfMeasureModel unitOfMeasure)
     {
-        throw new NotImplementedException();
+        bool succes = false;
+        string query = "DELETE FROM uom WHERE id = @id and user_id = @user_id";
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        {
+            { "@id", unitOfMeasure.Id},
+            { "user_id", _userContext.CurrentUser.Id}
+        };
+        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        succes = affectedRows > 0;
+        return succes;
     }
 
     public async Task<IEnumerable<UnitOfMeasureModel>> GetAllAsync()
@@ -44,13 +54,29 @@ public class UnitOfMeasureRepository : IUnitOfMeasureRepository
         throw new NotImplementedException();
     }
 
-    public Task InsertAsync(UnitOfMeasureModel unitOfMeasure)
+    public async Task InsertAsync(UnitOfMeasureModel unitOfMeasure)
     {
-        throw new NotImplementedException();
+        string query = "INSERT INTO uom (name,description,user_id) VALUES (@name,@description,@user_id)";
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        {
+            { "@name", unitOfMeasure.Name },
+            { "@description", unitOfMeasure.Description },
+            { "@user_id", _userContext.CurrentUser.Id }
+        };
+        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
     }
 
-    public Task UpdateAsync(UnitOfMeasureModel unitOfMeasure)
+    public async Task<bool> UpdateAsync(UnitOfMeasureModel unitOfMeasure)
     {
-        throw new NotImplementedException();
+        string query = "update uom  set name = @name, description = @description where id = @id and user_id = @user_id";
+        Dictionary<string, object> queryParameters = new Dictionary<string, object>
+        {
+            { "@id", unitOfMeasure.Id },
+            { "@name", unitOfMeasure.Name },
+            { "@description", unitOfMeasure.Description },
+            { "@user_id", _userContext.CurrentUser.Id }
+        };
+        int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        return affectedRows > 0;
     }
 }
