@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data.SQLite;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -14,7 +15,7 @@ using CYR.User;
 
 namespace CYR.ViewModel;
 
-public partial class CreateClientViewModel : ObservableRecipient
+public partial class CreateClientViewModel : ObservableRecipientWithValidation
 {
     private readonly IClientRepository _clientRepository;
     private readonly IAddressRepository _addressRepository;
@@ -36,20 +37,46 @@ public partial class CreateClientViewModel : ObservableRecipient
 
     [ObservableProperty]
     private INavigationService _navigation;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientNumber;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientName;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression(@"^\s*(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{1,4}\)?[\s.-]?){2,5}(?:\s*(?:ext\.?|x)\s*\d{1,5})?\s*$",
+        ErrorMessage = "Ungültiges Format.")]
     private string _clientTelefonnumber;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+                   ErrorMessage = "Ungültiges Format.")]
     private string _clientEmail;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientStreet;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientPLZ;
+
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _clientCity;
+
     [ObservableProperty]
     private string _errorMessage;
 
@@ -62,9 +89,8 @@ public partial class CreateClientViewModel : ObservableRecipient
     [RelayCommand]
     private async Task SaveClient()
     {
-        bool valid = ValidateProperties();
-        if (!valid)
-            return;
+        ValidateAllProperties();
+        if (HasErrors) return;
 
         Client client = new Client();
         AddressModel address = new AddressModel();
@@ -100,25 +126,5 @@ public partial class CreateClientViewModel : ObservableRecipient
         model.UserId = _userContext.CurrentUser.Id;
         model.Message = $@"Client: {client.ClientNumber} wurder vom User: {_userContext.CurrentUser.Id} erstellt.";
         return model;
-    }
-
-    private bool ValidateProperties()
-    {
-        bool isProeprtiesValid = true;
-        string message = MessageIsNullOrEmpty();
-        if (message != string.Empty)
-            isProeprtiesValid = false;                
-        ErrorMessage = message;
-        return isProeprtiesValid;
-    }
-    private string MessageIsNullOrEmpty()
-    {
-        bool valid = !string.IsNullOrEmpty(ClientNumber) && !string.IsNullOrEmpty(ClientName) && !string.IsNullOrEmpty(ClientTelefonnumber) &&
-            !string.IsNullOrEmpty(ClientStreet) && !string.IsNullOrEmpty(ClientPLZ) &&
-            !string.IsNullOrEmpty(ClientCity);
-        if (!valid)
-            return "Unvolständige Daten!";
-        else
-            return string.Empty;
-    }    
+    }  
 }

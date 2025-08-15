@@ -91,6 +91,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. 1209"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientNumber, UpdateSourceTrigger=PropertyChanged}" />
@@ -100,6 +102,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. Unternehmen GmbH"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientName, UpdateSourceTrigger=PropertyChanged}" />
@@ -109,6 +113,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. +49 1637361115"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientTelefonnumber, UpdateSourceTrigger=PropertyChanged}" />
@@ -118,6 +124,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. unternehmen@beispiel.de"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientEmail, UpdateSourceTrigger=PropertyChanged}" />
@@ -127,6 +135,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. Musterstraße 21"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientStreet, UpdateSourceTrigger=PropertyChanged}" />
@@ -136,6 +146,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. 30151"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientPLZ, UpdateSourceTrigger=PropertyChanged}" />
@@ -145,6 +157,8 @@
               materialDesign:HintAssist.Foreground="Black"
               materialDesign:HintAssist.Hint="z.B. Hannover"
               materialDesign:HintAssist.IsFloating="False"
+              materialDesign:ValidationAssist.Background="Transparent"
+              materialDesign:ValidationAssist.HorizontalAlignment="Right"
               FontSize="15"
               Style="{StaticResource MaterialDesignOutlinedTextBox}"
               Text="{Binding ClientCity, UpdateSourceTrigger=PropertyChanged}" />

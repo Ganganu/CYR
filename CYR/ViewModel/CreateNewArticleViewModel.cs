@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CYR.Core;
 using CYR.Logging;
 using CYR.OrderItems;
 using CYR.Services;
@@ -9,7 +10,7 @@ using CYR.User;
 
 namespace CYR.ViewModel
 {
-    public partial class CreateNewArticleViewModel : ObservableValidator
+    public partial class CreateNewArticleViewModel : ObservableRecipientWithValidation
     {
         private IEnumerable<OrderItem>? _articles;
         private readonly IOrderItemRepository _orderItemRepository;
