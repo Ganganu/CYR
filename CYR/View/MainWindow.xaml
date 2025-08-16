@@ -31,7 +31,7 @@
         HorizontalAlignment="Left"
         VerticalAlignment="Bottom"
         AutoHide="True"
-        AutoHideDelay="3000"
+        AutoHideDelay="5000"
         Background="Black"
         BorderBrush="Orange"
         BorderThickness="1"
@@ -39,7 +39,8 @@
         Foreground="White"
         Icon="{Binding SnackbarIcon}"
         IsVisible="{Binding ShowSnackbar, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-        Message="{Binding SnackbarMessage}">
+        Message="{Binding SnackbarMessage}"
+        PauseOnHover="True">
         <Grid VerticalAlignment="Center">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
