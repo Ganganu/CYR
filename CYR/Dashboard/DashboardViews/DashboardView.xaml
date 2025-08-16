@@ -18,7 +18,7 @@
   </UserControl.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="1.3*" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
@@ -130,15 +130,15 @@
       Grid.Column="0"
       Grid.ColumnSpan="2"
       Content="{Binding StatisticOverviewVM}" />
-    <Border
+    <ContentControl
       Grid.Row="2"
       Grid.Column="0"
-      Grid.ColumnSpan="2"
       Margin="5"
-      BorderBrush="Orange"
-      BorderThickness="1"
-      CornerRadius="5">
-      <ContentControl Content="{Binding StatisticChartVM}" />
-    </Border>
+      Content="{Binding StatisticChartVM}" />
+    <ContentControl
+      Grid.Row="2"
+      Grid.Column="1"
+      Margin="5"
+      Content="{Binding DashboardActivityVM}" />
   </Grid>
 </UserControl>

@@ -76,7 +76,7 @@ public partial class App : Application
         services.AddTransient<StatisticOverviewView>();
         services.AddTransient<StatisticChartView>();
         services.AddTransient<StatisticChartViewModel>();
-        services.AddTransient<DashboardUserView>();
+        services.AddTransient<DashboardActivityView>();
         services.AddTransient<UserView>();
         services.AddTransient<UnitOfMeasureView>();
         services.AddTransient<UnitOfMeasureViewModel>();
@@ -87,7 +87,7 @@ public partial class App : Application
         services.AddTransient<UserViewModel>();
         services.AddTransient<DashboardInvoiceView>();
         services.AddTransient<DashboardInvoiceViewModel>();
-        services.AddTransient<DashboardUserViewModel>();
+        services.AddTransient<DashboardActivityViewModel>();
         services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IDialogService, DialogService>();

@@ -12,7 +12,7 @@ public partial class DashboardViewModel : ObservableRecipient
 {
     private readonly StatisticOverviewViewModel _statisticOverviewViewModel;
     private readonly StatisticChartViewModel _statisticChartViewModel;
-    private readonly DashboardUserViewModel _dashboardUserViewModel;
+    private readonly DashboardActivityViewModel _dashboardActivityVM;
     private readonly DashboardInvoiceViewModel _dashboardInvoiceViewModel;
     private readonly UserContext _userContext;
     private readonly UserRepository _userRepository;
@@ -22,11 +22,11 @@ public partial class DashboardViewModel : ObservableRecipient
     private readonly CompanyRepository _companyRepository;
 
 
-    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel, StatisticChartViewModel statisticChartViewModel, DashboardUserViewModel dashboardUserViewModel, DashboardInvoiceViewModel dashboardInvoiceViewModel, INavigationService navigation, UserContext userContext, UserRepository userRepository, LoginRepository loginRepository, ILoginTokenService loginTokenService, LoggingRepository loggingRepository, CompanyRepository companyRepository)
+    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel, StatisticChartViewModel statisticChartViewModel, DashboardActivityViewModel dashboardActivityVM, DashboardInvoiceViewModel dashboardInvoiceViewModel, INavigationService navigation, UserContext userContext, UserRepository userRepository, LoginRepository loginRepository, ILoginTokenService loginTokenService, LoggingRepository loggingRepository, CompanyRepository companyRepository)
     {
         _statisticOverviewViewModel = statisticOverviewViewModel;
         _statisticChartViewModel = statisticChartViewModel;
-        _dashboardUserViewModel = dashboardUserViewModel;
+        _dashboardActivityVM = dashboardActivityVM;
         _dashboardInvoiceViewModel = dashboardInvoiceViewModel;
         _navigation = navigation;
         _userContext = userContext;
@@ -51,7 +51,7 @@ public partial class DashboardViewModel : ObservableRecipient
 
     public StatisticOverviewViewModel StatisticOverviewVM => _statisticOverviewViewModel;
     public StatisticChartViewModel StatisticChartVM => _statisticChartViewModel;
-    public DashboardUserViewModel DashboardUserVM => _dashboardUserViewModel;
+    public DashboardActivityViewModel DashboardActivityVM => _dashboardActivityVM;
     public DashboardInvoiceViewModel DashboardInvoiceVM => _dashboardInvoiceViewModel;
 
     [ObservableProperty]
