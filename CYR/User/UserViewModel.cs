@@ -48,6 +48,7 @@ public partial class UserViewModel : ObservableRecipientWithValidation
     private void InitializeComapny()
     {
         if (Company is null) return;
+        
         CompanyLogo = Company.Logo;
         CompanyName = Company.Name;
         CompanyStreet = Company.Street;
@@ -61,7 +62,7 @@ public partial class UserViewModel : ObservableRecipientWithValidation
         CompanyBic = Company.Bic;
         CompanyUstidnr = Company.Ustidnr;
         CompanyStnr = Company.Stnr;
-        CompanyLogo = Company.Logo;
+        CompanyId = Company.Id;
     }
 
     [ObservableProperty]
@@ -85,6 +86,8 @@ public partial class UserViewModel : ObservableRecipientWithValidation
 
 
     [ObservableProperty]
+    private string? _companyId;
+    [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string? _companyName;
@@ -107,10 +110,14 @@ public partial class UserViewModel : ObservableRecipientWithValidation
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression(@"^\s*(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{1,4}\)?[\s.-]?){2,5}(?:\s*(?:ext\.?|x)\s*\d{1,5})?\s*$",
+        ErrorMessage = "Ungültiges Format.")]
     private string? _companyTelefonNumber;
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
+    [RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$",
+                   ErrorMessage = "Ungültiges Format.")]
     private string? _companyEmailAddress;
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -154,6 +161,8 @@ public partial class UserViewModel : ObservableRecipientWithValidation
     [RelayCommand]
     private async Task UpdateUser()
     {
+        ValidateAllProperties();
+        if (HasErrors) return;
         if (_userContext.CurrentUser is null) return;
         var resultuser = await _userRepository.InsertAsync(CreateUser());
         var resultCompany = await _companyRepository.InsertAsync(CreateCompany());
@@ -197,6 +206,7 @@ public partial class UserViewModel : ObservableRecipientWithValidation
         company.Ustidnr = CompanyUstidnr;
         company.Stnr = CompanyStnr;
         company.Logo = CompanyLogo;
+        company.Id = CompanyId;
         
         return company;
     }

@@ -102,6 +102,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Role"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   IsReadOnly="True"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
@@ -132,6 +134,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Firmenname"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
@@ -141,6 +145,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Straße"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyStreet, UpdateSourceTrigger=PropertyChanged}" />
@@ -150,6 +156,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Straßennummer"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyHouseNumber, UpdateSourceTrigger=PropertyChanged}" />
@@ -159,6 +167,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="PLZ"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyPlz, UpdateSourceTrigger=PropertyChanged}" />
@@ -168,6 +178,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Ort"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyCity, UpdateSourceTrigger=PropertyChanged}" />
@@ -177,6 +189,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Telefonnumer"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyTelefonNumber, UpdateSourceTrigger=PropertyChanged}" />
@@ -186,6 +200,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Email-Adresse"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyEmailAddress, UpdateSourceTrigger=PropertyChanged}" />
@@ -195,6 +211,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="Bankname"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyBankName, UpdateSourceTrigger=PropertyChanged}" />
@@ -204,6 +222,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="IBAN"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyIban, UpdateSourceTrigger=PropertyChanged}" />
@@ -213,6 +233,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="IBAN"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyBic, UpdateSourceTrigger=PropertyChanged}" />
@@ -222,6 +244,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="USTIDNR"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyUstidnr, UpdateSourceTrigger=PropertyChanged}" />
@@ -231,6 +255,8 @@
                   materialDesign:HintAssist.Foreground="Black"
                   materialDesign:HintAssist.Hint="STNR"
                   materialDesign:HintAssist.IsFloating="False"
+                  materialDesign:ValidationAssist.Background="Transparent"
+                  materialDesign:ValidationAssist.HorizontalAlignment="Right"
                   FontSize="15"
                   Style="{StaticResource MaterialDesignOutlinedTextBox}"
                   Text="{Binding CompanyStnr, UpdateSourceTrigger=PropertyChanged}" />
