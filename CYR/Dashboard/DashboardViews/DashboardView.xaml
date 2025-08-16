@@ -13,6 +13,9 @@
   d:DesignWidth="800"
   FontFamily="Segoe UI"
   mc:Ignorable="d">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+  </UserControl.Resources>
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
@@ -56,6 +59,15 @@
           VerticalAlignment="Center"
           FontSize="15"
           Text="{Binding User.Username}" />
+        <materialDesign:PackIcon
+          Width="25"
+          Height="25"
+          Margin="0,0,10,0"
+          VerticalAlignment="Center"
+          Foreground="Orange"
+          Kind="Warning"
+          ToolTip="Vervolständingen Sie bitte Ihre Firmen- und Benutzerdaten bevor Sie eine Rechnung erstellen."
+          Visibility="{Binding IsWarningVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Button
           Width="50"
           Height="50"

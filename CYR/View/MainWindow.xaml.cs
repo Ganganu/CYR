@@ -1,7 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
-using Microsoft.Xaml.Behaviors.Core;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;

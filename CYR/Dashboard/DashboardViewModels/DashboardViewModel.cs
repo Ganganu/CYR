@@ -19,9 +19,10 @@ public partial class DashboardViewModel : ObservableRecipient
     private readonly LoginRepository _loginRepository;
     private readonly ILoginTokenService _loginTokenService;
     private readonly LoggingRepository _loggingRepository;
+    private readonly CompanyRepository _companyRepository;
 
 
-    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel, StatisticChartViewModel statisticChartViewModel, DashboardUserViewModel dashboardUserViewModel, DashboardInvoiceViewModel dashboardInvoiceViewModel, INavigationService navigation, UserContext userContext, UserRepository userRepository, LoginRepository loginRepository, ILoginTokenService loginTokenService, LoggingRepository loggingRepository)
+    public DashboardViewModel(StatisticOverviewViewModel statisticOverviewViewModel, StatisticChartViewModel statisticChartViewModel, DashboardUserViewModel dashboardUserViewModel, DashboardInvoiceViewModel dashboardInvoiceViewModel, INavigationService navigation, UserContext userContext, UserRepository userRepository, LoginRepository loginRepository, ILoginTokenService loginTokenService, LoggingRepository loggingRepository, CompanyRepository companyRepository)
     {
         _statisticOverviewViewModel = statisticOverviewViewModel;
         _statisticChartViewModel = statisticChartViewModel;
@@ -30,6 +31,7 @@ public partial class DashboardViewModel : ObservableRecipient
         _navigation = navigation;
         _userContext = userContext;
         _userRepository = userRepository;
+        _companyRepository = companyRepository;
         Initialize();
         _loginRepository = loginRepository;
         _loginTokenService = loginTokenService;
@@ -41,7 +43,10 @@ public partial class DashboardViewModel : ObservableRecipient
     {
         if (_userContext.CurrentUser is null) return;
         string? username = _userContext.CurrentUser.Username;
+        int? id = Convert.ToInt32(_userContext.CurrentUser.Id);
         User = await _userRepository.GetUserAsync(username);
+        Company = await _companyRepository.GetCompanyAsync(id.Value);
+        if (Company.Name is null) IsWarningVisible = true;
     }
 
     public StatisticOverviewViewModel StatisticOverviewVM => _statisticOverviewViewModel;
@@ -53,7 +58,11 @@ public partial class DashboardViewModel : ObservableRecipient
     private INavigationService _navigation;
 
     [ObservableProperty]
+    private Company? _company;
+    [ObservableProperty]
     private User.User? _user;
+    [ObservableProperty]
+    private bool? _isWarningVisible;
     public string? UserLogo => string.IsNullOrEmpty(User.Logo) ? @"/Ressources/user.png" : User.Logo;
 
     [RelayCommand]

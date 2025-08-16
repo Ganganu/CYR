@@ -141,7 +141,8 @@
           <cc:LinkButton
             Grid.Row="2"
             ButtonText="Hilfe"
-            IconKind="QuestionMark" />
+            IconKind="QuestionMark"
+            Visibility="Collapsed" />
         </Grid>
       </Grid>
     </Grid>
