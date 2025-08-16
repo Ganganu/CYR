@@ -54,69 +54,74 @@
         Grid.RowSpan="2"
         HorizontalAlignment="Right"
         Orientation="Horizontal">
+        <Grid>
+          <materialDesign:PackIcon
+            Width="15"
+            Height="15"
+            Margin="0,0,15,20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Panel.ZIndex="2"
+            Foreground="Orange"
+            Kind="Warning"
+            ToolTip="Vervolständingen Sie bitte Ihre Firmen- und Benutzerdaten bevor Sie eine Rechnung erstellen."
+            Visibility="{Binding IsWarningVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+          <Button
+            Width="50"
+            Height="50"
+            Margin="0,0,15,0"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Template>
+              <ControlTemplate TargetType="Button">
+                <Grid>
+                  <Ellipse Stroke="LightGray" StrokeThickness="1">
+                    <Ellipse.Fill>
+                      <ImageBrush ImageSource="{Binding DataContext.UserLogo, RelativeSource={RelativeSource AncestorType=Button}}" Stretch="Uniform" />
+                    </Ellipse.Fill>
+                  </Ellipse>
+                  <Popup
+                    Name="PopupMenu"
+                    Placement="Bottom"
+                    PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                    StaysOpen="False">
+                    <Border
+                      Background="White"
+                      BorderBrush="LightGray"
+                      BorderThickness="1">
+                      <StackPanel Margin="2">
+                        <Button
+                          Command="{Binding DataContext.NavigateToUserViewCommand, RelativeSource={RelativeSource AncestorType=Button}}"
+                          Content="Konto"
+                          Style="{StaticResource MaterialDesignFlatButton}" />
+                        <Button
+                          Command="{Binding DataContext.LogoutCommand, RelativeSource={RelativeSource AncestorType=Button}}"
+                          Content="Abmelden"
+                          Style="{StaticResource MaterialDesignFlatButton}" />
+                      </StackPanel>
+                    </Border>
+                  </Popup>
+                </Grid>
+                <ControlTemplate.Triggers>
+                  <EventTrigger RoutedEvent="Button.Click">
+                    <BeginStoryboard>
+                      <Storyboard>
+                        <BooleanAnimationUsingKeyFrames Storyboard.TargetName="PopupMenu" Storyboard.TargetProperty="IsOpen">
+                          <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True" />
+                        </BooleanAnimationUsingKeyFrames>
+                      </Storyboard>
+                    </BeginStoryboard>
+                  </EventTrigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Button.Template>
+          </Button>
+        </Grid>
         <TextBlock
           Margin="0,0,5,0"
           VerticalAlignment="Center"
           FontSize="15"
           Text="{Binding User.Username}" />
-        <materialDesign:PackIcon
-          Width="25"
-          Height="25"
-          Margin="0,0,10,0"
-          VerticalAlignment="Center"
-          Foreground="Orange"
-          Kind="Warning"
-          ToolTip="Vervolständingen Sie bitte Ihre Firmen- und Benutzerdaten bevor Sie eine Rechnung erstellen."
-          Visibility="{Binding IsWarningVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Button
-          Width="50"
-          Height="50"
-          Margin="0,0,15,0"
-          Style="{StaticResource MaterialDesignFlatButton}">
-          <Button.Template>
-            <ControlTemplate TargetType="Button">
-              <Grid>
-                <Ellipse Stroke="LightGray" StrokeThickness="1">
-                  <Ellipse.Fill>
-                    <ImageBrush ImageSource="{Binding DataContext.UserLogo, RelativeSource={RelativeSource AncestorType=Button}}" Stretch="Uniform" />
-                  </Ellipse.Fill>
-                </Ellipse>
-                <Popup
-                  Name="PopupMenu"
-                  Placement="Bottom"
-                  PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                  StaysOpen="False">
-                  <Border
-                    Background="White"
-                    BorderBrush="LightGray"
-                    BorderThickness="1">
-                    <StackPanel Margin="2">
-                      <Button
-                        Command="{Binding DataContext.NavigateToUserViewCommand, RelativeSource={RelativeSource AncestorType=Button}}"
-                        Content="Konto"
-                        Style="{StaticResource MaterialDesignFlatButton}" />
-                      <Button
-                        Command="{Binding DataContext.LogoutCommand, RelativeSource={RelativeSource AncestorType=Button}}"
-                        Content="Abmelden"
-                        Style="{StaticResource MaterialDesignFlatButton}" />
-                    </StackPanel>
-                  </Border>
-                </Popup>
-              </Grid>
-              <ControlTemplate.Triggers>
-                <EventTrigger RoutedEvent="Button.Click">
-                  <BeginStoryboard>
-                    <Storyboard>
-                      <BooleanAnimationUsingKeyFrames Storyboard.TargetName="PopupMenu" Storyboard.TargetProperty="IsOpen">
-                        <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True" />
-                      </BooleanAnimationUsingKeyFrames>
-                    </Storyboard>
-                  </BeginStoryboard>
-                </EventTrigger>
-              </ControlTemplate.Triggers>
-            </ControlTemplate>
-          </Button.Template>
-        </Button>
+
       </StackPanel>
     </Grid>
 
