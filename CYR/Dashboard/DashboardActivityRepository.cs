@@ -55,7 +55,7 @@ public class DashboardActivityRepository
 
             -- Latest Products
             SELECT 
-                datetime('now') as timestamp, -- You might want to add a created_date to products table
+                datetime(p.created_at) as timestamp,
                 'ProductCreated' as activity_type,
                 'Neues Produkt erstellt' as title,
                 'Produkt: ' || p.Name as description,
@@ -94,7 +94,12 @@ public class DashboardActivityRepository
             FROM his h
             LEFT JOIN Kunden k ON h.client_id = k.Kundennummer AND h.user_id = k.user_id
             LEFT JOIN Rechnungen r ON h.invoice_id = r.Rechnungsnummer AND h.user_id = r.user_id
-			where h.message not like '%erflogreich login%'
+			WHERE h.logging_type IN (
+				1000,1001,1002,
+				3000,3001,3002,
+				4000,4001,4002,
+				5000,5001,5002
+			)
         )
         ORDER BY timestamp DESC
 		LIMIT @limit;";

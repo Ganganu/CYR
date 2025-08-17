@@ -264,14 +264,14 @@
                 <RowDefinition Height="Auto" />
               </Grid.RowDefinitions>
 
-              <!--  Title  -->
+                <!--Title-->  
               <TextBlock
                 Grid.Row="0"
                 FontSize="16"
                 FontWeight="Bold"
                 Text="{Binding Title}" />
 
-              <!--  Description  -->
+                <!--Description-->  
               <TextBlock
                 Grid.Row="1"
                 FontSize="14"
@@ -279,7 +279,7 @@
                 Text="{Binding Description}"
                 TextWrapping="Wrap" />
 
-              <!--  Timestamp  -->
+                <!--Timestamp-->  
               <TextBlock
                 Grid.Row="2"
                 HorizontalAlignment="Right"
@@ -328,8 +328,15 @@
   </UserControl.Resources>
 
   <Grid>
-    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-      <ItemsControl ItemTemplateSelector="{StaticResource ActivityTemplateSelector}" ItemsSource="{Binding ActivityModels}" />
-    </ScrollViewer>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="Neueste Aktivitäten" Grid.Row="0" HorizontalAlignment="Center" FontSize="18" Margin="0 5 0 5"/>
+    <Grid Grid.Row="1">
+      <ScrollViewer  VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemTemplateSelector="{StaticResource ActivityTemplateSelector}" ItemsSource="{Binding ActivityModels}" />
+      </ScrollViewer>
+    </Grid>
   </Grid>
 </UserControl>
