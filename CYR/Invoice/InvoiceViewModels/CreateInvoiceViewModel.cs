@@ -159,6 +159,9 @@ public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation,
             Messenger.Send(new SnackbarMessage($"Die eingaben enthalten Fehler!", "Error"));
             return;
         }
+        var date = InvoiceModel.IssueDate ?? DateTime.Now;
+        var invoiceDate = date.Date + DateTime.Now.TimeOfDay;
+        InvoiceModel.IssueDate = invoiceDate;
 
         CreateInvoiceModel createInvoiceModel = new()
         {

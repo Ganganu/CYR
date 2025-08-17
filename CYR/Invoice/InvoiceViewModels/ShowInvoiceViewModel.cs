@@ -218,6 +218,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
             Messenger.Send(new SnackbarMessage($"Die eingaben enthalten Fehler!", "Error"));
             return;
         }
+
         
         InvoiceModel invoiceModel = new();
         invoiceModel = InvoiceModel;
@@ -232,6 +233,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         HisModel hisModel = new();
         hisModel.LoggingType = LoggingType.InvoiceUpdated;
         hisModel.InvoiceId = invoiceModel.InvoiceNumber;
+        hisModel.ClientId = invoiceModel.Customer.ClientNumber;
         hisModel.UserId = _userContext.CurrentUser.Id;
         hisModel.Message = $@"Rechnung {invoiceModel.InvoiceNumber} erfolgreich geupdatet.";
         return hisModel;

@@ -6,13 +6,330 @@
   xmlns:local="clr-namespace:CYR.Dashboard.DashboardViews"
   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:statusc="clr-namespace:CYR.Dashboard"
+  xmlns:template="clr-namespace:CYR.Invoice.Resources.DataTemplates"
   xmlns:vm="clr-namespace:CYR.Dashboard.DashboardViewModels"
   d:DataContext="{d:DesignInstance Type=vm:DashboardActivityViewModel,
                                    IsDesignTimeCreatable=False}"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
+
+  <UserControl.Resources>
+    <statusc:StatusConverter x:Key="StatusConverter" />
+    <template:ActivityTemplateSelector x:Key="ActivityTemplateSelector">
+      <template:ActivityTemplateSelector.InvoiceTemplate>
+        <DataTemplate>
+          <Border
+            Margin="5"
+            Background="LightBlue"
+            BorderBrush="DarkBlue"
+            BorderThickness="2"
+            CornerRadius="10">
+            <Grid Margin="10">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <!--  Invoice Icon  -->
+              <materialDesign:PackIcon
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                Width="32"
+                Height="32"
+                Margin="0,0,10,0"
+                VerticalAlignment="Top"
+                Foreground="DarkBlue"
+                Kind="Receipt" />
+
+              <!--  Title  -->
+              <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="DarkBlue"
+                Text="{Binding Title}" />
+
+              <!--  Invoice Number  -->
+              <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="14"
+                Foreground="Gray"
+                Text="{Binding EntityId, StringFormat='Rechnung: {0}'}" />
+
+              <!--  Client  -->
+              <TextBlock
+                Grid.Row="2"
+                Grid.Column="1"
+                FontSize="14"
+                Foreground="Black"
+                Text="{Binding ClientName}" />
+
+              <!--  Amount  -->
+              <TextBlock
+                Grid.Row="3"
+                Grid.Column="1"
+                FontSize="18"
+                FontWeight="Bold"
+                Foreground="Green"
+                Text="{Binding Amount, StringFormat={}{0:N2} €}" />
+
+              <!--  Status  -->
+              <Border
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="0,5,0,0"
+                HorizontalAlignment="Left"
+                Background="{Binding Status, Converter={StaticResource StatusConverter}, ConverterParameter='Background'}"
+                CornerRadius="3">
+                <TextBlock
+                  FontSize="12"
+                  FontWeight="Bold"
+                  Foreground="White"
+                  Text="{Binding Status, Converter={StaticResource StatusConverter}}" />
+              </Border>
+
+              <!--  Timestamp  -->
+              <TextBlock
+                Grid.Row="4"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                FontSize="10"
+                Foreground="Gray"
+                Text="{Binding Timestamp, StringFormat='dd.MM.yyyy HH:mm'}" />
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </template:ActivityTemplateSelector.InvoiceTemplate>
+
+      <!--  Customer Template  -->
+      <template:ActivityTemplateSelector.CustomerTemplate>
+        <DataTemplate>
+          <Border
+            Margin="5"
+            Background="LightGreen"
+            BorderBrush="DarkGreen"
+            BorderThickness="2"
+            CornerRadius="10">
+            <Grid Margin="10">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <!--  Customer Icon  -->
+              <materialDesign:PackIcon
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                Width="32"
+                Height="32"
+                Margin="0,0,10,0"
+                VerticalAlignment="Top"
+                Foreground="DarkGreen"
+                Kind="Account" />
+
+              <!--  Title  -->
+              <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="DarkGreen"
+                Text="{Binding Title}" />
+
+              <!--  Customer Name  -->
+              <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="14"
+                Foreground="Black"
+                Text="{Binding ClientName}" />
+
+              <!--  Timestamp  -->
+              <TextBlock
+                Grid.Row="2"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                FontSize="10"
+                Foreground="Gray"
+                Text="{Binding Timestamp, StringFormat='dd.MM.yyyy HH:mm'}" />
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </template:ActivityTemplateSelector.CustomerTemplate>
+
+      <!--  Product Template  -->
+      <template:ActivityTemplateSelector.ProductTemplate>
+        <DataTemplate>
+          <Border
+            Margin="5"
+            Background="LightCoral"
+            BorderBrush="DarkRed"
+            BorderThickness="2"
+            CornerRadius="10">
+            <Grid Margin="10">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <!--  Product Icon  -->
+              <materialDesign:PackIcon
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                Width="32"
+                Height="32"
+                Margin="0,0,10,0"
+                VerticalAlignment="Top"
+                Foreground="DarkRed"
+                Kind="Package" />
+
+              <!--  Title  -->
+              <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="DarkRed"
+                Text="{Binding Title}" />
+
+              <!--  Description  -->
+              <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="14"
+                Foreground="Black"
+                Text="{Binding Description}" />
+
+              <!--  Price  -->
+              <TextBlock
+                Grid.Row="2"
+                Grid.Column="1"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="Green"
+                Text="{Binding Amount, StringFormat={}{0:N2} €}" />
+
+              <!--  Timestamp  -->
+              <TextBlock
+                Grid.Row="3"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                FontSize="10"
+                Foreground="Gray"
+                Text="{Binding Timestamp, StringFormat='dd.MM.yyyy HH:mm'}" />
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </template:ActivityTemplateSelector.ProductTemplate>
+
+      <!--  Default Template  -->
+      <template:ActivityTemplateSelector.DefaultTemplate>
+        <DataTemplate>
+          <Border
+            Margin="5"
+            Background="LightGray"
+            BorderBrush="Gray"
+            BorderThickness="1"
+            CornerRadius="10">
+            <Grid Margin="10">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+
+              <!--  Title  -->
+              <TextBlock
+                Grid.Row="0"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{Binding Title}" />
+
+              <!--  Description  -->
+              <TextBlock
+                Grid.Row="1"
+                FontSize="14"
+                Foreground="Black"
+                Text="{Binding Description}"
+                TextWrapping="Wrap" />
+
+              <!--  Timestamp  -->
+              <TextBlock
+                Grid.Row="2"
+                HorizontalAlignment="Right"
+                FontSize="10"
+                Foreground="Gray"
+                Text="{Binding Timestamp, StringFormat='dd.MM.yyyy HH:mm'}" />
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </template:ActivityTemplateSelector.DefaultTemplate>
+    </template:ActivityTemplateSelector>
+
+    <!--  Animation Style  -->
+    <Style TargetType="ContentPresenter">
+      <Setter Property="RenderTransform">
+        <Setter.Value>
+          <TranslateTransform Y="0" />
+        </Setter.Value>
+      </Setter>
+      <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Trigger.EnterActions>
+            <BeginStoryboard>
+              <Storyboard>
+                <DoubleAnimation
+                  Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                  To="-5"
+                  Duration="0:0:0.1" />
+              </Storyboard>
+            </BeginStoryboard>
+          </Trigger.EnterActions>
+          <Trigger.ExitActions>
+            <BeginStoryboard>
+              <Storyboard>
+                <DoubleAnimation
+                  Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                  To="0"
+                  Duration="0:0:0.1" />
+              </Storyboard>
+            </BeginStoryboard>
+          </Trigger.ExitActions>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+
   <Grid>
-    <TextBlock Text="test" />
+    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+      <ItemsControl ItemTemplateSelector="{StaticResource ActivityTemplateSelector}" ItemsSource="{Binding ActivityModels}" />
+    </ScrollViewer>
   </Grid>
 </UserControl>

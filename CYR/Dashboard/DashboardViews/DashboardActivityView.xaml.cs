@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Globalization;
+using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace CYR.Dashboard.DashboardViews
 {
@@ -10,6 +12,8 @@ namespace CYR.Dashboard.DashboardViews
         public DashboardActivityView()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
+
         }
     }
 }
