@@ -124,7 +124,7 @@ public partial class CreateClientViewModel : ObservableRecipientWithValidation
         model.LoggingType = LoggingType.ClientCreated;
         model.ClientId = client.ClientNumber;
         model.UserId = _userContext.CurrentUser.Id;
-        model.Message = $@"Client: {client.ClientNumber} wurder vom User: {_userContext.CurrentUser.Id} erstellt.";
+        model.Message = $@"Client: {client.ClientNumber} wurde vom User: {_userContext.CurrentUser.Id} erstellt.";
         return model;
     }  
 }

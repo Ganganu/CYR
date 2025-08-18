@@ -83,7 +83,7 @@ namespace CYR.ViewModel
             model.LoggingType = LoggingType.OrderItemCreated;
             model.UserId = _userContext.CurrentUser.Id;
             model.OrderItemId = orderItem.Id.ToString();
-            model.Message = $@"Artikel: {orderItem.Description} wurder vom User: {_userContext.CurrentUser.Id} erstellt.";
+            model.Message = $@"Artikel: {orderItem.Description} wurde vom User: {_userContext.CurrentUser.Id} erstellt.";
             return model;
         }
     }

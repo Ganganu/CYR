@@ -128,14 +128,6 @@ public partial class RegisterViewModel : ObservableRecipient
             { vm => vm.IsOkVisible, okButtonVisibility}
         });
     }
-    private HisModel CreateHisModel(User.User user)
-    {
-        HisModel hisModel = new();
-        hisModel.LoggingType = LoggingType.NewUserRegistered;
-        hisModel.UserId = user.Id;
-        hisModel.Message = @$"User:{hisModel.UserId} erflogreich registriert.";
-        return hisModel;
-    }
 }
 
 public record NavigateToLoginMessage();

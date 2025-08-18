@@ -146,7 +146,7 @@ public partial class ClientViewModel : ObservableRecipient, IParameterReceiver
         hisModel.LoggingType = LoggingType.UserDeleted;
         hisModel.ClientId = client.ClientNumber;
         hisModel.UserId = _userContext.CurrentUser.Id;
-        hisModel.Message = @$"Client:{hisModel.ClientId} wurde gelöscht vom User:{hisModel.UserId}";
+        hisModel.Message = @$"Client {client.Name} wurde gelöscht von User {_userContext.CurrentUser.Username}";
         return hisModel;
     }
 }

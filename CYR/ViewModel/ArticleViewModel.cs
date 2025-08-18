@@ -99,7 +99,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
         model.LoggingType = LoggingType.OrderItemDeleted;
         model.OrderItemId = item.Id.ToString();
         model.UserId = _userContext.CurrentUser.Id;
-        model.Message = $@"Artikel: {item.Description} wurder vom User: {_userContext.CurrentUser.Id} gelöscht.";
+        model.Message = $@"Artikel: {item.Description} wurde vom User: {_userContext.CurrentUser.Id} gelöscht.";
         return model;
     }
 

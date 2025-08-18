@@ -89,7 +89,7 @@ public partial class UpdateOrderItemViewModel : ObservableRecipientWithValidatio
         model.LoggingType = LoggingType.OrderItemUpdated;
         model.UserId = _userContext.CurrentUser.Id;
         model.OrderItemId = orderItemToUpdate.Id.ToString();
-        model.Message = $@"Artikel: {orderItemToUpdate.Description} wurder erfolgreich vom User: {_userContext.CurrentUser.Id} geupdatet.";
+        model.Message = $@"Artikel: {orderItemToUpdate.Description} wurde erfolgreich vom User: {_userContext.CurrentUser.Id} geupdatet.";
         return model;
     }
 

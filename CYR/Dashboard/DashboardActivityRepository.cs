@@ -15,61 +15,7 @@ public class DashboardActivityRepository
     {
         string query = @"
         SELECT 
-            timestamp,
-            activity_type,
-            title,
-            description,
-            entity_id,
-            client_name,
-            amount,
-            status
-        FROM (
-            -- Latest Invoices
-            SELECT 
-                datetime(r.Rechnungsdatum) as timestamp,
-                'InvoiceCreated' as activity_type,
-                'Neue Rechnung erstellt' as title,
-                'Rechnung ' || r.Rechnungsnummer || ' für ' || k.Name as description,
-                cast(r.Rechnungsnummer as TEXT) as entity_id,
-                k.Name as client_name,
-                CAST(r.Bruttobetrag as TEXT) as amount,		
-                r.Status as status
-            FROM Rechnungen r
-            INNER JOIN Kunden k ON r.Kundennummer = k.Kundennummer AND r.user_id = k.user_id
-
-            UNION ALL
-
-            -- Latest Customers
-            SELECT 
-                datetime(k.Erstellungsdatum) as timestamp,
-                'CustomerCreated' as activity_type,
-                'Neuer Kunde angelegt' as title,
-                'Kunde ' || k.Name || ' wurde hinzugefügt' as description,
-                cast(k.Kundennummer as TEXT) as entity_id,
-                k.Name as client_name,
-                NULL as amount,
-                NULL as status
-            FROM Kunden k
-
-            UNION ALL
-
-            -- Latest Products
-            SELECT 
-                datetime(p.created_at) as timestamp,
-                'ProductCreated' as activity_type,
-                'Neues Produkt erstellt' as title,
-                'Produkt: ' || p.Name as description,
-                CAST(p.Produktnummer as TEXT) as entity_id,
-                NULL as client_name,
-                CAST(p.Preis as TEXT) as amount,
-                NULL as status
-            FROM Produkte_Dienstleistungen p
-
-            UNION ALL            
-
-            -- Activities from history table (if you want to include logged activities)
-            SELECT 
-                datetime(h.timestamp) as timestamp,
+                datetime(h.timestamp, 'localtime') as timestamp,
                 CASE h.logging_type 
                     WHEN 1000 THEN 'UserCreated'
                     WHEN 1001 THEN 'UserDeleted' 
@@ -94,14 +40,7 @@ public class DashboardActivityRepository
             FROM his h
             LEFT JOIN Kunden k ON h.client_id = k.Kundennummer AND h.user_id = k.user_id
             LEFT JOIN Rechnungen r ON h.invoice_id = r.Rechnungsnummer AND h.user_id = r.user_id
-			WHERE h.logging_type IN (
-				1000,1001,1002,
-				3000,3001,3002,
-				4000,4001,4002,
-				5000,5001,5002
-			)
-        )
-        ORDER BY timestamp DESC
+            order by timestamp desc
 		LIMIT @limit;";
 
         var parameters = new Dictionary<string, object>

@@ -60,7 +60,7 @@ public partial class CreateUnitOfMeasureViewModel : ObservableRecipientWithValid
         model.LoggingType = LoggingType.UnitOfMeasureCreated;
         model.UserId = _userContext.CurrentUser.Id;
         model.UnitOfMeasureId = unitOfMeasureModel.Id;
-        model.Message = $@"Einheit: {unitOfMeasureModel.Name} wurder vom User: {_userContext.CurrentUser.Id} erstellt.";
+        model.Message = $@"Einheit: {unitOfMeasureModel.Name} wurde vom User: {_userContext.CurrentUser.Id} erstellt.";
         return model;
     }
 }

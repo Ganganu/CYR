@@ -123,7 +123,7 @@ public partial class LoginViewModel : ObservableRecipient, IRecipient<NavigateTo
         HisModel hisModel = new();
         hisModel.LoggingType = LoggingType.UserLogin;
         hisModel.UserId = user.Id;
-        hisModel.Message = @$"User:{hisModel.UserId} erflogreich login.";
+        hisModel.Message = @$"User:{hisModel.UserId} erfolgreich login.";
         return hisModel;
     }
 }

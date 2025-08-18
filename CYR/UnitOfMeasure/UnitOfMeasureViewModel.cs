@@ -91,7 +91,7 @@ public partial class UnitOfMeasureViewModel : ObservableRecipientWithValidation
         model.LoggingType = LoggingType.UnitOfMeasureDeleted;
         model.UserId = _userContext.CurrentUser.Id;
         model.UnitOfMeasureId = item.Id;
-        model.Message = $@"Einheit: {item.Name} wurder vom User: {_userContext.CurrentUser.Id} gelöscht.";
+        model.Message = $@"Einheit: {item.Name} wurde vom User: {_userContext.CurrentUser.Id} gelöscht.";
         return model;
     }
 }
