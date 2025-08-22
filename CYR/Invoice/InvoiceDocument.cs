@@ -54,7 +54,7 @@ public class InvoiceDocument : IInvoiceDocument
             });
             if (Model.Seller.CompanyLogo is not null)
             {                
-                row.ConstantItem(200).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
+                row.ConstantItem(100).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
             }
         });
     }
