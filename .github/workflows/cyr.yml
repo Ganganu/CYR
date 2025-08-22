@@ -1,0 +1,94 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (optional)'
+        required: false
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Set Version
+        id: version
+        run: |
+          echo "VERSION=0.0.0.1" >> $env:GITHUB_ENV
+          echo "Version will be: 0.0.0.1"
+        shell: pwsh
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+          
+      - name: Restore
+        run: dotnet restore ./CYR.sln
+        
+      - name: Build
+        run: dotnet build ./CYR.sln --configuration Release --no-restore /p:Version=${env:VERSION}
+        
+      - name: Publish Single-file
+        run: dotnet publish ./CYR/CYR.csproj --configuration Release --runtime win-x64 --self-contained true --output ./publish /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:EnableCompressionInSingleFile=true /p:DebugType=None /p:DebugSymbols=false
+        
+      - name: List Published Files
+        run: |
+          echo "Listing contents of publish directory:"
+          dir publish
+        shell: pwsh
+      
+      - name: Read Release Notes
+        id: release_notes
+        shell: pwsh
+        run: |
+          $releasePath = "CYR/RELEASE_NOTES.md"
+          if (Test-Path $releasePath) {
+            $notes = Get-Content $releasePath -Raw
+            echo "RELEASE_NOTES<<EOF" >> $env:GITHUB_ENV
+            echo "$notes" >> $env:GITHUB_ENV
+            echo "EOF" >> $env:GITHUB_ENV
+          } else {
+            echo "RELEASE_NOTES=No release notes provided" >> $env:GITHUB_ENV
+          }
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+          
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/BIT.exe   
+          asset_name: BIT.exe             
+          asset_content_type: application/x-msdownload
