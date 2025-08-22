@@ -18,17 +18,24 @@ on:
   push:
     branches:
       - master
-
 permissions:
   contents: write
-
 jobs:
   publish:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout main repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          path: main
+      
+      - name: Checkout EasyControls repository
+        uses: actions/checkout@v4
+        with:
+          repository: Ganganu/EasyControls
+          path: EasyControls
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Set Version
         id: version
@@ -38,18 +45,18 @@ jobs:
         shell: pwsh
       
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
           
       - name: Restore
-        run: dotnet restore ./CYR.sln
+        run: dotnet restore ./main/CYR.sln
         
       - name: Build
-        run: dotnet build ./CYR.sln --configuration Release --no-restore /p:Version=${env:VERSION}
+        run: dotnet build ./main/CYR.sln --configuration Release --no-restore /p:Version=$env:VERSION
         
       - name: Publish Single-file
-        run: dotnet publish ./CYR/CYR.csproj --configuration Release --runtime win-x64 --self-contained true --output ./publish /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:EnableCompressionInSingleFile=true /p:DebugType=None /p:DebugSymbols=false
+        run: dotnet publish ./main/CYR/CYR.csproj --configuration Release --runtime win-x64 --self-contained true --output ./publish /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:EnableCompressionInSingleFile=true /p:DebugType=None /p:DebugSymbols=false
         
       - name: List Published Files
         run: |
@@ -61,7 +68,7 @@ jobs:
         id: release_notes
         shell: pwsh
         run: |
-          $releasePath = "CYR/RELEASE_NOTES.md"
+          $releasePath = "main/CYR/RELEASE_NOTES.md"
           if (Test-Path $releasePath) {
             $notes = Get-Content $releasePath -Raw
             echo "RELEASE_NOTES<<EOF" >> $env:GITHUB_ENV
@@ -70,7 +77,7 @@ jobs:
           } else {
             echo "RELEASE_NOTES=No release notes provided" >> $env:GITHUB_ENV
           }
-
+      
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
