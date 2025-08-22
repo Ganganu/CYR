@@ -84,10 +84,29 @@
             <Expander Background="#dedede" Header="Benutzerdaten">
 
               <StackPanel Margin="0,0,0,10" Orientation="Vertical">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                  <Image Width="250" Source="{Binding UserLogo}" />
+                <Grid MinHeight="200">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                  </Grid.ColumnDefinitions>
+
+                  <TextBlock
+                    Grid.Column="0"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Text="Profilbild" />
+                  <Image
+                    Grid.Column="1"
+                    Width="250"
+                    Margin="50,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Source="{Binding UserLogo}" />
                   <Button
-                    Margin="5,10,0,0"
+                    Grid.Column="2"
+                    Margin="15,10,0,0"
                     VerticalAlignment="Bottom"
                     Command="{Binding SelectNewUserLogoCommand}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
@@ -95,7 +114,7 @@
                       <materialDesign:PackIcon Kind="Edit" />
                     </Button.Content>
                   </Button>
-                </StackPanel>
+                </Grid>
                 <Label Content="Role" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"
@@ -115,11 +134,26 @@
               Header="Firmendaten"
               IsExpanded="True">
               <StackPanel>
-
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                  <Image Width="250" Source="{Binding CompanyLogo}" />
+                <Grid MinHeight="200">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock
+                    Grid.Column="0"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Text="Firmenlogo" />
+                  <Image
+                    Grid.Column="1"
+                    Width="250"
+                    Margin="50,0,0,0"
+                    Source="{Binding CompanyLogo}" />
                   <Button
-                    Margin="5,10,0,0"
+                    Grid.Column="2"
+                    Margin="15,10,0,0"
                     VerticalAlignment="Bottom"
                     Command="{Binding SelectNewCompanyLogoCommand}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
@@ -127,7 +161,7 @@
                       <materialDesign:PackIcon Kind="Edit" />
                     </Button.Content>
                   </Button>
-                </StackPanel>
+                </Grid>
                 <Label Content="Firmenname" FontSize="16" />
                 <TextBox
                   Margin="5,5,5,0"

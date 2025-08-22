@@ -87,21 +87,30 @@ public class PreviewInvoiceService : IPreviewInvoiceService
             }                
         }
 
-        await CreateInvoice(createInvoiceModel);
-        return new SnackbarMessage("Preview erfolgreich erstellt.", "Check");
+        var message = await CreateInvoice(createInvoiceModel);
+        return message;
     }
 
-    private async Task CreateInvoice(CreateInvoiceModel createInvoiceModel)
+    private async Task<SnackbarMessage> CreateInvoice(CreateInvoiceModel createInvoiceModel)
     {
         IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
         int id = Convert.ToInt32(_userContext.CurrentUser.Id);
         UserCompany userSettings = await _userCompanyRepository.GetAsync(id);
+        if (userSettings is null) return new SnackbarMessage("Ihre Firmendaten sind unvollständig. Bitte vervollständigen Sie diese, bevor Sie eine Rechnung erstellen.", "Error");
         var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
         model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
         model.CommentsTop = createInvoiceModel.CommentsTop;
         model.CommentsBottom = createInvoiceModel.CommentsBottom;
         _invoiceDocument.Model = model;
-        _invoiceDocument.GeneratePdfAndShow();
+        try
+        {
+            _invoiceDocument.GeneratePdfAndShow();
+            return new SnackbarMessage($"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} wurde erfolgreich gespeichert!", "Check");
+        }
+        catch (Exception)
+        {
+            return new SnackbarMessage("Beim Erstellen der Rechnung ist ein Problem aufgetreten.", "Error");
+        }
     }
 
     private static InvoicePositionModel CreateInvoicePositionModel(OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)

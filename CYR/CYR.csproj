@@ -46,9 +46,9 @@
     <Resource Include="Ressources\Bild1.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Ressources\user.png">
+    <Content Include="Ressources\user.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
 
 </Project>

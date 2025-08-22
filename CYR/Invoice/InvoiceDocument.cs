@@ -22,6 +22,7 @@ public class InvoiceDocument : IInvoiceDocument
 
     public void Compose(IDocumentContainer container)
     {
+        if (Model is null || Model.Seller is null) return;
         container
             .Page(page =>
             {
@@ -52,9 +53,16 @@ public class InvoiceDocument : IInvoiceDocument
                     .FontColor(Colors.Blue.Medium)
                     .Underline(true);
             });
-            if (Model.Seller.CompanyLogo is not null)
-            {                
-                row.ConstantItem(100).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
+            try
+            {
+                if (Model.Seller.CompanyLogo is not null)
+                {
+                    row.ConstantItem(100).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
+                }
+            }
+            catch (Exception)
+            {
+                row.ConstantItem(100).Image(@"Ressources\user.png");
             }
         });
     }

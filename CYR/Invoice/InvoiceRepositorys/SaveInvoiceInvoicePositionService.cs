@@ -43,6 +43,9 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
         if (createInvoiceModel.Positions.Count <= 0) return new SnackbarMessage("Keine Positionen in Rechnung.", "Error");
         if (createInvoiceModel.Positions.Any(p => Convert.ToDecimal(p.Price) < 0)) return new SnackbarMessage("Der Preis eines ausgewählten Artikels ist kleiner 0.", "Error");
 
+        var company = await _userCompanyRepository.GetAsync(Convert.ToInt32(_userContext.CurrentUser.Id));
+        if (company is null) return new SnackbarMessage("Ihre Firmendaten sind unvollständig. Bitte vervollständigen Sie diese, bevor Sie eine Rechnung erstellen.", "Error");
+
         var invalidPositions = createInvoiceModel.Positions
         .Select((p, index) => new { Position = p, Index = index + 1 })
         .Where(p =>
@@ -121,22 +124,30 @@ public class SaveInvoiceInvoicePositionService : ISaveInvoiceInvoicePositionServ
                     throw;
                 }
             }
-            CreateInvoice(createInvoiceModel);
-            return new SnackbarMessage($"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} wurde erfolgreich gespeichert!", "Check");
+            var message = await CreateInvoice(createInvoiceModel);
+            return message;
         }
     }
 
-    private async Task CreateInvoice(CreateInvoiceModel createInvoiceModel)
+    private async Task<SnackbarMessage> CreateInvoice(CreateInvoiceModel createInvoiceModel)
     {
         IEnumerable<InvoicePosition> positions = createInvoiceModel.Positions;
         int id = Convert.ToInt32(_userContext.CurrentUser.Id);
         UserCompany userSettings = await _userCompanyRepository.GetAsync(id);
         var model = InvoiceDocumentDataSource.GetInvoiceDetails(createInvoiceModel.Client, positions, _invoiceModel, userSettings);
-        model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
+        model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
         model.CommentsTop = createInvoiceModel.CommentsTop;
         model.CommentsBottom = createInvoiceModel.CommentsBottom;
         _invoiceDocument.Model = model;
-        _invoiceDocument.GeneratePdfAndShow();
+        try
+        {
+            _invoiceDocument.GeneratePdfAndShow();
+            return new SnackbarMessage($"Die Rechnung mit der Rechnungsnummer {createInvoiceModel.InvoiceNumber} wurde erfolgreich gespeichert!", "Check");
+        }
+        catch (Exception)
+        {
+            return new SnackbarMessage("Beim Erstellen der Rechnung ist ein Problem aufgetreten.", "Error");
+        }
     }
 
     private InvoicePositionModel CreateInvoicePositionModel(OrderItem orderItem, InvoicePosition position, InvoiceModel invoiceModel)
