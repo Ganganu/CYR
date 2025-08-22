@@ -96,6 +96,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/BIT.exe   
-          asset_name: BIT.exe             
+          asset_path: ./publish/CYR.exe   
+          asset_name: CYR.exe             
           asset_content_type: application/x-msdownload
