@@ -40,8 +40,8 @@ jobs:
       - name: Set Version
         id: version
         run: |
-          echo "VERSION=0.0.0.2" >> $env:GITHUB_ENV
-          echo "Version will be: 0.0.0.2"
+          echo "VERSION=0.0.0.3" >> $env:GITHUB_ENV
+          echo "Version will be: 0.0.0.3"
         shell: pwsh
       
       - name: Setup .NET

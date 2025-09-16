@@ -41,6 +41,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
 
     private int _positionCounter = 1;
     private Client? _client;
+    private bool _isMwstApplicable = false;
 
     public ShowInvoiceViewModel(IOrderItemRepository orderItemRepository,
         IUnitOfMeasureRepository unitOfMeasureRepository,
@@ -267,23 +268,28 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
     private void SelectLogo()
     {
         var message = _selectImageService.SelectImage();
+        if (message.ImageSource is null) return;
         Logo = message.ImageSource;
         Messenger.Send(message.Message, message.Icon);
     }
 
     public void Receive(InvoiceTotalPriceEvent message)
     {
+        if (Positions is null) return;
         TotalPrice = 0;
         foreach (var item in Positions)
         {
             TotalPrice += item.TotalPrice;
         }
+        if (_isMwstApplicable) TotalPrice *= 1.19m;
     }
 
     public void Receive(InvoiceMwstEvent message)
     {
         if (message.isMwstApplicable == true) TotalPrice *= 1.19m;
         else TotalPrice /= 1.19m;
+        _isMwstApplicable = message.isMwstApplicable;
+
     }
     [RelayCommand]
     private void NavigateBack()
