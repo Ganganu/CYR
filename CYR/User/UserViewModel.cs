@@ -78,6 +78,8 @@ public partial class UserViewModel : ObservableRecipientWithValidation
     [ObservableProperty]
     private string _username;
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     private string _userLogo;
     [ObservableProperty]
     private string _role;
@@ -162,7 +164,11 @@ public partial class UserViewModel : ObservableRecipientWithValidation
     private async Task UpdateUser()
     {
         ValidateAllProperties();
-        if (HasErrors) return;
+        if (HasErrors)
+        {
+            Messenger.Send(new SnackbarMessage(@"Eingegebene Daten enthalten Fehler.", "Error"));
+            return;
+        }
         if (_userContext.CurrentUser is null) return;
         var resultuser = await _userRepository.InsertAsync(CreateUser());
         var resultCompany = await _companyRepository.InsertAsync(CreateCompany());
