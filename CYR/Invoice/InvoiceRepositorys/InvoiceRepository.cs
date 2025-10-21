@@ -1,7 +1,6 @@
 ﻿using CYR.Clients;
 using CYR.Core;
 using CYR.Invoice.InvoiceModels;
-using CYR.Logging;
 using CYR.Messages;
 using CYR.User;
 using System.Data.Common;
@@ -156,8 +155,8 @@ public class InvoiceRepository : IInvoiceRepository
         string query = @"UPDATE Rechnungen 
                         SET Kundennummer = @Kundennummer, Rechnungsdatum = @Rechnungsdatum, Fälligkeitsdatum = @Fälligkeitsdatum, 
                                     Nettobetrag = @Nettobetrag, Bruttobetrag = @Bruttobetrag, Status = @Status,  
-                                    commentstop = @commentstop, commentsbottom = @commentsbottom, user_id = @user_id
-                                WHERE Rechnungsnummer = @Rechnungsnummer";
+                                    commentstop = @commentstop, commentsbottom = @commentsbottom
+                                WHERE Rechnungsnummer = @Rechnungsnummer and user_id = @user_id";
 
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
         {

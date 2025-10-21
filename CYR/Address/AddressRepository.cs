@@ -1,9 +1,11 @@
-﻿using CYR.Core;
+﻿using CYR.Clients;
+using CYR.Core;
 using CYR.User;
+using System.Data.Common;
 
 namespace CYR.Address
 {
-    internal class AddressRepository : IAddressRepository
+    public class AddressRepository : IAddressRepository
     {
         private readonly IDatabaseConnection _databaseConnection;
         private readonly UserContext _userContext;
@@ -18,9 +20,27 @@ namespace CYR.Address
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<AddressModel>> GetAllAsync()
+        public async Task<IEnumerable<AddressModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            List<AddressModel> addresses = [];
+            AddressModel address;
+            string query = @"select Kundennummer, Strasse, PLZ, Ort, user_id from Adresse";
+            using (DbDataReader reader = (DbDataReader)await _databaseConnection.ExecuteSelectQueryAsync(query))
+            {
+                while (await reader.ReadAsync())
+                {
+                    address = new()
+                    {
+                        CompanyName = reader.GetString(reader.GetOrdinal("Kundennummer")),
+                        City = reader.GetString(reader.GetOrdinal("Ort")),
+                        Street = reader.GetString(reader.GetOrdinal("Strasse")),
+                        PLZ = reader.GetString(reader.GetOrdinal("PLZ"))
+                    };
+                    
+                    addresses.Add(address);
+                }
+            }
+            return addresses;
         }
 
         public Task<IEnumerable<AddressModel>> GetByClientNumberAsync(string clientNumber)

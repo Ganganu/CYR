@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CYR", "CYR\CYR.csproj", "{D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyControls", "..\EasyControls\EasyControls\EasyControls.csproj", "{A3CDDE07-9587-ADF2-B5C7-DECE0CD31220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CYR.Tests", "CYR_Tests\CYR.Tests.csproj", "{253E2FFF-7C1F-4892-9C1A-5673AEAC5CB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A3CDDE07-9587-ADF2-B5C7-DECE0CD31220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3CDDE07-9587-ADF2-B5C7-DECE0CD31220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3CDDE07-9587-ADF2-B5C7-DECE0CD31220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253E2FFF-7C1F-4892-9C1A-5673AEAC5CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253E2FFF-7C1F-4892-9C1A-5673AEAC5CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253E2FFF-7C1F-4892-9C1A-5673AEAC5CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253E2FFF-7C1F-4892-9C1A-5673AEAC5CB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

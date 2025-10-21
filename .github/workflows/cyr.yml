@@ -15,9 +15,9 @@ on:
           - minor
           - major
         
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
 permissions:
   contents: write
 jobs:
