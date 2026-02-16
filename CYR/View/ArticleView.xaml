@@ -125,9 +125,20 @@
             ItemsSource="{Binding OrderItems}">
             <DataGrid.Columns>
               <DataGridTemplateColumn>
+                <DataGridTemplateColumn.Header>
+                  <CheckBox IsChecked="{Binding DataContext.SelectAll, RelativeSource={RelativeSource AncestorType=DataGrid}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </DataGridTemplateColumn.Header>
+                <DataGridTemplateColumn.HeaderStyle>
+                  <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                  </Style>
+                </DataGridTemplateColumn.HeaderStyle>
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>

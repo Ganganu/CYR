@@ -1,20 +1,21 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dialog;
+using CYR.Invoice.InvoiceModels;
 using CYR.Logging;
 using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.Services;
 using CYR.User;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Windows;
 
 namespace CYR.ViewModel;
 
-public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
+public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver, IRecipient<OrderItemIsSelectedChangedMessage>
 {
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IDialogService _dialogService;
@@ -23,7 +24,9 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     private readonly UserContext _userContext;
 
     private string? _dialogResponse;
-    public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository, IDialogService dialogService, IPrintOrderItemService printOrderItemService, LoggingRepository loggingRepository, UserContext userContext)
+    public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository,
+        IDialogService dialogService, IPrintOrderItemService printOrderItemService, 
+        LoggingRepository loggingRepository, UserContext userContext)
     {
         _orderItemRepository = orderItemRepository;
         Navigation = navigationService;
@@ -32,6 +35,8 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
         _printOrderItemService = printOrderItemService;
         _loggingRepository = loggingRepository;
         _userContext = userContext;
+        IsActive = true;
+        SelectAll = false;
     }
 
     private async void Initialize()
@@ -41,10 +46,24 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     }
 
     [ObservableProperty]
+    private bool? _selectAll;
+
+    [ObservableProperty]
     private INavigationService _navigation;
 
     [ObservableProperty]
     private ObservableCollection<OrderItem>? _orderItems;
+
+    private bool _isUpdatingFromMessage;
+
+    partial void OnSelectAllChanged(bool? oldValue, bool? newValue)
+    {
+        if (newValue == null || OrderItems == null || _isUpdatingFromMessage) return;
+            foreach (var item in OrderItems)
+            {
+                item.IsSelected = newValue.Value;
+            }
+    }
 
     [RelayCommand]
     private void NavigateBack()
@@ -86,6 +105,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
                     throw;
                 }
             }
+            SelectAll = false;
         }
         catch (Exception)
         {
@@ -155,5 +175,15 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver
     {
         if (OrderItems is null) return;
         _printOrderItemService.Print(OrderItems);
+    }
+    void IRecipient<OrderItemIsSelectedChangedMessage>.Receive(OrderItemIsSelectedChangedMessage message)
+    {
+        if (OrderItems is null || !OrderItems.Any()) return;
+        if (_isUpdatingFromMessage) return;
+
+        _isUpdatingFromMessage = true;
+
+        SelectAll = OrderItems.All(x => x.IsSelected);
+        _isUpdatingFromMessage = false;
     }
 }

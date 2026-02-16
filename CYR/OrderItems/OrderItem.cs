@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace CYR.OrderItems;
 
-public partial class OrderItem :ObservableObject
+public partial class OrderItem :ObservableRecipient
 {
     [ObservableProperty]
     private bool _isSelected;
@@ -14,4 +15,11 @@ public partial class OrderItem :ObservableObject
     private string? _name;
     [ObservableProperty]
     private string? _price;
+
+    partial void OnIsSelectedChanged(bool value)
+    {
+        Messenger.Send(new OrderItemIsSelectedChangedMessage(this));
+    }
 }
+
+record OrderItemIsSelectedChangedMessage(OrderItem orderItem);
