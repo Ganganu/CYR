@@ -22,4 +22,4 @@ public partial class OrderItem :ObservableRecipient
     }
 }
 
-record OrderItemIsSelectedChangedMessage(OrderItem orderItem);
+record OrderItemIsSelectedChangedMessage(OrderItem OrderItem);

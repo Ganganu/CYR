@@ -12,6 +12,9 @@
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
+  <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BooleanToVosibilityConverter" />
+  </UserControl.Resources>
   <Grid Background="White">
     <Border
       Margin="10"
@@ -57,6 +60,7 @@
               Margin="5,0,5,0"
               BorderBrush="LightGray"
               BorderThickness="1"
+              Command="{Binding InsertOrderItemsCommand}"
               Style="{StaticResource MaterialDesignFlatButton}"
               ToolTip="Import von CSV Datei">
               <Button.Content>
@@ -78,6 +82,7 @@
               BorderBrush="LightGray"
               BorderThickness="1"
               Command="{Binding UpdateOrderItemCommand}"
+              IsEnabled="{Binding IsUpdateButtonVisible}"
               Style="{StaticResource MaterialDesignFlatButton}"
               ToolTip="Ausgewählte Zeile editieren">
               <Button.Content>

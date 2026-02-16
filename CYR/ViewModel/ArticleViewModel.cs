@@ -20,13 +20,14 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     private readonly IOrderItemRepository _orderItemRepository;
     private readonly IDialogService _dialogService;
     private readonly IPrintOrderItemService _printOrderItemService;
-    private readonly LoggingRepository _loggingRepository; 
+    private readonly LoggingRepository _loggingRepository;
     private readonly UserContext _userContext;
+    private readonly IArticleImportService _articleImportService;
 
     private string? _dialogResponse;
     public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository,
-        IDialogService dialogService, IPrintOrderItemService printOrderItemService, 
-        LoggingRepository loggingRepository, UserContext userContext)
+        IDialogService dialogService, IPrintOrderItemService printOrderItemService,
+        LoggingRepository loggingRepository, UserContext userContext, IArticleImportService articleImportService)
     {
         _orderItemRepository = orderItemRepository;
         Navigation = navigationService;
@@ -35,6 +36,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
         _printOrderItemService = printOrderItemService;
         _loggingRepository = loggingRepository;
         _userContext = userContext;
+        _articleImportService = articleImportService;
         IsActive = true;
         SelectAll = false;
     }
@@ -55,14 +57,17 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     private ObservableCollection<OrderItem>? _orderItems;
 
     private bool _isUpdatingFromMessage;
+    [ObservableProperty]
+    private bool _isUpdateButtonVisible;
 
     partial void OnSelectAllChanged(bool? oldValue, bool? newValue)
     {
         if (newValue == null || OrderItems == null || _isUpdatingFromMessage) return;
-            foreach (var item in OrderItems)
-            {
-                item.IsSelected = newValue.Value;
-            }
+        foreach (var item in OrderItems)
+        {
+            item.IsSelected = newValue.Value;
+        }
+        CanUpdate();
     }
 
     [RelayCommand]
@@ -166,9 +171,15 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     }
 
     [RelayCommand]
-    private void InsertOrderItems()
+    private async Task InsertOrderItems()
     {
-
+        var data = _articleImportService.Import();
+        if (data.Count == 0 || data is null) return;
+        foreach (var item in data)
+        {
+          await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price.ToString()});
+        }
+        Initialize();
     }
     [RelayCommand]
     private void PrintOrderItems()
@@ -185,5 +196,10 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
 
         SelectAll = OrderItems.All(x => x.IsSelected);
         _isUpdatingFromMessage = false;
+        CanUpdate();
+    }
+    private void CanUpdate()
+    {
+        IsUpdateButtonVisible = OrderItems?.Count(item => item.IsSelected) == 1;
     }
 }

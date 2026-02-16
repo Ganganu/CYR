@@ -110,6 +110,7 @@ public partial class App : Application
         services.AddSingleton<ISaveInvoiceInvoicePositionService, SaveInvoiceInvoicePositionService>();
         services.AddSingleton<IPreviewInvoiceService, PreviewInvoiceService>();
         services.AddSingleton<ISelectImageService, SelectImageService>();
+        services.AddSingleton<IArticleImportService, ArticleImportService>();
         services.AddSingleton<IOpenImageService, OpenImageService>();
         services.AddSingleton<IXMLService, XMLService>();
         services.AddSingleton<IFileService, FileService>();
