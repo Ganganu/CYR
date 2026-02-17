@@ -22,7 +22,7 @@ public class ArticleImportService : IArticleImportService
             fileName = fileDialog.SafeFileName;
 
             data = [.. File.ReadAllLines(path)
-                        .Select(x => x.Split(','))
+                        .Select(x => x.Split(';'))
                         .Select(dataRow => new OrderItemCsvImport
                         (
                         int.TryParse(dataRow[0]?.ToString(), out int val) ? val : null,

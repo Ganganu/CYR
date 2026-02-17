@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Logging;
+using CYR.Messages;
 using CYR.OrderItems;
 using CYR.Services;
 using CYR.User;
@@ -40,7 +41,7 @@ namespace CYR.ViewModel
         [ObservableProperty]
         [NotifyDataErrorInfo]
         [Required(ErrorMessage = "Feld darf nicht leer sein.")]
-        [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage ="Nur Zahlen dürfen eingegeben werden.")]
+        [RegularExpression(@"^(?:\d{0,9}[.,]\d{1,2})$|^\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
         private string? _price;
         [ObservableProperty]
         private INavigationService _navigation;
@@ -66,6 +67,7 @@ namespace CYR.ViewModel
             OrderItem orderItem = new OrderItem();
             orderItem.Name = Name;
             orderItem.Description = Description;
+            if (Price is not null && Price.Contains(',')) Price = Price.Replace(',', '.');
             orderItem.Price = Price;
             await _orderItemRepository.InsertAsync(orderItem);
             _articles = await _orderItemRepository.GetAllAsync();
@@ -73,8 +75,9 @@ namespace CYR.ViewModel
             {
                 WeakReferenceMessenger.Default.Send(new OrderItemMessageCollectionChanged(true));
             }
-            SaveMessage = $"Artikel/Dienstleistung {orderItem.Name} erfolgreich gespeichert.";
-            await _loggingRepository.InsertAsync(CreateHisModel(orderItem));
+            bool result = await _loggingRepository.InsertAsync(CreateHisModel(orderItem));
+            if (result) NavigateBack();
+            Messenger.Send(new SnackbarMessage($"Artikel/Dienstleistung {orderItem.Name} wurde erfolgreich gespeichert.", "Check"));
         }
 
         private HisModel CreateHisModel(OrderItem orderItem)
