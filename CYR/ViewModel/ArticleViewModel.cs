@@ -191,7 +191,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
         }
         foreach (var item in data)
         {
-          insertedRows = await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price.ToString()});
+          insertedRows = await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price});
         }
         Initialize();
         

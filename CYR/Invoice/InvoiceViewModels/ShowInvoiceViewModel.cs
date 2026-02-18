@@ -123,7 +123,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
             invoicePosition.OrderItem = new OrderItem
             {
                 Description = item.Description,
-                Price = item.UnitPrice.ToString(),                      
+                Price = (double?)item.UnitPrice,                      
             };
             result.Add(invoicePosition);
         }
@@ -318,6 +318,11 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         string commentsPath = $@"{_directoryPath}\Comments\Top";
         string folderPath = @"\Comments\Top";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
+        if (files.Count == 0)
+        {
+            Messenger.Send(new SnackbarMessage($"Es wurden keine Dateien gefunden!", "Error"));
+            return;
+        }
         XmlFiles = [.. files];
         ShowListDialog("Rechnungskopftext Vorlagen", XmlFiles, "File", folderPath, CommentType.Top);
     }
@@ -327,6 +332,11 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         string commentsPath = $@"{_directoryPath}\Comments\Bottom";
         string folderPath = @"\Comments\Bottom";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
+        if (files.Count == 0)
+        {
+            Messenger.Send(new SnackbarMessage($"Es wurden keine Dateien gefunden!", "Error"));
+            return;
+        }
         XmlFiles = [.. files];
         ShowListDialog("Rechnungsfußtext Vorlagen", XmlFiles, "File", folderPath, CommentType.Bottom);
     }

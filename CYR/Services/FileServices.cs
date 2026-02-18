@@ -4,22 +4,24 @@ namespace CYR.Services;
 
 public class FileService : IFileService
 {
-    public FileService()
-    {
-
-    }
-
     public List<FileModel> LoadFileNamesFromPath(string path)
     {
-        string[] filesFullPath = Directory.GetFiles(path);
-        List<FileModel> files = new();
-        foreach (var file in filesFullPath)
+        List<FileModel> files = [];
+
+        try
         {
-            FileModel model = new FileModel();
-            model.FullPath = file;
-            model.FileName = Path.GetFileName(file);
-            files.Add(model);
+            string[] filesFullPath = Directory.GetFiles(path);
+            foreach (var file in filesFullPath)
+            {
+                FileModel model = new();
+                model.FullPath = file;
+                model.FileName = Path.GetFileName(file);
+                files.Add(model);
+            }
         }
+        catch (Exception)
+        {            
+        }       
         return files;
     }
 }

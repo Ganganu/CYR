@@ -41,7 +41,7 @@ public partial class UpdateOrderItemViewModel : ObservableRecipientWithValidatio
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     [RegularExpression("^(?:\\d{0,9}\\,\\d{1,2})$|^\\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
-    private string? _price;
+    private double? _price;
     [ObservableProperty]
     private INavigationService _navigation;
 
@@ -105,6 +105,6 @@ public partial class UpdateOrderItemViewModel : ObservableRecipientWithValidatio
         Id = item.Id;
         Name = item.Name;
         Description = item.Description;
-        Price = item.Price.ToString();
+        Price = item.Price;
     }
 }

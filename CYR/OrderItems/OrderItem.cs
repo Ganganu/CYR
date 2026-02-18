@@ -14,7 +14,7 @@ public partial class OrderItem :ObservableRecipient
     [ObservableProperty]
     private string? _name;
     [ObservableProperty]
-    private string? _price;
+    private double? _price;
 
     partial void OnIsSelectedChanged(bool value)
     {

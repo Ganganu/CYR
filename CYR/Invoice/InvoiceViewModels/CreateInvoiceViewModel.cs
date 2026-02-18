@@ -253,6 +253,11 @@ public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation,
         string commentsPath = $@"{_directoryPath}\Comments\Top";
         string folderPath = @"\Comments\Top";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
+        if (files.Count == 0)
+        {
+            Messenger.Send(new SnackbarMessage($"Es wurden keine Dateien gefunden!", "Error"));
+            return;
+        }
         XmlFiles = [.. files];
         ShowListDialog("Rechnungskopftext Vorlagen", XmlFiles, "File", folderPath, CommentType.Top);
     }
@@ -262,6 +267,11 @@ public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation,
         string commentsPath = $@"{_directoryPath}\Comments\Bottom";
         string folderPath = @"\Comments\Bottom";
         List<FileModel> files = _fileService.LoadFileNamesFromPath(commentsPath);
+        if (files.Count == 0)
+        {
+            Messenger.Send(new SnackbarMessage($"Es wurden keine Dateien gefunden!", "Error"));
+            return;
+        }
         XmlFiles = [.. files];
         ShowListDialog("Rechnungsfußtext Vorlagen", XmlFiles, "File", folderPath, CommentType.Bottom);
     }

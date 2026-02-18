@@ -42,7 +42,7 @@ namespace CYR.ViewModel
         [NotifyDataErrorInfo]
         [Required(ErrorMessage = "Feld darf nicht leer sein.")]
         [RegularExpression(@"^(?:\d{0,9}[.,]\d{1,2})$|^\d{1,2}$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
-        private string? _price;
+        private double? _price;
         [ObservableProperty]
         private INavigationService _navigation;
 
@@ -67,7 +67,7 @@ namespace CYR.ViewModel
             OrderItem orderItem = new OrderItem();
             orderItem.Name = Name;
             orderItem.Description = Description;
-            if (Price is not null && Price.Contains(',')) Price = Price.Replace(',', '.');
+            //if (Price is not null && Price.Contains(',')) Price = Price.Replace(',', '.');
             orderItem.Price = Price;
             await _orderItemRepository.InsertAsync(orderItem);
             _articles = await _orderItemRepository.GetAllAsync();

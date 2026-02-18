@@ -15,7 +15,7 @@ public class ClientRepositoryTests : IDisposable
     private readonly AddressRepository _addressRepository;
     public ClientRepositoryTests()
     {
-        string originalDbPath = Path.Combine(AppContext.BaseDirectory, "integration_cyr_tests.db.db");
+        string originalDbPath = Path.Combine(AppContext.BaseDirectory, "integration_cyr_tests.db");
         _testDbPath = Path.Combine(Path.GetTempPath(), $"CYR_Test_{Guid.NewGuid()}.db");
         File.Copy(originalDbPath, _testDbPath, overwrite: true);
         _connectionString = $"DataSource={_testDbPath}";

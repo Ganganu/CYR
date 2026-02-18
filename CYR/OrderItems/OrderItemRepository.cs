@@ -23,7 +23,7 @@ public class OrderItemRepository : IOrderItemRepository
             { "user_id", _userContext.CurrentUser.Id}
         };
         int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
-        succes = affectedRows >0;
+        succes = affectedRows > 0;
         return succes;
     }
 
@@ -41,7 +41,7 @@ public class OrderItemRepository : IOrderItemRepository
                 orderItem.Id = Convert.ToInt32(reader["Produktnummer"]);
                 orderItem.Description = reader["Beschreibung"].ToString();
                 orderItem.Name = reader["Name"].ToString();
-                orderItem.Price = reader["Preis"].ToString();
+                orderItem.Price = Convert.ToDouble(reader["Preis"]);
                 orderItems.Add(orderItem);
             }
             return orderItems;

@@ -55,7 +55,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
                 OrderItem = new OrderItem();
                 OrderItem.Name = newValue;
                 OrderItem.Description = newValue;
-                OrderItem.Price = "0";
+                OrderItem.Price = 0;
             }
         }
     }
@@ -117,8 +117,8 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Feld darf nicht leer sein.")]
     [RegularExpression("^(?:\\d{1,9})(?:,\\d{1,2})?$", ErrorMessage = "Nur Zahlen dürfen eingegeben werden.")]
-    private string? _price;
-    partial void OnPriceChanged(string? oldValue, string? newValue)
+    private double? _price;
+    partial void OnPriceChanged(double? oldValue, double? newValue)
     {
         if (oldValue != newValue)
         {
