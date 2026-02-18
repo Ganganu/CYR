@@ -5,12 +5,14 @@ using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Logging;
+using CYR.Messages;
 using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.Services;
 using CYR.User;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
+using System.Text;
 using System.Windows;
 
 namespace CYR.ViewModel;
@@ -173,13 +175,27 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     [RelayCommand]
     private async Task InsertOrderItems()
     {
+        int insertedRows = 0;
         var data = _articleImportService.Import();
-        if (data.Count == 0 || data is null) return;
+        if (data.Count == 0 || data is null || data.Any(x => x.Name is null))
+        {
+            var errors = data?.Select(item => item.ErrorText).ToList();
+            StringBuilder errorStringBuilder = new StringBuilder();
+            if (errors is null || errors.Count == 0) return;
+            foreach (var item in errors)
+            {
+                errorStringBuilder.Append(item);
+            }
+            Messenger.Send(new SnackbarMessage(errorStringBuilder.ToString(), "Warning"));
+            return;
+        }
         foreach (var item in data)
         {
-          await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price.ToString()});
+          insertedRows = await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price.ToString()});
         }
         Initialize();
+        
+        Messenger.Send(new SnackbarMessage($"{data.Count} Zeilen wurden gelesen. \n {insertedRows} Zeilen wurden in die Datenbank eigefügt!", "Check"));
     }
     [RelayCommand]
     private void PrintOrderItems()

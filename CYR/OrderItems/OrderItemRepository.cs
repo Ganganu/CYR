@@ -53,7 +53,7 @@ public class OrderItemRepository : IOrderItemRepository
         throw new NotImplementedException();
     }
 
-    public async Task InsertAsync(OrderItem orderItem)
+    public async Task<int> InsertAsync(OrderItem orderItem)
     {
         string query = "INSERT INTO Produkte_Dienstleistungen (Name,Beschreibung,Preis,user_id) VALUES (@Name,@Beschreibung,@Preis,@user_id)";
         Dictionary<string, object> queryParameters = new Dictionary<string, object>
@@ -64,6 +64,7 @@ public class OrderItemRepository : IOrderItemRepository
             { "user_id", _userContext.CurrentUser.Id }
         };
         int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
+        return affectedRows;
     }
 
     public async Task<bool> UpdateAsync(OrderItem orderItem)
