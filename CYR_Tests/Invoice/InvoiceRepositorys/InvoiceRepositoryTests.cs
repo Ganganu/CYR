@@ -53,6 +53,15 @@ public class InvoiceRepositoryTests : IDisposable
         invoiceModels = await _invoiceRepository.GetAllAsync();
         Assert.Empty(invoiceModels);
     }
+    [Fact]
+    public async Task GetAllAsync_ShouldGetAllInvoicesFromDatabase()
+    {
+        InvoiceModel invoiceModel = await InsertInvoice();
+        IEnumerable<InvoiceModel> invoiceModels = await _invoiceRepository.GetAllAsync();
+        Assert.Contains(invoiceModels, i => i.InvoiceNumber == 1001);
+        Assert.True(invoiceModels.Any());
+        Assert.Single(invoiceModels);
+    }
 
     private async Task<InvoiceModel> InsertInvoice()
     {

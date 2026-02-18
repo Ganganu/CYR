@@ -1,13 +1,11 @@
-﻿
-using CYR.OrderItems;
+﻿using CYR.OrderItems;
 using Microsoft.Win32;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
 namespace CYR.Services;
 
-public class ArticleImportService : IArticleImportService
+public class CsvArticleImportService : IArticleImportService
 {
     public List<OrderItemCsvImport> Import()
     {
