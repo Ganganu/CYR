@@ -14,4 +14,10 @@ public partial class ArticleView : UserControl
         InitializeComponent();
         Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
+
+    private void ImportButton_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ImportMenu.PlacementTarget = sender as Button;
+        ImportMenu.IsOpen = true;
+    }
 }

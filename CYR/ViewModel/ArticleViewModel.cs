@@ -3,10 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Core;
 using CYR.Dialog;
-using CYR.Invoice.InvoiceModels;
 using CYR.Logging;
 using CYR.Messages;
 using CYR.OrderItems;
+using CYR.OrderItems.OrderItemCommand;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.Services;
 using CYR.User;
@@ -26,11 +26,13 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     private readonly LoggingRepository _loggingRepository;
     private readonly UserContext _userContext;
     private readonly IArticleImportService _articleImportService;
+    private readonly ImportOrderItemsCommand _importOrderItemsCommand;
 
     private string? _dialogResponse;
     public ArticleViewModel(INavigationService navigationService, IOrderItemRepository orderItemRepository,
         IDialogService dialogService, IPrintOrderItemService printOrderItemService,
-        LoggingRepository loggingRepository, UserContext userContext, IArticleImportService articleImportService)
+        LoggingRepository loggingRepository, UserContext userContext, IArticleImportService articleImportService,
+        ImportOrderItemsCommand importOrderItemsCommand)
     {
         _orderItemRepository = orderItemRepository;
         Navigation = navigationService;
@@ -40,11 +42,12 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
         _loggingRepository = loggingRepository;
         _userContext = userContext;
         _articleImportService = articleImportService;
+        _importOrderItemsCommand = importOrderItemsCommand;
         IsActive = true;
         SelectAll = false;
     }
 
-    private async void Initialize()
+    public async void Initialize()
     {
         IEnumerable<OrderItem> orderItems = await _orderItemRepository.GetAllAsync();
         OrderItems = new ObservableCollection<OrderItem>(orderItems);
@@ -176,30 +179,8 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     [RelayCommand]
     private async Task InsertOrderItems()
     {
-        OpenFileDialog fileDialog = new OpenFileDialog { Filter = "CSV | *.csv" };
-        if (fileDialog.ShowDialog() != true)
-            return;
-        int insertedRows = 0;
-        var data = _articleImportService.Import("Csv",fileDialog.FileName);
-        if (data.Count == 0 || data is null || data.Any(x => x.Name is null))
-        {
-            var errors = data?.Select(item => item.ErrorText).ToList();
-            StringBuilder errorStringBuilder = new StringBuilder();
-            if (errors is null || errors.Count == 0) return;
-            foreach (var item in errors)
-            {
-                errorStringBuilder.Append(item);
-            }
-            Messenger.Send(new SnackbarMessage(errorStringBuilder.ToString(), "Warning"));
-            return;
-        }
-        foreach (var item in data)
-        {
-            insertedRows = await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price });
-        }
-        Initialize();
-
-        Messenger.Send(new SnackbarMessage($"{data.Count} Zeilen wurden gelesen. \n {insertedRows} Zeilen wurden in die Datenbank eigefügt!", "Check"));
+        await _importOrderItemsCommand.Import();
+        Initialize();        
     }
     [RelayCommand]
     private void PrintOrderItems()

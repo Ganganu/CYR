@@ -59,15 +59,22 @@
         <Grid Grid.Row="0">
           <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <Button
+              x:Name="ImportButton"
               Margin="5,0,5,0"
               BorderBrush="LightGray"
               BorderThickness="1"
-              Command="{Binding InsertOrderItemsCommand}"
+              Click="ImportButton_Click"
               Style="{StaticResource MaterialDesignFlatButton}"
-              ToolTip="Import von CSV Datei">
+              ToolTip="Import von Datei">
               <Button.Content>
                 <materialDesign:PackIcon Kind="TableImport" />
               </Button.Content>
+              <Button.ContextMenu>
+                <ContextMenu x:Name="ImportMenu">
+                  <MenuItem Command="{Binding InsertOrderItemsCommand}" Header="CSV Import" />
+                  <MenuItem Command="{Binding InsertOrderItemsCommand}" Header="Json Import" />
+                </ContextMenu>
+              </Button.ContextMenu>
             </Button>
             <Button
               BorderBrush="LightGray"

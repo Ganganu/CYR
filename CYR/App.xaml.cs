@@ -17,6 +17,7 @@ using CYR.Invoice.InvoiceViews;
 using CYR.Logging;
 using CYR.Login;
 using CYR.OrderItems;
+using CYR.OrderItems.OrderItemCommand;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.OrderItems.OrderItemViews;
 using CYR.Services;
@@ -104,6 +105,12 @@ public partial class App : Application
         services.AddSingleton<UserContext>();
         services.AddSingleton<UserCompanyRepository>();
         services.AddSingleton<DashboardActivityRepository>();
+
+
+
+        services.AddSingleton<ImportOrderItemsCommand>();
+
+
 
 
         services.AddSingleton<IInvoicePositionRepository, InvoicePositionRepository>();

@@ -1,4 +1,6 @@
 ﻿using CYR.OrderItems;
+using System.IO;
+using System.Text.Json;
 
 namespace CYR.Services;
 
@@ -8,6 +10,8 @@ public class JsonArticleImportMethod : IArticleImportMethod
 
     public List<OrderItemCsvImport> Import(string fileName)
     {
-        return [];
+        string jsonContent = File.ReadAllText(fileName);
+        var data = JsonSerializer.Deserialize<List<OrderItemCsvImport>>(jsonContent);
+        return data ?? [];
     }
 }
