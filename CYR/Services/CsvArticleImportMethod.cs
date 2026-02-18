@@ -1,23 +1,19 @@
 ﻿using CYR.OrderItems;
-using Microsoft.Win32;
 using System.Globalization;
 using System.IO;
 
 namespace CYR.Services;
 
-public class CsvArticleImportService : IArticleImportService
+public class CsvArticleImportMethod : IArticleImportMethod
 {
-    public List<OrderItemCsvImport> Import()
+    public string Method => "Csv";
+
+    public List<OrderItemCsvImport> Import(string fileName)
     {
-        OpenFileDialog fileDialog = new OpenFileDialog { Filter = "CSV | *.csv" };
-
-        if (fileDialog.ShowDialog() != true)
-            return [];
-
         List<OrderItemCsvImport> data = [];
         try
         {
-            data = File.ReadLines(fileDialog.FileName)
+            data = File.ReadLines(fileName)
                    .Skip(0)
                    .Select(ParseLineToModel)
                    .Where(item => item != null)
@@ -25,11 +21,11 @@ public class CsvArticleImportService : IArticleImportService
         }
         catch (System.IO.IOException ioException)
         {
-            data.Add(new OrderItemCsvImport(ErrorText: $"Die Datei ist möglicherweise bereits geöffnet. \n \n {ioException}" ));
+            data.Add(new OrderItemCsvImport(ErrorText: $"Die Datei ist möglicherweise bereits geöffnet. \n \n {ioException}"));
         }
         catch (Exception ex)
         {
-            data.Add(new OrderItemCsvImport(ErrorText: $"Unbekannter Fehler. \n \n { ex }"));
+            data.Add(new OrderItemCsvImport(ErrorText: $"Unbekannter Fehler. \n \n {ex}"));
         }
         return data;
     }
@@ -39,7 +35,7 @@ public class CsvArticleImportService : IArticleImportService
         var columns = line.Split(';');
         if (columns.Length < 4) return null;
 
-        static string Clean(string input) => input.Replace("\"","").Trim();
+        static string Clean(string input) => input.Replace("\"", "").Trim();
 
         string productNumber = Clean(columns[0]);
         string articleName = Clean(columns[1]);
@@ -50,8 +46,8 @@ public class CsvArticleImportService : IArticleImportService
         ? CultureInfo.GetCultureInfo("de-DE")
         : CultureInfo.InvariantCulture;
 
-        int parsedProductNumber = int.TryParse(productNumber,out int pn) ? pn : 0;
-        double parsedArticlePrice = double.TryParse(articlePrice,NumberStyles.Any,culture, out double pAP) ? pAP : 0.0D;
+        int parsedProductNumber = int.TryParse(productNumber, out int pn) ? pn : 0;
+        double parsedArticlePrice = double.TryParse(articlePrice, NumberStyles.Any, culture, out double pAP) ? pAP : 0.0D;
 
         return new OrderItemCsvImport(parsedProductNumber, articleName, artcielDescription, parsedArticlePrice);
     }

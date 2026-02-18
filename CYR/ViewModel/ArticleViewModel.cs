@@ -10,6 +10,7 @@ using CYR.OrderItems;
 using CYR.OrderItems.OrderItemViewModels;
 using CYR.Services;
 using CYR.User;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Text;
@@ -175,8 +176,11 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     [RelayCommand]
     private async Task InsertOrderItems()
     {
+        OpenFileDialog fileDialog = new OpenFileDialog { Filter = "CSV | *.csv" };
+        if (fileDialog.ShowDialog() != true)
+            return;
         int insertedRows = 0;
-        var data = _articleImportService.Import();
+        var data = _articleImportService.Import("Csv",fileDialog.FileName);
         if (data.Count == 0 || data is null || data.Any(x => x.Name is null))
         {
             var errors = data?.Select(item => item.ErrorText).ToList();
@@ -191,10 +195,10 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
         }
         foreach (var item in data)
         {
-          insertedRows = await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price});
+            insertedRows = await _orderItemRepository.InsertAsync(new OrderItem() { Name = item.Name, Description = item.Description, Price = item.Price });
         }
         Initialize();
-        
+
         Messenger.Send(new SnackbarMessage($"{data.Count} Zeilen wurden gelesen. \n {insertedRows} Zeilen wurden in die Datenbank eigefügt!", "Check"));
     }
     [RelayCommand]
