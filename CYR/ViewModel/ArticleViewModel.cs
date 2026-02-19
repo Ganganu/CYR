@@ -175,13 +175,20 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
             { vm => vm.IsOkVisible, okButtonVisibility}
         });
     }
-
     [RelayCommand]
     private async Task InsertOrderItems()
     {
-        await _importOrderItemsCommand.Import();
-        Initialize();        
+        OpenFileDialog fileDialog = new()
+        {
+            Filter = "Data Files (*.json;*.csv)|*.json;*.csv|JSON Files (*.json)|*.json|CSV Files (*.csv)|*.csv"
+        };
+        if (fileDialog.ShowDialog() != true)
+            return;
+        string extension = System.IO.Path.GetExtension(fileDialog.FileName).TrimStart('.');
+        await _importOrderItemsCommand.Import(extension, fileDialog.FileName);
+        Initialize();
     }
+    
     [RelayCommand]
     private void PrintOrderItems()
     {

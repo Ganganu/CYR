@@ -5,6 +5,6 @@ namespace CYR.Services;
 public interface IArticleImportMethod
 {
     string Method { get; }
-    List<OrderItemCsvImport> Import(string fileName);
+    List<OrderItemImport> Import(string fileName);
 
 }

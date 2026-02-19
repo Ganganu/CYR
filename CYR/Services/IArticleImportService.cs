@@ -4,5 +4,5 @@ namespace CYR.Services;
 
 public interface IArticleImportService
 {
-    public List<OrderItemCsvImport> Import(string importMethod, string fileName);
+    public List<OrderItemImport> Import(string importMethod, string fileName);
 }

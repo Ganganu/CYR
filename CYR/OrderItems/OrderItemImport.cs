@@ -1,6 +1,6 @@
 ﻿namespace CYR.OrderItems;
 
-public record OrderItemCsvImport(int? ProductNumber = null, 
+public record OrderItemImport(int? ProductNumber = null, 
     string? Name = null, 
     string? Description = null, 
     double? Price = null, 

@@ -1,4 +1,5 @@
-﻿namespace CYR.OrderItems;
+﻿
+namespace CYR.OrderItems;
 
 public interface IOrderItemRepository
 {
@@ -7,4 +8,5 @@ public interface IOrderItemRepository
     Task<IEnumerable<OrderItem>> GetByIdAsync(int id);
     Task<int> InsertAsync(OrderItem orderItem);
     Task<bool> UpdateAsync(OrderItem orderItem);
+    Task<bool> InsertBulk(List<OrderItem> orderItems);
 }

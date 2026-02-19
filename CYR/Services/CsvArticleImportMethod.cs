@@ -8,9 +8,9 @@ public class CsvArticleImportMethod : IArticleImportMethod
 {
     public string Method => "Csv";
 
-    public List<OrderItemCsvImport> Import(string fileName)
+    public List<OrderItemImport> Import(string fileName)
     {
-        List<OrderItemCsvImport> data = [];
+        List<OrderItemImport> data = [];
         try
         {
             data = File.ReadLines(fileName)
@@ -21,16 +21,16 @@ public class CsvArticleImportMethod : IArticleImportMethod
         }
         catch (System.IO.IOException ioException)
         {
-            data.Add(new OrderItemCsvImport(ErrorText: $"Die Datei ist möglicherweise bereits geöffnet. \n \n {ioException}"));
+            data.Add(new OrderItemImport(ErrorText: $"Die Datei ist möglicherweise bereits geöffnet. \n \n {ioException}"));
         }
         catch (Exception ex)
         {
-            data.Add(new OrderItemCsvImport(ErrorText: $"Unbekannter Fehler. \n \n {ex}"));
+            data.Add(new OrderItemImport(ErrorText: $"Unbekannter Fehler. \n \n {ex}"));
         }
         return data;
     }
 
-    private OrderItemCsvImport ParseLineToModel(string line)
+    private OrderItemImport ParseLineToModel(string line)
     {
         var columns = line.Split(';');
         if (columns.Length < 4) return null;
@@ -49,6 +49,6 @@ public class CsvArticleImportMethod : IArticleImportMethod
         int parsedProductNumber = int.TryParse(productNumber, out int pn) ? pn : 0;
         double parsedArticlePrice = double.TryParse(articlePrice, NumberStyles.Any, culture, out double pAP) ? pAP : 0.0D;
 
-        return new OrderItemCsvImport(parsedProductNumber, articleName, artcielDescription, parsedArticlePrice);
+        return new OrderItemImport(parsedProductNumber, articleName, artcielDescription, parsedArticlePrice);
     }
 }

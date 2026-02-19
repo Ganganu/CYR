@@ -1,5 +1,6 @@
 ﻿using CYR.Core;
 using CYR.User;
+using System.Data;
 using System.Data.Common;
 
 namespace CYR.OrderItems;
@@ -65,6 +66,35 @@ public class OrderItemRepository : IOrderItemRepository
         };
         int affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, queryParameters);
         return affectedRows;
+    }
+
+    public async Task<bool> InsertBulk(List<OrderItem> orderItems)
+    {
+        try
+        {
+            await _databaseConnection.ExecuteTransactionAsync(async (transaction) =>
+            {
+                string query = "INSERT INTO Produkte_Dienstleistungen (Name, Beschreibung, Preis, user_id) VALUES (@Name, @Beschreibung, @Preis, @user_id)";
+
+                foreach (var item in orderItems)
+                {
+                    var parameters = new Dictionary<string, object>
+                    {
+                        { "@Name", item.Name ?? (object)DBNull.Value },
+                        { "@Beschreibung", item.Description ?? (object)DBNull.Value },
+                        { "@Preis", item.Price },
+                        { "@user_id", _userContext.CurrentUser.Id }
+                    };
+
+                    await _databaseConnection.ExecuteNonQueryInTransactionAsync(transaction, query, parameters);
+                }
+            });
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     public async Task<bool> UpdateAsync(OrderItem orderItem)
