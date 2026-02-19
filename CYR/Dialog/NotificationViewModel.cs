@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace CYR.Dialog;
 
@@ -23,4 +24,6 @@ public partial class NotificationViewModel : ObservableRecipient
     private string? _cancelButtonText;
     [ObservableProperty]
     private Visibility? _isOkVisible;
+    [ObservableProperty]
+    private BitmapImage? _image;
 }

@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Text;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace CYR.ViewModel;
 
@@ -175,6 +176,34 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
             { vm => vm.IsOkVisible, okButtonVisibility}
         });
     }
+    private void ShowImportInformationDialog(string title,
+       string message,
+       string cancelButtonText,
+       string icon,
+       BitmapImage image,
+       Visibility okButtonVisibility, string okButtonText)
+    {
+        _dialogService.ShowDialog(result =>
+        {
+            _dialogResponse = result;
+        },
+        new Dictionary<Expression<Func<NotificationViewModel, object>>, object>
+        {
+            { vm => vm.Title, title },
+            { vm => vm.Message,  message},
+            { vm => vm.CancelButtonText, cancelButtonText },
+            { vm => vm.Icon,icon },
+            { vm => vm.Image, image },
+            { vm => vm.OkButtonText, okButtonText },
+            { vm => vm.IsOkVisible, okButtonVisibility}
+        });
+    }
+    [RelayCommand]
+    private void ShowImportHelp()
+    {
+        var image = new BitmapImage(new Uri("/Assets/Images/Import.png", UriKind.Relative));
+        ShowImportInformationDialog("Import", "Beispiel für CSV bzw. JSON.", "Schließen", "Information",image, Visibility.Collapsed, "Ok");
+    }
     [RelayCommand]
     private async Task InsertOrderItems()
     {
@@ -188,7 +217,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
         await _importOrderItemsCommand.Import(extension, fileDialog.FileName);
         Initialize();
     }
-    
+
     [RelayCommand]
     private void PrintOrderItems()
     {

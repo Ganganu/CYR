@@ -10,6 +10,7 @@
   AllowsTransparency="True"
   Background="Transparent"
   ResizeMode="NoResize"
+  SizeToContent="WidthAndHeight"
   WindowStartupLocation="CenterScreen"
   WindowStyle="None"
   mc:Ignorable="d">

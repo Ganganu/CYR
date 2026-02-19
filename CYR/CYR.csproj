@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\Import.png" />
     <None Remove="cyr.db" />
     <None Remove="Ressources\Bild1.ico" />
     <None Remove="Ressources\IGF.png" />
@@ -49,6 +50,10 @@
     <Content Include="Ressources\user.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\Import.png" />
   </ItemGroup>
 
 </Project>
