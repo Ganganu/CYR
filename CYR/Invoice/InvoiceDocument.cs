@@ -57,7 +57,7 @@ public class InvoiceDocument : IInvoiceDocument
             {
                 if (Model.Seller.CompanyLogo is not null)
                 {
-                    row.ConstantItem(100).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
+                    row.ConstantItem(200).Image(new Uri(Model.Seller.CompanyLogo.ToString()).LocalPath);
                 }
             }
             catch (Exception)
@@ -87,7 +87,6 @@ public class InvoiceDocument : IInvoiceDocument
                 }
                 else
                 {
-                    column.Item().AlignRight().Text("").FontSize(14);
                     column.Item().AlignRight().Text($"Gesamtbetrag: {(totalPrice):0.00}€").FontSize(14);
                 }
                 column.Item().Element(ComposeCommentsBottom);

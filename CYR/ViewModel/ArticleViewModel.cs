@@ -202,7 +202,7 @@ public partial class ArticleViewModel : ObservableRecipient, IParameterReceiver,
     private void ShowImportHelp()
     {
         var image = new BitmapImage(new Uri("/Assets/Images/Import.png", UriKind.Relative));
-        ShowImportInformationDialog("Import", "Beispiel für CSV bzw. JSON.", "Schließen", "Information",image, Visibility.Collapsed, "Ok");
+        ShowImportInformationDialog("Import", "Beispiel für den Aufbau einer CSV- oder JSON-Datei.", "Schließen", "Information",image, Visibility.Collapsed, "Ok");
     }
     [RelayCommand]
     private async Task InsertOrderItems()
