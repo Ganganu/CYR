@@ -17,6 +17,7 @@ using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
 using CYR.User;
+using CYR.User.UseCases;
 
 namespace CYR.Invoice.InvoiceViewModels;
 
@@ -35,6 +36,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
     private readonly IInvoicePositionRepository _invoicePositionRepository;
     private readonly LoggingRepository _loggingRepository;
     private readonly UserContext _userContext;
+    private readonly UpdateCompanyLogo _updateCompanyLogo;
 
     private string? _dialogResponse;
     private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -55,7 +57,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         IInvoiceRepository invoiceRepository,
         IInvoicePositionRepository invoicePositionRepository,
         LoggingRepository loggingRepository,
-        UserContext userContext)
+        UserContext userContext,
+        UpdateCompanyLogo updateCompanyLogo)
     {
         _orderItemRepository = orderItemRepository;
         _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -73,6 +76,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         _invoicePositionRepository = invoicePositionRepository;
         _loggingRepository = loggingRepository;
         _userContext = userContext;
+        _updateCompanyLogo = updateCompanyLogo;
     }
 
     private async void Initialize()
@@ -206,7 +210,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
             IsMwstApplicable = InvoiceModel.IsMwstApplicable,
             Positions = Positions,
             CommentsBottom = InvoiceModel.CommentsBottom,
-            CommentsTop = InvoiceModel.CommentsTop
+            CommentsTop = InvoiceModel.CommentsTop,
+            Logo = Logo
         };
         var message = await _previewInvoiceService.PreviewInvoice(createInvoiceModel);
         Messenger.Send(message);
@@ -261,15 +266,23 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
     [RelayCommand]
     private void OpenImageInDefaultApp()
     {
-        string imagePath = new Uri(Logo.ToString()).LocalPath;
-        _openImageService.OpenImage(imagePath);
+        try
+        {
+            string imagePath = new Uri(Logo.ToString()).LocalPath;
+            _openImageService.OpenImage(imagePath);
+        }
+        catch (Exception)
+        {
+            Messenger.Send(new SnackbarMessage($"Das Logo konnte nicht geöffnet werden.", "Error"));
+        }
     }
     [RelayCommand]
-    private void SelectLogo()
+    private async Task SelectLogo ()
     {
         var message = _selectImageService.SelectImage();
         if (message.ImageSource is null) return;
         Logo = message.ImageSource;
+        _ = await _updateCompanyLogo.UpdateCompanyLogoAsync(message.ImagePath);
         Messenger.Send(message.Message, message.Icon);
     }
 

@@ -49,6 +49,6 @@ public class SelectImageService : ISelectImageService
         {
             return new SnackbarMessage("Fehler. Versuchen sie es erneut ein Bild auszuwählen!", "Warning");
         }
-        return new SnackbarMessage("Logo erfolgreich aktualisiert.","Check", logo);
+        return new SnackbarMessage("Logo erfolgreich aktualisiert.","Check", logo,ImagePath: path);
     }
 }

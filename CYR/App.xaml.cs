@@ -24,6 +24,7 @@ using CYR.Services;
 using CYR.Settings;
 using CYR.UnitOfMeasure;
 using CYR.User;
+using CYR.User.UseCases;
 using CYR.View;
 using CYR.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -109,6 +110,7 @@ public partial class App : Application
 
 
         services.AddSingleton<ImportOrderItemsCommand>();
+        services.AddTransient<UpdateCompanyLogo>();
 
 
 

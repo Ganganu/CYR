@@ -36,6 +36,8 @@ namespace CYR.Invoice.InvoiceModels
 
         [ObservableProperty]
         private bool? _isSelected;
+        [ObservableProperty]
+        private ImageSource? _logo;
 
         partial void OnIsMwstApplicableChanged(bool oldValue, bool newValue)
         {

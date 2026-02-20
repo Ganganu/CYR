@@ -14,5 +14,6 @@ namespace CYR.Invoice.InvoiceModels
         public bool IsMwstApplicable { get; set; }
         public string? CommentsTop { get; set; }
         public string? CommentsBottom { get; set; }
+        public ImageSource? Logo { get; set; }
     }
 }

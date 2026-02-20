@@ -59,7 +59,8 @@ public class PreviewInvoiceService : IPreviewInvoiceService
         invoiceModel.State = InvoiceState.Open;
         invoiceModel.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;
         invoiceModel.CommentsTop = createInvoiceModel.CommentsTop;
-        invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;           
+        invoiceModel.CommentsBottom = createInvoiceModel.CommentsBottom;
+        invoiceModel.Logo = createInvoiceModel.Logo;
 
         if (createInvoiceModel.IsMwstApplicable)
         {
@@ -101,6 +102,7 @@ public class PreviewInvoiceService : IPreviewInvoiceService
         model.IsMwstApplicable = createInvoiceModel.IsMwstApplicable;            
         model.CommentsTop = createInvoiceModel.CommentsTop;
         model.CommentsBottom = createInvoiceModel.CommentsBottom;
+        model.Logo = createInvoiceModel.Logo;
         _invoiceDocument.Model = model;
         try
         {
