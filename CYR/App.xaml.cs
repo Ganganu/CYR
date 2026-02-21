@@ -14,6 +14,7 @@ using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
 using CYR.Invoice.InvoiceViewModels;
 using CYR.Invoice.InvoiceViews;
+using CYR.Invoice.UseCases;
 using CYR.Logging;
 using CYR.Login;
 using CYR.OrderItems;
@@ -111,6 +112,7 @@ public partial class App : Application
 
         services.AddSingleton<ImportOrderItemsCommand>();
         services.AddTransient<UpdateCompanyLogo>();
+        services.AddTransient<GetLogoUseCase>();
 
 
 

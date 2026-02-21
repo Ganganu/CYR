@@ -4,9 +4,11 @@ using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
+using CYR.Invoice.Helpers;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
+using CYR.Invoice.UseCases;
 using CYR.Logging;
 using CYR.Messages;
 using CYR.OrderItems;
@@ -34,6 +36,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation,
     private readonly IDialogService _dialogService;
     private readonly LoggingRepository _loggingRepository;
     private readonly UserContext _userContext;
+    private readonly GetLogoUseCase _getLogoUseCase;
+
 
     private string? _dialogResponse;
     private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -53,7 +57,8 @@ public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation,
         IDialogService dialogService,
         IFileService fileService,
         LoggingRepository loggingRepository,
-        UserContext userContext)
+        UserContext userContext,
+        GetLogoUseCase getLogoUseCase)
     {
         _orderItemRepository = orderItemRepository;
         _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -63,19 +68,23 @@ public partial class CreateInvoiceViewModel : ObservableRecipientWithValidation,
         _retrieveClients = retrieveClients;
         _openImageService = openImageService;
         InvoiceModel = new InvoiceModel();
-        Initialize();
         Messenger.RegisterAll(this);
         _selectImageService = selectImageService;
         _dialogService = dialogService;
         _fileService = fileService;
         _loggingRepository = loggingRepository;
         _userContext = userContext;
+        _getLogoUseCase = getLogoUseCase;
+        Initialize();
     }
     private async void Initialize()
     {
         Positions = new ObservableCollection<InvoicePosition> { new(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
         IEnumerable<Client> cl = await _retrieveClients.Handle();
         Clients = [.. cl];
+        string? logoPath = await _getLogoUseCase.GetLogoAsync();
+        var result = InvoiceHelpers.ConvertStringToLogo(logoPath);
+        if (result != null) Logo = result;
     }
 
     [ObservableProperty]

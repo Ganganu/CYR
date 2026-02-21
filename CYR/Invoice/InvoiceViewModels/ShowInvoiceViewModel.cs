@@ -1,15 +1,19 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq.Expressions;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Core;
 using CYR.Dialog;
+using CYR.Invoice.Helpers;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.InvoiceServices;
+using CYR.Invoice.UseCases;
 using CYR.Logging;
 using CYR.Messages;
 using CYR.OrderItems;
@@ -37,6 +41,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
     private readonly LoggingRepository _loggingRepository;
     private readonly UserContext _userContext;
     private readonly UpdateCompanyLogo _updateCompanyLogo;
+    private readonly GetLogoUseCase _getLogoUseCase;
 
     private string? _dialogResponse;
     private readonly string _directoryPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -58,7 +63,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         IInvoicePositionRepository invoicePositionRepository,
         LoggingRepository loggingRepository,
         UserContext userContext,
-        UpdateCompanyLogo updateCompanyLogo)
+        UpdateCompanyLogo updateCompanyLogo,
+        GetLogoUseCase getLogoUseCase)
     {
         _orderItemRepository = orderItemRepository;
         _unitOfMeasureRepository = unitOfMeasureRepository;
@@ -66,8 +72,7 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         _previewInvoiceService = previewInvoiceService;
         _retrieveClients = retrieveClients;
         _openImageService = openImageService;
-        InvoiceModel = new InvoiceModel();
-        Initialize();
+        InvoiceModel = new InvoiceModel();        
         Messenger.RegisterAll(this);
         _selectImageService = selectImageService;
         _dialogService = dialogService;
@@ -77,6 +82,8 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         _loggingRepository = loggingRepository;
         _userContext = userContext;
         _updateCompanyLogo = updateCompanyLogo;
+        _getLogoUseCase = getLogoUseCase;
+        Initialize();
     }
 
     private async void Initialize()
@@ -84,7 +91,11 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
         Positions = new ObservableCollection<InvoicePosition> { new(_orderItemRepository, _unitOfMeasureRepository) { Id = _positionCounter.ToString() } };
         IEnumerable<Client> cl = await _retrieveClients.Handle();
         Clients = [.. cl];
+        string? logoPath = await _getLogoUseCase.GetLogoAsync();
+        var result = InvoiceHelpers.ConvertStringToLogo(logoPath);
+        if (result != null) Logo = result;
     }
+
 
     public async Task ReceiveParameter(object parameter)
     {
@@ -395,5 +406,5 @@ public partial class ShowInvoiceViewModel : ObservableRecipientWithValidation, I
             default:
                 break;
         }
-    }
+    }    
 }
