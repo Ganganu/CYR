@@ -1,252 +1,251 @@
 ﻿<UserControl
-  x:Class="CYR.Invoice.InvoiceViews.InvoiceListView"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:controls="clr-namespace:EasyControls.Controls;assembly=EasyControls"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:irdt="clr-namespace:CYR.Invoice.Resources.DataTemplates"
-  xmlns:local="clr-namespace:CYR.Invoice.InvoiceViews"
-  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:vm="clr-namespace:CYR.Invoice.InvoiceViewModels"
-  d:DataContext="{d:DesignInstance Type=vm:InvoiceListViewModel,
-                                   IsDesignTimeCreatable=False}"
-  d:DesignHeight="450"
-  d:DesignWidth="800"
-  FontFamily="Segoe UI"
-  mc:Ignorable="d">
-  <UserControl.Resources>
-    <irdt:InvoiceListViewInvoiceStateTemplateSelector
-      x:Key="StateTemplateSelector"
-      ClosedTemplate="{StaticResource ClosedTemplate}"
-      OpenTemplate="{StaticResource OpenTemplate}" />
-  </UserControl.Resources>
-  <Grid Background="White">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-    </Grid.RowDefinitions>
-    <Grid
-      Grid.Row="0"
-      Margin="10"
-      Background="Transparent">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-      <Grid Grid.Row="0">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
-        <Border
-          Grid.Column="0"
-          HorizontalAlignment="Left"
-          BorderBrush="LightGray"
-          BorderThickness="1"
-          CornerRadius="5">
-          <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
-            <Button.Content>
-              <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
-                <TextBlock HorizontalAlignment="Center" Text="Zurück" />
-              </StackPanel>
-            </Button.Content>
-          </Button>
-        </Border>
-        <StackPanel
-          Grid.Column="1"
-          HorizontalAlignment="Right"
-          Orientation="Horizontal">
-          <ComboBox
-            Width="200"
-            Height="30"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsEditable="True"
-            IsReadOnly="True"
-            SelectedIndex="-1">
-            <ComboBox.Template>
-              <ControlTemplate TargetType="{x:Type ComboBox}">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto" />
-                  </Grid.ColumnDefinitions>
-                  <ToggleButton
-                    x:Name="ToggleButton"
-                    Grid.ColumnSpan="2"
-                    Height="30"
-                    Background="White"
+    x:Class="CYR.Invoice.InvoiceViews.InvoiceListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:EasyControls.Controls;assembly=EasyControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:irdt="clr-namespace:CYR.Invoice.Resources.DataTemplates"
+    xmlns:local="clr-namespace:CYR.Invoice.InvoiceViews"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:CYR.Invoice.InvoiceViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:InvoiceListViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="Segoe UI"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <irdt:InvoiceListViewInvoiceStateTemplateSelector
+            x:Key="StateTemplateSelector"
+            ClosedTemplate="{StaticResource ClosedTemplate}"
+            OpenTemplate="{StaticResource OpenTemplate}" />
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.Row="0"
+            Margin="10"
+            Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
                     BorderBrush="LightGray"
                     BorderThickness="1"
-                    IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{StaticResource ComboBoxToggleButtonStyle}">
-                    <ContentPresenter
-                      Margin="10,0,0,0"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Center"
-                      Content="{TemplateBinding SelectionBoxItem}"
-                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" />
-                  </ToggleButton>
-                  <ContentPresenter
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Content="Status auswählen" />
-                  <Popup
-                    x:Name="PART_Popup"
-                    AllowsTransparency="True"
-                    IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                    PlacementTarget="{Binding ElementName=ToggleButton}"
-                    StaysOpen="False">
-                    <Border
-                      x:Name="DropDownBorder"
-                      Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-                      BorderBrush="Orange"
-                      BorderThickness="1"
-                      CornerRadius="5">
-                      <ScrollViewer x:Name="DropDownScrollViewer" Margin="5">
-                        <Grid RenderOptions.ClearTypeHint="Enabled">
-                          <Canvas
-                            Width="0"
-                            Height="0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                            <Rectangle
-                              x:Name="OpaqueRect"
-                              Width="{Binding ActualWidth, ElementName=DropDownBorder}"
-                              Height="{Binding ActualHeight, ElementName=DropDownBorder}"
-                              Fill="{Binding Background, ElementName=DropDownBorder}" />
-                          </Canvas>
-                          <ItemsPresenter
-                            x:Name="ItemsPresenter"
-                            KeyboardNavigation.DirectionalNavigation="Contained"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Grid>
-                      </ScrollViewer>
-                    </Border>
-                  </Popup>
-                </Grid>
-              </ControlTemplate>
-            </ComboBox.Template>
-            <ComboBoxItem>
-              <Button
-                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                Padding="10,5"
-                HorizontalContentAlignment="Left"
-                Command="{Binding SetInvoiceStateOpenCommand}"
-                Content="Unbezahlt"
-                Style="{StaticResource MaterialDesignFlatButton}" />
-            </ComboBoxItem>
-            <ComboBoxItem>
-              <Button
-                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                Padding="10,5"
-                HorizontalContentAlignment="Left"
-                Command="{Binding SetInvoiceStateClosedCommand}"
-                Content="Bezahlt"
-                Style="{StaticResource MaterialDesignFlatButton}" />
-            </ComboBoxItem>
-          </ComboBox>
-          <Button
-            Margin="5,0,0,0"
-            BorderBrush="LightGray"
-            BorderThickness="1"
-            Command="{Binding UpdateInvoiceCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}"
-            ToolTip="Ausgewählte Zeile editieren">
-            <Button.Content>
-              <materialDesign:PackIcon Kind="Edit" />
-            </Button.Content>
-          </Button>
-          <Button
-            Margin="5,0,5,0"
-            BorderBrush="LightGray"
-            BorderThickness="1"
-            Command="{Binding DeleteInvoiceCommand}"
-            Style="{StaticResource MaterialDesignFlatButton}"
-            ToolTip="Ausgewählte Zeilen löschen">
-            <Button.Content>
-              <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
-            </Button.Content>
-          </Button>
-          <StackPanel VerticalAlignment="Center">
-            <Button Command="{Binding CreateNewInvoiceCommand}">
-              <Button.Content>
-                <StackPanel Orientation="Horizontal">
-                  <materialDesign:PackIcon
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Kind="PlusCircleOutline"
-                    ToolTip="Neue Rechnung erstellen" />
-                  <TextBlock VerticalAlignment="Top" Text="Rechnung" />
+                    CornerRadius="5">
+                    <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
+                                <TextBlock HorizontalAlignment="Center" Text="Zurück" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </Border>
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <ComboBox
+                        Width="200"
+                        Height="30"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsEditable="True"
+                        IsReadOnly="True"
+                        SelectedIndex="-1">
+                        <ComboBox.Template>
+                            <ControlTemplate TargetType="{x:Type ComboBox}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton
+                                        x:Name="ToggleButton"
+                                        Grid.ColumnSpan="2"
+                                        Height="30"
+                                        Background="White"
+                                        BorderBrush="LightGray"
+                                        BorderThickness="1"
+                                        IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Style="{StaticResource ComboBoxToggleButtonStyle}">
+                                        <ContentPresenter
+                                            Margin="10,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding SelectionBoxItem}"
+                                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" />
+                                    </ToggleButton>
+                                    <ContentPresenter
+                                        Margin="10,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="Status auswählen" />
+                                    <Popup
+                                        x:Name="PART_Popup"
+                                        AllowsTransparency="True"
+                                        IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                        PlacementTarget="{Binding ElementName=ToggleButton}"
+                                        StaysOpen="False">
+                                        <Border
+                                            x:Name="DropDownBorder"
+                                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                            BorderBrush="Orange"
+                                            BorderThickness="1"
+                                            CornerRadius="5">
+                                            <ScrollViewer x:Name="DropDownScrollViewer" Margin="5">
+                                                <Grid RenderOptions.ClearTypeHint="Enabled">
+                                                    <Canvas
+                                                        Width="0"
+                                                        Height="0"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Top">
+                                                        <Rectangle
+                                                            x:Name="OpaqueRect"
+                                                            Width="{Binding ActualWidth, ElementName=DropDownBorder}"
+                                                            Height="{Binding ActualHeight, ElementName=DropDownBorder}"
+                                                            Fill="{Binding Background, ElementName=DropDownBorder}" />
+                                                    </Canvas>
+                                                    <ItemsPresenter
+                                                        x:Name="ItemsPresenter"
+                                                        KeyboardNavigation.DirectionalNavigation="Contained"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                </Grid>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </Popup>
+                                </Grid>
+                            </ControlTemplate>
+                        </ComboBox.Template>
+                        <ComboBoxItem>
+                            <Button
+                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                Padding="10,5"
+                                HorizontalContentAlignment="Left"
+                                Command="{Binding SetInvoiceStateOpenCommand}"
+                                Content="Unbezahlt"
+                                Style="{StaticResource MaterialDesignFlatButton}" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <Button
+                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                Padding="10,5"
+                                HorizontalContentAlignment="Left"
+                                Command="{Binding SetInvoiceStateClosedCommand}"
+                                Content="Bezahlt"
+                                Style="{StaticResource MaterialDesignFlatButton}" />
+                        </ComboBoxItem>
+                    </ComboBox>
+                    <Button
+                        Margin="5,0,0,0"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        Command="{Binding UpdateInvoiceCommand}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        ToolTip="Ausgewählte Zeile editieren">
+                        <Button.Content>
+                            <materialDesign:PackIcon Kind="Edit" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Margin="5,0,5,0"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        Command="{Binding DeleteInvoiceCommand}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        ToolTip="Ausgewählte Zeilen löschen">
+                        <Button.Content>
+                            <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
+                        </Button.Content>
+                    </Button>
+                    <StackPanel VerticalAlignment="Center">
+                        <Button Command="{Binding CreateNewInvoiceCommand}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        Kind="PlusCircleOutline"
+                                        ToolTip="Neue Rechnung erstellen" />
+                                    <TextBlock VerticalAlignment="Top" Text="Rechnung" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
-              </Button.Content>
-            </Button>
-          </StackPanel>
-        </StackPanel>
-      </Grid>
-      <Grid Grid.Row="1" Margin="0,10,0,10">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
-        <Label
-          Grid.Column="0"
-          Content="Rechnungen"
-          FontSize="35"
-          FontWeight="DemiBold" />
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,10,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Content="Rechnungen"
+                    FontSize="35"
+                    FontWeight="DemiBold" />
 
-      </Grid>
-      <Border
-        Grid.Row="2"
-        Margin="0,10,0,10"
-        BorderBrush="LightGray"
-        BorderThickness="2" />
-      <Border
-        Grid.Row="3"
-        BorderBrush="LightGray"
-        BorderThickness="1"
-        CornerRadius="5">
-        <DataGrid
-          x:Name="dgInvoices"
-          AutoGenerateColumns="False"
-          Background="Transparent"
-          BorderBrush="LightGray"
-          CanUserAddRows="False"
-          IsReadOnly="True"
-          ItemsSource="{Binding Invoices}">
-          <DataGrid.Columns>
-            <DataGridTemplateColumn>
-              <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                  <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
-                </DataTemplate>
-              </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            <DataGridTextColumn Binding="{Binding InvoiceNumber}" Header="Rechnung" />
-            <DataGridTextColumn Binding="{Binding Customer.ClientNumber}" Header="Kundenummer" />
-            <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
-            <DataGridTextColumn Binding="{Binding NetAmount, StringFormat={}{0:N2}}" Header="Netto" />
-            <DataGridTextColumn Binding="{Binding GrossAmount, StringFormat={}{0:N2}}" Header="Brutto" />
-            <DataGridTemplateColumn Header="Status">
-              <DataGridTemplateColumn.CellTemplateSelector>
-                <StaticResource ResourceKey="StateTemplateSelector" />
-              </DataGridTemplateColumn.CellTemplateSelector>
-            </DataGridTemplateColumn>
-            <DataGridTextColumn Binding="{Binding IssueDate, StringFormat={}{0:d}}" Header="Datum" />
-          </DataGrid.Columns>
-          <DataGrid.InputBindings>
-            <MouseBinding
-              Command="{Binding SelectInvoiceCommand}"
-              CommandParameter="{Binding SelectedItem, ElementName=dgInvoices}"
-              MouseAction="LeftDoubleClick" />
-          </DataGrid.InputBindings>
-        </DataGrid>
-      </Border>
+            </Grid>
+            <Border
+                Grid.Row="2"
+                Margin="0,10,0,10"
+                BorderBrush="LightGray"
+                BorderThickness="2" />
+            <Border
+                Grid.Row="3"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                CornerRadius="5">
+                <DataGrid
+                    x:Name="dgInvoices"
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    BorderBrush="LightGray"
+                    CanUserAddRows="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Invoices}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Binding="{Binding InvoiceNumber}" Header="Rechnung" />
+                        <DataGridTextColumn Binding="{Binding Customer.ClientNumber}" Header="Kundenummer" />
+                        <DataGridTextColumn Binding="{Binding Customer.Name}" Header="Kundenname" />
+                        <DataGridTextColumn Binding="{Binding NetAmount, StringFormat={}{0:N2}}" Header="Netto" />
+                        <DataGridTextColumn Binding="{Binding GrossAmount, StringFormat={}{0:N2}}" Header="Brutto" />
+                        <DataGridTemplateColumn Header="Status">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <StaticResource ResourceKey="StateTemplateSelector" />
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Binding="{Binding IssueDate, StringFormat={}{0:d}}" Header="Datum" />
+                    </DataGrid.Columns>
+                    <DataGrid.InputBindings>
+                        <MouseBinding
+                            Command="{Binding SelectInvoiceCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=dgInvoices}"
+                            MouseAction="LeftDoubleClick" />
+                    </DataGrid.InputBindings>
+                </DataGrid>
+            </Border>
+        </Grid>
     </Grid>
-  </Grid>
 </UserControl>

@@ -1,121 +1,121 @@
 ﻿<UserControl
-  x:Class="CYR.UnitOfMeasure.UnitOfMeasureView"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:CYR.UnitOfMeasure"
-  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  d:DataContext="{d:DesignInstance Type=local:UnitOfMeasureViewModel,
-                                   IsDesignTimeCreatable=False}"
-  d:DesignHeight="450"
-  d:DesignWidth="800"
-  mc:Ignorable="d">
-  <Grid Background="White">
-    <Border
-      Margin="10"
-      BorderThickness="2"
-      CornerRadius="5">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="auto" />
-          <RowDefinition Height="auto" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    x:Class="CYR.UnitOfMeasure.UnitOfMeasureView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CYR.UnitOfMeasure"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:UnitOfMeasureViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="White">
         <Border
-          Grid.Column="0"
-          HorizontalAlignment="Left"
-          BorderBrush="LightGray"
-          BorderThickness="1"
-          CornerRadius="5">
-          <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
-            <Button.Content>
-              <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
-                <TextBlock HorizontalAlignment="Center" Text="Zurück" />
-              </StackPanel>
-            </Button.Content>
-          </Button>
-        </Border>
-        <StackPanel Grid.Row="1">
-          <Label
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Content="Einheiten"
-            FontSize="35"
-            FontWeight="DemiBold" />
-          <Border
-            Margin="0,10,0,10"
-            BorderBrush="LightGray"
-            BorderThickness="2" />
-        </StackPanel>
-        <Grid Grid.Row="0">
-          <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button
-              Margin="5,0,5,0"
-              BorderBrush="LightGray"
-              BorderThickness="1"
-              Command="{Binding UpdateUnitOfMeasureCommand}"
-              Style="{StaticResource MaterialDesignFlatButton}"
-              ToolTip="Ausgewählte Zeile editieren">
-              <Button.Content>
-                <materialDesign:PackIcon Kind="Edit" />
-              </Button.Content>
-            </Button>
-            <Button
-              BorderBrush="LightGray"
-              BorderThickness="1"
-              Command="{Binding DeleteUnitOfMeasureCommand}"
-              Foreground="Red"
-              Style="{StaticResource MaterialDesignFlatButton}"
-              ToolTip="Ausgewählten Zeilen löschen">
-              <Button.Content>
-                <materialDesign:PackIcon Kind="Delete" />
-              </Button.Content>
-            </Button>
-            <Button
-              Margin="5,0,0,0"
-              Command="{Binding NavigateToCreateUnitOfMeasureCommand}"
-              ToolTip="Neue Zeile erstellen">
-              <Button.Content>
-                <StackPanel Orientation="Horizontal">
-                  <materialDesign:PackIcon
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Kind="PlusCircleOutline" />
-                  <TextBlock VerticalAlignment="Top" Text="Hinzufügen" />
+            Margin="10"
+            BorderThickness="2"
+            CornerRadius="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
+                                <TextBlock HorizontalAlignment="Center" Text="Zurück" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </Border>
+                <StackPanel Grid.Row="1">
+                    <Label
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Content="Einheiten"
+                        FontSize="35"
+                        FontWeight="DemiBold" />
+                    <Border
+                        Margin="0,10,0,10"
+                        BorderBrush="LightGray"
+                        BorderThickness="2" />
                 </StackPanel>
-              </Button.Content>
-            </Button>
-          </StackPanel>
-        </Grid>
-        <Border
-          Grid.Row="2"
-          BorderBrush="LightGray"
-          BorderThickness="1"
-          CornerRadius="5">
-          <DataGrid
-            AutoGenerateColumns="False"
-            Background="White"
-            CanUserAddRows="False"
-            CanUserReorderColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding UnitsOfMeasure}">
-            <DataGrid.Columns>
-              <DataGridTemplateColumn>
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-              <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-              <DataGridTextColumn Binding="{Binding Description}" Header="Beschreibung" />
-            </DataGrid.Columns>
-          </DataGrid>
+                <Grid Grid.Row="0">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            Margin="5,0,5,0"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            Command="{Binding UpdateUnitOfMeasureCommand}"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="Ausgewählte Zeile editieren">
+                            <Button.Content>
+                                <materialDesign:PackIcon Kind="Edit" />
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            Command="{Binding DeleteUnitOfMeasureCommand}"
+                            Foreground="Red"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="Ausgewählten Zeilen löschen">
+                            <Button.Content>
+                                <materialDesign:PackIcon Kind="Delete" />
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            Margin="5,0,0,0"
+                            Command="{Binding NavigateToCreateUnitOfMeasureCommand}"
+                            ToolTip="Neue Zeile erstellen">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        Kind="PlusCircleOutline" />
+                                    <TextBlock VerticalAlignment="Top" Text="Hinzufügen" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Border
+                    Grid.Row="2"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        Background="White"
+                        CanUserAddRows="False"
+                        CanUserReorderColumns="False"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding UnitsOfMeasure}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Beschreibung" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
         </Border>
-      </Grid>
-    </Border>
-  </Grid>
+    </Grid>
 </UserControl>

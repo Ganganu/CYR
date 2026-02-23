@@ -1,117 +1,117 @@
 ﻿<UserControl
-  x:Class="CYR.View.ClientView"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:CYR.View"
-  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:vm="clr-namespace:CYR.ViewModel"
-  d:DataContext="{d:DesignInstance Type=vm:ClientViewModel,
-                                   IsDesignTimeCreatable=False}"
-  d:DesignHeight="450"
-  d:DesignWidth="800"
-  FontFamily="Segoe UI"
-  mc:Ignorable="d">
-  <Grid Margin="10" Background="White">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0">
-      <Border
-        HorizontalAlignment="Left"
-        BorderBrush="LightGray"
-        BorderThickness="1"
-        CornerRadius="5">
-        <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
-          <Button.Content>
-            <StackPanel Orientation="Horizontal">
-              <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
-              <TextBlock HorizontalAlignment="Center" Text="Zurück" />
-            </StackPanel>
-          </Button.Content>
-        </Button>
-      </Border>
-      <StackPanel
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Orientation="Horizontal">
-        <Button
-          BorderBrush="LightGray"
-          BorderThickness="1"
-          Command="{Binding UpdateClientCommand}"
-          Style="{StaticResource MaterialDesignFlatButton}"
-          ToolTip="Ausgewählte Zeile editieren">
-          <Button.Content>
-            <materialDesign:PackIcon Kind="Edit" />
-          </Button.Content>
-        </Button>
-        <Button
-          Margin="5,0,5,0"
-          BorderBrush="LightGray"
-          BorderThickness="1"
-          Command="{Binding DeleteClientCommand}"
-          Style="{StaticResource MaterialDesignFlatButton}"
-          ToolTip="Ausgewählten Zeilen löschen">
-          <Button.Content>
-            <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
-          </Button.Content>
-        </Button>
-        <Button Command="{Binding CreateNewClientCommand}" ToolTip="Neue Zeile erstellen">
-          <Button.Content>
-            <StackPanel Orientation="Horizontal">
-              <materialDesign:PackIcon
-                Margin="0,0,5,0"
+    x:Class="CYR.View.ClientView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CYR.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:CYR.ViewModel"
+    d:DataContext="{d:DesignInstance Type=vm:ClientViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="Segoe UI"
+    mc:Ignorable="d">
+    <Grid Margin="10" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Border
+                HorizontalAlignment="Left"
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                CornerRadius="5">
+                <Button Command="{Binding NavigateBackCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Margin="0,2,5,0" Kind="NavigateBefore" />
+                            <TextBlock HorizontalAlignment="Center" Text="Zurück" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Border>
+            <StackPanel
+                HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Kind="PlusCircleOutline" />
-              <TextBlock VerticalAlignment="Top" Text="Hinzufügen" />
+                Orientation="Horizontal">
+                <Button
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    Command="{Binding UpdateClientCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    ToolTip="Ausgewählte Zeile editieren">
+                    <Button.Content>
+                        <materialDesign:PackIcon Kind="Edit" />
+                    </Button.Content>
+                </Button>
+                <Button
+                    Margin="5,0,5,0"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    Command="{Binding DeleteClientCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    ToolTip="Ausgewählten Zeilen löschen">
+                    <Button.Content>
+                        <materialDesign:PackIcon Foreground="Red" Kind="Delete" />
+                    </Button.Content>
+                </Button>
+                <Button Command="{Binding CreateNewClientCommand}" ToolTip="Neue Zeile erstellen">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Kind="PlusCircleOutline" />
+                            <TextBlock VerticalAlignment="Top" Text="Hinzufügen" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
             </StackPanel>
-          </Button.Content>
-        </Button>
-      </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <Label
+                Content="Kunden"
+                FontSize="35"
+                FontWeight="DemiBold" />
+            <Border
+                Margin="0,10,0,10"
+                BorderBrush="LightGray"
+                BorderThickness="2" />
+        </StackPanel>
+        <Grid Grid.Row="1" />
+        <Border
+            Grid.Row="2"
+            BorderBrush="LightGray"
+            BorderThickness="1"
+            CornerRadius="5">
+            <DataGrid
+                AutoGenerateColumns="False"
+                Background="White"
+                CanUserAddRows="False"
+                CanUserReorderColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Clients}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding ClientNumber}" Header="Kundennummer" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Street}" Header="Straße" />
+                    <DataGridTextColumn Binding="{Binding City}" Header="Stadt" />
+                    <DataGridTextColumn Binding="{Binding PLZ}" Header="PLZ" />
+                    <DataGridTextColumn Binding="{Binding EmailAddress}" Header="Email-Adresse" />
+                    <DataGridTextColumn Binding="{Binding Telefonnumber}" Header="Telefonnummer" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
-    <StackPanel Grid.Row="1">
-      <Label
-        Content="Kunden"
-        FontSize="35"
-        FontWeight="DemiBold" />
-      <Border
-        Margin="0,10,0,10"
-        BorderBrush="LightGray"
-        BorderThickness="2" />
-    </StackPanel>
-    <Grid Grid.Row="1" />
-    <Border
-      Grid.Row="2"
-      BorderBrush="LightGray"
-      BorderThickness="1"
-      CornerRadius="5">
-      <DataGrid
-        AutoGenerateColumns="False"
-        Background="White"
-        CanUserAddRows="False"
-        CanUserReorderColumns="False"
-        IsReadOnly="True"
-        ItemsSource="{Binding Clients}">
-        <DataGrid.Columns>
-          <DataGridTemplateColumn>
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate>
-                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-          <DataGridTextColumn Binding="{Binding ClientNumber}" Header="Kundennummer" />
-          <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-          <DataGridTextColumn Binding="{Binding Street}" Header="Straße" />
-          <DataGridTextColumn Binding="{Binding City}" Header="Stadt" />
-          <DataGridTextColumn Binding="{Binding PLZ}" Header="PLZ" />
-          <DataGridTextColumn Binding="{Binding EmailAddress}" Header="Email-Adresse" />
-          <DataGridTextColumn Binding="{Binding Telefonnumber}" Header="Telefonnummer" />
-        </DataGrid.Columns>
-      </DataGrid>
-    </Border>
-  </Grid>
 </UserControl>

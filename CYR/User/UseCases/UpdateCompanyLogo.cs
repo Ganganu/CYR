@@ -2,28 +2,21 @@
 
 namespace CYR.User.UseCases;
 
-public class UpdateCompanyLogo
+public class UpdateCompanyLogo(IDatabaseConnection databaseConnection, UserContext userContext)
 {
-    private readonly IDatabaseConnection _databaseConnection;
-    private readonly UserContext _userContext;
-
-    public UpdateCompanyLogo(IDatabaseConnection databaseConnection, UserContext userContext)
-    {
-        _databaseConnection = databaseConnection;
-        _userContext = userContext;
-    }
 
     public async Task<int> UpdateCompanyLogoAsync(string? logo)
     {
         int affectedRows = 0;
-        string query = "update company set logo = @logo";
-        Dictionary<string, object> parameters = new Dictionary<string, object>
+        string query = "update company set logo = @logo where user_id = @user_id";
+        Dictionary<string, object> parameters = new()
         {
-            {"logo", logo }
+            {"logo", logo },
+            {"user_id", userContext.CurrentUser.Id}
         };
         try
         {
-          affectedRows = await _databaseConnection.ExecuteNonQueryAsync(query, parameters);  
+          affectedRows = await databaseConnection.ExecuteNonQueryAsync(query, parameters);  
         }
         catch (Exception)
         {

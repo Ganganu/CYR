@@ -1,143 +1,143 @@
 ﻿<Application
-  x:Class="CYR.App"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:cv="clr-namespace:CYR.Clients.Views"
-  xmlns:cvm="clr-namespace:CYR.Clients.ViewModels"
-  xmlns:dv="clr-namespace:CYR.Dashboard.DashboardViews"
-  xmlns:dvm="clr-namespace:CYR.Dashboard.DashboardViewModels"
-  xmlns:iv="clr-namespace:CYR.Invoice.InvoiceViews"
-  xmlns:ivm="clr-namespace:CYR.Invoice.InvoiceViewModels"
-  xmlns:local="clr-namespace:CYR"
-  xmlns:lv="clr-namespace:CYR.Login"
-  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-  xmlns:oiv="clr-namespace:CYR.OrderItems.OrderItemViews"
-  xmlns:oivm="clr-namespace:CYR.OrderItems.OrderItemViewModels"
-  xmlns:uom="clr-namespace:CYR.UnitOfMeasure"
-  xmlns:user="clr-namespace:CYR.User"
-  xmlns:v="clr-namespace:CYR.View"
-  xmlns:vm="clr-namespace:CYR.ViewModel">
-  <Application.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-        <ResourceDictionary Source="Invoice/Resources/DataTemplates/InvoiceListViewDataTemplates.xaml" />
-        <materialDesign:BundledTheme
-          BaseTheme="Light"
-          PrimaryColor="Orange"
-          SecondaryColor="Purple" />
-      </ResourceDictionary.MergedDictionaries>
-      <DataTemplate DataType="{x:Type vm:ClientViewModel}">
-        <v:ClientView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type ivm:CreateInvoiceViewModel}">
-        <iv:CreateInvoiceView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type ivm:InvoiceListViewModel}">
-        <iv:InvoiceListView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
-        <v:ArticleView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type vm:CreateClientViewModel}">
-        <v:CreateClientView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type vm:CreateNewArticleViewModel}">
-        <v:CreateNewArticleView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type ivm:ShowInvoiceViewModel}">
-        <iv:ShowInvoiceView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-        <v:SettingsView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type cvm:UpdateClientViewModel}">
-        <cv:UpdateClientView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type oivm:UpdateOrderItemViewModel}">
-        <oiv:UpdateOrderItemView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type dvm:DashboardViewModel}">
-        <dv:DashboardView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type dvm:StatisticOverviewViewModel}">
-        <dv:StatisticOverviewView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type dvm:StatisticChartViewModel}">
-        <dv:StatisticChartView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type lv:LoginViewModel}">
-        <lv:LoginView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type lv:RegisterViewModel}">
-        <lv:RegisterView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type dvm:DashboardActivityViewModel}">
-        <dv:DashboardActivityView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type dvm:DashboardInvoiceViewModel}">
-        <dv:DashboardInvoiceView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type user:UserViewModel}">
-        <user:UserView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type uom:UnitOfMeasureViewModel}">
-        <uom:UnitOfMeasureView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type uom:UpdateUnitOfMeasureViewModel}">
-        <uom:UpdateUnitOfMeasureView />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type uom:CreateUnitOfMeasureViewModel}">
-        <uom:CreateUnitOfMeasureView />
-      </DataTemplate>
+    x:Class="CYR.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cv="clr-namespace:CYR.Clients.Views"
+    xmlns:cvm="clr-namespace:CYR.Clients.ViewModels"
+    xmlns:dv="clr-namespace:CYR.Dashboard.DashboardViews"
+    xmlns:dvm="clr-namespace:CYR.Dashboard.DashboardViewModels"
+    xmlns:iv="clr-namespace:CYR.Invoice.InvoiceViews"
+    xmlns:ivm="clr-namespace:CYR.Invoice.InvoiceViewModels"
+    xmlns:local="clr-namespace:CYR"
+    xmlns:lv="clr-namespace:CYR.Login"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:oiv="clr-namespace:CYR.OrderItems.OrderItemViews"
+    xmlns:oivm="clr-namespace:CYR.OrderItems.OrderItemViewModels"
+    xmlns:uom="clr-namespace:CYR.UnitOfMeasure"
+    xmlns:user="clr-namespace:CYR.User"
+    xmlns:v="clr-namespace:CYR.View"
+    xmlns:vm="clr-namespace:CYR.ViewModel">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                <ResourceDictionary Source="Invoice/Resources/DataTemplates/InvoiceListViewDataTemplates.xaml" />
+                <materialDesign:BundledTheme
+                    BaseTheme="Light"
+                    PrimaryColor="Orange"
+                    SecondaryColor="Purple" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type vm:ClientViewModel}">
+                <v:ClientView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ivm:CreateInvoiceViewModel}">
+                <iv:CreateInvoiceView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ivm:InvoiceListViewModel}">
+                <iv:InvoiceListView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
+                <v:ArticleView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CreateClientViewModel}">
+                <v:CreateClientView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CreateNewArticleViewModel}">
+                <v:CreateNewArticleView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ivm:ShowInvoiceViewModel}">
+                <iv:ShowInvoiceView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                <v:SettingsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type cvm:UpdateClientViewModel}">
+                <cv:UpdateClientView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type oivm:UpdateOrderItemViewModel}">
+                <oiv:UpdateOrderItemView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dvm:DashboardViewModel}">
+                <dv:DashboardView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dvm:StatisticOverviewViewModel}">
+                <dv:StatisticOverviewView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dvm:StatisticChartViewModel}">
+                <dv:StatisticChartView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type lv:LoginViewModel}">
+                <lv:LoginView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type lv:RegisterViewModel}">
+                <lv:RegisterView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dvm:DashboardActivityViewModel}">
+                <dv:DashboardActivityView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dvm:DashboardInvoiceViewModel}">
+                <dv:DashboardInvoiceView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type user:UserViewModel}">
+                <user:UserView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type uom:UnitOfMeasureViewModel}">
+                <uom:UnitOfMeasureView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type uom:UpdateUnitOfMeasureViewModel}">
+                <uom:UpdateUnitOfMeasureView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type uom:CreateUnitOfMeasureViewModel}">
+                <uom:CreateUnitOfMeasureView />
+            </DataTemplate>
 
 
-      <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
-        <Setter Property="Background" Value="LightGray" />
-        <Setter Property="BorderBrush" Value="Gray" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="10,0" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Template">
-          <Setter.Value>
-            <ControlTemplate TargetType="{x:Type ToggleButton}">
-              <Border
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="5">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                  </Grid.ColumnDefinitions>
-                  <ContentPresenter
-                    Grid.Column="0"
-                    Margin="{TemplateBinding Padding}"
-                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                  <Path
-                    Grid.Column="1"
-                    Margin="5,0,5,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Data="M0,0 L4,4 L8,0 Z"
-                    Fill="Black" />
-                </Grid>
-              </Border>
-              <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                  <Setter Property="Background" Value="#EEE" />
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                  <Setter Property="Background" Value="#DDD" />
-                </Trigger>
-              </ControlTemplate.Triggers>
-            </ControlTemplate>
-          </Setter.Value>
-        </Setter>
-      </Style>
-    </ResourceDictionary>
-  </Application.Resources>
+            <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
+                <Setter Property="Background" Value="LightGray" />
+                <Setter Property="BorderBrush" Value="Gray" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="10,0" />
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter
+                                        Grid.Column="0"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    <Path
+                                        Grid.Column="1"
+                                        Margin="5,0,5,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Data="M0,0 L4,4 L8,0 Z"
+                                        Fill="Black" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#EEE" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#DDD" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

@@ -1,21 +1,15 @@
 ﻿using CYR.Messages;
 using Microsoft.Win32;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CYR.Settings;
 
 public class SelectImageService : ISelectImageService
 {
-    public SelectImageService()
-    {
-
-    }
-
     public string? SelectStringImage()
     {
         string path = string.Empty;
-        OpenFileDialog openFileDialog = new OpenFileDialog();
+        OpenFileDialog openFileDialog = new();
         if (openFileDialog.ShowDialog() == true)
         {
             path = openFileDialog.FileName;
@@ -27,7 +21,7 @@ public class SelectImageService : ISelectImageService
     public SnackbarMessage SelectImage()
     {
         string path = string.Empty;
-        OpenFileDialog openFileDialog = new OpenFileDialog();
+        OpenFileDialog openFileDialog = new();
         if (openFileDialog.ShowDialog() == true)
         {
             path = openFileDialog.FileName;
@@ -36,9 +30,9 @@ public class SelectImageService : ISelectImageService
         return logo;
     }
 
-    private SnackbarMessage PathToImageSource(string path)
+    private static SnackbarMessage PathToImageSource(string path)
     {
-        BitmapImage logo = new BitmapImage();
+        BitmapImage logo = new();
         try
         {            
             logo.BeginInit();
