@@ -113,6 +113,7 @@ public partial class App : Application
         services.AddSingleton<ImportOrderItemsCommand>();
         services.AddTransient<UpdateCompanyLogo>();
         services.AddTransient<GetLogoUseCase>();
+        services.AddTransient<DuplicateInvoiceUseCase>();
 
 
 

@@ -5,6 +5,7 @@ using CYR.Core;
 using CYR.Dialog;
 using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
+using CYR.Invoice.UseCases;
 using CYR.Logging;
 using CYR.Services;
 using CYR.User;
@@ -20,6 +21,7 @@ public partial class InvoiceListViewModel : ObservableRecipient
     private readonly IDialogService _dialogService;
     private readonly LoggingRepository _loggingRepository;
     private readonly UserContext _userContext;
+    private readonly DuplicateInvoiceUseCase _duplicateInvoiceUseCase;
 
     private string? _dialogResponse;
 
@@ -27,14 +29,16 @@ public partial class InvoiceListViewModel : ObservableRecipient
         INavigationService navigationService,
         IDialogService dialogService,
         LoggingRepository loggingRepository,
-        UserContext userContext)
+        UserContext userContext,
+        DuplicateInvoiceUseCase duplicateInvoiceUseCase)
     {
         _invoiceRepository = invoiceRepository;
         NavigationService = navigationService;
-        Initialize();
+        _duplicateInvoiceUseCase = duplicateInvoiceUseCase;
         _dialogService = dialogService;
         _loggingRepository = loggingRepository;
         _userContext = userContext;
+        Initialize();
     }
     private async void Initialize()
     {
@@ -139,6 +143,15 @@ public partial class InvoiceListViewModel : ObservableRecipient
         InvoiceModel? invoiceToUpdate = Invoices.Where(i => i.IsSelected == true).FirstOrDefault();
         if (invoiceToUpdate is null) return;
         NavigationService.NavigateTo<ShowInvoiceViewModel>(invoiceToUpdate.InvoiceNumber);
+    }
+    [RelayCommand]
+    private async Task DuplicateInvoice()
+    {
+        if (Invoices is null) return;
+        var selectedInvoice = Invoices.FirstOrDefault(i => i.IsSelected.Value);
+        var originalId = selectedInvoice?.InvoiceNumber?.ToString();
+        if (string.IsNullOrEmpty(originalId)) return;
+        _ = await _duplicateInvoiceUseCase.DuplicateInvoice("4", originalId);
     }
 
     private void ShowNotificationDialog(string title,
