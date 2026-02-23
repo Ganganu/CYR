@@ -7,13 +7,8 @@ using CYR.Services;
 
 namespace CYR.Dialog;
 
-public partial class ItemsListDialogViewModel : ObservableRecipient
+public partial class ItemsListDialogViewModel(IXMLService xmlService) : ObservableRecipient
 {
-    private readonly IXMLService _xmlService;
-    public ItemsListDialogViewModel(IXMLService xmlService)
-    {
-        _xmlService = xmlService;
-    }
 
     [ObservableProperty]
     private string? _title;
@@ -45,7 +40,7 @@ public partial class ItemsListDialogViewModel : ObservableRecipient
         {
             return;
         }
-        XmlString = await _xmlService.LoadAsync(SelectedFile.FileName, FolderPath);
+        XmlString = await xmlService.LoadAsync(SelectedFile.FileName, FolderPath);
 
 
         Messenger.Send(this);

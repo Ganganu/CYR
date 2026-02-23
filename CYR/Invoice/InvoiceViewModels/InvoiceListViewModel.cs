@@ -7,6 +7,7 @@ using CYR.Invoice.InvoiceModels;
 using CYR.Invoice.InvoiceRepositorys;
 using CYR.Invoice.UseCases;
 using CYR.Logging;
+using CYR.Messages;
 using CYR.Services;
 using CYR.User;
 using System.Collections.ObjectModel;
@@ -72,7 +73,7 @@ public partial class InvoiceListViewModel : ObservableRecipient
         foreach (var item in Invoices)
         {
             if (item.State == InvoiceState.Open && (bool)item.IsSelected)
-            {                    
+            {
                 item.State = InvoiceState.Closed;
                 _invoiceRepository.UpdateAsync(item);
             }
@@ -148,17 +149,30 @@ public partial class InvoiceListViewModel : ObservableRecipient
     private async Task DuplicateInvoice()
     {
         if (Invoices is null) return;
+        bool succes = false;
         var selectedInvoice = Invoices.FirstOrDefault(i => i.IsSelected.Value);
         var originalId = selectedInvoice?.InvoiceNumber?.ToString();
         if (string.IsNullOrEmpty(originalId)) return;
-        _ = await _duplicateInvoiceUseCase.DuplicateInvoice("4", originalId);
+        ShowDuplicateInvoiceDialog("Rechnung duplizieren", "Abbrechen", "LibraryAdd", Visibility.Visible, "Übernehmen", "Rechnungsnummer eintragen");
+        if (!string.IsNullOrEmpty(_dialogResponse))
+        {
+            succes = await _duplicateInvoiceUseCase.DuplicateInvoice(_dialogResponse, originalId);
+        }
+        if (succes)
+        {
+            Initialize();
+            Messenger.Send(new SnackbarMessage($"Die Rechnung {selectedInvoice.InvoiceNumber} wurde erfolgreich dupliziert. \n" +
+                $"Die Rechnung {_dialogResponse} wurde erfolgreich erstellt.", "Check"));
+        }
+
     }
 
     private void ShowNotificationDialog(string title,
             string message,
             string cancelButtonText,
             string icon,
-            Visibility okButtonVisibility, string okButtonText)
+            Visibility okButtonVisibility,
+            string okButtonText)
     {
         _dialogService.ShowDialog(result =>
         {
@@ -172,6 +186,27 @@ public partial class InvoiceListViewModel : ObservableRecipient
                 { vm => vm.Icon,icon },
                 { vm => vm.OkButtonText, okButtonText },
                 { vm => vm.IsOkVisible, okButtonVisibility}
+        });
+    }
+    private void ShowDuplicateInvoiceDialog(string title,
+                                        string cancelButtonText,
+                                        string icon,
+                                        Visibility okButtonVisibility,
+                                        string okButtonText,
+                                        string textBoxHintText)
+    {
+        _dialogService.ShowDialog(vm =>
+        {
+            _dialogResponse = vm.InputText;
+        },
+        new Dictionary<Expression<Func<InputViewModel, object>>, object>
+        {
+            { vm => vm.Title, title },
+            { vm => vm.CancelButtonText, cancelButtonText },
+            { vm => vm.Icon, icon },
+            { vm => vm.OkButtonText, okButtonText },
+            { vm => vm.IsOkVisible, okButtonVisibility },
+            { vm => vm.InputTextHint, textBoxHintText  },
         });
     }
 }

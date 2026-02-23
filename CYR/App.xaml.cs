@@ -143,6 +143,7 @@ public partial class App : Application
                 
         //Dialog Registrations
         DialogService.RegisterDialog<Notification,NotificationViewModel>();
+        DialogService.RegisterDialog<InputDialog,InputViewModel>();
         DialogService.RegisterDialog<ErrorDialogView, ErrorDialogViewModel>();
         DialogService.RegisterDialog<ItemsListView, ItemsListDialogViewModel>(() => [new XMLService()]);
         DialogService.RegisterDialog<SaveCommentsDialogView, SaveCommentsDialogViewModel>(() => [new XMLService()]);
