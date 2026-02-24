@@ -164,7 +164,10 @@ public partial class InvoiceListViewModel : ObservableRecipient
             Messenger.Send(new SnackbarMessage($"Die Rechnung {selectedInvoice.InvoiceNumber} wurde erfolgreich dupliziert. \n" +
                 $"Die Rechnung {_dialogResponse} wurde erfolgreich erstellt.", "Check"));
         }
-
+        else
+        {
+            Messenger.Send(new SnackbarMessage($"Etwas ist schiefgelaufen. Versuchen Sie es erneut.","Error"));
+        }
     }
 
     private void ShowNotificationDialog(string title,

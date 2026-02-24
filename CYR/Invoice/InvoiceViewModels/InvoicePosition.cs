@@ -55,7 +55,7 @@ public partial class InvoicePosition : ObservableRecipientWithValidation
                 OrderItem = new OrderItem();
                 OrderItem.Name = newValue;
                 OrderItem.Description = newValue;
-                OrderItem.Price = 0;
+                //OrderItem.Price = 0;
             }
         }
     }

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CYR.Clients;
 using CYR.Invoice.InvoiceViewModels;
-using CYR.Settings;
 using CYR.User;
 
 namespace CYR.Invoice.InvoiceModels

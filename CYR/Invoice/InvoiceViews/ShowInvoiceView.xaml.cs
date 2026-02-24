@@ -14,4 +14,12 @@ public partial class ShowInvoiceView : UserControl
         InitializeComponent();
         Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
     }
+
+    private void TextBox_GotFocus(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            textBox.SelectAll();
+        }
+    }
 }

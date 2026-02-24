@@ -455,6 +455,7 @@
                                             materialDesign:HintAssist.IsFloating="False"
                                             materialDesign:ValidationAssist.Background="Transparent"
                                             materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+                                            GotFocus="TextBox_GotFocus"
                                             Style="{StaticResource MaterialDesignTextBoxBase}"
                                             Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}" />
                                     </DataTemplate>
@@ -487,8 +488,9 @@
                                             materialDesign:HintAssist.IsFloating="False"
                                             materialDesign:ValidationAssist.Background="Transparent"
                                             materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+                                            GotFocus="TextBox_GotFocus"
                                             Style="{StaticResource MaterialDesignTextBoxBase}"
-                                            Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" />
+                                            Text="{Binding Price, UpdateSourceTrigger=LostFocus, StringFormat={}{0:N2}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

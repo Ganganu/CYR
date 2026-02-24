@@ -45,7 +45,8 @@
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <TextBox
-                    Margin="10 20 10 0"
+                    x:Name="InvoiceNumber"
+                    Margin="10,20,10,0"
                     materialDesign:HintAssist.Hint="{Binding InputTextHint}"
                     materialDesign:HintAssist.IsFloating="False"
                     BorderBrush="LightGray"

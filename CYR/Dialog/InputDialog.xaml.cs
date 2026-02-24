@@ -11,6 +11,7 @@ public partial class InputDialog : UserControl
     {
         InitializeComponent();
         Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
+        InvoiceNumber.Focus();
     }
     private void Button_Click(object sender, RoutedEventArgs e)
     {
