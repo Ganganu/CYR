@@ -166,7 +166,7 @@ public partial class InvoiceListViewModel : ObservableRecipient
         }
         else
         {
-            Messenger.Send(new SnackbarMessage($"Etwas ist schiefgelaufen. Versuchen Sie es erneut.","Error"));
+            Messenger.Send(new SnackbarMessage($"Etwas ist schiefgelaufen. Versuchen Sie es erneut.", "Error"));
         }
     }
 

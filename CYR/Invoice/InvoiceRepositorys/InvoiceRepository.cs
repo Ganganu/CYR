@@ -8,15 +8,10 @@ using System.Data.SQLite;
 
 namespace CYR.Invoice.InvoiceRepositorys;
 
-public class InvoiceRepository : IInvoiceRepository
+public class InvoiceRepository(IDatabaseConnection databaseConnection, UserContext userContext) : IInvoiceRepository
 {
-    private readonly IDatabaseConnection _databaseConnection;
-    private readonly UserContext _userContext;
-    public InvoiceRepository(IDatabaseConnection databaseConnection, UserContext userContext)
-    {
-        _databaseConnection = databaseConnection;
-        _userContext = userContext;
-    }
+    private readonly IDatabaseConnection _databaseConnection = databaseConnection;
+    private readonly UserContext _userContext = userContext;
 
     public async Task<bool> DeleteAsync(InvoiceModel invoice)
     {

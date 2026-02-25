@@ -60,97 +60,18 @@
                     Grid.Column="1"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <ComboBox
-                        Width="200"
-                        Height="30"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsEditable="True"
-                        IsReadOnly="True"
-                        SelectedIndex="-1">
-                        <ComboBox.Template>
-                            <ControlTemplate TargetType="{x:Type ComboBox}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <ToggleButton
-                                        x:Name="ToggleButton"
-                                        Grid.ColumnSpan="2"
-                                        Height="30"
-                                        Background="White"
-                                        BorderBrush="LightGray"
-                                        BorderThickness="1"
-                                        IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Style="{StaticResource ComboBoxToggleButtonStyle}">
-                                        <ContentPresenter
-                                            Margin="10,0,0,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Content="{TemplateBinding SelectionBoxItem}"
-                                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" />
-                                    </ToggleButton>
-                                    <ContentPresenter
-                                        Margin="10,0,0,0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Content="Status auswählen" />
-                                    <Popup
-                                        x:Name="PART_Popup"
-                                        AllowsTransparency="True"
-                                        IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                                        PlacementTarget="{Binding ElementName=ToggleButton}"
-                                        StaysOpen="False">
-                                        <Border
-                                            x:Name="DropDownBorder"
-                                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-                                            BorderBrush="Orange"
-                                            BorderThickness="1"
-                                            CornerRadius="5">
-                                            <ScrollViewer x:Name="DropDownScrollViewer" Margin="5">
-                                                <Grid RenderOptions.ClearTypeHint="Enabled">
-                                                    <Canvas
-                                                        Width="0"
-                                                        Height="0"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Top">
-                                                        <Rectangle
-                                                            x:Name="OpaqueRect"
-                                                            Width="{Binding ActualWidth, ElementName=DropDownBorder}"
-                                                            Height="{Binding ActualHeight, ElementName=DropDownBorder}"
-                                                            Fill="{Binding Background, ElementName=DropDownBorder}" />
-                                                    </Canvas>
-                                                    <ItemsPresenter
-                                                        x:Name="ItemsPresenter"
-                                                        KeyboardNavigation.DirectionalNavigation="Contained"
-                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                                </Grid>
-                                            </ScrollViewer>
-                                        </Border>
-                                    </Popup>
-                                </Grid>
-                            </ControlTemplate>
-                        </ComboBox.Template>
-                        <ComboBoxItem>
-                            <Button
-                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                Padding="10,5"
-                                HorizontalContentAlignment="Left"
-                                Command="{Binding SetInvoiceStateOpenCommand}"
-                                Content="Unbezahlt"
-                                Style="{StaticResource MaterialDesignFlatButton}" />
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            <Button
-                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                Padding="10,5"
-                                HorizontalContentAlignment="Left"
-                                Command="{Binding SetInvoiceStateClosedCommand}"
-                                Content="Bezahlt"
-                                Style="{StaticResource MaterialDesignFlatButton}" />
-                        </ComboBoxItem>
-                    </ComboBox>
+                    <Button
+                        x:Name="StatusButton"
+                        Click="StatusButton_Click"
+                        Content="Rechnugsstatus ändern"
+                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding SetInvoiceStateOpenCommand}" Header="Unbezahlt" />
+                                <MenuItem Command="{Binding SetInvoiceStateClosedCommand}" Header="Bezahlt" />
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
                     <Button
                         Margin="5,0,0,0"
                         BorderBrush="LightGray"
